@@ -633,12 +633,13 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		if (mScrollContainer == null && mFindScrollContainer) {
 			ViewGroup _p = parent;
-			while ((mScrollContainer = (ViewGroup)_p.getParent()) != null) {
+			while ((mScrollContainer = _p) != null) {
 				if (mScrollContainer instanceof ScrollView) {
 					mFindScrollContainer = false;
 					mScrollPosY = ((ScrollView)mScrollContainer).getScrollY();
 					break;
 				}
+				_p = (ViewGroup)(_p.getParent());
 			}
 		}
 		mScrollContainer = mFindScrollContainer ? null : mScrollContainer;
