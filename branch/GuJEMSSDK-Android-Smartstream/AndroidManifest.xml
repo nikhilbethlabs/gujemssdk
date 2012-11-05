@@ -7,12 +7,16 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
+	<application>
 
-    <receiver android:name="com.video.adsdk.internal.checker.ADConnectivityChecker" >
-        <intent-filter>
-            <action android:name="android.net.wifi.STATE_CHANGE" />
-            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        </intent-filter>
-    </receiver>
+	    <!-- Smartstream SDK -->
+        <receiver android:name="com.video.adsdk.internal.checker.ADConnectivityChecker" >
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+	    
+	</application>
 
 </manifest>
