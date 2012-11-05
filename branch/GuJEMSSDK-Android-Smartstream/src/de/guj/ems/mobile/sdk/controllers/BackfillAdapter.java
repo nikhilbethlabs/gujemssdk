@@ -24,8 +24,9 @@ public interface BackfillAdapter {
 	 * @param context Android application context
 	 * @param callback Callback implementation handling events such as errors or impressions
 	 * @param data the original response by the main adserver
+	 * @param userAgent the backfill request's user agent
 	*/
 	void execute(Context context,
-			final BackfillDelegator.BackfillCallback callback, String data);
+			final BackfillDelegator.BackfillCallback callback, BackfillDelegator.BackfillData bfData);
 
 }

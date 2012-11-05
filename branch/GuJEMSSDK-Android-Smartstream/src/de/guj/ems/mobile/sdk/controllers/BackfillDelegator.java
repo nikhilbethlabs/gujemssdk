@@ -1,6 +1,9 @@
 package de.guj.ems.mobile.sdk.controllers;
 
 import android.content.Context;
+import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.UserAgentHelper;
+
 
 /**
  * The BackfillDelegator handles adserver responses which contain
@@ -22,6 +25,8 @@ public class BackfillDelegator {
 	 * ID of backfill partner Smartstream for Video Starters and Interstitials
 	 */
 	public final static int SMARTSTREAM_ID = 0;
+	
+	private final static String TAG = "BackfillDelegator";
 	
 	private final static String [] BACK_FILL_OPEN = {"<smartstream>"};
 	
@@ -53,6 +58,10 @@ public class BackfillDelegator {
 		
 		String data;
 		
+		String adSpace;
+		
+		String userAgent;
+		
 		int id;
 		
 		/**
@@ -60,8 +69,10 @@ public class BackfillDelegator {
 		 * @param data data retrieved from the main adserver
 		 * @param id id of the backfill partner (0 = Smartstream)
 		 */
-		BackfillData(String data, int id) {
+		BackfillData(String adSpace, String data, int id) {
 			this.data = data;
+			this.userAgent =  UserAgentHelper.getUserAgent();;
+			this.adSpace = adSpace;
 			this.id = id;
 		}
 		
@@ -79,6 +90,22 @@ public class BackfillDelegator {
 		 */
 		public int getId() {
 			return this.id;
+		}
+		
+		/**
+		 * Get the request's user-agent
+		 * @return the request's user-agent
+		 */
+		public String getUserAgent() {
+			return this.userAgent;
+		}
+		
+		/**
+		 * Get the request's original adspace ID
+		 * @return the request's original adspace ID
+		 */
+		public String getAdSpace() {
+			return this.adSpace;
 		}
 		
 	}
@@ -125,11 +152,16 @@ public class BackfillDelegator {
 	 * @return null if no backfill was detected, a valid BackfillData object otherwise
 	 * @de.guj.ems.mobile.sdk.controllers.BackfillDelegator.BackfillData
 	 */
-	public final static BackfillData isBackfill(String data) {
+	public final static BackfillData isBackfill(String adSpace, String data) {
 		
+		if (data == null || data.startsWith("<div") || data.startsWith("<!DOC")  || data.startsWith("<html")) {
+			return null;
+		}
+		SdkLog.d(TAG, "Checking string " + data + " for backfill...");
 		for (int i = 0; i < BACK_FILL_OPEN.length; i++) {
 			if (data.startsWith(BACK_FILL_OPEN[i])) {
 				return new BackfillData(
+						adSpace,
 						data.substring(BACK_FILL_OPEN[i].length(), data.indexOf(BACK_FILL_CLOSE[i])),
 						i);
 			}
@@ -150,7 +182,7 @@ public class BackfillDelegator {
 	 */
 	public final static void process(Context context, BackfillData bfData, BackfillCallback callback) throws BackfillException {
 		if (callback != null && bfData != null && bfData.getId() < adapters.length && adapters[bfData.getId()] != null) {
-			adapters[bfData.getId()].execute(context, callback, bfData.getData());
+			adapters[bfData.getId()].execute(context, callback, bfData);
 		}
 		else {
 			if (callback == null) {
