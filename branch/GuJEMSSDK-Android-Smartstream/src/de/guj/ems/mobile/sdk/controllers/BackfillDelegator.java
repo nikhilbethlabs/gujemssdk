@@ -71,7 +71,7 @@ public class BackfillDelegator {
 		 */
 		BackfillData(String adSpace, String data, int id) {
 			this.data = data;
-			this.userAgent =  UserAgentHelper.getUserAgent();;
+			this.userAgent =  UserAgentHelper.getUserAgent();
 			this.adSpace = adSpace;
 			this.id = id;
 		}
