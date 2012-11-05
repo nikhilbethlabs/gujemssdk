@@ -21,6 +21,7 @@ import de.guj.ems.mobile.sdk.controllers.EMSInterface;
 import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.Connectivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.UserAgentHelper;
 
 /**
  * The webview uses as container to display an ad. Derived from the ORMMA
@@ -179,11 +180,11 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener {
 				SdkLog.i(TAG, "ems_adcall: START async. AdServer request");
 				SdkLog.d(TAG, "ems_adcall: url = " + url);
 				AdServerAccess mAdFetcher = (AdServerAccess) (new AdServerAccess(
-						getSettings().getUserAgentString()))
+						UserAgentHelper.getUserAgent()))
 						.execute(new String[] { url });
 				try {
-					setTimeoutRunnable(new TimeOutRunnable());
 					loadData(mAdFetcher.get(), "text/html", "utf-8");
+					setTimeoutRunnable(new TimeOutRunnable());					
 				} catch (Exception e) {
 					SdkLog.e(TAG, "Error loading ads...", e);
 				}
