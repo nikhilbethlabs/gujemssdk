@@ -73,6 +73,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	private StringBuilder httpGet(String url) {
 		StringBuilder rBuilder = new StringBuilder();
 		// from Gingerbread on it is recommended to use HttpUrlConnection
+		SdkLog.d(TAG, "URL = " + url);
 		if (AdServerAccess.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
 			HttpURLConnection con = null;
@@ -139,6 +140,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				SdkLog.e(TAG, "Error requesting AdServer!", e);
 			}
 		}
+		//SdkLog.d(TAG, "HTTP Response = " + rBuilder.toString());
 		return rBuilder;		
 	}
 
