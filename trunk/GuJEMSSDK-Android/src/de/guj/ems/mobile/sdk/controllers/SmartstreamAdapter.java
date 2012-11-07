@@ -112,7 +112,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 					});
 					SmartstreamAdapter.lastData = bfData.getData();
 		}
-		VideoAdSDK.startPrefetching();
+		//VideoAdSDK.startPrefetching();
 		VideoAdSDK.playAdvertising();
 	}
 }
