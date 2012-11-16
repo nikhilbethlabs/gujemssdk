@@ -8,6 +8,7 @@ import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.BackfillDelegator;
 import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.util.AppContext;
 import de.guj.ems.mobile.sdk.util.Connectivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.UserAgentHelper;
@@ -54,6 +55,10 @@ public final class InterstitialSwitchActivity extends Activity {
 			finish();
 		}
 
+		// Steffen Führes, RTL Interactive
+		// getUserAgent hat sonst ein Problem, wenn interstitial 1. Werbemittel
+		AppContext.setContext(getApplicationContext()); 
+		
 		// determine user-agent
 		this.userAgentString = UserAgentHelper.getUserAgent();
 
