@@ -34,7 +34,7 @@ public abstract class AdServerSettingsAdapter implements
 	
 	private final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
 
-	protected final static String EMS_ATTRIBUTE_PREFIX = AppContext.getContext()
+	public final static String EMS_ATTRIBUTE_PREFIX = AppContext.getContext()
 			.getString(R.string.attributePrefix);
 
 	/**

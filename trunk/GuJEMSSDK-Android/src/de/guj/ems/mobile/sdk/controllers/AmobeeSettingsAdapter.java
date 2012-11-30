@@ -166,7 +166,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		if (kws != null
 				&& kws.length > 0
 				&& getAttrsToParams().get(AdServerSettingsAdapter.EMS_KEYWORDS) != null) {
-			if (savedInstance.getBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS_ID, false)) {
+			if (savedInstance.getBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, false)) {
 				String kwstr = strArrToString(kws);
 				putAttrValue(AdServerSettingsAdapter.EMS_KEYWORDS, kwstr);
 			}
@@ -178,7 +178,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				&& nkws.length > 0
 				&& getAttrsToParams()
 						.get(AdServerSettingsAdapter.EMS_NKEYWORDS) != null) {
-			if (savedInstance.getBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS_ID, false)) {
+			if (savedInstance.getBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, false)) {
 				String nkwstr = strArrToString(nkws);
 				putAttrValue(AdServerSettingsAdapter.EMS_NKEYWORDS, nkwstr);
 			}
