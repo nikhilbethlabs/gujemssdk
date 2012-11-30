@@ -12,6 +12,7 @@ import de.guj.ems.mobile.sdk.util.AppContext;
 import de.guj.ems.mobile.sdk.util.Connectivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.UserAgentHelper;
+import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * The IntestitialSwitchActivity acts as a switch when showing a new Android
@@ -35,11 +36,15 @@ import de.guj.ems.mobile.sdk.util.UserAgentHelper;
  * @author stein16
  * 
  */
-public final class InterstitialSwitchActivity extends Activity {
+public final class InterstitialSwitchActivity extends Activity implements AdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
 
 	private String userAgentString;
+	
+	private String data;
+	
+	private Intent target;
 
 	private final static String TAG = "InterstitialSwitch";
 
@@ -63,7 +68,7 @@ public final class InterstitialSwitchActivity extends Activity {
 		this.userAgentString = UserAgentHelper.getUserAgent();
 
 		// original target when interstitial not available
-		final Intent target = (Intent) getIntent().getExtras().get("target");
+		this.target = (Intent) getIntent().getExtras().get("target");
 
 		// ad space settings
 		// TODO also allow with settings from custom xml (via resource ID)
@@ -73,75 +78,10 @@ public final class InterstitialSwitchActivity extends Activity {
 		// adserver request
 		if (Connectivity.isOnline()) {
 			final String url = this.settings.getRequestUrl();
-			String data = null;
 			SdkLog.i(TAG, "START AdServer request");
-			AdServerAccess mAdFetcher = (AdServerAccess) (new AdServerAccess(
-					this.userAgentString)).execute(new String[] { url });
-			try {
-				// store data
-				data = mAdFetcher.get();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			SdkLog.i(TAG, "FINISH AdServer request");
+			new AdServerAccess(
+					this.userAgentString, this).execute(new String[] { url });
 
-			BackfillDelegator.BackfillData bfD;
-			
-			if (data != null && data.length() > 1
-					&& (bfD = BackfillDelegator.isBackfill(
-							(String) getIntent().getExtras().get(
-									getString(R.string.amobeeAdSpace)), data)) != null) {
-				SdkLog.d(TAG,
-						"Possible backfill ad detected [id=" + bfD.getId()
-								+ ", data=" + bfD.getData() + "]");
-				try {
-					BackfillDelegator.process(getApplicationContext(), bfD,
-							new BackfillDelegator.BackfillCallback() {
-								@Override
-								public void trackEventCallback(String arg0) {
-									SdkLog.d(TAG,
-											"Backfill: An event occured ["
-													+ arg0 + "]");
-								}
-
-								@Override
-								public void noAdCallback() {
-									SdkLog.d(TAG, "Backfill: empty.");
-									startActivity(target);
-								}
-
-								@Override
-								public void finishedCallback() {
-									startActivity(target);
-								}
-
-								@Override
-								public void adFailedCallback(Exception e) {
-									SdkLog.e(TAG,
-											"Backfill: An exception occured.",
-											e);
-									startActivity(target);
-								}
-							});
-				} catch (BackfillDelegator.BackfillException bfE) {
-					SdkLog.e(TAG, "Backfill error thrown.", bfE);
-				}
-			} else if (data == null || data.length() < 10) {
-				// head to original intent
-				SdkLog.d(TAG, "No interstitial -> starting original target.");
-				startActivity(target);
-			} else {
-				// head to interstitial intent
-				Intent i = new Intent(InterstitialSwitchActivity.this,
-						InterstitialActivity.class);
-				SdkLog.i(TAG, "Found interstitial -> show");
-				// pass banner data and original intent to interstitial
-				i.putExtra("data", data);
-				i.putExtra("target", target);
-				i.putExtra("timeout",
-						(Integer) getIntent().getExtras().get("timeout"));
-				startActivity(i);
-			}
 
 		} else if (Connectivity.isOffline()) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
@@ -151,6 +91,69 @@ public final class InterstitialSwitchActivity extends Activity {
 		// Done
 		this.finish();
 
+	}
+
+	@Override
+	public void processResponse(String response) {
+		SdkLog.i(TAG, "FINISH AdServer request");
+
+		BackfillDelegator.BackfillData bfD;
+		this.data = response;
+		if (data != null && data.length() > 1
+				&& (bfD = BackfillDelegator.isBackfill(
+						(String) getIntent().getExtras().get(
+								getString(R.string.amobeeAdSpace)), data)) != null) {
+			SdkLog.d(TAG,
+					"Possible backfill ad detected [id=" + bfD.getId()
+							+ ", data=" + bfD.getData() + "]");
+			try {
+				BackfillDelegator.process(getApplicationContext(), bfD,
+						new BackfillDelegator.BackfillCallback() {
+							@Override
+							public void trackEventCallback(String arg0) {
+								SdkLog.d(TAG,
+										"Backfill: An event occured ["
+												+ arg0 + "]");
+							}
+
+							@Override
+							public void noAdCallback() {
+								SdkLog.d(TAG, "Backfill: empty.");
+								startActivity(target);
+							}
+
+							@Override
+							public void finishedCallback() {
+								startActivity(target);
+							}
+
+							@Override
+							public void adFailedCallback(Exception e) {
+								SdkLog.e(TAG,
+										"Backfill: An exception occured.",
+										e);
+								startActivity(target);
+							}
+						});
+			} catch (BackfillDelegator.BackfillException bfE) {
+				SdkLog.e(TAG, "Backfill error thrown.", bfE);
+			}
+		} else if (data == null || data.length() < 10) {
+			// head to original intent
+			SdkLog.d(TAG, "No interstitial -> starting original target.");
+			startActivity(target);
+		} else {
+			// head to interstitial intent
+			Intent i = new Intent(InterstitialSwitchActivity.this,
+					InterstitialActivity.class);
+			SdkLog.i(TAG, "Found interstitial -> show");
+			// pass banner data and original intent to interstitial
+			i.putExtra("data", data);
+			i.putExtra("target", target);
+			i.putExtra("timeout",
+					(Integer) getIntent().getExtras().get("timeout"));
+			startActivity(i);
+		}		
 	}
 
 }

@@ -45,7 +45,7 @@ public final class SmartstreamEvents {
 			return;
 		}
 		if (ok && !click) {
-			access = new AdServerAccess(userAgent);
+			access = new AdServerAccess(userAgent, null);
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event + "&plmid=" + placement;
 			try {
 				((AdServerAccess) access.execute(new String []{url})).get();

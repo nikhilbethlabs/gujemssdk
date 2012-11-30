@@ -197,8 +197,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	}
 
 	/**
-	 * The Class TimeOutRunnable. A timertask for terminating the load if it takes too
-	 * long. It is started with a delay of 2 seconds and waits for 2 seconds (ORMMA standard).
+	 * The Class TimeOutRunnable. A timertask for terminating the load if it
+	 * takes too long. It is started with a delay of 2 seconds and waits for 2
+	 * seconds (ORMMA standard).
 	 */
 	public class TimeOutRunnable implements Runnable {
 
@@ -222,7 +223,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 					mCount++;
 					if (mCount == 10) {
 						try {
-							SdkLog.w(SdkLog_TAG, "TimeOutRunnable: Timeout reached!");
+							SdkLog.w(SdkLog_TAG,
+									"TimeOutRunnable: Timeout reached!");
 							stopLoading();
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -242,13 +244,15 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public enum ViewState {
 		DEFAULT, RESIZED, EXPANDED, HIDDEN, LEFT_BEHIND, OPENED;
 	}
+
 	private static final String SdkLog_TAG = "OrmmaView";
 	// static for accessing xml attributes
-	private static int[] attrs = { android.R.attr.maxWidth, android.R.attr.maxHeight };
-	
+	private static int[] attrs = { android.R.attr.maxWidth,
+			android.R.attr.maxHeight };
+
 	// 1 MB Cache for webview
 	private final static long WEBVIEW_CACHE_SIZE = 1048576;
-	
+
 	// Messaging constants
 	private static final int MESSAGE_RESIZE = 1000;
 	private static final int MESSAGE_CLOSE = 1001;
@@ -297,7 +301,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private boolean bKeyboardOut; // state of the keyboard
 	private int mDefaultHeight; // default height of the view
 	private int mDefaultWidth; // default width of the view
-	//private int mInitLayoutHeight; // initial height of the view
+	private int mInitLayoutHeight; // initial height of the view
 	private int mInitLayoutWidth; // initial height of the view
 	private int mIndex; // index of the view within its viewgroup
 	private Handler mTimeOutHandler; // handle load timeouts
@@ -354,13 +358,13 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 
 	final static class OrmmaHandler extends Handler {
-		
+
 		OrmmaView ref = null;
-		
+
 		OrmmaHandler(OrmmaView ref) {
 			this.ref = ref;
 		}
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 
@@ -396,7 +400,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				case EXPANDED:
 					ref.closeExpanded();
 					break;
-				default: {}
+				default: {
+				}
 				}
 				break;
 			}
@@ -440,9 +445,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				break;
 			}
 			super.handleMessage(msg);
-		}		
+		}
 	}
-	
+
 	private Handler mHandler = new OrmmaHandler(this);
 
 	/**
@@ -460,6 +465,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mDefaultWidth = (int) (getWidth() / mDensity);
 			mUtilityController.init(mDensity);
 			bPageFinished = true;
+			SdkLog.d(SdkLog_TAG, "Page finished - " + mDefaultWidth + "x" + mDefaultHeight);
 		}
 
 		@Override
@@ -571,7 +577,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		int w = a.getDimensionPixelSize(0, -1);
 		int h = a.getDimensionPixelSize(1, -1);
-
 		if (w > 0 && h > 0)
 			mUtilityController.setMaxSize(w, h);
 
@@ -607,7 +612,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private FrameLayout changeContentArea(Dimensions d) {
 
 		FrameLayout contentView = (FrameLayout) getRootView().findViewById(
-				 android.R.id.content);
+				android.R.id.content);
 
 		ViewGroup parent = (ViewGroup) getParent();
 		FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
@@ -636,13 +641,12 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			while ((mScrollContainer = _p) != null) {
 				if (mScrollContainer instanceof ScrollView) {
 					mFindScrollContainer = false;
-					mScrollPosY = ((ScrollView)mScrollContainer).getScrollY();
+					mScrollPosY = ((ScrollView) mScrollContainer).getScrollY();
 					break;
 				}
 				try {
-					_p = (ViewGroup)(_p.getParent());
-				}
-				catch (ClassCastException ce) {
+					_p = (ViewGroup) (_p.getParent());
+				} catch (ClassCastException ce) {
 					_p = null;
 				}
 			}
@@ -650,7 +654,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		mScrollContainer = mFindScrollContainer ? null : mScrollContainer;
 
 		parent.addView(placeHolder, index, lp);
-
 
 		FrameLayout backGround = new FrameLayout(getContext());
 
@@ -682,6 +685,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	@Override
 	public void clearView() {
+		bPageFinished = false;
 		reset();
 		super.clearView();
 	}
@@ -713,9 +717,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		mViewState = ViewState.DEFAULT;
 		mHandler.sendEmptyMessage(MESSAGE_SEND_EXPAND_CLOSE);
-		
+
 		if (mScrollContainer != null) {
-			((ScrollView)mScrollContainer).scrollTo(((ScrollView)mScrollContainer).getScrollX(), mScrollPosY);
+			((ScrollView) mScrollContainer).scrollTo(
+					((ScrollView) mScrollContainer).getScrollX(), mScrollPosY);
 		}
 	}
 
@@ -830,7 +835,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * @return the content view height
 	 */
 	private int getContentViewHeight() {
-		View contentView = getRootView().findViewById( android.R.id.content);
+		View contentView = getRootView().findViewById(android.R.id.content);
 		if (contentView != null) {
 			return contentView.getHeight();
 		} else
@@ -877,14 +882,14 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	@SuppressLint("SetJavaScriptEnabled")
 	private void initialize() {
 		AppContext.setContext(getContext());
-		
-		//TODO check webview cache settings
+
+		// TODO check webview cache settings
 		getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
 		getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 		getSettings().setAppCacheEnabled(true);
 		getSettings().setUseWideViewPort(false);
 		getSettings().setLoadWithOverviewMode(false);
-		
+
 		setScrollContainer(false);
 		setVerticalScrollBarEnabled(false);
 		setHorizontalScrollBarEnabled(false);
@@ -892,7 +897,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		setBackgroundColor(0);
 		mDensity = Screen.getDensity();
-		
+
 		bPageFinished = false;
 
 		getSettings().setJavaScriptEnabled(true);
@@ -977,6 +982,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public void loadData(String data, String type, String enc) {
 		String url;
 		reset();
+		bPageFinished = false;
 		if (mTimeOutRunnable == null) {
 			mTimeOutRunnable = new TimeOutRunnable();
 		}
@@ -1128,9 +1134,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	protected void onAttachedToWindow() {
 		if (!bGotLayoutParams) {
 			ViewGroup.LayoutParams lp = getLayoutParams();
-			//mInitLayoutHeight = lp.height;
+			mInitLayoutHeight = lp.height;
 			mInitLayoutWidth = lp.width;
 			bGotLayoutParams = true;
+			SdkLog.d(SdkLog_TAG, "attached to window :: " + mInitLayoutWidth + "x"+  mInitLayoutHeight);
 		}
 		super.onAttachedToWindow();
 	}
@@ -1168,17 +1175,25 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		bKeyboardOut = state;
 	}
 
+/*
 	@Override
 	public void onLayout(boolean changed, int l, int t, int r, int b) {
-		int tmDefaultHeight = (int) ((b - t) / mDensity);
-		if (changed && mViewState == ViewState.DEFAULT && mDefaultHeight <= 0) {
-			mDefaultHeight = tmDefaultHeight;
-		}
-		if (mScrollContainer != null && mScrollPosY >= 0 && mScrollPosY != ((ScrollView)mScrollContainer).getScrollY()) {
-			((ScrollView)mScrollContainer).scrollTo(((ScrollView)mScrollContainer).getScrollX(), mScrollPosY);
-		}
-	}
 
+		SdkLog.d(SdkLog_TAG, "onLayout mDefaultHeight [" + changed + "," + mDefaultHeight + "]= " + (int) ((b - t) / mDensity));
+		if (bPageFinished && changed && mViewState == ViewState.DEFAULT && mDefaultHeight <= 0) {
+			int tmDefaultHeight = (int) ((b - t) / mDensity); 
+			mDefaultHeight = tmDefaultHeight > 0 ? tmDefaultHeight : mDefaultHeight;
+
+			if (mScrollContainer != null && mScrollPosY >= 0
+					&& mScrollPosY != ((ScrollView) mScrollContainer).getScrollY()) {
+				((ScrollView) mScrollContainer).scrollTo(
+						((ScrollView) mScrollContainer).getScrollX(), mScrollPosY);
+			}
+			
+		}
+		
+	}
+*/
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1422,7 +1437,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		backGround.setPadding((int) (d.x), (int) (d.y), 0, 0);
 
 		FrameLayout contentView = (FrameLayout) getRootView().findViewById(
-				 android.R.id.content);
+				android.R.id.content);
 		contentView.addView(backGround, new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT));
@@ -1504,7 +1519,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public void resetContents() {
 
 		FrameLayout contentView = (FrameLayout) getRootView().findViewById(
-				 android.R.id.content);
+				android.R.id.content);
 
 		FrameLayout placeHolder = (FrameLayout) getRootView().findViewById(
 				PLACEHOLDER_ID);
@@ -1525,34 +1540,19 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * Reset layout.
 	 */
 	private void resetLayout() {
+		
+
 		if (bGotLayoutParams && bPageFinished) {
+			SdkLog.d(SdkLog_TAG,"resetLayout :: " + mInitLayoutWidth + "x" + mInitLayoutHeight + " [" + mDefaultHeight + "]");
 			ViewGroup.LayoutParams lp = getLayoutParams();
-			// SdkLog.d(SdkLog_TAG, "resetLayout :: had layout params " + lp.width +
-			// "x" + lp.height);
-			lp.height = (int) TypedValue.applyDimension(
-					TypedValue.COMPLEX_UNIT_DIP, mDefaultHeight, getResources()
-							.getDisplayMetrics());
+			lp.height = mDefaultHeight > 0 ? (int) TypedValue.applyDimension(
+					 TypedValue.COMPLEX_UNIT_DIP, mDefaultHeight,
+					 getResources().getDisplayMetrics()) : mInitLayoutHeight;
 			lp.width = mInitLayoutWidth;
-		} else if (!bPageFinished) {
-			// SdkLog.d(SdkLog_TAG,
-			// "resetLayout :: had NO layout params, setting to MATCH_PARENTxWRAP_CONTENT");
-			ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			setLayoutParams(lp);
-		} else {
-			// SdkLog.d(SdkLog_TAG, "resetLayout :: had NO layout params, setting to "
-			// + mDefaultWidth + "x" + mDefaultHeight);
-			ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-					(int) TypedValue.applyDimension(
-							TypedValue.COMPLEX_UNIT_DIP, mDefaultWidth,
-							getResources().getDisplayMetrics()),
-					(int) TypedValue.applyDimension(
-							TypedValue.COMPLEX_UNIT_DIP, mDefaultHeight,
-							getResources().getDisplayMetrics()));
-			setLayoutParams(lp);
+
+			setVisibility(VISIBLE);
+			requestLayout();
 		}
-		requestLayout();
 	}
 
 	/**
@@ -1648,13 +1648,13 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public void show() {
 		mHandler.sendEmptyMessage(MESSAGE_SHOW);
 	}
-	
+
 	protected TimeOutRunnable getTimeOutRunnable() {
 		return mTimeOutRunnable;
 	}
-	
+
 	protected void setTimeoutRunnable(TimeOutRunnable r) {
-		if (mTimeOutRunnable != null)  {
+		if (mTimeOutRunnable != null) {
 			mTimeOutRunnable.cancel();
 		}
 		mTimeOutRunnable = r;

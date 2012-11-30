@@ -16,6 +16,7 @@ import org.apache.http.params.HttpParams;
 import android.os.AsyncTask;
 import android.os.Build;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * Performs HTTP communication in the background, i.e. off the UI thread.
@@ -50,7 +51,8 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	
 	private final static byte [] EMPTY_BUFFER = new byte [1024];
 	
-
+	private AdResponseHandler responseHandler;
+	
 	@SuppressWarnings("unused")
 	private AdServerAccess() {
 
@@ -59,11 +61,15 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	/**
 	 * The only valid constructor.
 	 * 
+	 * @param handler
+	 * 				instance of a class handling ad server responses (like GuJEMSAdView, InterstitialSwitchActivity)
 	 * @param userAgentString
 	 *            the string to pass as the user-agent
+	 *           
 	 */
-	public AdServerAccess(String userAgentString) {
+	public AdServerAccess(String userAgentString, AdResponseHandler handler) {
 		this.userAgentString = userAgentString;
+		this.responseHandler = handler;
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
 		     System.setProperty("http.keepAlive", "false");
 		}
@@ -86,7 +92,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				con.setReadTimeout(1000);
 				con.setConnectTimeout(500);
 				BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-				if (con.getResponseCode() == 200) {
+				if (con.getResponseCode() == 200 && this.responseHandler !=null) {
 					byte [] buffer = new byte [1024];
 					int l = 0;
 					while ((l = in.read(buffer)) > 0) {
@@ -94,7 +100,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 						buffer = EMPTY_BUFFER;
 					}
 				}
-				else {
+				else if (con.getResponseCode() != 200) {
 					SdkLog.e(TAG, "AdServer returned HTTP "
 							+ con.getResponseCode());
 				}
@@ -122,7 +128,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 			httpGet.setHeader(ACCEPT_CHARSET_HEADER_NAME, ACCEPT_CHARSET_HEADER_VALUE);
 			try {
 				HttpResponse execute = client.execute(httpGet);
-				if (execute.getStatusLine().getStatusCode() == 200) {
+				if (execute.getStatusLine().getStatusCode() == 200 && this.responseHandler !=null) {
 					BufferedReader buffer = new BufferedReader(
 							new InputStreamReader(execute.getEntity()
 									.getContent(),ENCODING_STR));
@@ -131,7 +137,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 						rBuilder.append(line + AdServerAccess.NEW_LINE);
 					}
 					buffer.close();
-				} else {
+				} else if (execute.getStatusLine().getStatusCode() != 200) {
 					SdkLog.e(TAG, "AdServer returned HTTP "
 							+ execute.getStatusLine().getStatusCode());
 				}
@@ -152,4 +158,12 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 		}
 		return rBuilder.toString();
 	}
+
+	@Override
+	protected void onPostExecute(String result) {
+		if (this.responseHandler != null) {
+			this.responseHandler.processResponse(result);
+		}
+	}
+	
 }
