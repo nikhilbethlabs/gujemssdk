@@ -50,7 +50,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -284,6 +283,11 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	protected static final int BACKGROUND_ID = 101;
 	protected static final int PLACEHOLDER_ID = 100;
 	public static final int ORMMA_ID = 102;
+	
+//	private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_0 = new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,0);
+//	
+//	private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_1 = new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, AbsoluteLayout.LayoutParams.WRAP_CONTENT);
+
 
 	// private constants
 	private static String mScriptPath/* = null */; // holds the path for the
@@ -299,10 +303,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private float mDensity; // screen pixel density
 	private int mContentViewHeight; // height of the content
 	private boolean bKeyboardOut; // state of the keyboard
-	private int mDefaultHeight; // default height of the view
-	private int mDefaultWidth; // default width of the view
-	private int mInitLayoutHeight; // initial height of the view
-	private int mInitLayoutWidth; // initial height of the view
+
+	private int mContentHeight;
+	private int mContentWidth;
 	private int mIndex; // index of the view within its viewgroup
 	private Handler mTimeOutHandler; // handle load timeouts
 	private ViewGroup mScrollContainer;
@@ -461,11 +464,11 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
-			mDefaultHeight = (int) (getHeight() / mDensity);
-			mDefaultWidth = (int) (getWidth() / mDensity);
+			mContentHeight = getHeight();
+			mContentWidth = getWidth();
+			SdkLog.d(SdkLog_TAG, "Page finished. " + mContentWidth + "x" + mContentHeight);
 			mUtilityController.init(mDensity);
 			bPageFinished = true;
-			SdkLog.d(SdkLog_TAG, "Page finished - " + mDefaultWidth + "x" + mDefaultHeight);
 		}
 
 		@Override
@@ -570,7 +573,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public OrmmaView(Context context, AttributeSet set) {
 		super(context, set);
-
 		initialize();
 
 		TypedArray a = getContext().obtainStyledAttributes(set, attrs);
@@ -631,10 +633,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		placeHolder.setId(PLACEHOLDER_ID);
 
 		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-				(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-						mDefaultWidth, getResources().getDisplayMetrics()),
-				(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-						mDefaultHeight, getResources().getDisplayMetrics()));
+				(int) mContentWidth,
+				(int) mContentHeight);
 
 		if (mScrollContainer == null && mFindScrollContainer) {
 			ViewGroup _p = parent;
@@ -706,10 +706,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ mDefaultWidth
+				+ (int) mContentWidth / mDensity
 				+ ", "
 				+ "height: "
-				+ mDefaultHeight + "}" + "});";
+				+ (int) mContentHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeExpanded: injection: " + injection);
 		injectJavaScript(injection);
 
@@ -745,10 +745,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ mDefaultWidth
+				+ (int) mContentWidth / mDensity
 				+ ", "
 				+ "height: "
-				+ mDefaultHeight + "}" + "});";
+				+ (int) mContentHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeResized: injection: " + injection);
 		injectJavaScript(injection);
 		resetLayout();
@@ -915,6 +915,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		mContentViewHeight = getContentViewHeight();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(this);
+		
+
 	}
 
 	/**
@@ -980,6 +982,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	@Override
 	public void loadData(String data, String type, String enc) {
+
 		String url;
 		reset();
 		bPageFinished = false;
@@ -992,13 +995,14 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			url = "file://" + mLocalFilePath + java.io.File.separator
 					+ CURRENT_FILE;
 			mTimeOutHandler = new Handler();
-			mTimeOutHandler.postDelayed(mTimeOutRunnable, 2000);
+			mTimeOutHandler.postDelayed(mTimeOutRunnable, 5000);
 			super.loadUrl(url);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	/**
@@ -1041,7 +1045,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			url = "file://" + mLocalFilePath + java.io.File.separator
 					+ CURRENT_FILE;
 			mTimeOutHandler = new Handler();
-			mTimeOutHandler.postDelayed(mTimeOutRunnable, 2000);
+			mTimeOutHandler.postDelayed(mTimeOutRunnable, 5000);
 			if (dataToInject != null) {
 				injectJavaScript(dataToInject);
 			}
@@ -1132,14 +1136,15 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	@Override
 	protected void onAttachedToWindow() {
-		if (!bGotLayoutParams) {
-			ViewGroup.LayoutParams lp = getLayoutParams();
-			mInitLayoutHeight = lp.height;
-			mInitLayoutWidth = lp.width;
-			bGotLayoutParams = true;
-			SdkLog.d(SdkLog_TAG, "attached to window :: " + mInitLayoutWidth + "x"+  mInitLayoutHeight);
-		}
 		super.onAttachedToWindow();
+		if (!bGotLayoutParams) {
+			bGotLayoutParams = true;
+			ViewGroup.LayoutParams lp = getLayoutParams();
+			lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+			lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+			setLayoutParams(lp);
+			SdkLog.d(SdkLog_TAG, "onAttachedToWindow :: set height to WRAP");
+		}
 	}
 
 	protected void onDetachedFromWindow() {
@@ -1174,26 +1179,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		bKeyboardOut = state;
 	}
-
-/*
-	@Override
-	public void onLayout(boolean changed, int l, int t, int r, int b) {
-
-		SdkLog.d(SdkLog_TAG, "onLayout mDefaultHeight [" + changed + "," + mDefaultHeight + "]= " + (int) ((b - t) / mDensity));
-		if (bPageFinished && changed && mViewState == ViewState.DEFAULT && mDefaultHeight <= 0) {
-			int tmDefaultHeight = (int) ((b - t) / mDensity); 
-			mDefaultHeight = tmDefaultHeight > 0 ? tmDefaultHeight : mDefaultHeight;
-
-			if (mScrollContainer != null && mScrollPosY >= 0
-					&& mScrollPosY != ((ScrollView) mScrollContainer).getScrollY()) {
-				((ScrollView) mScrollContainer).scrollTo(
-						((ScrollView) mScrollContainer).getScrollX(), mScrollPosY);
-			}
-			
-		}
-		
-	}
-*/
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1467,7 +1453,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		videoPlayer.playVideo();
 
 	}
-
+	
 	public void raiseError(String strMsg, String action) {
 
 		Message msg = mHandler.obtainMessage(MESSAGE_RAISE_ERROR);
@@ -1535,23 +1521,33 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		parent.addView(this, mIndex);
 		contentView.scrollTo(0, 0);
 	}
+	
 
 	/**
 	 * Reset layout.
 	 */
 	private void resetLayout() {
-		
 
-		if (bGotLayoutParams && bPageFinished) {
-			SdkLog.d(SdkLog_TAG,"resetLayout :: " + mInitLayoutWidth + "x" + mInitLayoutHeight + " [" + mDefaultHeight + "]");
+		if (!bPageFinished && bGotLayoutParams) {
 			ViewGroup.LayoutParams lp = getLayoutParams();
-			lp.height = mDefaultHeight > 0 ? (int) TypedValue.applyDimension(
-					 TypedValue.COMPLEX_UNIT_DIP, mDefaultHeight,
-					 getResources().getDisplayMetrics()) : mInitLayoutHeight;
-			lp.width = mInitLayoutWidth;
-
+			if (lp.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+				SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x" + lp.height);
+				lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+				lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+				setLayoutParams(lp);
+				setVisibility(VISIBLE);
+				requestLayout();			
+			}
+		}
+		else if (bGotLayoutParams  && mContentHeight > 0) {
+			ViewGroup.LayoutParams lp = getLayoutParams();
+			SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x" + lp.height);
+			SdkLog.d(SdkLog_TAG, "resetLayout :: " + mContentWidth + "x" + mContentHeight);
+			lp.height = mContentHeight;
+			lp.width = mContentWidth;
 			setVisibility(VISIBLE);
 			requestLayout();
+
 		}
 	}
 
