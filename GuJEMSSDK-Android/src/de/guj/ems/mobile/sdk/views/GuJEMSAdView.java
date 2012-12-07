@@ -14,7 +14,6 @@ import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Xml;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
@@ -258,7 +257,6 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
-		setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addJavascriptInterface(new EMSInterface(), "emsmobile");
 		if (set != null) {
 			this.settings = new AmobeeSettingsAdapter(context, set);
@@ -267,7 +265,6 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
-		setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addJavascriptInterface(new EMSInterface(), "emsmobile");
 		if (set != null) {
 			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
