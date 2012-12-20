@@ -8,9 +8,14 @@ public final class UserAgentHelper {
 	
 	private final static boolean DEBUG = false;
 	
+	private final static String TAG = "UserAgentHelper";
+	
 	private final static String DEBUG_USER_AGENT = "Mozilla/5.0 (Linux; U; Android 2.3; de-de; GT-I9100 Build/GRH78) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 	
 	public static String getUserAgent() {
+		if (DEBUG) {
+			SdkLog.w(TAG, "UserAgentHelper is in DEBUG mode. Do not deploy to production like this.");
+		}
 		if (USER_AGENT == null) {
 			// determine user-agent
 			WebView w = new WebView(AppContext.getContext());

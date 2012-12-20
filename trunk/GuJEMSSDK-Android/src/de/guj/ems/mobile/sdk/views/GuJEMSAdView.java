@@ -14,6 +14,7 @@ import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Xml;
+import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
@@ -195,7 +196,8 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 	public void reload() {
 		if (settings != null) {
 			super.clearView();
-
+			setVisibility(View.GONE);
+			
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			// Run off main UI thread if Android > 4.0
