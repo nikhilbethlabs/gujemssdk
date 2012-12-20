@@ -110,6 +110,97 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		public abstract void OnNewLocation(ViewState v);
 	}
 
+	final static class OrmmaHandler extends Handler {
+
+		OrmmaView ref = null;
+
+		OrmmaHandler(OrmmaView ref) {
+			this.ref = ref;
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			Bundle data = msg.getData();
+			switch (msg.what) {
+			case MESSAGE_SEND_EXPAND_CLOSE:
+				if (ref.mListener != null) {
+					ref.mListener.onExpandClose();
+				}
+				break;
+			case MESSAGE_RESIZE: {
+				ref.mViewState = ViewState.RESIZED;
+				ViewGroup.LayoutParams lp = ref.getLayoutParams();
+				lp.height = data.getInt(RESIZE_HEIGHT, lp.height);
+				lp.width = data.getInt(RESIZE_WIDTH, lp.width);
+				String injection = "window.ormmaview.fireChangeEvent({ state: \'resized\',"
+						+ " size: { width: "
+						+ lp.width
+						+ ", "
+						+ "height: "
+						+ lp.height + "}});";
+				ref.injectJavaScript(injection);
+				ref.requestLayout();
+				if (ref.mListener != null)
+					ref.mListener.onResize();
+				break;
+			}
+			case MESSAGE_CLOSE: {
+				switch (ref.mViewState) {
+				case RESIZED:
+					ref.closeResized();
+					break;
+				case EXPANDED:
+					ref.closeExpanded();
+					break;
+				default: {
+				}
+				}
+				break;
+			}
+			case MESSAGE_HIDE: {
+				ref.setVisibility(View.INVISIBLE);
+				String injection = "window.ormmaview.fireChangeEvent({ state: \'hidden\' });";
+
+				ref.injectJavaScript(injection);
+				break;
+			}
+			case MESSAGE_SHOW: {
+				String injection = "window.ormmaview.fireChangeEvent({ state: \'default\' });";
+				ref.injectJavaScript(injection);
+				ref.setVisibility(View.VISIBLE);
+				break;
+			}
+			case MESSAGE_EXPAND: {
+				ref.doExpand(data);
+				break;
+			}
+			case MESSAGE_OPEN: {
+				ref.mViewState = ViewState.LEFT_BEHIND;
+				break;
+			}
+
+			case MESSAGE_PLAY_AUDIO: {
+				ref.playAudioImpl(data);
+				break;
+			}
+
+			case MESSAGE_PLAY_VIDEO: {
+				ref.playVideoImpl(data);
+				break;
+			}
+			case MESSAGE_RAISE_ERROR:
+				String strMsg = data.getString(ERROR_MESSAGE);
+				String action = data.getString(ERROR_ACTION);
+				String injection = "window.ormmaview.fireErrorEvent(\""
+						+ strMsg + "\", \"" + action + "\")";
+				ref.injectJavaScript(injection);
+				break;
+			}
+			super.handleMessage(msg);
+		}
+	}
+
 	/**
 	 * The listener interface for receiving ormmaView events. The class that is
 	 * interested in processing a ormmaView event implements this interface, and
@@ -213,6 +304,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		@Override
 		public void run() {
 			int progress = getProgress();
+
 			if (progress == 100 || !mRun) {
 				SdkLog.d(SdkLog_TAG, !mRun ? "TimeOutRunnable: Cancelled."
 						: "TimeOutRunnable: Finished loading.");
@@ -243,21 +335,20 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public enum ViewState {
 		DEFAULT, RESIZED, EXPANDED, HIDDEN, LEFT_BEHIND, OPENED;
 	}
-
 	private static final String SdkLog_TAG = "OrmmaView";
+
 	// static for accessing xml attributes
 	private static int[] attrs = { android.R.attr.maxWidth,
 			android.R.attr.maxHeight };
 
 	// 1 MB Cache for webview
 	private final static long WEBVIEW_CACHE_SIZE = 1048576;
-
 	// Messaging constants
 	private static final int MESSAGE_RESIZE = 1000;
 	private static final int MESSAGE_CLOSE = 1001;
 	private static final int MESSAGE_HIDE = 1002;
-	private static final int MESSAGE_SHOW = 1003;
 
+	private static final int MESSAGE_SHOW = 1003;
 	private static final int MESSAGE_EXPAND = 1004;
 	private static final int MESSAGE_SEND_EXPAND_CLOSE = 1005;
 	private static final int MESSAGE_OPEN = 1006;
@@ -269,26 +360,28 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public static final String PLAYER_PROPERTIES = "player_properties";
 	public static final String EXPAND_URL = "expand_url";
 	public static final String ACTION_KEY = "action";
+
 	private static final String EXPAND_PROPERTIES = "expand_properties";
 
 	private static final String RESIZE_WIDTH = "resize_width";
-
 	private static final String RESIZE_HEIGHT = "resize_height";
 	private static final String CURRENT_FILE = "_ormma_current";
-	private static final String AD_PATH = "AD_PATH";
 
+	private static final String AD_PATH = "AD_PATH";
 	private static final String ERROR_MESSAGE = "message";
 	private static final String ERROR_ACTION = "action";
 	// layout constants
 	protected static final int BACKGROUND_ID = 101;
 	protected static final int PLACEHOLDER_ID = 100;
+
+	// private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_0 = new
+	// AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,0);
+	//
+	// private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_1 = new
+	// AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,
+	// AbsoluteLayout.LayoutParams.WRAP_CONTENT);
+
 	public static final int ORMMA_ID = 102;
-	
-//	private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_0 = new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,0);
-//	
-//	private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_1 = new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, AbsoluteLayout.LayoutParams.WRAP_CONTENT);
-
-
 	// private constants
 	private static String mScriptPath/* = null */; // holds the path for the
 	// ormma.js
@@ -302,15 +395,16 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// bridge
 	private float mDensity; // screen pixel density
 	private int mContentViewHeight; // height of the content
-	private boolean bKeyboardOut; // state of the keyboard
 
-	private int mContentHeight;
-	private int mContentWidth;
+	private boolean bKeyboardOut; // state of the keyboard
+	private int mViewHeight;
+	private int mViewWidth;
 	private int mIndex; // index of the view within its viewgroup
 	private Handler mTimeOutHandler; // handle load timeouts
 	private ViewGroup mScrollContainer;
 	private boolean mFindScrollContainer = true;
 	private int mScrollPosY = -1;
+
 	private TimeOutRunnable mTimeOutRunnable; // check load time
 
 	private GestureDetector mGestureDetector; // gesture detector for capturing
@@ -335,8 +429,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// Should this be a static variable?
 	private final HashSet<String> registeredProtocols = new HashSet<String>();
 
-	private String mapAPIKey;
-
 	/*
 	 * public OrmmaView(Context context, String mapAPIKey){ super(context);
 	 * 
@@ -360,96 +452,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * initialize(); }
 	 */
 
-	final static class OrmmaHandler extends Handler {
-
-		OrmmaView ref = null;
-
-		OrmmaHandler(OrmmaView ref) {
-			this.ref = ref;
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-
-			Bundle data = msg.getData();
-			switch (msg.what) {
-			case MESSAGE_SEND_EXPAND_CLOSE:
-				if (ref.mListener != null) {
-					ref.mListener.onExpandClose();
-				}
-				break;
-			case MESSAGE_RESIZE: {
-				ref.mViewState = ViewState.RESIZED;
-				ViewGroup.LayoutParams lp = ref.getLayoutParams();
-				lp.height = data.getInt(RESIZE_HEIGHT, lp.height);
-				lp.width = data.getInt(RESIZE_WIDTH, lp.width);
-				String injection = "window.ormmaview.fireChangeEvent({ state: \'resized\',"
-						+ " size: { width: "
-						+ lp.width
-						+ ", "
-						+ "height: "
-						+ lp.height + "}});";
-				ref.injectJavaScript(injection);
-				ref.requestLayout();
-				if (ref.mListener != null)
-					ref.mListener.onResize();
-				break;
-			}
-			case MESSAGE_CLOSE: {
-				switch (ref.mViewState) {
-				case RESIZED:
-					ref.closeResized();
-					break;
-				case EXPANDED:
-					ref.closeExpanded();
-					break;
-				default: {
-				}
-				}
-				break;
-			}
-			case MESSAGE_HIDE: {
-				ref.setVisibility(View.INVISIBLE);
-				String injection = "window.ormmaview.fireChangeEvent({ state: \'hidden\' });";
-
-				ref.injectJavaScript(injection);
-				break;
-			}
-			case MESSAGE_SHOW: {
-				String injection = "window.ormmaview.fireChangeEvent({ state: \'default\' });";
-				ref.injectJavaScript(injection);
-				ref.setVisibility(View.VISIBLE);
-				break;
-			}
-			case MESSAGE_EXPAND: {
-				ref.doExpand(data);
-				break;
-			}
-			case MESSAGE_OPEN: {
-				ref.mViewState = ViewState.LEFT_BEHIND;
-				break;
-			}
-
-			case MESSAGE_PLAY_AUDIO: {
-				ref.playAudioImpl(data);
-				break;
-			}
-
-			case MESSAGE_PLAY_VIDEO: {
-				ref.playVideoImpl(data);
-				break;
-			}
-			case MESSAGE_RAISE_ERROR:
-				String strMsg = data.getString(ERROR_MESSAGE);
-				String action = data.getString(ERROR_ACTION);
-				String injection = "window.ormmaview.fireErrorEvent(\""
-						+ strMsg + "\", \"" + action + "\")";
-				ref.injectJavaScript(injection);
-				break;
-			}
-			super.handleMessage(msg);
-		}
-	}
+	private String mapAPIKey;
 
 	private Handler mHandler = new OrmmaHandler(this);
 
@@ -464,11 +467,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
-			mContentHeight = getHeight();
-			mContentWidth = getWidth();
-			SdkLog.d(SdkLog_TAG, "Page finished. " + mContentWidth + "x" + mContentHeight);
-			mUtilityController.init(mDensity);
 			bPageFinished = true;
+			view.setVisibility(View.VISIBLE);
+			SdkLog.d(SdkLog_TAG, "onPageFinished :: view size " + getSize());
 		}
 
 		@Override
@@ -633,8 +634,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		placeHolder.setId(PLACEHOLDER_ID);
 
 		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-				(int) mContentWidth,
-				(int) mContentHeight);
+				(int) mViewWidth, (int) mViewHeight);
 
 		if (mScrollContainer == null && mFindScrollContainer) {
 			ViewGroup _p = parent;
@@ -706,10 +706,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ (int) mContentWidth / mDensity
+				+ (int) mViewWidth
+				/ mDensity
 				+ ", "
-				+ "height: "
-				+ (int) mContentHeight / mDensity + "}" + "});";
+				+ "height: " + (int) mViewHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeExpanded: injection: " + injection);
 		injectJavaScript(injection);
 
@@ -745,10 +745,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ (int) mContentWidth / mDensity
+				+ (int) mViewWidth
+				/ mDensity
 				+ ", "
-				+ "height: "
-				+ (int) mContentHeight / mDensity + "}" + "});";
+				+ "height: " + (int) mViewHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeResized: injection: " + injection);
 		injectJavaScript(injection);
 		resetLayout();
@@ -869,6 +869,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		return mViewState.toString().toLowerCase();
 	}
 
+	protected TimeOutRunnable getTimeOutRunnable() {
+		return mTimeOutRunnable;
+	}
+
 	/**
 	 * Hide the view
 	 */
@@ -883,7 +887,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private void initialize() {
 		AppContext.setContext(getContext());
 
-		// TODO check webview cache settings
 		getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
 		getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 		getSettings().setAppCacheEnabled(true);
@@ -915,7 +918,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		mContentViewHeight = getContentViewHeight();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(this);
-		
+
+		setVisibility(View.GONE);
 
 	}
 
@@ -1002,7 +1006,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -1143,7 +1147,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
 			lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 			setLayoutParams(lp);
-			SdkLog.d(SdkLog_TAG, "onAttachedToWindow :: set height to WRAP");
+			SdkLog.d(SdkLog_TAG,
+					"onAttachedToWindow :: set height to wrap content");
 		}
 	}
 
@@ -1176,10 +1181,18 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		if (mContentViewHeight < 0) {
 			mContentViewHeight = getContentViewHeight();
 		}
+		if (bPageFinished && bGotLayoutParams && mViewHeight <= 0
+				& getHeight() > 0) {
+			SdkLog.d(SdkLog_TAG, "onGlobalLayout :: " + getWidth() + "x"
+					+ getHeight());
+			mViewHeight = getHeight();
+			mViewWidth = getWidth();
+			mUtilityController.init(mDensity);
+		}
 
 		bKeyboardOut = state;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1453,7 +1466,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		videoPlayer.playVideo();
 
 	}
-	
+
 	public void raiseError(String strMsg, String action) {
 
 		Message msg = mHandler.obtainMessage(MESSAGE_RAISE_ERROR);
@@ -1521,30 +1534,32 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		parent.addView(this, mIndex);
 		contentView.scrollTo(0, 0);
 	}
-	
 
 	/**
 	 * Reset layout.
 	 */
 	private void resetLayout() {
-
+		SdkLog.d(SdkLog_TAG, "resetLayout :: ?? " + mViewWidth + "x"
+				+ mViewHeight);
 		if (!bPageFinished && bGotLayoutParams) {
 			ViewGroup.LayoutParams lp = getLayoutParams();
 			if (lp.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
-				SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x" + lp.height);
+				SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x"
+						+ lp.height);
 				lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
 				lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 				setLayoutParams(lp);
 				setVisibility(VISIBLE);
-				requestLayout();			
+				requestLayout();
 			}
-		}
-		else if (bGotLayoutParams  && mContentHeight > 0) {
+		} else if (bGotLayoutParams && mViewHeight > 0) {
 			ViewGroup.LayoutParams lp = getLayoutParams();
-			SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x" + lp.height);
-			SdkLog.d(SdkLog_TAG, "resetLayout :: " + mContentWidth + "x" + mContentHeight);
-			lp.height = mContentHeight;
-			lp.width = mContentWidth;
+			SdkLog.d(SdkLog_TAG, "resetLayout :: LP " + lp.width + "x"
+					+ lp.height);
+			SdkLog.d(SdkLog_TAG, "resetLayout :: " + mViewWidth + "x"
+					+ mViewHeight);
+			lp.height = mViewHeight;
+			lp.width = mViewWidth;
 			setVisibility(VISIBLE);
 			requestLayout();
 
@@ -1622,7 +1637,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public void setMaxSize(int w, int h) {
 		mUtilityController.setMaxSize(w, h);
-	}
+	};
 
 	/**
 	 * Sets the script path.
@@ -1636,17 +1651,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mBridgeScriptPath = mUtilityController.copyTextFromJarIntoAssetDir(
 					"/js/ormma_bridge.js", "js/ormma_bridge.js");
 		}
-	};
-
-	/**
-	 * Show the view
-	 */
-	public void show() {
-		mHandler.sendEmptyMessage(MESSAGE_SHOW);
-	}
-
-	protected TimeOutRunnable getTimeOutRunnable() {
-		return mTimeOutRunnable;
 	}
 
 	protected void setTimeoutRunnable(TimeOutRunnable r) {
@@ -1654,5 +1658,12 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mTimeOutRunnable.cancel();
 		}
 		mTimeOutRunnable = r;
+	}
+
+	/**
+	 * Show the view
+	 */
+	public void show() {
+		mHandler.sendEmptyMessage(MESSAGE_SHOW);
 	}
 }
