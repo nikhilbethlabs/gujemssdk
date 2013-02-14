@@ -17,7 +17,7 @@ public class Connectivity {
 	
 	/**
 	 * Check whether device is offline. if android.Manifest.permission.ACCESS_NETWORK_STATE is
-	 * not granted, the device will alsways be assumed to be online.
+	 * not granted or the state cannot be determined, the device will alsways be assumed to be online.
 	 * @return true if device is not connected to any network
 	 */
 	public static boolean isOffline() {
@@ -32,15 +32,24 @@ public class Connectivity {
 
 		ConnectivityManager conMgr = (ConnectivityManager) c
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+		
+		
+		try {
+			return conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
 				.getState() == NetworkInfo.State.DISCONNECTED
 				&& conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
 						.getState() == NetworkInfo.State.DISCONNECTED;
+		}
+		catch (Exception e) {
+			SdkLog.w(TAG,
+					"ems_adcall: Excepion in getNetworkInfo - assuming ONLINE.");
+			return false;
+		}
 	}
 
 	/**
 	 * Check whether device is online. if android.Manifest.permission.ACCESS_NETWORK_STATE is
-	 * not granted, the device will alsways be assumed to be online.
+	 * not granted or the state cannot be determined, the device will alsways be assumed to be online.
 	 * @return true if device is connected to any network
 	 */
 	public static boolean isOnline() {
@@ -55,13 +64,21 @@ public class Connectivity {
 
 		ConnectivityManager conMgr = (ConnectivityManager) c
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-				.getState() == NetworkInfo.State.CONNECTED
-				|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-						.getState() == NetworkInfo.State.CONNECTED
-				|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-						.getState() == NetworkInfo.State.CONNECTING
-				|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-						.getState() == NetworkInfo.State.CONNECTING;
+		
+		try {
+			return conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+					.getState() == NetworkInfo.State.CONNECTED
+					|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+							.getState() == NetworkInfo.State.CONNECTED
+					|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+							.getState() == NetworkInfo.State.CONNECTING
+					|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+							.getState() == NetworkInfo.State.CONNECTING;
+		}
+		catch (Exception e) {
+			SdkLog.w(TAG,
+					"ems_adcall: Excepion in getNetworkInfo - assuming ONLINE.");
+			return true;
+		}
 	}
 }
