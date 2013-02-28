@@ -17,4 +17,6 @@
     <string name="amobeeUserId">uid</string>
     <string name="amobeeLatitude">lat</string>
     <string name="amobeeLongitude">long</string>
+    <string name="onAdSuccess">onAdSuccess</string>
+    <string name="onAdEmpty">onAdEmpty</string>
 </resources>

@@ -2,6 +2,8 @@
 <resources>
 
     <declare-styleable name="GuJEMSAdView">
+        <attr name="ems_onAdSuccess" format="string" />
+        <attr name="ems_onAdEmpty" format="string" />
         <attr name="ems_siteId" format="string" />
         <attr name="ems_zoneId" format="string" />
         <attr name="ems_uid" format="boolean" />
