@@ -79,6 +79,29 @@ public interface IAdServerSettingsAdapter {
 	 * @param param name of http parameter
 	 * @param value value of http parameter
 	 */
-	public void addCustomRequestParameter(String param, double value);	
+	public void addCustomRequestParameter(String param, double value);
 	
+	/**
+	 * Returns a listener object if defined
+	 * @return listener which reacts to successfully loaded ad
+	 */
+	public IOnAdSuccessListener getOnAdSuccessListener();
+	
+	/**
+	 * Returns a listener object if defined
+	 * @return listener which reacts to non existant ad
+	 */
+	public IOnAdEmptyListener getOnAdEmptyListener();
+	
+	/**
+	 * Override the listener class
+	 * @param l implementation of listener which reacts to successful ad loading
+	 */
+	public void setOnAdSuccessListener(IOnAdSuccessListener l);
+	
+	/**
+	 * Override the listener class
+	 * @param l implementation of listener which reacts to empty ad responses
+	 */
+	public void setOnAdEmptyListener(IOnAdEmptyListener l);
 }

@@ -90,7 +90,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				con.setRequestProperty(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME, ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(1000);
-				con.setConnectTimeout(500);
+				con.setConnectTimeout(1000);
 				BufferedInputStream in = new BufferedInputStream(con.getInputStream());
 				if (con.getResponseCode() == 200 && this.responseHandler !=null) {
 					byte [] buffer = new byte [1024];

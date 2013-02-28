@@ -20,6 +20,8 @@ import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
 import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
+import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.util.Connectivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.UserAgentHelper;
@@ -44,7 +46,7 @@ import de.guj.ems.mobile.sdk.util.UserAgentHelper;
 public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, AdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
-
+	
 	private final String TAG = "GuJEMSAdView";
 
 	/**
@@ -238,6 +240,7 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 			}
 			// default behaviour Android < 4.0
 			else if (Connectivity.isOnline()) {
+				// TODO invocation of listeners?!
 				this.loadUrl(url);
 			}
 			// Do nothing if offline
@@ -250,8 +253,18 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 	
 	public final void processResponse(String response) {
 		try {
-			setTimeoutRunnable(new TimeOutRunnable());
-			loadData(response, "text/html", "utf-8");
+			if (response != null && response.length() > 0) {
+				setTimeoutRunnable(new TimeOutRunnable());
+				loadData(response, "text/html", "utf-8");
+				if (this.settings.getOnAdSuccessListener() != null) {
+					this.settings.getOnAdSuccessListener().onAdSuccess();
+				}
+			}
+			else {
+				if (this.settings.getOnAdEmptyListener() != null) {
+					this.settings.getOnAdEmptyListener().onAdEmpty();
+				}
+			}
 			SdkLog.i(TAG, "ems_adcall: FINISH async. AdServer request");
 		} catch (Exception e) {
 			SdkLog.e(TAG, "Error loading ads...", e);
@@ -271,6 +284,14 @@ public class GuJEMSAdView extends OrmmaView implements OnGlobalLayoutListener, A
 		if (set != null) {
 			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
 		}
+	}
+	
+	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
+		this.settings.setOnAdSuccessListener(l);
+	}
+	
+	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
+		this.settings.setOnAdEmptyListener(l);
 	}
 
 }
