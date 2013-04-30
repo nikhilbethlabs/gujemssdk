@@ -14,6 +14,7 @@ import android.content.Context;
  */
 public class AppContext {
 	
+
 	private static Context context;
 	
 	/**
@@ -23,7 +24,7 @@ public class AppContext {
 	public final static Context getContext() {
 		return context;
 	}
-	
+
 	/**
 	 * Set application context
 	 * @param c android application context

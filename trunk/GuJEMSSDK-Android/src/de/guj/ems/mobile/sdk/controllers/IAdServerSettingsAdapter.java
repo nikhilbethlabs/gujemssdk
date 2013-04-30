@@ -94,6 +94,12 @@ public interface IAdServerSettingsAdapter {
 	public IOnAdEmptyListener getOnAdEmptyListener();
 	
 	/**
+	 * Returns a listener object if defined
+	 * @return listener which reacts to ad server errors
+	 */
+	public IOnAdErrorListener getOnAdErrorListener();
+	
+	/**
 	 * Override the listener class
 	 * @param l implementation of listener which reacts to successful ad loading
 	 */
@@ -104,4 +110,23 @@ public interface IAdServerSettingsAdapter {
 	 * @param l implementation of listener which reacts to empty ad responses
 	 */
 	public void setOnAdEmptyListener(IOnAdEmptyListener l);
+	
+	/**
+	 * Override the listener class
+	 * @param l implementation of listener which reacts to ad server errors
+	 */
+	public void setOnAdErrorListener(IOnAdErrorListener l);
+	
+	/**
+	 * Returns data for a direct, sdk controlled backfill
+	 * @return backfill data
+	 */
+	public BackfillDelegator.BackfillData getDirectBackfill();
+
+	/**
+	 * Set data for a direct, sdk controlled backfill
+	 * @param directBackfill backfill data
+	 */
+	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill);
+
 }

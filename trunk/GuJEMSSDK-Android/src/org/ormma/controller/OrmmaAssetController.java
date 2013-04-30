@@ -48,7 +48,6 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.URLUtil;
 import android.widget.Toast;
-import de.guj.ems.mobile.sdk.util.Screen;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
@@ -58,7 +57,7 @@ public class OrmmaAssetController extends OrmmaController {
 
 	private final static String SdkLog_TAG = "OrmmaAssetController";
 
-	private final static float WEBVIEW_VIEWPORT_SCALE = Screen.getScreenWidth() / 320.0f;
+	//public final static float WEBVIEW_VIEWPORT_SCALE = Screen.getScreenWidth() / 320.0f;
 	
 	//private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale=" + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
 	
@@ -126,7 +125,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 */
 	public OrmmaAssetController(OrmmaView adView, Context c) {
 		super(adView, c);
-		SdkLog.i(SdkLog_TAG, "WebView viewport scale meta was set to " + WEBVIEW_VIEWPORT_SCALE);
+		//SdkLog.i(SdkLog_TAG, "WebView viewport scale meta was set to " + WEBVIEW_VIEWPORT_SCALE);
 	}
 
 	/**
@@ -298,6 +297,11 @@ public class OrmmaAssetController extends OrmmaController {
 	public void deleteOldAds() {
 		String filesDir = getFilesDir();
 		File adDir = new File(filesDir + java.io.File.separator + "ad");
+		deleteDirectory(adDir);
+	}
+	
+	public void deleteOldAds(String localAdDir) {
+		File adDir = new File(localAdDir);
 		deleteDirectory(adDir);
 	}
 
@@ -475,6 +479,7 @@ public class OrmmaAssetController extends OrmmaController {
 				+ java.io.File.separator + subDir);
 		dir.mkdir();
 		file.renameTo(new File(dir, file.getName()));
+
 		return dir.getPath() + java.io.File.separator;
 	}
 
@@ -937,6 +942,7 @@ public class OrmmaAssetController extends OrmmaController {
 		String filesDir = getFilesDir();
 
 		if (storeInHashedDirectory && digest != null) {
+			digest.update(data.getBytes());
 			filesDir = moveToAdDirectory(file, filesDir, asHex(digest));
 		}
 		return filesDir;

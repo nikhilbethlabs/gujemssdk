@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Locale;
 
 import org.ormma.controller.OrmmaController.Dimensions;
 import org.ormma.controller.OrmmaController.PlayerProperties;
@@ -325,7 +326,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				}
 			}
 			mProgress = progress;
-			mTimeOutHandler.postDelayed(this, 200);
+			mTimeOutHandler.postDelayed(this, 1000);
 		}
 	}
 
@@ -469,7 +470,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			super.onPageFinished(view, url);
 			bPageFinished = true;
 			view.setVisibility(View.VISIBLE);
-			SdkLog.d(SdkLog_TAG, "onPageFinished :: view size " + getSize());
 		}
 
 		@Override
@@ -763,7 +763,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	public void deregisterProtocol(String protocol) {
 		if (protocol != null)
-			registeredProtocols.remove(protocol.toLowerCase());
+			registeredProtocols.remove(protocol.toLowerCase(Locale.GERMAN));
 	}
 
 	/**
@@ -866,7 +866,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * @return the state
 	 */
 	public String getState() {
-		return mViewState.toString().toLowerCase();
+		return mViewState.toString().toLowerCase(Locale.GERMAN);
 	}
 
 	protected TimeOutRunnable getTimeOutRunnable() {
@@ -883,37 +883,40 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * Initialize the view
 	 */
-	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressLint({ "SetJavaScriptEnabled", "NewApi" })
 	private void initialize() {
 		AppContext.setContext(getContext());
+		if (!isInEditMode()) {
+			getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
+			getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+			getSettings().setAppCacheEnabled(true);
+			getSettings().setUseWideViewPort(false);
+			getSettings().setLoadWithOverviewMode(false);
+			getSettings().setJavaScriptEnabled(true);
 
-		getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
-		getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-		getSettings().setAppCacheEnabled(true);
-		getSettings().setUseWideViewPort(false);
-		getSettings().setLoadWithOverviewMode(false);
+			mGestureDetector = new GestureDetector(getContext(),
+					new ScrollEater());
+			mUtilityController = new OrmmaUtilityController(this,
+					this.getContext());
 
+		}
 		setScrollContainer(false);
 		setVerticalScrollBarEnabled(false);
 		setHorizontalScrollBarEnabled(false);
-		mGestureDetector = new GestureDetector(getContext(), new ScrollEater());
 
 		setBackgroundColor(0);
 		mDensity = Screen.getDensity();
-
 		bPageFinished = false;
-
-		getSettings().setJavaScriptEnabled(true);
-
-		mUtilityController = new OrmmaUtilityController(this, this.getContext());
 
 		addJavascriptInterface(mUtilityController,
 				"ORMMAUtilityControllerBridge");
 
 		setWebViewClient(mWebViewClient);
-
 		setWebChromeClient(mWebChromeClient);
-		setScriptPath();
+
+		if (!isInEditMode()) {
+			setScriptPath();
+		}
 
 		mContentViewHeight = getContentViewHeight();
 
@@ -988,7 +991,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public void loadData(String data, String type, String enc) {
 
 		String url;
-		reset();
+		
 		bPageFinished = false;
 		if (mTimeOutRunnable == null) {
 			mTimeOutRunnable = new TimeOutRunnable();
@@ -999,14 +1002,14 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			url = "file://" + mLocalFilePath + java.io.File.separator
 					+ CURRENT_FILE;
 			mTimeOutHandler = new Handler();
-			mTimeOutHandler.postDelayed(mTimeOutRunnable, 5000);
+			mTimeOutHandler.postDelayed(mTimeOutRunnable, 10000);
 			super.loadUrl(url);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	/**
@@ -1062,6 +1065,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		} finally {
 			if (is != null) {
 				try {
+					
 					is.close();
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -1147,19 +1151,22 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
 			lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 			setLayoutParams(lp);
-			SdkLog.d(SdkLog_TAG,
-					"onAttachedToWindow :: set height to wrap content");
 		}
 	}
 
+	@Override
 	protected void onDetachedFromWindow() {
+		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
+			mUtilityController.deleteOldAds(mLocalFilePath);
+		}
 		mUtilityController.stopAllListeners();
-		super.onDetachedFromWindow();
 	}
 
 	// trap keyboard state and view height/width
-	@Override
+
+
 	public void onGlobalLayout() {
+
 		boolean state = bKeyboardOut;
 		if (!bKeyboardOut && mContentViewHeight >= 0
 				&& getContentViewHeight() >= 0
@@ -1229,6 +1236,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		i.putExtra(Browser.SHOW_FORWARD_EXTRA, forward);
 		i.putExtra(Browser.SHOW_REFRESH_EXTRA, refresh);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
 		getContext().startActivity(i);
 
 	}
@@ -1487,7 +1495,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	public void registerProtocol(String protocol) {
 		if (protocol != null)
-			registeredProtocols.add(protocol.toLowerCase());
+			registeredProtocols.add(protocol.toLowerCase(Locale.GERMAN));
 	}
 
 	/**
@@ -1507,7 +1515,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			closeResized();
 		}
 		invalidate();
-		mUtilityController.deleteOldAds();
+		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
+			mUtilityController.deleteOldAds(mLocalFilePath);
+		}
 		mUtilityController.stopAllListeners();
 		resetLayout();
 	}
@@ -1562,7 +1572,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			lp.width = mViewWidth;
 			setVisibility(VISIBLE);
 			requestLayout();
-
 		}
 	}
 
@@ -1665,5 +1674,20 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public void show() {
 		mHandler.sendEmptyMessage(MESSAGE_SHOW);
+	}
+	
+	protected WebViewClient getWebViewClient() {
+		return mWebViewClient;
+	}
+	
+	@Override
+	public void dispatchWindowVisibilityChanged(int v) {
+		super.dispatchWindowVisibilityChanged(v);
+		if (v == View.GONE) {
+			if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
+				mUtilityController.deleteOldAds(mLocalFilePath);
+			}
+			mUtilityController.stopAllListeners();
+		}
 	}
 }

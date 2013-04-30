@@ -3,12 +3,11 @@ package de.guj.ems.mobile.sdk.controllers;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.util.AppContext;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.VersionHelper;
 
 public final class SmartstreamEvents {
 	
-	private final static String SMARTSTREAM_EVENT_URL = AppContext.getContext().getString(R.string.baseUrl) + "?" + AppContext.getContext().getString(R.string.baseParams);
-	
-//	private final static String SMARTSTREAM_EVENT_CLICK_URL = R.string.baseUrl + "?" + R.string.baseParams;
+	private final static String SMARTSTREAM_EVENT_URL = AppContext.getContext().getString(R.string.baseUrl) + "?" + AppContext.getContext().getString(R.string.baseParams).replaceAll("#version#", VersionHelper.VERSION_STR);
 	
 	public final static int SMARTSTREAM_EVENT_IMPRESSION = 15549;
 	

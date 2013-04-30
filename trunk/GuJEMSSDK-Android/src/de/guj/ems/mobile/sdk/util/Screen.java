@@ -46,8 +46,8 @@ public class Screen {
 	}
 	
 	/**
-	 * Get screen density class (hdpi, mdpi, ldpi)
-	 * @return android screen density class
+	 * Get screen density (hdpi, mdpi, ldpi)
+	 * @return android screen density 
 	 */
 	public static int getDensityDpi() {
 		return Screen.getMetrics().densityDpi;

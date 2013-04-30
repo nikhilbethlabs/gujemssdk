@@ -1,6 +1,8 @@
 package de.guj.ems.mobile.sdk.controllers;
 
-public interface IOnAdSuccessListener {
+import java.io.Serializable;
+
+public interface IOnAdSuccessListener extends Serializable {
 	
 	void onAdSuccess();
 

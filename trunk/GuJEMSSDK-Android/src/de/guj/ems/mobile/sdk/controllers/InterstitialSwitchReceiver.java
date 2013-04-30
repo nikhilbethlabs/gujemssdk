@@ -1,43 +1,17 @@
-package de.guj.ems.mobile.sdk.activities;
+package de.guj.ems.mobile.sdk.controllers;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import de.guj.ems.mobile.sdk.R;
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
-import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
-import de.guj.ems.mobile.sdk.controllers.BackfillDelegator;
-import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.util.AppContext;
 import de.guj.ems.mobile.sdk.util.Connectivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.UserAgentHelper;
 import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
-/**
- * The IntestitialSwitchActivity determines whether an interstitial should and
- * can be shown. If an interstitial is returned by the ad server, it is shown
- * with the InterstitialActivity. If not, the original target activity is shown
- * or the interstitial activity is just finished.
- * 
- * When starting this activity, you may add the original target
- * activity's intent, otherwise this activity will just finish:
- * 
- * Intent i = new Intent(<calling activity class>,
- * InterstitialSwitchActivity.class); i.putExtra("target", <original target
- * activity's intent>); startActivity(i);
- * 
- * NEW Nov 1st 2012:
- * 
- * This version of the class also delegates the main adserver response to the
- * BackfillDelegator class and checks for backfill partners which might be
- * serving ads to display within an interstitial.
- * 
- * @author stein16
- * @deprecated use InterstitialSwitchReceiver instead and broadcast
- * 
- */
-public final class InterstitialSwitchActivity extends Activity implements AdResponseHandler {
+public class InterstitialSwitchReceiver extends BroadcastReceiver implements AdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
 	
@@ -47,31 +21,40 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 	
 	private Intent target;
 	
-	private final static String TAG = "InterstitialSwitch";
+	private Intent intent;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	private Context context;
+	
+	private final static String TAG = "InterstitialSwitchReceiver";
 
+	public InterstitialSwitchReceiver() {
+		super();
+	}
+
+	@Override
+	public void onReceive(Context arg0, Intent arg1) {
 
 		// Steffen Führes, RTL Interactive
 		// getUserAgent hat sonst ein Problem, wenn interstitial 1. Werbemittel
 		if (AppContext.getContext() == null) {
-			AppContext.setContext(getApplicationContext());
+			AppContext.setContext(arg0);
 		}
 		
 		// determine user-agent
-		this.userAgentString = UserAgentHelper.getUserAgent();
+		this.userAgentString = UserAgentHelper.getUserAgent();		
+
 
 		// original target when interstitial not available
-		this.target = (Intent) getIntent().getExtras().get("target");
-
-		// ad space settings
-		this.settings = new AmobeeSettingsAdapter(getApplicationContext(),
-				getIntent().getExtras());
-
+		this.target = (Intent) arg1.getExtras().get("target");
+		if (this.target != null) {
+			this.target.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		}
+		this.intent = arg1;
+		this.context = arg0;
 		
-//		SdkLog.i(TAG, " ******* " + ((InterstitialIntent)getIntent()).getOnAdSuccessListener());
+		// ad space settings
+		this.settings = new AmobeeSettingsAdapter(AppContext.getContext(),
+				arg1.getExtras());
 
 		// adserver request
 		if (Connectivity.isOnline()) {
@@ -84,11 +67,7 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 		} else {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
-		}
-
-		// Done
-		this.finish();
-
+		}		
 	}
 
 	@Override
@@ -98,14 +77,13 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 		this.data = response;
 		if (data != null && data.length() > 1
 				&& (bfD = BackfillDelegator.isBackfill(
-						(String) getIntent().getExtras().get(
-								getString(R.string.amobeeAdSpace)), data)) != null) {
+						(String) this.intent.getExtras().get(context.getString(R.string.amobeeAdSpace)), data)) != null) {
 			SdkLog.d(TAG,
 					"Possible backfill ad detected [id=" + bfD.getId()
 							+ ", data=" + bfD.getData() + "]");
 			try {
 
-				BackfillDelegator.process(getApplicationContext(), bfD,
+				BackfillDelegator.process(this.context, bfD,
 						new BackfillDelegator.BackfillCallback() {
 							@Override
 							public void trackEventCallback(String arg0) {
@@ -121,22 +99,20 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 									settings.getOnAdEmptyListener().onAdEmpty();
 								}
 								if (target != null) {
-									startActivity(target);
+									context.startActivity(target);
 								}
 								else {
 									SdkLog.i(TAG,  "No target. Back to previous view.");
-									finish();
 								}
 							}
 
 							@Override
 							public void finishedCallback() {
 								if (target != null) {
-									startActivity(target);
+									context.startActivity(target);
 								}
 								else {
 									SdkLog.i(TAG,  "No target. Back to previous view.");
-									finish();
 								}
 							}
 
@@ -152,11 +128,10 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 											e);									
 								}
 								if (target != null) {
-									startActivity(target);
+									context.startActivity(target);
 								}
 								else {
 									SdkLog.i(TAG,  "No target. Back to previous view.");
-									finish();
 								}
 							}
 							
@@ -165,7 +140,8 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 								if (settings.getOnAdSuccessListener() != null) {
 									settings.getOnAdSuccessListener().onAdSuccess();
 								}
-							}
+							}							
+							
 						});
 				
 			} catch (BackfillDelegator.BackfillException bfE) {
@@ -179,29 +155,29 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 			}
 			if (target != null) {
 				SdkLog.d(TAG, "No interstitial -> starting original target.");
-				startActivity(target);
+				context.startActivity(target);
 			}
 			else {
 				SdkLog.d(TAG, "No interstitial, no target -> back to previous view.");
-				finish();
 			}
 		} else {
 			// head to interstitial intent
-			Intent i = new Intent(
-					getApplicationContext(),
+			Intent i = new Intent(this.context,
 					InterstitialActivity.class);
 			SdkLog.i(TAG, "Found interstitial -> show");
 			// pass banner data and original intent to interstitial
 			i.putExtra("data", data);
 			i.putExtra("target", target);
 			i.putExtra("timeout",
-					(Integer) getIntent().getExtras().get("timeout"));
+					(Integer) this.intent.getExtras().get("timeout"));
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}
-			startActivity(i);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(i);
 		}		
 	}
+
 	
 	@Override
 	public void processError(String msg) {
@@ -212,11 +188,10 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 			SdkLog.e(TAG, msg);
 		}
 		if (target != null) {
-			startActivity(target);
+			this.context.startActivity(target);
 		}
 		else {
 			SdkLog.i(TAG,  "No target. Back to previous view.");
-			finish();
 		}
 	}
 
@@ -229,11 +204,10 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 			SdkLog.e(TAG, msg, t);
 		}
 		if (target != null) {
-			startActivity(target);
+			this.context.startActivity(target);
 		}
 		else {
 			SdkLog.i(TAG,  "No target. Back to previous view.");
-			finish();
 		}		
 	}
 
