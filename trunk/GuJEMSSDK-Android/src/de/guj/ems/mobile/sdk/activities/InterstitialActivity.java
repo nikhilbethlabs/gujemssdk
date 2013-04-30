@@ -100,7 +100,7 @@ public final class InterstitialActivity extends Activity {
 				: R.id.emsIntSpinner2);
 		this.root = (RelativeLayout) findViewById(this.time > 0 ? R.id.emsIntProgLayout
 				: R.id.emsIntLayout);
-		this.adView = new GuJEMSAdView(getApplicationContext());
+		this.adView = new GuJEMSAdView(InterstitialActivity.this);
 
 		// (3) configure interstitial adview
 		adView.loadData(getIntent().getExtras().getString("data"), "text/html",

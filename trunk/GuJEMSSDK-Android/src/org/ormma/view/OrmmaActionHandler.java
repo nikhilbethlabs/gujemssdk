@@ -41,7 +41,7 @@ public class OrmmaActionHandler extends Activity {
 
 		Bundle data = getIntent().getExtras();
 		
-		layout = new RelativeLayout(getApplicationContext());
+		layout = new RelativeLayout(OrmmaActionHandler.this);
 		layout.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		setContentView(layout);
 		
