@@ -63,8 +63,8 @@ public class Browser extends Activity {
 		super.onCreate(savedInstanceState);
 		
 				// Build the layout
-		RelativeLayout rl = new RelativeLayout(getApplicationContext());
-		WebView webview = new WebView(getApplicationContext());
+		RelativeLayout rl = new RelativeLayout(Browser.this);
+		WebView webview = new WebView(Browser.this);
 
 		this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
@@ -97,7 +97,7 @@ public class Browser extends Activity {
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
-		ImageButton backButton = new ImageButton(getApplicationContext());
+		ImageButton backButton = new ImageButton(Browser.this);
 		backButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		backButton.setId(BackwardId);
 
@@ -119,7 +119,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton forwardButton = new ImageButton(getApplicationContext());
+		ImageButton forwardButton = new ImageButton(Browser.this);
 		forwardButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		forwardButton.setId(ForwardId);
 		lp2 = new LinearLayout.LayoutParams(
@@ -140,7 +140,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton refreshButton = new ImageButton(getApplicationContext());
+		ImageButton refreshButton = new ImageButton(Browser.this);
 		
 		refreshButton.setImageResource(R.drawable.refresh);
 		refreshButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -163,7 +163,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton closeButton = new ImageButton(getApplicationContext());
+		ImageButton closeButton = new ImageButton(Browser.this);
 		
 		closeButton.setImageResource(R.drawable.close);
 		closeButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -186,7 +186,7 @@ public class Browser extends Activity {
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
 		// Enable cookies
-		CookieSyncManager.createInstance(getApplicationContext());
+		CookieSyncManager.createInstance(Browser.this);
 		CookieSyncManager.getInstance().startSync();
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.loadUrl(i.getStringExtra(URL_EXTRA));
