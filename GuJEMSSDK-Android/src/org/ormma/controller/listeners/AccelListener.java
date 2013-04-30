@@ -17,6 +17,8 @@ import android.hardware.SensorManager;
 
 import org.ormma.controller.OrmmaSensorController;
 
+import de.guj.ems.mobile.sdk.util.SdkLog;
+
 /**
  * The listener interface for receiving accelerometer events.
  * The class that is interested in processing a accelerometer
@@ -29,6 +31,8 @@ import org.ormma.controller.OrmmaSensorController;
  * @see AccelEvent
  */
 public class AccelListener implements SensorEventListener {
+	
+	private final static String TAG = "AccelListener";
 
 //constants for determining events
 	private static final int FORCE_THRESHOLD = 1000;
@@ -262,6 +266,7 @@ public class AccelListener implements SensorEventListener {
 		try {
 			stop();
 		} catch (Exception e) {
+			SdkLog.e(TAG, "Error stopping acceleration listeners.", e);
 		}
 	}
 

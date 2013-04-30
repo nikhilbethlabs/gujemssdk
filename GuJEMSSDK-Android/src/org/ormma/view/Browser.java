@@ -44,6 +44,7 @@ public class Browser extends Activity {
 	public static final String SHOW_BACK_EXTRA = "open_show_back";
 	public static final String SHOW_FORWARD_EXTRA = "open_show_forward";
 	public static final String SHOW_REFRESH_EXTRA = "open_show_refresh";
+	
 
 	/** Layout Id constants. */
 	private static final int ButtonId = 100;
@@ -60,17 +61,19 @@ public class Browser extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Build the layout
-		RelativeLayout rl = new RelativeLayout(this);
-		WebView webview = new WebView(this);
+		
+				// Build the layout
+		RelativeLayout rl = new RelativeLayout(getApplicationContext());
+		WebView webview = new WebView(getApplicationContext());
 
 		this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
 				Window.PROGRESS_VISIBILITY_ON);
 
+		getTheme().setTo(getApplicationContext().getTheme());
+		
 		Intent i = getIntent();
-
+		
 		// Build the button bar
 		LinearLayout bll = new LinearLayout(this);
 		bll.setOrientation(LinearLayout.HORIZONTAL);
@@ -94,7 +97,7 @@ public class Browser extends Activity {
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
-		ImageButton backButton = new ImageButton(this);
+		ImageButton backButton = new ImageButton(getApplicationContext());
 		backButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		backButton.setId(BackwardId);
 
@@ -116,7 +119,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton forwardButton = new ImageButton(this);
+		ImageButton forwardButton = new ImageButton(getApplicationContext());
 		forwardButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		forwardButton.setId(ForwardId);
 		lp2 = new LinearLayout.LayoutParams(
@@ -137,7 +140,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton refreshButton = new ImageButton(this);
+		ImageButton refreshButton = new ImageButton(getApplicationContext());
 		
 		refreshButton.setImageResource(R.drawable.refresh);
 		refreshButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -160,7 +163,7 @@ public class Browser extends Activity {
 			}
 		});
 
-		ImageButton closeButton = new ImageButton(this);
+		ImageButton closeButton = new ImageButton(getApplicationContext());
 		
 		closeButton.setImageResource(R.drawable.close);
 		closeButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -183,7 +186,7 @@ public class Browser extends Activity {
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
 		// Enable cookies
-		CookieSyncManager.createInstance(this);
+		CookieSyncManager.createInstance(getApplicationContext());
 		CookieSyncManager.getInstance().startSync();
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.loadUrl(i.getStringExtra(URL_EXTRA));

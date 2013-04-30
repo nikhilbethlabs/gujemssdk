@@ -41,7 +41,7 @@ public class OrmmaActionHandler extends Activity {
 
 		Bundle data = getIntent().getExtras();
 		
-		layout = new RelativeLayout(this);
+		layout = new RelativeLayout(getApplicationContext());
 		layout.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		setContentView(layout);
 		
@@ -90,7 +90,7 @@ public class OrmmaActionHandler extends Activity {
 
 		Dimensions playDimensions = (Dimensions)playData.getParcelable(OrmmaView.DIMENSIONS);		
 				
-		OrmmaPlayer player = new OrmmaPlayer(this);
+		OrmmaPlayer player = new OrmmaPlayer(getApplicationContext());
 		player.setPlayData(properties,OrmmaUtils.getData(OrmmaView.EXPAND_URL, playData));
 		
 		RelativeLayout.LayoutParams lp;

@@ -1,6 +1,8 @@
 package de.guj.ems.mobile.sdk.controllers;
 
-public interface IOnAdEmptyListener {
+import java.io.Serializable;
+
+public interface IOnAdEmptyListener extends Serializable {
 	
 	void onAdEmpty();
 

@@ -531,6 +531,13 @@ public class OrmmaUtilityController extends OrmmaController {
 	public void deleteOldAds() {
 		mAssetController.deleteOldAds();
 	}
+	
+	/**
+	 * Delete old ad.
+	 */
+	public void deleteOldAds(String localPath) {
+		mAssetController.deleteOldAds(localPath);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -546,6 +553,7 @@ public class OrmmaUtilityController extends OrmmaController {
 			mNetworkController.stopAllListeners();
 			mSensorController.stopAllListeners();
 		} catch (Exception e) {
+			SdkLog.e(SdkLog_TAG, "Error stopping listeners.", e);
 		}
 	}
 

@@ -52,29 +52,29 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							SdkLog.d(TAG, "Smartstream Advertising Event: "
 									+ arg0);
 							if (arg0.toLowerCase().equals("impression")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_IMPRESSION, false);
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_IMPRESSION, false);
 							}
 							else if (arg0.toLowerCase().equals("start")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_PLAY, false);								
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_PLAY, false);								
 							}
 							else if (arg0.toLowerCase().equals("firstquartile")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_1, false);								
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_1, false);								
 							}
 							else if (arg0.toLowerCase().equals("midpoint")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_MID, false);								
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_MID, false);								
 							}
 							else if (arg0.toLowerCase().equals("thirdquartile")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_3, false);
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_3, false);
 							}
 							else if (arg0.toLowerCase().equals("complete")) {
-								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_FINISH, false);								
+								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_FINISH, false);								
 							}
 						}
 
 						public void onAdvertisingFailedToLoad(Exception arg0) {
 							// exception handler for preloading or playback
 							// issues
-							SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getAdSpace(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_FAIL, false);
+							SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_FAIL, false);
 							SdkLog.e(
 									TAG,
 									"Smartstream Backfill failed. Starting original intent.",
@@ -101,6 +101,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 
 						public void onAdvertisingWillShow() {
 							// the advertising appears in fullscreen mode
+							SmartstreamAdapter.callback.receivedAdCallback();
 						}
 
 						public void onAdvertisingDidHide() {

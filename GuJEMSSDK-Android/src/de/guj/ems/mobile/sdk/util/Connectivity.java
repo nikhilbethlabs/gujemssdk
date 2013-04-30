@@ -42,7 +42,7 @@ public class Connectivity {
 		}
 		catch (Exception e) {
 			SdkLog.w(TAG,
-					"ems_adcall: Excepion in getNetworkInfo - assuming ONLINE.");
+					"ems_adcall: Exception in getNetworkInfo - assuming ONLINE.");
 			return false;
 		}
 	}
@@ -77,7 +77,7 @@ public class Connectivity {
 		}
 		catch (Exception e) {
 			SdkLog.w(TAG,
-					"ems_adcall: Excepion in getNetworkInfo - assuming ONLINE.");
+					"ems_adcall: Exception in getNetworkInfo - assuming ONLINE.");
 			return true;
 		}
 	}

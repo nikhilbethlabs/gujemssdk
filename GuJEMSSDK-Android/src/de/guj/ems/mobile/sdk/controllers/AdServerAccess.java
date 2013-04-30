@@ -53,6 +53,8 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	
 	private AdResponseHandler responseHandler;
 	
+	private Throwable lastError;
+	
 	@SuppressWarnings("unused")
 	private AdServerAccess() {
 
@@ -89,8 +91,8 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				con.setRequestProperty(USER_AGENT_HEADER_NAME, userAgentString);
 				con.setRequestProperty(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME, ACCEPT_CHARSET_HEADER_VALUE);
-				con.setReadTimeout(1000);
-				con.setConnectTimeout(1000);
+				con.setReadTimeout(2500);
+				con.setConnectTimeout(2500);
 				BufferedInputStream in = new BufferedInputStream(con.getInputStream());
 				if (con.getResponseCode() == 200 && this.responseHandler !=null) {
 					byte [] buffer = new byte [1024];
@@ -101,13 +103,14 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 					}
 				}
 				else if (con.getResponseCode() != 200) {
-					SdkLog.e(TAG, "AdServer returned HTTP "
-							+ con.getResponseCode());
+
+					throw new Exception("AdServer returned HTTP "
+							+ con.getResponseCode());					
 				}
 				in.close();
 			}
 			catch (Exception e) {
-				SdkLog.e(TAG, "Error requesting AdServer!", e);
+				this.lastError = e;
 			}
 			finally  {
 				if (con != null) {
@@ -138,15 +141,15 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 					}
 					buffer.close();
 				} else if (execute.getStatusLine().getStatusCode() != 200) {
-					SdkLog.e(TAG, "AdServer returned HTTP "
+
+					throw new Exception("AdServer returned HTTP "
 							+ execute.getStatusLine().getStatusCode());
 				}
 
 			} catch (Exception e) {
-				SdkLog.e(TAG, "Error requesting AdServer!", e);
+				this.lastError = e;
 			}
 		}
-		//SdkLog.d(TAG, "HTTP Response = " + rBuilder.toString());
 		return rBuilder;		
 	}
 
@@ -161,8 +164,11 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		if (this.responseHandler != null) {
+		if (this.responseHandler != null && lastError == null) {
 			this.responseHandler.processResponse(result);
+		}
+		else if (this.responseHandler != null && lastError != null) {
+			this.responseHandler.processError(lastError.getMessage(), lastError);
 		}
 	}
 	

@@ -6,33 +6,27 @@ import android.util.Log;
  * Globally available interface for logging from the sdk.
  * SdkLog distinguishes between three log levels:
  * TEST - allows log levels up to verbose
- * PROD - allows log levels upt to info
+ * PROD - allows log levels up to info
  * OFF  - switches all logging off
  * Uses android logging utility. 
  * @author stein16
  *
  */
-public final class SdkLog {
+public class SdkLog {
 	
-	public static int LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
+	private final static int LOG_LEVEL_TEST = 1;
 	
-	private final static int LOG_LEVEL_TEST = 0;
-	
-	private final static int LOG_LEVEL_PROD = 1;
+	private final static int LOG_LEVEL_PROD = 0;
 	
 	private final static int LOG_LEVEL_OFF = 2;
 	
-	private static boolean TESTING = (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST);
-	
-	private static boolean OFF = (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_OFF);
+	private static int LOG_LEVEL = LOG_LEVEL_PROD;
 	
 	/**
 	 * Sets log level to production (max = info)
 	 */
 	public static void setProductionLogLevel() {
 		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_PROD;
-		SdkLog.OFF = false;
-		SdkLog.TESTING = false;
 	}
 	
 	/**
@@ -40,8 +34,6 @@ public final class SdkLog {
 	 */
 	public static void setTestLogLevel() {
 		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
-		SdkLog.TESTING = true;
-		SdkLog.OFF = false;
 	}
 	
 	/**
@@ -49,7 +41,6 @@ public final class SdkLog {
 	 */
 	public static void setLogLevelOff() {
 		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_OFF;
-		SdkLog.OFF = true;
 	}
 	
 	/**
@@ -58,7 +49,7 @@ public final class SdkLog {
 	 * @param message Log message
 	 */
 	public static void d(String tag, String message) {
-		if (SdkLog.TESTING && !SdkLog.OFF) {
+		if (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST) {
 			Log.d(tag, message);
 		}
 	}
@@ -69,7 +60,7 @@ public final class SdkLog {
 	 * @param message Log message
 	 */
 	public static void i(String tag, String message) {
-		if (!SdkLog.OFF) {
+		if (SdkLog.LOG_LEVEL != SdkLog.LOG_LEVEL_OFF) {
 			Log.i(tag, message);
 		}
 	}
@@ -80,7 +71,7 @@ public final class SdkLog {
 	 * @param message Log message
 	 */
 	public static void v(String tag, String message) {
-		if (SdkLog.TESTING && !SdkLog.OFF) {
+		if (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST) {
 			Log.v(tag, message);
 		}
 	}
@@ -110,7 +101,7 @@ public final class SdkLog {
 	 * @param message Log message
 	 */
 	public static void w(String tag, String message) {
-		if (!SdkLog.OFF) {
+		if (SdkLog.LOG_LEVEL != SdkLog.LOG_LEVEL_OFF) {
 			Log.w(tag, message);
 		}
 	}

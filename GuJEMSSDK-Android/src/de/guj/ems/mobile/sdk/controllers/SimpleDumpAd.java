@@ -22,4 +22,16 @@ public class SimpleDumpAd extends AmobeeCustomAd {
 		SdkLog.d(TAG, "DUMP: " + response);
 	}
 
+	@Override
+	public void processError(String msg) {
+		SdkLog.e(TAG, "ERROR: " + msg);
+		
+	}
+
+	@Override
+	public void processError(String msg, Throwable t) {
+		SdkLog.e(TAG, "ERROR: " + msg, t);
+		
+	}
+
 }

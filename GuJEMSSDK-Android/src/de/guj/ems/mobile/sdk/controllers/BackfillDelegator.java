@@ -58,7 +58,9 @@ public class BackfillDelegator {
 		
 		String data;
 		
-		String adSpace;
+		String siteId;
+		
+		String zoneId;
 		
 		String userAgent;
 		
@@ -66,13 +68,29 @@ public class BackfillDelegator {
 		
 		/**
 		 * Default constructor
+		 * @param zone id of the ad placement
 		 * @param data data retrieved from the main adserver
 		 * @param id id of the backfill partner (0 = Smartstream)
 		 */
-		BackfillData(String adSpace, String data, int id) {
+		BackfillData(String zone, String data, int id) {
 			this.data = data;
 			this.userAgent =  UserAgentHelper.getUserAgent();
-			this.adSpace = adSpace;
+			this.zoneId = zone;
+			this.id = id;
+		}
+		
+		/**
+		 * Custom constructor
+		 * @param site id of the app/site
+		 * @param zone id of the ad placement
+		 * @param data data retrieved from the main adserver
+		 * @param id id of the backfill partner (0 = Smartstream)
+		 */
+		BackfillData(String site, String zone, String data, int id) {
+			this.data = data;
+			this.userAgent =  UserAgentHelper.getUserAgent();
+			this.siteId = site;
+			this.zoneId = zone;
 			this.id = id;
 		}
 		
@@ -104,8 +122,16 @@ public class BackfillDelegator {
 		 * Get the request's original adspace ID
 		 * @return the request's original adspace ID
 		 */
-		public String getAdSpace() {
-			return this.adSpace;
+		public String getZoneId() {
+			return this.zoneId;
+		}
+		
+		/**
+		 * Get the request's original site ID
+		 * @return the request's original site ID
+		 */
+		public String getSiteId() {
+			return this.siteId;
 		}
 		
 	}
@@ -120,6 +146,8 @@ public class BackfillDelegator {
 	 *
 	 */
 	public static interface BackfillCallback {
+		
+		public void receivedAdCallback();
 		
 		/**
 		 * Called when any event with content @arg0 has been triggered
