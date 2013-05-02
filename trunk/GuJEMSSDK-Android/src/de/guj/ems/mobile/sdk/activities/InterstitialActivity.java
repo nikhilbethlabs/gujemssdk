@@ -237,6 +237,14 @@ public final class InterstitialActivity extends Activity {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {
 						if (!loaded && adView.isPageFinished()) {
+							
+							if (root == null) {
+								SdkLog.e(TAG, "This should not happen... interstitial layout is null");
+								SdkLog.w(TAG, "Interstitial Thread = " + InterstitialThread.PAUSED + "/" + InterstitialThread.SHOW);
+								SdkLog.w(TAG, "status = " + status);
+								break;
+							}
+							
 							loaded = true;
 							root.getHandler().post(new Runnable() {
 								@Override
@@ -309,6 +317,20 @@ public final class InterstitialActivity extends Activity {
 		if (status == FINISHED || status == CLOSED) {
 			SdkLog.i(TAG, "Finishing interstitial activity.");
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (updateThread != null && updateThread.isAlive()) {
+			try {
+				updateThread.beforeStop();
+				updateThread.join(100);
+				status = CLOSED;
+			} catch (InterruptedException e) {
+				;
+			}
+		}
+		super.onBackPressed();
 	}
 
 }
