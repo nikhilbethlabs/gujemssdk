@@ -162,7 +162,8 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements AdR
 			}
 		} else {
 			// head to interstitial intent
-			Intent i = new Intent(this.context,
+			Intent i = new Intent(
+					this.context,
 					InterstitialActivity.class);
 			SdkLog.i(TAG, "Found interstitial -> show");
 			// pass banner data and original intent to interstitial
