@@ -165,10 +165,24 @@ public class GuJEMSAdView extends OrmmaView implements
 		int w = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", ViewGroup.LayoutParams.MATCH_PARENT);
 		int h = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_height", ViewGroup.LayoutParams.WRAP_CONTENT);
 		String bk = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "background");
-		setLayoutParams(new ViewGroup.LayoutParams(w, h));
+		if (getLayoutParams() != null) {
+			getLayoutParams().width = w;
+			getLayoutParams().height = h;
+			SdkLog.i(TAG, "Configured existing layout.");
+		}
+		else {
+			setLayoutParams(getNewLayoutParams(w, h));
+			SdkLog.i(TAG, "Configured new layout.");
+		}
+	
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
+	}
+	
+	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+		//SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
+		return new ViewGroup.LayoutParams(w,h);
 	}
 	
 	private void addCustomParams(Map<String, ?> params) {

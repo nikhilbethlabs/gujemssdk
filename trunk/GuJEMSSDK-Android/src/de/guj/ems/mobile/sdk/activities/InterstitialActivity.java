@@ -148,7 +148,7 @@ public final class InterstitialActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		SdkLog.i(TAG, "ACTIVITY ONCREATE " + this);
 		if (status < 0) {
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -167,6 +167,7 @@ public final class InterstitialActivity extends Activity {
 
 	@Override
 	protected void onPause() {
+		SdkLog.i(TAG, "ACTIVITY ONPAUSE " + this);
 		super.onPause();
 
 		if (updateThread != null && updateThread.isAlive()
@@ -186,6 +187,7 @@ public final class InterstitialActivity extends Activity {
 
 	@Override
 	protected void onResume() {
+		SdkLog.i(TAG, "ACTIVITY ONRESUME " + this);
 		super.onResume();
 
 		if (status == SUSPENDED) {
@@ -221,6 +223,7 @@ public final class InterstitialActivity extends Activity {
 
 	@Override
 	protected void onStart() {
+		SdkLog.i(TAG, "ACTIVITY ONSTART " + this);
 		super.onStart();
 
 		if (status < 0) {
@@ -302,7 +305,7 @@ public final class InterstitialActivity extends Activity {
 
 	@Override
 	protected void onStop() {
-
+		SdkLog.i(TAG, "ACTIVITY ON STOP " + this);
 		super.onStop();
 
 		if (updateThread != null && updateThread.isAlive()
@@ -331,6 +334,18 @@ public final class InterstitialActivity extends Activity {
 			}
 		}
 		super.onBackPressed();
+	}
+	
+	@Override
+	public void onRestart() {
+		SdkLog.i(TAG, "ACTIVITY ONRESTART " + this);
+		super.onRestart();
+	}
+	
+	@Override
+	public void startActivity(Intent i) {
+		SdkLog.i(TAG, "START ACTIVITY " + this);
+		super.startActivity(i);
 	}
 
 }
