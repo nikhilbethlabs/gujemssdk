@@ -1,0 +1,3 @@
+if all libraries stays in red color (GUJBaseSDK, GUJORMMASDK, aso.) open the
+Xcode Project GUJAdViewContext and run the targets "GUJAdViewContext" and 
+GUJAdViewContextSimulator.
