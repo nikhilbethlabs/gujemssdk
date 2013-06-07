@@ -1,0 +1,3 @@
+if the libraries stays in red color, open the GUJAdViewContext Xcode Projekt and run the target
+"ExtBuild: createReleaseBundle" with the 64-Bit (Mac) arch.
+Stay tuned ... it will take a while.

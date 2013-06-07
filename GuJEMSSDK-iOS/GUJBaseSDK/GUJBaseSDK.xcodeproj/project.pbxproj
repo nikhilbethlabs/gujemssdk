@@ -1,0 +1,944 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2652F44A1600900C00E48976 /* GUJBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 2652F4481600900C00E48976 /* GUJBase64Util.h */; };
+		2652F44B1600900C00E48976 /* GUJBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 2652F4481600900C00E48976 /* GUJBase64Util.h */; };
+		2652F44C1600900C00E48976 /* GUJBase64Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2652F4491600900C00E48976 /* GUJBase64Util.m */; };
+		2652F44D1600900C00E48976 /* GUJBase64Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2652F4491600900C00E48976 /* GUJBase64Util.m */; };
+		2659E9F915EFF325005418FD /* GUJNativeNetworkObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2659E9F715EFF324005418FD /* GUJNativeNetworkObserver.h */; };
+		2659E9FA15EFF325005418FD /* GUJNativeNetworkObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659E9F815EFF324005418FD /* GUJNativeNetworkObserver.m */; };
+		2659E9FD15EFF4E6005418FD /* GUJNativeNetworkObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659E9F815EFF324005418FD /* GUJNativeNetworkObserver.m */; };
+		2659E9FE15EFF4EB005418FD /* GUJNativeNetworkObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2659E9F715EFF324005418FD /* GUJNativeNetworkObserver.h */; };
+		2659EA0F15F007BD005418FD /* GUJNativeKeyboardObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2659EA0D15F007BB005418FD /* GUJNativeKeyboardObserver.h */; };
+		2659EA1015F007BD005418FD /* GUJNativeKeyboardObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EA0E15F007BC005418FD /* GUJNativeKeyboardObserver.m */; };
+		2659EA1215F00D3A005418FD /* GUJNativeKeyboardObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2659EA0D15F007BB005418FD /* GUJNativeKeyboardObserver.h */; };
+		2659EA1315F00D40005418FD /* GUJNativeKeyboardObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EA0E15F007BC005418FD /* GUJNativeKeyboardObserver.m */; };
+		26645BD715FB91F20062F2FC /* GUJNativeErrorObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FA529215F8E4F5009219B5 /* GUJNativeErrorObserver.m */; };
+		26645BD915FB91F90062F2FC /* GUJNativeErrorObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FA529115F8E4F5009219B5 /* GUJNativeErrorObserver.h */; };
+		2682AE6915EBE1C5006FB99B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2682AE6815EBE1C5006FB99B /* Foundation.framework */; };
+		2682AED115EBE24B006FB99B /* GUJConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9015EBE24B006FB99B /* GUJConstants.h */; };
+		2682AED215EBE24B006FB99B /* GUJLocalTypeDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9115EBE24B006FB99B /* GUJLocalTypeDefinition.h */; };
+		2682AED315EBE24B006FB99B /* GUJMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9215EBE24B006FB99B /* GUJMacros.h */; };
+		2682AED415EBE24B006FB99B /* GUJAdConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9515EBE24B006FB99B /* GUJAdConfiguration.h */; };
+		2682AED515EBE24B006FB99B /* GUJAdConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9615EBE24B006FB99B /* GUJAdConfiguration.m */; };
+		2682AED615EBE24B006FB99B /* GUJAdData.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9815EBE24B006FB99B /* GUJAdData.h */; };
+		2682AED715EBE24B006FB99B /* GUJAdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9915EBE24B006FB99B /* GUJAdData.m */; };
+		2682AED815EBE24B006FB99B /* GUJNotificationObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9A15EBE24B006FB99B /* GUJNotificationObserver.h */; };
+		2682AED915EBE24B006FB99B /* GUJNotificationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9B15EBE24B006FB99B /* GUJNotificationObserver.m */; };
+		2682AEDA15EBE24B006FB99B /* GUJAdURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9E15EBE24B006FB99B /* GUJAdURL.h */; };
+		2682AEDB15EBE24B006FB99B /* GUJAdURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9F15EBE24B006FB99B /* GUJAdURL.m */; };
+		2682AEDC15EBE24B006FB99B /* GUJAdURLBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA015EBE24B006FB99B /* GUJAdURLBuilder.h */; };
+		2682AEDD15EBE24B006FB99B /* GUJAdURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA115EBE24B006FB99B /* GUJAdURLBuilder.m */; };
+		2682AEDE15EBE24B006FB99B /* GUJServerConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA215EBE24B006FB99B /* GUJServerConnection.h */; };
+		2682AEDF15EBE24B006FB99B /* GUJServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA315EBE24B006FB99B /* GUJServerConnection.m */; };
+		2682AEE215EBE24B006FB99B /* GUJDeviceCapabilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA815EBE24B006FB99B /* GUJDeviceCapabilities.h */; };
+		2682AEE315EBE24B006FB99B /* GUJDeviceCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA915EBE24B006FB99B /* GUJDeviceCapabilities.m */; };
+		2682AEE615EBE24B006FB99B /* GUJNativeAudioPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEAC15EBE24B006FB99B /* GUJNativeAudioPlayer.h */; };
+		2682AEE715EBE24B006FB99B /* GUJNativeAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEAD15EBE24B006FB99B /* GUJNativeAudioPlayer.m */; };
+		2682AEE815EBE24B006FB99B /* GUJNativeCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEAE15EBE24B006FB99B /* GUJNativeCalendar.h */; };
+		2682AEE915EBE24B006FB99B /* GUJNativeCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEAF15EBE24B006FB99B /* GUJNativeCalendar.m */; };
+		2682AEEA15EBE24B006FB99B /* GUJNativeCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB015EBE24B006FB99B /* GUJNativeCamera.h */; };
+		2682AEEB15EBE24B006FB99B /* GUJNativeCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB115EBE24B006FB99B /* GUJNativeCamera.m */; };
+		2682AEEC15EBE24B006FB99B /* GUJNativeEmailComposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB215EBE24B006FB99B /* GUJNativeEmailComposer.h */; };
+		2682AEED15EBE24B006FB99B /* GUJNativeEmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB315EBE24B006FB99B /* GUJNativeEmailComposer.m */; };
+		2682AEEE15EBE24B006FB99B /* GUJNativeFrameWorkBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB415EBE24B006FB99B /* GUJNativeFrameWorkBridge.h */; };
+		2682AEEF15EBE24B006FB99B /* GUJNativeFrameWorkBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB515EBE24B006FB99B /* GUJNativeFrameWorkBridge.m */; };
+		2682AEF015EBE24B006FB99B /* GUJNativeLocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB615EBE24B006FB99B /* GUJNativeLocationManager.h */; };
+		2682AEF115EBE24B006FB99B /* GUJNativeLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB715EBE24B006FB99B /* GUJNativeLocationManager.m */; };
+		2682AEF215EBE24B006FB99B /* GUJNativeMapView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB815EBE24B006FB99B /* GUJNativeMapView.h */; };
+		2682AEF315EBE24B006FB99B /* GUJNativeMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB915EBE24B006FB99B /* GUJNativeMapView.m */; };
+		2682AEF415EBE24B006FB99B /* GUJNativeMoviePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBA15EBE24B006FB99B /* GUJNativeMoviePlayer.h */; };
+		2682AEF515EBE24B006FB99B /* GUJNativeMoviePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBB15EBE24B006FB99B /* GUJNativeMoviePlayer.m */; };
+		2682AEF615EBE24B006FB99B /* GUJNativeOrientationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBC15EBE24B006FB99B /* GUJNativeOrientationManager.h */; };
+		2682AEF715EBE24B006FB99B /* GUJNativeOrientationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBD15EBE24B006FB99B /* GUJNativeOrientationManager.m */; };
+		2682AEF815EBE24B006FB99B /* GUJNativePhoneCall.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBE15EBE24B006FB99B /* GUJNativePhoneCall.h */; };
+		2682AEF915EBE24B006FB99B /* GUJNativePhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBF15EBE24B006FB99B /* GUJNativePhoneCall.m */; };
+		2682AEFC15EBE24B006FB99B /* GUJNativeSizeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC215EBE24B006FB99B /* GUJNativeSizeObserver.h */; };
+		2682AEFD15EBE24B006FB99B /* GUJNativeSizeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC315EBE24B006FB99B /* GUJNativeSizeObserver.m */; };
+		2682AEFE15EBE24B006FB99B /* GUJNativeSMSComposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC415EBE24B006FB99B /* GUJNativeSMSComposer.h */; };
+		2682AEFF15EBE24B006FB99B /* GUJNativeSMSComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC515EBE24B006FB99B /* GUJNativeSMSComposer.m */; };
+		2682AF0015EBE24B006FB99B /* GUJAdView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC715EBE24B006FB99B /* GUJAdView.h */; };
+		2682AF0115EBE24B006FB99B /* GUJAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC815EBE24B006FB99B /* GUJAdView.m */; };
+		2682AF0215EBE24B006FB99B /* GUJModalViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC915EBE24B006FB99B /* GUJModalViewController.h */; };
+		2682AF0315EBE24B006FB99B /* GUJModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AECA15EBE24B006FB99B /* GUJModalViewController.m */; };
+		2682AF0415EBE24B006FB99B /* GUJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AECC15EBE24B006FB99B /* GUJUtil.h */; };
+		2682AF0515EBE24B006FB99B /* GUJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AECD15EBE24B006FB99B /* GUJUtil.m */; };
+		2682AF0615EBE24B006FB99B /* GUJAdViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AECF15EBE24B006FB99B /* GUJAdViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2682AF0715EBE24B006FB99B /* GUJAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AED015EBE24B006FB99B /* GUJAdViewController.m */; };
+		26B4E0F8164AB767002BE220 /* GUJAdViewEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B4E0F6164AB767002BE220 /* GUJAdViewEvent.h */; };
+		26B4E0F9164AB767002BE220 /* GUJAdViewEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B4E0F6164AB767002BE220 /* GUJAdViewEvent.h */; };
+		26B4E0FA164AB767002BE220 /* GUJAdViewEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B4E0F7164AB767002BE220 /* GUJAdViewEvent.m */; };
+		26B4E0FB164AB767002BE220 /* GUJAdViewEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B4E0F7164AB767002BE220 /* GUJAdViewEvent.m */; };
+		26BC9C9F15EBE57700AE2DBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9C9E15EBE57700AE2DBA /* UIKit.framework */; };
+		26BC9CA115EBE57D00AE2DBA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA015EBE57D00AE2DBA /* MediaPlayer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9CA315EBE58100AE2DBA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA215EBE58100AE2DBA /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9CA515EBE58700AE2DBA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA415EBE58700AE2DBA /* MapKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9CA715EBE59000AE2DBA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA615EBE59000AE2DBA /* CoreLocation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		26BC9CA915EBE5A000AE2DBA /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA815EBE5A000AE2DBA /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9CAB15EBE5B400AE2DBA /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CAA15EBE5B400AE2DBA /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D0C15EBE77C00AE2DBA /* GUJAdConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9615EBE24B006FB99B /* GUJAdConfiguration.m */; };
+		26BC9D0D15EBE77C00AE2DBA /* GUJAdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9915EBE24B006FB99B /* GUJAdData.m */; };
+		26BC9D0E15EBE77C00AE2DBA /* GUJNotificationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9B15EBE24B006FB99B /* GUJNotificationObserver.m */; };
+		26BC9D0F15EBE77C00AE2DBA /* GUJAdURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AE9F15EBE24B006FB99B /* GUJAdURL.m */; };
+		26BC9D1015EBE77C00AE2DBA /* GUJAdURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA115EBE24B006FB99B /* GUJAdURLBuilder.m */; };
+		26BC9D1115EBE77C00AE2DBA /* GUJServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA315EBE24B006FB99B /* GUJServerConnection.m */; };
+		26BC9D1215EBE77C00AE2DBA /* GUJDeviceCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEA915EBE24B006FB99B /* GUJDeviceCapabilities.m */; };
+		26BC9D1415EBE77C00AE2DBA /* GUJNativeAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEAD15EBE24B006FB99B /* GUJNativeAudioPlayer.m */; };
+		26BC9D1515EBE77C00AE2DBA /* GUJNativeCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEAF15EBE24B006FB99B /* GUJNativeCalendar.m */; };
+		26BC9D1615EBE77C00AE2DBA /* GUJNativeCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB115EBE24B006FB99B /* GUJNativeCamera.m */; };
+		26BC9D1715EBE77C00AE2DBA /* GUJNativeEmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB315EBE24B006FB99B /* GUJNativeEmailComposer.m */; };
+		26BC9D1815EBE77C00AE2DBA /* GUJNativeFrameWorkBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB515EBE24B006FB99B /* GUJNativeFrameWorkBridge.m */; };
+		26BC9D1915EBE77C00AE2DBA /* GUJNativeLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB715EBE24B006FB99B /* GUJNativeLocationManager.m */; };
+		26BC9D1A15EBE77C00AE2DBA /* GUJNativeMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEB915EBE24B006FB99B /* GUJNativeMapView.m */; };
+		26BC9D1B15EBE77C00AE2DBA /* GUJNativeMoviePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBB15EBE24B006FB99B /* GUJNativeMoviePlayer.m */; };
+		26BC9D1C15EBE77C00AE2DBA /* GUJNativeOrientationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBD15EBE24B006FB99B /* GUJNativeOrientationManager.m */; };
+		26BC9D1D15EBE77C00AE2DBA /* GUJNativePhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEBF15EBE24B006FB99B /* GUJNativePhoneCall.m */; };
+		26BC9D1F15EBE77C00AE2DBA /* GUJNativeSizeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC315EBE24B006FB99B /* GUJNativeSizeObserver.m */; };
+		26BC9D2015EBE77C00AE2DBA /* GUJNativeSMSComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC515EBE24B006FB99B /* GUJNativeSMSComposer.m */; };
+		26BC9D2115EBE77C00AE2DBA /* GUJAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AEC815EBE24B006FB99B /* GUJAdView.m */; };
+		26BC9D2215EBE77C00AE2DBA /* GUJModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AECA15EBE24B006FB99B /* GUJModalViewController.m */; };
+		26BC9D2315EBE77C00AE2DBA /* GUJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AECD15EBE24B006FB99B /* GUJUtil.m */; };
+		26BC9D2415EBE77C00AE2DBA /* GUJAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2682AED015EBE24B006FB99B /* GUJAdViewController.m */; };
+		26BC9D2615EBE77C00AE2DBA /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CAA15EBE5B400AE2DBA /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D2715EBE77C00AE2DBA /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA815EBE5A000AE2DBA /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D2815EBE77C00AE2DBA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA415EBE58700AE2DBA /* MapKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D2915EBE77C00AE2DBA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA215EBE58100AE2DBA /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D2A15EBE77C00AE2DBA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA015EBE57D00AE2DBA /* MediaPlayer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		26BC9D2B15EBE77C00AE2DBA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9CA615EBE59000AE2DBA /* CoreLocation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		26BC9D2C15EBE77C00AE2DBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC9C9E15EBE57700AE2DBA /* UIKit.framework */; };
+		26BC9D2D15EBE77C00AE2DBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2682AE6815EBE1C5006FB99B /* Foundation.framework */; };
+		26BC9D2F15EBE77C00AE2DBA /* GUJConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9015EBE24B006FB99B /* GUJConstants.h */; };
+		26BC9D3015EBE77C00AE2DBA /* GUJLocalTypeDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9115EBE24B006FB99B /* GUJLocalTypeDefinition.h */; };
+		26BC9D3115EBE77C00AE2DBA /* GUJMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9215EBE24B006FB99B /* GUJMacros.h */; };
+		26BC9D3215EBE77C00AE2DBA /* GUJAdConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9515EBE24B006FB99B /* GUJAdConfiguration.h */; };
+		26BC9D3315EBE77C00AE2DBA /* GUJAdData.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9815EBE24B006FB99B /* GUJAdData.h */; };
+		26BC9D3415EBE77C00AE2DBA /* GUJNotificationObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9A15EBE24B006FB99B /* GUJNotificationObserver.h */; };
+		26BC9D3515EBE77C00AE2DBA /* GUJAdURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AE9E15EBE24B006FB99B /* GUJAdURL.h */; };
+		26BC9D3615EBE77C00AE2DBA /* GUJAdURLBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA015EBE24B006FB99B /* GUJAdURLBuilder.h */; };
+		26BC9D3715EBE77C00AE2DBA /* GUJServerConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA215EBE24B006FB99B /* GUJServerConnection.h */; };
+		26BC9D3915EBE77C00AE2DBA /* GUJDeviceCapabilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEA815EBE24B006FB99B /* GUJDeviceCapabilities.h */; };
+		26BC9D3B15EBE77C00AE2DBA /* GUJNativeAudioPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEAC15EBE24B006FB99B /* GUJNativeAudioPlayer.h */; };
+		26BC9D3C15EBE77C00AE2DBA /* GUJNativeCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEAE15EBE24B006FB99B /* GUJNativeCalendar.h */; };
+		26BC9D3D15EBE77C00AE2DBA /* GUJNativeCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB015EBE24B006FB99B /* GUJNativeCamera.h */; };
+		26BC9D3E15EBE77C00AE2DBA /* GUJNativeEmailComposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB215EBE24B006FB99B /* GUJNativeEmailComposer.h */; };
+		26BC9D3F15EBE77C00AE2DBA /* GUJNativeFrameWorkBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB415EBE24B006FB99B /* GUJNativeFrameWorkBridge.h */; };
+		26BC9D4015EBE77C00AE2DBA /* GUJNativeLocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB615EBE24B006FB99B /* GUJNativeLocationManager.h */; };
+		26BC9D4115EBE77C00AE2DBA /* GUJNativeMapView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEB815EBE24B006FB99B /* GUJNativeMapView.h */; };
+		26BC9D4215EBE77C00AE2DBA /* GUJNativeMoviePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBA15EBE24B006FB99B /* GUJNativeMoviePlayer.h */; };
+		26BC9D4315EBE77C00AE2DBA /* GUJNativeOrientationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBC15EBE24B006FB99B /* GUJNativeOrientationManager.h */; };
+		26BC9D4415EBE77C00AE2DBA /* GUJNativePhoneCall.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEBE15EBE24B006FB99B /* GUJNativePhoneCall.h */; };
+		26BC9D4615EBE77C00AE2DBA /* GUJNativeSizeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC215EBE24B006FB99B /* GUJNativeSizeObserver.h */; };
+		26BC9D4715EBE77C00AE2DBA /* GUJNativeSMSComposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC415EBE24B006FB99B /* GUJNativeSMSComposer.h */; };
+		26BC9D4815EBE77C00AE2DBA /* GUJAdView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC715EBE24B006FB99B /* GUJAdView.h */; };
+		26BC9D4915EBE77C00AE2DBA /* GUJModalViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AEC915EBE24B006FB99B /* GUJModalViewController.h */; };
+		26BC9D4A15EBE77C00AE2DBA /* GUJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AECC15EBE24B006FB99B /* GUJUtil.h */; };
+		26BC9D4B15EBE77C00AE2DBA /* GUJAdViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2682AECF15EBE24B006FB99B /* GUJAdViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		26BC9DE915EBEFF400AE2DBA /* GUJAdViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2682AECF15EBE24B006FB99B /* GUJAdViewController.h */; };
+		26BC9DEB15EBEFFD00AE2DBA /* GUJAdViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2682AECF15EBE24B006FB99B /* GUJAdViewController.h */; };
+		26E88948165D05960077BF19 /* GUJBaseSDKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88947165D05960077BF19 /* GUJBaseSDKVersion.h */; };
+		26E88949165D05960077BF19 /* GUJBaseSDKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88947165D05960077BF19 /* GUJBaseSDKVersion.h */; };
+		26FA529315F8E4F5009219B5 /* GUJNativeErrorObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FA529115F8E4F5009219B5 /* GUJNativeErrorObserver.h */; };
+		26FA529415F8E4F5009219B5 /* GUJNativeErrorObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FA529215F8E4F5009219B5 /* GUJNativeErrorObserver.m */; };
+		26FF725D15EF7C14008573EE /* GUJNativeTiltObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF725B15EF7C12008573EE /* GUJNativeTiltObserver.h */; };
+		26FF725E15EF7C14008573EE /* GUJNativeTiltObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF725C15EF7C13008573EE /* GUJNativeTiltObserver.m */; };
+		26FF726215EF7DBF008573EE /* GUJNativeShakeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF726015EF7DBC008573EE /* GUJNativeShakeObserver.h */; };
+		26FF726315EF7DBF008573EE /* GUJNativeShakeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF726115EF7DBE008573EE /* GUJNativeShakeObserver.m */; };
+		26FF726415EF87C6008573EE /* GUJNativeShakeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF726115EF7DBE008573EE /* GUJNativeShakeObserver.m */; };
+		26FF726515EF87C8008573EE /* GUJNativeTiltObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF725C15EF7C13008573EE /* GUJNativeTiltObserver.m */; };
+		26FF726615EF87D0008573EE /* GUJNativeShakeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF726015EF7DBC008573EE /* GUJNativeShakeObserver.h */; };
+		26FF726715EF87D6008573EE /* GUJNativeTiltObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF725B15EF7C12008573EE /* GUJNativeTiltObserver.h */; };
+		26FF72B015EFA198008573EE /* GUJBannerXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF72AE15EFA198008573EE /* GUJBannerXMLParser.h */; };
+		26FF72B115EFA198008573EE /* GUJBannerXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF72AF15EFA198008573EE /* GUJBannerXMLParser.m */; };
+		26FF72B415EFB647008573EE /* GUJBannerXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF72AE15EFA198008573EE /* GUJBannerXMLParser.h */; };
+		26FF72B615EFB657008573EE /* GUJBannerXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF72AF15EFA198008573EE /* GUJBannerXMLParser.m */; };
+		26FF72BE15EFC8CA008573EE /* AnimatedGif.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF72BC15EFC8CA008573EE /* AnimatedGif.h */; };
+		26FF72BF15EFC8CA008573EE /* AnimatedGif.h in Headers */ = {isa = PBXBuildFile; fileRef = 26FF72BC15EFC8CA008573EE /* AnimatedGif.h */; };
+		26FF72C015EFC8CA008573EE /* AnimatedGif.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF72BD15EFC8CA008573EE /* AnimatedGif.m */; settings = {COMPILER_FLAGS = "-fno-optimize-sibling-calls"; }; };
+		26FF72C115EFC8CA008573EE /* AnimatedGif.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF72BD15EFC8CA008573EE /* AnimatedGif.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		26BC9DE815EBEFED00AE2DBA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				26BC9DE915EBEFF400AE2DBA /* GUJAdViewController.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26BC9DEA15EBEFF900AE2DBA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				26BC9DEB15EBEFFD00AE2DBA /* GUJAdViewController.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2652F4481600900C00E48976 /* GUJBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJBase64Util.h; sourceTree = "<group>"; };
+		2652F4491600900C00E48976 /* GUJBase64Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJBase64Util.m; sourceTree = "<group>"; };
+		2659E9F715EFF324005418FD /* GUJNativeNetworkObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeNetworkObserver.h; sourceTree = "<group>"; };
+		2659E9F815EFF324005418FD /* GUJNativeNetworkObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeNetworkObserver.m; sourceTree = "<group>"; };
+		2659EA0D15F007BB005418FD /* GUJNativeKeyboardObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeKeyboardObserver.h; sourceTree = "<group>"; };
+		2659EA0E15F007BC005418FD /* GUJNativeKeyboardObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeKeyboardObserver.m; sourceTree = "<group>"; };
+		2682AE6515EBE1C5006FB99B /* libGUJBaseSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJBaseSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2682AE6815EBE1C5006FB99B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2682AE6C15EBE1C5006FB99B /* GUJBaseSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GUJBaseSDK-Prefix.pch"; sourceTree = "<group>"; };
+		2682AE7615EBE1C5006FB99B /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		2682AE9015EBE24B006FB99B /* GUJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJConstants.h; sourceTree = "<group>"; };
+		2682AE9115EBE24B006FB99B /* GUJLocalTypeDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJLocalTypeDefinition.h; sourceTree = "<group>"; };
+		2682AE9215EBE24B006FB99B /* GUJMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJMacros.h; sourceTree = "<group>"; };
+		2682AE9515EBE24B006FB99B /* GUJAdConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdConfiguration.h; sourceTree = "<group>"; };
+		2682AE9615EBE24B006FB99B /* GUJAdConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdConfiguration.m; sourceTree = "<group>"; };
+		2682AE9815EBE24B006FB99B /* GUJAdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdData.h; sourceTree = "<group>"; };
+		2682AE9915EBE24B006FB99B /* GUJAdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdData.m; sourceTree = "<group>"; };
+		2682AE9A15EBE24B006FB99B /* GUJNotificationObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNotificationObserver.h; sourceTree = "<group>"; };
+		2682AE9B15EBE24B006FB99B /* GUJNotificationObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNotificationObserver.m; sourceTree = "<group>"; };
+		2682AE9E15EBE24B006FB99B /* GUJAdURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdURL.h; sourceTree = "<group>"; };
+		2682AE9F15EBE24B006FB99B /* GUJAdURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdURL.m; sourceTree = "<group>"; };
+		2682AEA015EBE24B006FB99B /* GUJAdURLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdURLBuilder.h; sourceTree = "<group>"; };
+		2682AEA115EBE24B006FB99B /* GUJAdURLBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdURLBuilder.m; sourceTree = "<group>"; };
+		2682AEA215EBE24B006FB99B /* GUJServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJServerConnection.h; sourceTree = "<group>"; };
+		2682AEA315EBE24B006FB99B /* GUJServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJServerConnection.m; sourceTree = "<group>"; };
+		2682AEA815EBE24B006FB99B /* GUJDeviceCapabilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJDeviceCapabilities.h; sourceTree = "<group>"; };
+		2682AEA915EBE24B006FB99B /* GUJDeviceCapabilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJDeviceCapabilities.m; sourceTree = "<group>"; };
+		2682AEAC15EBE24B006FB99B /* GUJNativeAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeAudioPlayer.h; sourceTree = "<group>"; };
+		2682AEAD15EBE24B006FB99B /* GUJNativeAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeAudioPlayer.m; sourceTree = "<group>"; };
+		2682AEAE15EBE24B006FB99B /* GUJNativeCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeCalendar.h; sourceTree = "<group>"; };
+		2682AEAF15EBE24B006FB99B /* GUJNativeCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeCalendar.m; sourceTree = "<group>"; };
+		2682AEB015EBE24B006FB99B /* GUJNativeCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeCamera.h; sourceTree = "<group>"; };
+		2682AEB115EBE24B006FB99B /* GUJNativeCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeCamera.m; sourceTree = "<group>"; };
+		2682AEB215EBE24B006FB99B /* GUJNativeEmailComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeEmailComposer.h; sourceTree = "<group>"; };
+		2682AEB315EBE24B006FB99B /* GUJNativeEmailComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeEmailComposer.m; sourceTree = "<group>"; };
+		2682AEB415EBE24B006FB99B /* GUJNativeFrameWorkBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeFrameWorkBridge.h; sourceTree = "<group>"; };
+		2682AEB515EBE24B006FB99B /* GUJNativeFrameWorkBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeFrameWorkBridge.m; sourceTree = "<group>"; };
+		2682AEB615EBE24B006FB99B /* GUJNativeLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeLocationManager.h; sourceTree = "<group>"; };
+		2682AEB715EBE24B006FB99B /* GUJNativeLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeLocationManager.m; sourceTree = "<group>"; };
+		2682AEB815EBE24B006FB99B /* GUJNativeMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeMapView.h; sourceTree = "<group>"; };
+		2682AEB915EBE24B006FB99B /* GUJNativeMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeMapView.m; sourceTree = "<group>"; };
+		2682AEBA15EBE24B006FB99B /* GUJNativeMoviePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeMoviePlayer.h; sourceTree = "<group>"; };
+		2682AEBB15EBE24B006FB99B /* GUJNativeMoviePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeMoviePlayer.m; sourceTree = "<group>"; };
+		2682AEBC15EBE24B006FB99B /* GUJNativeOrientationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeOrientationManager.h; sourceTree = "<group>"; };
+		2682AEBD15EBE24B006FB99B /* GUJNativeOrientationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeOrientationManager.m; sourceTree = "<group>"; };
+		2682AEBE15EBE24B006FB99B /* GUJNativePhoneCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativePhoneCall.h; sourceTree = "<group>"; };
+		2682AEBF15EBE24B006FB99B /* GUJNativePhoneCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativePhoneCall.m; sourceTree = "<group>"; };
+		2682AEC215EBE24B006FB99B /* GUJNativeSizeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeSizeObserver.h; sourceTree = "<group>"; };
+		2682AEC315EBE24B006FB99B /* GUJNativeSizeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeSizeObserver.m; sourceTree = "<group>"; };
+		2682AEC415EBE24B006FB99B /* GUJNativeSMSComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeSMSComposer.h; sourceTree = "<group>"; };
+		2682AEC515EBE24B006FB99B /* GUJNativeSMSComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeSMSComposer.m; sourceTree = "<group>"; };
+		2682AEC715EBE24B006FB99B /* GUJAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdView.h; sourceTree = "<group>"; };
+		2682AEC815EBE24B006FB99B /* GUJAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdView.m; sourceTree = "<group>"; };
+		2682AEC915EBE24B006FB99B /* GUJModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJModalViewController.h; sourceTree = "<group>"; };
+		2682AECA15EBE24B006FB99B /* GUJModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJModalViewController.m; sourceTree = "<group>"; };
+		2682AECC15EBE24B006FB99B /* GUJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJUtil.h; sourceTree = "<group>"; };
+		2682AECD15EBE24B006FB99B /* GUJUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJUtil.m; sourceTree = "<group>"; };
+		2682AECF15EBE24B006FB99B /* GUJAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewController.h; sourceTree = "<group>"; };
+		2682AED015EBE24B006FB99B /* GUJAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdViewController.m; sourceTree = "<group>"; };
+		26B4E0F6164AB767002BE220 /* GUJAdViewEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewEvent.h; sourceTree = "<group>"; };
+		26B4E0F7164AB767002BE220 /* GUJAdViewEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdViewEvent.m; sourceTree = "<group>"; };
+		26BC9C9E15EBE57700AE2DBA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		26BC9CA015EBE57D00AE2DBA /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		26BC9CA215EBE58100AE2DBA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		26BC9CA415EBE58700AE2DBA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		26BC9CA615EBE59000AE2DBA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		26BC9CA815EBE5A000AE2DBA /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		26BC9CAA15EBE5B400AE2DBA /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		26BC9D4F15EBE77C00AE2DBA /* libGUJBaseSDKSimulator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJBaseSDKSimulator.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		26E88947165D05960077BF19 /* GUJBaseSDKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJBaseSDKVersion.h; sourceTree = "<group>"; };
+		26FA529115F8E4F5009219B5 /* GUJNativeErrorObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeErrorObserver.h; sourceTree = "<group>"; };
+		26FA529215F8E4F5009219B5 /* GUJNativeErrorObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeErrorObserver.m; sourceTree = "<group>"; };
+		26FF725B15EF7C12008573EE /* GUJNativeTiltObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeTiltObserver.h; sourceTree = "<group>"; };
+		26FF725C15EF7C13008573EE /* GUJNativeTiltObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeTiltObserver.m; sourceTree = "<group>"; };
+		26FF726015EF7DBC008573EE /* GUJNativeShakeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJNativeShakeObserver.h; sourceTree = "<group>"; };
+		26FF726115EF7DBE008573EE /* GUJNativeShakeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJNativeShakeObserver.m; sourceTree = "<group>"; };
+		26FF72AE15EFA198008573EE /* GUJBannerXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJBannerXMLParser.h; sourceTree = "<group>"; };
+		26FF72AF15EFA198008573EE /* GUJBannerXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJBannerXMLParser.m; sourceTree = "<group>"; };
+		26FF72BC15EFC8CA008573EE /* AnimatedGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedGif.h; sourceTree = "<group>"; };
+		26FF72BD15EFC8CA008573EE /* AnimatedGif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedGif.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2682AE6215EBE1C5006FB99B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26BC9CAB15EBE5B400AE2DBA /* MessageUI.framework in Frameworks */,
+				26BC9CA915EBE5A000AE2DBA /* EventKit.framework in Frameworks */,
+				26BC9CA515EBE58700AE2DBA /* MapKit.framework in Frameworks */,
+				26BC9CA315EBE58100AE2DBA /* AVFoundation.framework in Frameworks */,
+				26BC9CA115EBE57D00AE2DBA /* MediaPlayer.framework in Frameworks */,
+				26BC9CA715EBE59000AE2DBA /* CoreLocation.framework in Frameworks */,
+				26BC9C9F15EBE57700AE2DBA /* UIKit.framework in Frameworks */,
+				2682AE6915EBE1C5006FB99B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26BC9D2515EBE77C00AE2DBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26BC9D2615EBE77C00AE2DBA /* MessageUI.framework in Frameworks */,
+				26BC9D2715EBE77C00AE2DBA /* EventKit.framework in Frameworks */,
+				26BC9D2815EBE77C00AE2DBA /* MapKit.framework in Frameworks */,
+				26BC9D2915EBE77C00AE2DBA /* AVFoundation.framework in Frameworks */,
+				26BC9D2A15EBE77C00AE2DBA /* MediaPlayer.framework in Frameworks */,
+				26BC9D2B15EBE77C00AE2DBA /* CoreLocation.framework in Frameworks */,
+				26BC9D2C15EBE77C00AE2DBA /* UIKit.framework in Frameworks */,
+				26BC9D2D15EBE77C00AE2DBA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2682AE5A15EBE1C5006FB99B = {
+			isa = PBXGroup;
+			children = (
+				2682AE6A15EBE1C5006FB99B /* GUJBaseSDK */,
+				2682AE6715EBE1C5006FB99B /* Frameworks */,
+				2682AE6615EBE1C5006FB99B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2682AE6615EBE1C5006FB99B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE6515EBE1C5006FB99B /* libGUJBaseSDK.a */,
+				26BC9D4F15EBE77C00AE2DBA /* libGUJBaseSDKSimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2682AE6715EBE1C5006FB99B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26BC9CAA15EBE5B400AE2DBA /* MessageUI.framework */,
+				26BC9CA815EBE5A000AE2DBA /* EventKit.framework */,
+				26BC9CA615EBE59000AE2DBA /* CoreLocation.framework */,
+				26BC9CA415EBE58700AE2DBA /* MapKit.framework */,
+				26BC9CA215EBE58100AE2DBA /* AVFoundation.framework */,
+				26BC9CA015EBE57D00AE2DBA /* MediaPlayer.framework */,
+				26BC9C9E15EBE57700AE2DBA /* UIKit.framework */,
+				2682AE6815EBE1C5006FB99B /* Foundation.framework */,
+				2682AE7615EBE1C5006FB99B /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2682AE6A15EBE1C5006FB99B /* GUJBaseSDK */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE8F15EBE24B006FB99B /* Classes */,
+				2682AE6B15EBE1C5006FB99B /* Supporting Files */,
+			);
+			path = GUJBaseSDK;
+			sourceTree = "<group>";
+		};
+		2682AE6B15EBE1C5006FB99B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE6C15EBE1C5006FB99B /* GUJBaseSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2682AE8F15EBE24B006FB99B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE9315EBE24B006FB99B /* Private */,
+				2682AECE15EBE24B006FB99B /* Public */,
+				2682AE9015EBE24B006FB99B /* GUJConstants.h */,
+				2682AE9115EBE24B006FB99B /* GUJLocalTypeDefinition.h */,
+				2682AE9215EBE24B006FB99B /* GUJMacros.h */,
+				26E88947165D05960077BF19 /* GUJBaseSDKVersion.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		2682AE9315EBE24B006FB99B /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE9415EBE24B006FB99B /* Configuration */,
+				2682AE9715EBE24B006FB99B /* Foundation */,
+				2682AE9C15EBE24B006FB99B /* IO */,
+				2682AEA715EBE24B006FB99B /* Native */,
+				2682AEC615EBE24B006FB99B /* UI */,
+				2682AECB15EBE24B006FB99B /* Util */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		2682AE9415EBE24B006FB99B /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE9515EBE24B006FB99B /* GUJAdConfiguration.h */,
+				2682AE9615EBE24B006FB99B /* GUJAdConfiguration.m */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		2682AE9715EBE24B006FB99B /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				26FF72BC15EFC8CA008573EE /* AnimatedGif.h */,
+				26FF72BD15EFC8CA008573EE /* AnimatedGif.m */,
+				2682AE9815EBE24B006FB99B /* GUJAdData.h */,
+				2682AE9915EBE24B006FB99B /* GUJAdData.m */,
+				2682AE9A15EBE24B006FB99B /* GUJNotificationObserver.h */,
+				2682AE9B15EBE24B006FB99B /* GUJNotificationObserver.m */,
+				26B4E0F6164AB767002BE220 /* GUJAdViewEvent.h */,
+				26B4E0F7164AB767002BE220 /* GUJAdViewEvent.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		2682AE9C15EBE24B006FB99B /* IO */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE9D15EBE24B006FB99B /* HTTP */,
+				2682AEA415EBE24B006FB99B /* XML */,
+			);
+			path = IO;
+			sourceTree = "<group>";
+		};
+		2682AE9D15EBE24B006FB99B /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				2682AE9E15EBE24B006FB99B /* GUJAdURL.h */,
+				2682AE9F15EBE24B006FB99B /* GUJAdURL.m */,
+				2682AEA015EBE24B006FB99B /* GUJAdURLBuilder.h */,
+				2682AEA115EBE24B006FB99B /* GUJAdURLBuilder.m */,
+				2682AEA215EBE24B006FB99B /* GUJServerConnection.h */,
+				2682AEA315EBE24B006FB99B /* GUJServerConnection.m */,
+			);
+			path = HTTP;
+			sourceTree = "<group>";
+		};
+		2682AEA415EBE24B006FB99B /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				26FF72AE15EFA198008573EE /* GUJBannerXMLParser.h */,
+				26FF72AF15EFA198008573EE /* GUJBannerXMLParser.m */,
+			);
+			path = XML;
+			sourceTree = "<group>";
+		};
+		2682AEA715EBE24B006FB99B /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				2682AEA815EBE24B006FB99B /* GUJDeviceCapabilities.h */,
+				2682AEA915EBE24B006FB99B /* GUJDeviceCapabilities.m */,
+				2682AEB415EBE24B006FB99B /* GUJNativeFrameWorkBridge.h */,
+				2682AEB515EBE24B006FB99B /* GUJNativeFrameWorkBridge.m */,
+				2682AEAC15EBE24B006FB99B /* GUJNativeAudioPlayer.h */,
+				2682AEAD15EBE24B006FB99B /* GUJNativeAudioPlayer.m */,
+				2682AEAE15EBE24B006FB99B /* GUJNativeCalendar.h */,
+				2682AEAF15EBE24B006FB99B /* GUJNativeCalendar.m */,
+				2682AEB015EBE24B006FB99B /* GUJNativeCamera.h */,
+				2682AEB115EBE24B006FB99B /* GUJNativeCamera.m */,
+				2682AEB215EBE24B006FB99B /* GUJNativeEmailComposer.h */,
+				2682AEB315EBE24B006FB99B /* GUJNativeEmailComposer.m */,
+				26FA529115F8E4F5009219B5 /* GUJNativeErrorObserver.h */,
+				26FA529215F8E4F5009219B5 /* GUJNativeErrorObserver.m */,
+				2659EA0D15F007BB005418FD /* GUJNativeKeyboardObserver.h */,
+				2659EA0E15F007BC005418FD /* GUJNativeKeyboardObserver.m */,
+				2682AEB615EBE24B006FB99B /* GUJNativeLocationManager.h */,
+				2682AEB715EBE24B006FB99B /* GUJNativeLocationManager.m */,
+				2659E9F715EFF324005418FD /* GUJNativeNetworkObserver.h */,
+				2659E9F815EFF324005418FD /* GUJNativeNetworkObserver.m */,
+				2682AEB815EBE24B006FB99B /* GUJNativeMapView.h */,
+				2682AEB915EBE24B006FB99B /* GUJNativeMapView.m */,
+				2682AEBA15EBE24B006FB99B /* GUJNativeMoviePlayer.h */,
+				2682AEBB15EBE24B006FB99B /* GUJNativeMoviePlayer.m */,
+				2682AEBC15EBE24B006FB99B /* GUJNativeOrientationManager.h */,
+				2682AEBD15EBE24B006FB99B /* GUJNativeOrientationManager.m */,
+				2682AEBE15EBE24B006FB99B /* GUJNativePhoneCall.h */,
+				2682AEBF15EBE24B006FB99B /* GUJNativePhoneCall.m */,
+				2682AEC215EBE24B006FB99B /* GUJNativeSizeObserver.h */,
+				2682AEC315EBE24B006FB99B /* GUJNativeSizeObserver.m */,
+				2682AEC415EBE24B006FB99B /* GUJNativeSMSComposer.h */,
+				2682AEC515EBE24B006FB99B /* GUJNativeSMSComposer.m */,
+				26FF725B15EF7C12008573EE /* GUJNativeTiltObserver.h */,
+				26FF725C15EF7C13008573EE /* GUJNativeTiltObserver.m */,
+				26FF726015EF7DBC008573EE /* GUJNativeShakeObserver.h */,
+				26FF726115EF7DBE008573EE /* GUJNativeShakeObserver.m */,
+			);
+			path = Native;
+			sourceTree = "<group>";
+		};
+		2682AEC615EBE24B006FB99B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2682AEC715EBE24B006FB99B /* GUJAdView.h */,
+				2682AEC815EBE24B006FB99B /* GUJAdView.m */,
+				2682AEC915EBE24B006FB99B /* GUJModalViewController.h */,
+				2682AECA15EBE24B006FB99B /* GUJModalViewController.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2682AECB15EBE24B006FB99B /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				2682AECC15EBE24B006FB99B /* GUJUtil.h */,
+				2682AECD15EBE24B006FB99B /* GUJUtil.m */,
+				2652F4481600900C00E48976 /* GUJBase64Util.h */,
+				2652F4491600900C00E48976 /* GUJBase64Util.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		2682AECE15EBE24B006FB99B /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				2682AECF15EBE24B006FB99B /* GUJAdViewController.h */,
+				2682AED015EBE24B006FB99B /* GUJAdViewController.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2682AE6315EBE1C5006FB99B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2682AED115EBE24B006FB99B /* GUJConstants.h in Headers */,
+				2682AED215EBE24B006FB99B /* GUJLocalTypeDefinition.h in Headers */,
+				2682AED315EBE24B006FB99B /* GUJMacros.h in Headers */,
+				2682AED415EBE24B006FB99B /* GUJAdConfiguration.h in Headers */,
+				2682AED615EBE24B006FB99B /* GUJAdData.h in Headers */,
+				2682AED815EBE24B006FB99B /* GUJNotificationObserver.h in Headers */,
+				2682AEDA15EBE24B006FB99B /* GUJAdURL.h in Headers */,
+				2682AEDC15EBE24B006FB99B /* GUJAdURLBuilder.h in Headers */,
+				2682AEDE15EBE24B006FB99B /* GUJServerConnection.h in Headers */,
+				2682AEE215EBE24B006FB99B /* GUJDeviceCapabilities.h in Headers */,
+				2682AEE615EBE24B006FB99B /* GUJNativeAudioPlayer.h in Headers */,
+				2682AEE815EBE24B006FB99B /* GUJNativeCalendar.h in Headers */,
+				2682AEEA15EBE24B006FB99B /* GUJNativeCamera.h in Headers */,
+				2682AEEC15EBE24B006FB99B /* GUJNativeEmailComposer.h in Headers */,
+				2682AEEE15EBE24B006FB99B /* GUJNativeFrameWorkBridge.h in Headers */,
+				2682AEF015EBE24B006FB99B /* GUJNativeLocationManager.h in Headers */,
+				2682AEF215EBE24B006FB99B /* GUJNativeMapView.h in Headers */,
+				2682AEF415EBE24B006FB99B /* GUJNativeMoviePlayer.h in Headers */,
+				2682AEF615EBE24B006FB99B /* GUJNativeOrientationManager.h in Headers */,
+				2682AEF815EBE24B006FB99B /* GUJNativePhoneCall.h in Headers */,
+				2682AEFC15EBE24B006FB99B /* GUJNativeSizeObserver.h in Headers */,
+				2682AEFE15EBE24B006FB99B /* GUJNativeSMSComposer.h in Headers */,
+				2682AF0015EBE24B006FB99B /* GUJAdView.h in Headers */,
+				2682AF0215EBE24B006FB99B /* GUJModalViewController.h in Headers */,
+				2682AF0415EBE24B006FB99B /* GUJUtil.h in Headers */,
+				2682AF0615EBE24B006FB99B /* GUJAdViewController.h in Headers */,
+				26FF725D15EF7C14008573EE /* GUJNativeTiltObserver.h in Headers */,
+				26FF726215EF7DBF008573EE /* GUJNativeShakeObserver.h in Headers */,
+				26FF72BE15EFC8CA008573EE /* AnimatedGif.h in Headers */,
+				2659E9F915EFF325005418FD /* GUJNativeNetworkObserver.h in Headers */,
+				26FF72B015EFA198008573EE /* GUJBannerXMLParser.h in Headers */,
+				2659EA0F15F007BD005418FD /* GUJNativeKeyboardObserver.h in Headers */,
+				26FA529315F8E4F5009219B5 /* GUJNativeErrorObserver.h in Headers */,
+				2652F44A1600900C00E48976 /* GUJBase64Util.h in Headers */,
+				26B4E0F8164AB767002BE220 /* GUJAdViewEvent.h in Headers */,
+				26E88948165D05960077BF19 /* GUJBaseSDKVersion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26BC9D2E15EBE77C00AE2DBA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26BC9D2F15EBE77C00AE2DBA /* GUJConstants.h in Headers */,
+				26FF72B415EFB647008573EE /* GUJBannerXMLParser.h in Headers */,
+				26BC9D3015EBE77C00AE2DBA /* GUJLocalTypeDefinition.h in Headers */,
+				26BC9D3215EBE77C00AE2DBA /* GUJAdConfiguration.h in Headers */,
+				26BC9D3115EBE77C00AE2DBA /* GUJMacros.h in Headers */,
+				26BC9D3315EBE77C00AE2DBA /* GUJAdData.h in Headers */,
+				26BC9D3415EBE77C00AE2DBA /* GUJNotificationObserver.h in Headers */,
+				26BC9D3515EBE77C00AE2DBA /* GUJAdURL.h in Headers */,
+				26BC9D3615EBE77C00AE2DBA /* GUJAdURLBuilder.h in Headers */,
+				2659E9FE15EFF4EB005418FD /* GUJNativeNetworkObserver.h in Headers */,
+				26BC9D3715EBE77C00AE2DBA /* GUJServerConnection.h in Headers */,
+				26BC9D3915EBE77C00AE2DBA /* GUJDeviceCapabilities.h in Headers */,
+				26BC9D3B15EBE77C00AE2DBA /* GUJNativeAudioPlayer.h in Headers */,
+				26BC9D3C15EBE77C00AE2DBA /* GUJNativeCalendar.h in Headers */,
+				26BC9D3D15EBE77C00AE2DBA /* GUJNativeCamera.h in Headers */,
+				26BC9D3E15EBE77C00AE2DBA /* GUJNativeEmailComposer.h in Headers */,
+				26BC9D3F15EBE77C00AE2DBA /* GUJNativeFrameWorkBridge.h in Headers */,
+				26BC9D4015EBE77C00AE2DBA /* GUJNativeLocationManager.h in Headers */,
+				26BC9D4115EBE77C00AE2DBA /* GUJNativeMapView.h in Headers */,
+				26BC9D4215EBE77C00AE2DBA /* GUJNativeMoviePlayer.h in Headers */,
+				26BC9D4315EBE77C00AE2DBA /* GUJNativeOrientationManager.h in Headers */,
+				26BC9D4415EBE77C00AE2DBA /* GUJNativePhoneCall.h in Headers */,
+				26BC9D4615EBE77C00AE2DBA /* GUJNativeSizeObserver.h in Headers */,
+				26BC9D4715EBE77C00AE2DBA /* GUJNativeSMSComposer.h in Headers */,
+				26BC9D4815EBE77C00AE2DBA /* GUJAdView.h in Headers */,
+				26BC9D4915EBE77C00AE2DBA /* GUJModalViewController.h in Headers */,
+				26BC9D4A15EBE77C00AE2DBA /* GUJUtil.h in Headers */,
+				26BC9D4B15EBE77C00AE2DBA /* GUJAdViewController.h in Headers */,
+				26FF726615EF87D0008573EE /* GUJNativeShakeObserver.h in Headers */,
+				26FF726715EF87D6008573EE /* GUJNativeTiltObserver.h in Headers */,
+				26645BD915FB91F90062F2FC /* GUJNativeErrorObserver.h in Headers */,
+				26FF72BF15EFC8CA008573EE /* AnimatedGif.h in Headers */,
+				2659EA1215F00D3A005418FD /* GUJNativeKeyboardObserver.h in Headers */,
+				2652F44B1600900C00E48976 /* GUJBase64Util.h in Headers */,
+				26B4E0F9164AB767002BE220 /* GUJAdViewEvent.h in Headers */,
+				26E88949165D05960077BF19 /* GUJBaseSDKVersion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2682AE6415EBE1C5006FB99B /* GUJBaseSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2682AE8915EBE1C5006FB99B /* Build configuration list for PBXNativeTarget "GUJBaseSDK" */;
+			buildPhases = (
+				2682AE6115EBE1C5006FB99B /* Sources */,
+				2682AE6215EBE1C5006FB99B /* Frameworks */,
+				2682AE6315EBE1C5006FB99B /* Headers */,
+				26BC9DEA15EBEFF900AE2DBA /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GUJBaseSDK;
+			productName = GUJBaseSDK;
+			productReference = 2682AE6515EBE1C5006FB99B /* libGUJBaseSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		26BC9D0A15EBE77C00AE2DBA /* GUJBaseSDKSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26BC9D4C15EBE77C00AE2DBA /* Build configuration list for PBXNativeTarget "GUJBaseSDKSimulator" */;
+			buildPhases = (
+				26BC9D0B15EBE77C00AE2DBA /* Sources */,
+				26BC9D2515EBE77C00AE2DBA /* Frameworks */,
+				26BC9D2E15EBE77C00AE2DBA /* Headers */,
+				26BC9DE815EBEFED00AE2DBA /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GUJBaseSDKSimulator;
+			productName = GUJBaseSDK;
+			productReference = 26BC9D4F15EBE77C00AE2DBA /* libGUJBaseSDKSimulator.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2682AE5C15EBE1C5006FB99B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "guj ems";
+			};
+			buildConfigurationList = 2682AE5F15EBE1C5006FB99B /* Build configuration list for PBXProject "GUJBaseSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2682AE5A15EBE1C5006FB99B;
+			productRefGroup = 2682AE6615EBE1C5006FB99B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2682AE6415EBE1C5006FB99B /* GUJBaseSDK */,
+				26BC9D0A15EBE77C00AE2DBA /* GUJBaseSDKSimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2682AE6115EBE1C5006FB99B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2682AED515EBE24B006FB99B /* GUJAdConfiguration.m in Sources */,
+				2682AED715EBE24B006FB99B /* GUJAdData.m in Sources */,
+				2682AED915EBE24B006FB99B /* GUJNotificationObserver.m in Sources */,
+				2682AEDB15EBE24B006FB99B /* GUJAdURL.m in Sources */,
+				2682AEDD15EBE24B006FB99B /* GUJAdURLBuilder.m in Sources */,
+				2682AEDF15EBE24B006FB99B /* GUJServerConnection.m in Sources */,
+				2682AEE315EBE24B006FB99B /* GUJDeviceCapabilities.m in Sources */,
+				2682AEE715EBE24B006FB99B /* GUJNativeAudioPlayer.m in Sources */,
+				2682AEEB15EBE24B006FB99B /* GUJNativeCamera.m in Sources */,
+				2682AEED15EBE24B006FB99B /* GUJNativeEmailComposer.m in Sources */,
+				2682AEEF15EBE24B006FB99B /* GUJNativeFrameWorkBridge.m in Sources */,
+				2682AEF115EBE24B006FB99B /* GUJNativeLocationManager.m in Sources */,
+				2682AEF315EBE24B006FB99B /* GUJNativeMapView.m in Sources */,
+				2682AEF715EBE24B006FB99B /* GUJNativeOrientationManager.m in Sources */,
+				2682AEF915EBE24B006FB99B /* GUJNativePhoneCall.m in Sources */,
+				2682AEFD15EBE24B006FB99B /* GUJNativeSizeObserver.m in Sources */,
+				2682AEFF15EBE24B006FB99B /* GUJNativeSMSComposer.m in Sources */,
+				2682AF0115EBE24B006FB99B /* GUJAdView.m in Sources */,
+				2682AF0315EBE24B006FB99B /* GUJModalViewController.m in Sources */,
+				2682AF0515EBE24B006FB99B /* GUJUtil.m in Sources */,
+				2682AF0715EBE24B006FB99B /* GUJAdViewController.m in Sources */,
+				26FF725E15EF7C14008573EE /* GUJNativeTiltObserver.m in Sources */,
+				26FF726315EF7DBF008573EE /* GUJNativeShakeObserver.m in Sources */,
+				26FF72B115EFA198008573EE /* GUJBannerXMLParser.m in Sources */,
+				26FF72C015EFC8CA008573EE /* AnimatedGif.m in Sources */,
+				2659E9FA15EFF325005418FD /* GUJNativeNetworkObserver.m in Sources */,
+				2682AEF515EBE24B006FB99B /* GUJNativeMoviePlayer.m in Sources */,
+				2682AEE915EBE24B006FB99B /* GUJNativeCalendar.m in Sources */,
+				2659EA1015F007BD005418FD /* GUJNativeKeyboardObserver.m in Sources */,
+				26FA529415F8E4F5009219B5 /* GUJNativeErrorObserver.m in Sources */,
+				2652F44C1600900C00E48976 /* GUJBase64Util.m in Sources */,
+				26B4E0FA164AB767002BE220 /* GUJAdViewEvent.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26BC9D0B15EBE77C00AE2DBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26BC9D0C15EBE77C00AE2DBA /* GUJAdConfiguration.m in Sources */,
+				26BC9D0D15EBE77C00AE2DBA /* GUJAdData.m in Sources */,
+				26BC9D0E15EBE77C00AE2DBA /* GUJNotificationObserver.m in Sources */,
+				26BC9D0F15EBE77C00AE2DBA /* GUJAdURL.m in Sources */,
+				26BC9D1015EBE77C00AE2DBA /* GUJAdURLBuilder.m in Sources */,
+				26BC9D1115EBE77C00AE2DBA /* GUJServerConnection.m in Sources */,
+				26BC9D1215EBE77C00AE2DBA /* GUJDeviceCapabilities.m in Sources */,
+				26BC9D1415EBE77C00AE2DBA /* GUJNativeAudioPlayer.m in Sources */,
+				26BC9D1515EBE77C00AE2DBA /* GUJNativeCalendar.m in Sources */,
+				26BC9D1615EBE77C00AE2DBA /* GUJNativeCamera.m in Sources */,
+				26BC9D1715EBE77C00AE2DBA /* GUJNativeEmailComposer.m in Sources */,
+				26BC9D1815EBE77C00AE2DBA /* GUJNativeFrameWorkBridge.m in Sources */,
+				26BC9D1915EBE77C00AE2DBA /* GUJNativeLocationManager.m in Sources */,
+				26BC9D1A15EBE77C00AE2DBA /* GUJNativeMapView.m in Sources */,
+				26BC9D1B15EBE77C00AE2DBA /* GUJNativeMoviePlayer.m in Sources */,
+				26BC9D1C15EBE77C00AE2DBA /* GUJNativeOrientationManager.m in Sources */,
+				26BC9D1D15EBE77C00AE2DBA /* GUJNativePhoneCall.m in Sources */,
+				26BC9D1F15EBE77C00AE2DBA /* GUJNativeSizeObserver.m in Sources */,
+				26BC9D2015EBE77C00AE2DBA /* GUJNativeSMSComposer.m in Sources */,
+				26BC9D2115EBE77C00AE2DBA /* GUJAdView.m in Sources */,
+				26BC9D2215EBE77C00AE2DBA /* GUJModalViewController.m in Sources */,
+				26BC9D2315EBE77C00AE2DBA /* GUJUtil.m in Sources */,
+				26BC9D2415EBE77C00AE2DBA /* GUJAdViewController.m in Sources */,
+				26FF726515EF87C8008573EE /* GUJNativeTiltObserver.m in Sources */,
+				26FF726415EF87C6008573EE /* GUJNativeShakeObserver.m in Sources */,
+				26FF72B615EFB657008573EE /* GUJBannerXMLParser.m in Sources */,
+				26FF72C115EFC8CA008573EE /* AnimatedGif.m in Sources */,
+				2659E9FD15EFF4E6005418FD /* GUJNativeNetworkObserver.m in Sources */,
+				26645BD715FB91F20062F2FC /* GUJNativeErrorObserver.m in Sources */,
+				2659EA1315F00D40005418FD /* GUJNativeKeyboardObserver.m in Sources */,
+				2652F44D1600900C00E48976 /* GUJBase64Util.m in Sources */,
+				26B4E0FB164AB767002BE220 /* GUJAdViewEvent.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2682AE8715EBE1C5006FB99B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2682AE8815EBE1C5006FB99B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2682AE8A15EBE1C5006FB99B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = /tmp/GUJBaseSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJBaseSDK/GUJBaseSDK-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GENERATE_PKGINFO_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Debug;
+		};
+		2682AE8B15EBE1C5006FB99B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = /tmp/GUJBaseSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJBaseSDK/GUJBaseSDK-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GENERATE_PKGINFO_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Release;
+		};
+		26BC9D4D15EBE77C00AE2DBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALTERNATE_PERMISSIONS_FILES = "";
+				ARCHS = (
+					armv7,
+					armv6,
+					i386,
+				);
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				DSTROOT = /tmp/GUJBaseSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJBaseSDK/GUJBaseSDK-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJBaseSDKSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7 i386";
+			};
+			name = Debug;
+		};
+		26BC9D4E15EBE77C00AE2DBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALTERNATE_PERMISSIONS_FILES = "";
+				ARCHS = (
+					armv7,
+					armv6,
+					i386,
+				);
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				DSTROOT = /tmp/GUJBaseSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJBaseSDK/GUJBaseSDK-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJBaseSDKSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7 i386";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2682AE5F15EBE1C5006FB99B /* Build configuration list for PBXProject "GUJBaseSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2682AE8715EBE1C5006FB99B /* Debug */,
+				2682AE8815EBE1C5006FB99B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2682AE8915EBE1C5006FB99B /* Build configuration list for PBXNativeTarget "GUJBaseSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2682AE8A15EBE1C5006FB99B /* Debug */,
+				2682AE8B15EBE1C5006FB99B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26BC9D4C15EBE77C00AE2DBA /* Build configuration list for PBXNativeTarget "GUJBaseSDKSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26BC9D4D15EBE77C00AE2DBA /* Debug */,
+				26BC9D4E15EBE77C00AE2DBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2682AE5C15EBE1C5006FB99B /* Project object */;
+}
