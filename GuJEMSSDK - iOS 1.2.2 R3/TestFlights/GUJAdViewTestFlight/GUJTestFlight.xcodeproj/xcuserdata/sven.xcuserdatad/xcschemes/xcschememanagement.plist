@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>GUJAdViewTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>GUJAdViewTestSimulator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>GUJAdViewTestSimulator_AIO.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>GUJAdViewTest_AIO.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>GUJAdViewTest_iOS3.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>26281208166406F00073D74F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>263F67DD165CFA9D0017EF3D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>265EAAC81665219C0093EA7E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2675CE1616678EFD00AD34C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26DC00151666696D00346B23</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26DC006516667CB700346B23</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

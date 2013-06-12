@@ -1,0 +1,4 @@
+Non official SDK based on source of mOcean_iOS_SDK_2.12.0_2012-06-25
+Fixed a Bug that results unproportional scaled Ads on retina devices.
+
+See Source: MASTAdWebView.m - Line 79-89
