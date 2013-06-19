@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
+import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.AdResponseHandler;
@@ -158,7 +159,23 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements AdR
 			else {
 				SdkLog.d(TAG, "No interstitial, no target -> back to previous view.");
 			}
-		} else {
+		}
+		else if (data.indexOf("<VAST") < 20) {
+			// head to video interstitial intent
+			Intent i = new Intent(
+					context,
+					VideoInterstitialActivity.class);
+			SdkLog.i(TAG, "Found video interstitial -> show");
+			// pass banner data and original intent to video interstitial
+			i.putExtra("data", data);
+			i.putExtra("target", target);
+			if (this.settings.getOnAdSuccessListener() != null) {
+				this.settings.getOnAdSuccessListener().onAdSuccess();
+			}
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(i);			
+		} 
+		else {
 			// head to interstitial intent
 			Intent i = new Intent(
 					this.context,

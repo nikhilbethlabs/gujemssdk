@@ -119,7 +119,9 @@ public final class VideoInterstitialActivity extends Activity {
 		}
 
 		// load predefined html with replacements from VAST xml
-		adView.loadData("", "text/html",
+		String baseData = getString(R.string.videoInterstitialHtml);
+		SdkLog.d(TAG, "videoInterstitialHtml: " + baseData);
+		adView.loadData(baseData, "text/html",
 				"utf-8");
 		
 		
