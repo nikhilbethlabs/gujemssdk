@@ -402,6 +402,10 @@ public abstract class AdServerSettingsAdapter implements
 				qStr += "&" + param + "=" + val;
 			}
 		}
+		
+		//TODO externalize
+		qStr += "&actl=" + SdkUtil.getConfigString();
+		
 		return qStr;
 	}
 

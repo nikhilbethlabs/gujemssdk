@@ -79,5 +79,5 @@ public class Targeting {
 			return false;
 		}		
 	}
-
+	
 }

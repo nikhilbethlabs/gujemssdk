@@ -289,6 +289,8 @@ public class GuJEMSAdView extends OrmmaView implements
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
 		
+		SdkLog.i(TAG, "SETTINGS STRING == " + SdkUtil.getConfigString());
+		
 		this.targeting = new Targeting(context);
 		this.addJavascriptInterface(EMSInterface.getInstance(targeting), "emsmobile");
 		
