@@ -52,7 +52,7 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 		super.onCreate(savedInstanceState);
 
 
-		// Steffen F�hres, RTL Interactive
+		// Steffen Führes, RTL Interactive
 		// getUserAgent hat sonst ein Problem, wenn interstitial 1. Werbemittel
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(getApplicationContext());
