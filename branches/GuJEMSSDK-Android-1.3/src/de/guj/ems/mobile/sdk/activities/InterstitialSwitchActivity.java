@@ -183,7 +183,7 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 				SdkLog.d(TAG, "No interstitial, no target -> back to previous view.");
 				finish();
 			}
-		} else if (data.startsWith("<VAST")) {
+		} else if (data.indexOf("<VAST") < 20) {
 			// head to video interstitial intent
 			Intent i = new Intent(
 					getApplicationContext(),
