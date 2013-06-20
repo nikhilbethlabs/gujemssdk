@@ -1,24 +1,17 @@
 package de.guj.ems.mobile.sdk.activities;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Xml;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.VASTXmlParser;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
@@ -43,6 +36,8 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  */
 public final class VideoInterstitialActivity extends Activity {
 
+	private VASTXmlParser xml;
+	
 	static class InterstitialThread extends Thread {
 
 		static volatile boolean PAUSED = false;
@@ -99,31 +94,31 @@ public final class VideoInterstitialActivity extends Activity {
 		// (2) get views for display and hiding
 		this.spinner = (ProgressBar) findViewById(R.id.emsIntSpinner2);
 		this.root = (RelativeLayout) findViewById(R.id.emsIntLayout);
-		((Button)findViewById(R.id.emsIntCloseButton2)).setVisibility(View.GONE);
+		((ImageButton)findViewById(R.id.emsIntCloseButton2)).setVisibility(View.GONE);
 		
 		this.adView = new GuJEMSAdView(VideoInterstitialActivity.this);
 
 		// (3) configure interstitial adview
-		XmlPullParser parser = Xml.newPullParser();
 		try {
-			parser.setInput(new StringReader(getIntent().getExtras().getString("data")));
-			parser.nextTag();
-			parseVAST(parser);
+			this.xml = new VASTXmlParser(getIntent().getExtras().getString("data"));
 		}
 		catch (Exception e) {
-			SdkLog.e(TAG, "Error parsing VAST from adserver", e);
+			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
 			if (this.target != null) {
 				startActivity(target);
 			}
 			finish();			
+			
 		}
 
 		// load predefined html with replacements from VAST xml
 		String baseData = getString(R.string.videoInterstitialHtml);
-		SdkLog.d(TAG, "videoInterstitialHtml: " + baseData);
-		adView.loadData(baseData, "text/html",
-				"utf-8");
 		
+		adView.loadData(baseData.replace("#videourl#", this.xml.getMediaFileUrl()), "text/html",
+				"utf-8");
+		// this.xml.getImpressionTrackerUrl();
+		// this.xml.getDuration();
+		// this.xml.getTrackingByType(Tracking.EVENT_MID);
 		
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -157,22 +152,6 @@ public final class VideoInterstitialActivity extends Activity {
 
 	}
 	
-	private void parseVAST(XmlPullParser p) throws XmlPullParserException, IOException {
-		p.require(XmlPullParser.START_TAG, null, "VAST");
-	    while (p.next() != XmlPullParser.END_TAG) {
-	        if (p.getEventType() != XmlPullParser.START_TAG) {
-	            continue;
-	        }
-	        String name = p.getName();
-	        // Starts by looking for the entry tag
-	        if (name.equals("entry")) {
-
-	        } else {
-
-	        }
-	    }  
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

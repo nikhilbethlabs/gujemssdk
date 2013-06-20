@@ -910,13 +910,16 @@ public class OrmmaAssetController extends OrmmaController {
 				e.printStackTrace();
 			}
 		}
+		boolean hasHTMLWrap = data.indexOf("</html>") >= 0;
 		FileOutputStream out = getAssetOutputString(file);
-		out.write("<!DOCTYPE html>".getBytes());
-		out.write("<html>".getBytes());
-		out.write("<head>".getBytes());
-
-		out.write(WEBVIEW_VIEWPORT_META);
-		out.write("<title>-w-</title> ".getBytes());
+		
+		if (!hasHTMLWrap) {
+			out.write("<!DOCTYPE html>".getBytes());
+			out.write("<html>".getBytes());
+			out.write("<head>".getBytes());
+			out.write(WEBVIEW_VIEWPORT_META);
+			out.write("<title>-w-</title> ".getBytes());
+		}
 		out.write(("<script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
 				.getBytes());
 		out.write(("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>")
@@ -927,14 +930,18 @@ public class OrmmaAssetController extends OrmmaController {
 			out.write(injection.getBytes());
 			out.write("</script>".getBytes());
 		}
-		out.write("</head>".getBytes());
-		out.write(WEBVIEW_BODY_STYLE);
-		out.write("<div align=\"center\" style=\"text-align: center;\"> "
-				.getBytes());
+		if (!hasHTMLWrap) {
+			out.write("</head>".getBytes());
+			out.write(WEBVIEW_BODY_STYLE);
+			out.write("<div align=\"center\" style=\"text-align: center;\"> "
+					.getBytes());
+		}
 		out.write(data.getBytes());
-		out.write("</div> ".getBytes());
-		out.write("</body> ".getBytes());
-		out.write("</html> ".getBytes());
+		if (!hasHTMLWrap) {
+			out.write("</div> ".getBytes());
+			out.write("</body> ".getBytes());
+			out.write("</html> ".getBytes());
+		}
 
 		out.flush();
 		out.close();
