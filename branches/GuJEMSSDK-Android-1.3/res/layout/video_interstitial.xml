@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emsVidIntLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000" >
+
+    <ImageButton
+        android:id="@+id/emsVidIntButton"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000"
+        android:contentDescription="@string/close"
+        android:scaleType="fitCenter"
+        android:src="@drawable/closebutton" />
+
+    <VideoView
+        android:id="@+id/emsVideoView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#00000000"
+        android:visibility="visible" />
+
+    <ProgressBar
+	    android:id="@+id/emsVidIntSpinner"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
+	    android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/emsVideoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="false"
+        android:background="#000000"
+        android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:inputType="none"
+        android:text="@string/videoPreload"
+        android:textSize="12sp" >
+
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/emsVidIntSndButton"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000"
+        android:contentDescription="@string/sound"
+        android:scaleType="fitCenter"
+        android:src="@drawable/sound_button_off" />
+
+    </RelativeLayout>
+
+

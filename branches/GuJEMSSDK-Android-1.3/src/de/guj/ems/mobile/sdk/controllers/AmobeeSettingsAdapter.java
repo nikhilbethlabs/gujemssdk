@@ -51,10 +51,10 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				putAttrToParam(AdServerSettingsAdapter.EMS_UUID,
 						SdkUtil.getContext()
 								.getString(R.string.amobeeUserId));
-				putAttrValue(AdServerSettingsAdapter.EMS_UUID, getCookieRepl());
+				putAttrValue(AdServerSettingsAdapter.EMS_UUID, SdkUtil.getDeviceId());
 			}
 			else {
-				SdkLog.d(TAG, "ems_uid: device id transmission not allowed by adspace.");
+				SdkLog.d(TAG, "Device id transmission not allowed by adspace.");
 			}
 		}
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_ZONEID) != null) {
@@ -208,7 +208,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				putAttrToParam(AdServerSettingsAdapter.EMS_UUID,
 						SdkUtil.getContext()
 								.getString(R.string.amobeeUserId));
-				putAttrValue(AdServerSettingsAdapter.EMS_UUID, getCookieRepl());
+				putAttrValue(AdServerSettingsAdapter.EMS_UUID, SdkUtil.getDeviceId());
 			}
 			else {
 				SdkLog.d(TAG, "ems_uid: device id transmission not allowed by adspace.");

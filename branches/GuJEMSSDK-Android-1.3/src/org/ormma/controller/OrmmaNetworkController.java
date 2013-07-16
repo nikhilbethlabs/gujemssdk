@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.webkit.JavascriptInterface;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -47,6 +48,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	 *
 	 * @return the network
 	 */
+	@JavascriptInterface
 	public String getNetwork() {
 		
 		Context c = SdkUtil.getContext();
@@ -83,6 +85,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	/**
 	 * Start network listener.
 	 */
+	@JavascriptInterface
 	public void startNetworkListener() {
 		if (mNetworkListenerCount == 0) {
 			mBroadCastReceiver = new OrmmaNetworkBroadcastReceiver(this);
@@ -97,6 +100,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	/**
 	 * Stop network listener.
 	 */
+	@JavascriptInterface
 	public void stopNetworkListener() {
 		mNetworkListenerCount--;
 		if (mNetworkListenerCount == 0) {

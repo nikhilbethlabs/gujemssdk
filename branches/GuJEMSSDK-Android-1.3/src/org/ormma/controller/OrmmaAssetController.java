@@ -46,6 +46,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.view.View;
 import android.view.Window;
+import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 import de.guj.ems.mobile.sdk.util.SdkLog;
@@ -136,6 +137,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @param url
 	 *            the url
 	 */
+	@JavascriptInterface
 	public void addAsset(String url, String alias) {
 		try {
 			if (url.startsWith("ormma://screenshot")) {
@@ -243,6 +245,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * 
 	 * @return the cache remaining
 	 */
+	@JavascriptInterface
 	public int cacheRemaining() {
 		File filesDir = mContext.getFilesDir();
 		StatFs stats = new StatFs(filesDir.getPath());
@@ -397,6 +400,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * 
 	 * @return the asset path
 	 */
+	@JavascriptInterface
 	public String getAssetPath() {
 		return "file://" + mContext.getFilesDir() + "/";
 	}
@@ -419,6 +423,7 @@ public class OrmmaAssetController extends OrmmaController {
 		return path;
 	}
 
+	@JavascriptInterface
 	public long getCacheRemaining() {
 		File filesDir = mContext.getFilesDir();
 		StatFs stats = new StatFs(filesDir.getPath());
@@ -489,6 +494,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @param asset
 	 *            the asset
 	 */
+	@JavascriptInterface
 	public void removeAsset(String asset) {
 		File dir = getAssetDir(getAssetPath(asset));
 		dir.mkdirs();
@@ -583,6 +589,7 @@ public class OrmmaAssetController extends OrmmaController {
 	}
 
 	@SuppressLint("NewApi")
+	@JavascriptInterface
 	public void storePicture(String url) {
 		try {
 			HttpEntity entity = getHttpEntity(url);
@@ -919,11 +926,15 @@ public class OrmmaAssetController extends OrmmaController {
 			out.write("<head>".getBytes());
 			out.write(WEBVIEW_VIEWPORT_META);
 			out.write("<title>-w-</title> ".getBytes());
+			out.write(("<script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
+					.getBytes());
+			out.write(("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>")
+					.getBytes());
 		}
-		out.write(("<script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
-				.getBytes());
-		out.write(("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>")
-				.getBytes());
+		else {
+			data = data.replace("<head>", ("<head><script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
+			+ ("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>"));
+		}
 
 		if (injection != null) {
 			out.write("<script type=\"text/javascript\">".getBytes());

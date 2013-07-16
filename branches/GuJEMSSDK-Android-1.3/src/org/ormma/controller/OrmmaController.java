@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.webkit.JavascriptInterface;
 
 /**
  * Abstract class fort all controller objects
@@ -104,6 +105,7 @@ public abstract class OrmmaController {
 		/**
 		 * Mute Audio
 		 */
+		@JavascriptInterface
 		public void muteAudio(){
 			audioMuted = true;
 		}
@@ -112,6 +114,7 @@ public abstract class OrmmaController {
 		 * Get autoPlay
 		 * 
 		 */
+		@JavascriptInterface
 		public boolean isAutoPlay(){
 			return (autoPlay == true);
 		}
@@ -119,6 +122,7 @@ public abstract class OrmmaController {
 		/**
 		 * Get show control
 		 */
+		@JavascriptInterface
 		public boolean showControl(){
 			return showControl;
 		}
@@ -127,6 +131,7 @@ public abstract class OrmmaController {
 		 * 
 		 * Get looping option
 		 */
+		@JavascriptInterface
 		public boolean doLoop(){
 			return doLoop;
 		}
@@ -134,6 +139,7 @@ public abstract class OrmmaController {
 		/**
 		 * Get mute status
 		 */
+		@JavascriptInterface
 		public boolean doMute(){
 			return audioMuted;
 		}
@@ -150,6 +156,7 @@ public abstract class OrmmaController {
 		 * 
 		 * Get start style
 		 */
+		@JavascriptInterface
 		public boolean isFullScreen(){
 			return startStyle.equalsIgnoreCase(FULL_SCREEN);
 		}		

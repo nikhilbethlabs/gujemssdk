@@ -345,7 +345,7 @@ public abstract class AdServerSettingsAdapter implements
 	protected double [] getLocation() {
 		LocationManager lm = (LocationManager) SdkUtil.getContext()
 				.getSystemService(Context.LOCATION_SERVICE);
-		List<String> providers = lm.getProviders(true);
+		List<String> providers = lm.getProviders(false);
 		Iterator<String> provider = providers.iterator();
 		Location lastKnown = null;
 		double [] loc = new double[2];

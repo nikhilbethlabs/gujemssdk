@@ -46,17 +46,16 @@ import de.guj.ems.mobile.sdk.util.Targeting;
  * @author stein16
  * 
  */
-public class GuJEMSAdView extends OrmmaView implements
-		AdResponseHandler {
+public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 
 	private Targeting targeting;
-	
+
 	private Handler handler = new Handler();
 
 	private IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSAdView";
-	
+
 	/**
 	 * Initialize view without configuration
 	 * 
@@ -93,7 +92,7 @@ public class GuJEMSAdView extends OrmmaView implements
 	public GuJEMSAdView(Context context, int resId) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
-		this.preLoadInitialize(context,attrs);
+		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
 		this.load();
 	}
@@ -163,29 +162,33 @@ public class GuJEMSAdView extends OrmmaView implements
 	}
 
 	private void handleInflatedLayout(AttributeSet attrs) {
-		int w = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", ViewGroup.LayoutParams.MATCH_PARENT);
-		int h = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_height", ViewGroup.LayoutParams.WRAP_CONTENT);
-		String bk = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "background");
+		int w = attrs.getAttributeIntValue(
+				"http://schemas.android.com/apk/res/android", "layout_width",
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		int h = attrs.getAttributeIntValue(
+				"http://schemas.android.com/apk/res/android", "layout_height",
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		String bk = attrs.getAttributeValue(
+				"http://schemas.android.com/apk/res/android", "background");
 		if (getLayoutParams() != null) {
 			getLayoutParams().width = w;
 			getLayoutParams().height = h;
 			SdkLog.i(TAG, "Configured existing layout.");
-		}
-		else {
+		} else {
 			setLayoutParams(getNewLayoutParams(w, h));
 			SdkLog.i(TAG, "Configured new layout.");
 		}
-	
+
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
 	}
-	
+
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		//SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
-		return new ViewGroup.LayoutParams(w,h);
+		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
+		return new ViewGroup.LayoutParams(w, h);
 	}
-	
+
 	private void addCustomParams(Map<String, ?> params) {
 		if (params != null) {
 			Iterator<String> mi = params.keySet().iterator();
@@ -193,7 +196,8 @@ public class GuJEMSAdView extends OrmmaView implements
 				String param = mi.next();
 				Object value = params.get(param);
 				if (value.getClass().equals(String.class)) {
-					this.settings.addCustomRequestParameter(param, (String) value);
+					this.settings.addCustomRequestParameter(param,
+							(String) value);
 				} else if (value.getClass().equals(Double.class)) {
 					this.settings.addCustomRequestParameter(param,
 							((Double) value).doubleValue());
@@ -205,8 +209,7 @@ public class GuJEMSAdView extends OrmmaView implements
 							"Unknown object in custom params. Only String, Integer, Double allowed.");
 				}
 			}
-		}
-		else {
+		} else {
 			SdkLog.w(TAG, "Custom params constructor used with null-array.");
 		}
 	}
@@ -220,8 +223,6 @@ public class GuJEMSAdView extends OrmmaView implements
 		Resources r = getResources();
 		XmlResourceParser parser = r.getLayout(resId);
 
-		
-		
 		int state = 0;
 		do {
 			try {
@@ -242,7 +243,6 @@ public class GuJEMSAdView extends OrmmaView implements
 			}
 		} while (state != XmlPullParser.END_DOCUMENT);
 
-		
 		return as;
 	}
 
@@ -254,15 +254,14 @@ public class GuJEMSAdView extends OrmmaView implements
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "ems_adcall: START async. AdServer request");
-				SdkLog.d(TAG, "ems_adcall: url = " + url);
+				SdkLog.i(TAG, "START async. AdServer request");
+				SdkLog.d(TAG, "url = " + url);
 				new AdServerAccess(SdkUtil.getUserAgent(), this)
 						.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
-				SdkLog.i(TAG,
-						"ems_adcall: No network connection - not requesting ads.");
+				SdkLog.i(TAG, "No network connection - not requesting ads.");
 				setVisibility(GONE);
 				processError("No network connection.");
 			}
@@ -272,35 +271,43 @@ public class GuJEMSAdView extends OrmmaView implements
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
-		
+
 		this.targeting = new Targeting(context);
-		this.addJavascriptInterface(EMSInterface.getInstance(targeting), "emsmobile");
-		
+		this.addJavascriptInterface(EMSInterface.getInstance(targeting),
+				"emsmobile");
+
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, set);
 		} else if (isInEditMode()) {
-			super.loadDataWithBaseURL("file:///android_asset/", "<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>", "text/html", "utf-8", null);			
+			super.loadDataWithBaseURL(
+					"file:///android_asset/",
+					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
+					"text/html", "utf-8", null);
 			setVisibility(VISIBLE);
 		}
-		
 
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
-		
+
+		// TODO this is debugging output
 		SdkLog.i(TAG, "SETTINGS STRING == " + SdkUtil.getConfigString());
-		
+
 		this.targeting = new Targeting(context);
-		this.addJavascriptInterface(EMSInterface.getInstance(targeting), "emsmobile");
-		
+		this.addJavascriptInterface(EMSInterface.getInstance(targeting),
+				"emsmobile");
+
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
 		} else if (isInEditMode()) {
-			super.loadDataWithBaseURL("file:///android_asset/", "<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>", "text/html", "utf-8", null);
+			super.loadDataWithBaseURL(
+					"file:///android_asset/",
+					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
+					"text/html", "utf-8", null);
 			setVisibility(VISIBLE);
 		}
-		
+
 	}
 
 	@Override
@@ -377,7 +384,7 @@ public class GuJEMSAdView extends OrmmaView implements
 	@Override
 	public void reload() {
 		if (settings != null) {
-			
+
 			super.clearView();
 			setVisibility(View.GONE);
 
@@ -385,15 +392,14 @@ public class GuJEMSAdView extends OrmmaView implements
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "ems_adcall: START async. AdServer request");
-				SdkLog.d(TAG, "ems_adcall: url = " + url);
+				SdkLog.i(TAG, "START async. AdServer request");
+				SdkLog.d(TAG, "url = " + url);
 				new AdServerAccess(SdkUtil.getUserAgent(), this)
 						.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
-				SdkLog.i(TAG,
-						"ems_adcall: No network connection - not requesting ads.");
+				SdkLog.i(TAG, "No network connection - not requesting ads.");
 				setVisibility(GONE);
 				processError("No network connection.");
 			}
@@ -404,7 +410,9 @@ public class GuJEMSAdView extends OrmmaView implements
 
 	/**
 	 * Add a listener to the view which responds to empty ad responses
-	 * @param l Implemented listener
+	 * 
+	 * @param l
+	 *            Implemented listener
 	 */
 	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
 		this.settings.setOnAdEmptyListener(l);
@@ -412,7 +420,9 @@ public class GuJEMSAdView extends OrmmaView implements
 
 	/**
 	 * Add a listener to the view which responds to errors while requesting ads
-	 * @param l Implemented listener
+	 * 
+	 * @param l
+	 *            Implemented listener
 	 */
 	public void setOnAdErrorListener(IOnAdErrorListener l) {
 		this.settings.setOnAdErrorListener(l);
@@ -420,12 +430,12 @@ public class GuJEMSAdView extends OrmmaView implements
 
 	/**
 	 * Add a listener to the view which responds to successful ad requests
-	 * @param l Implemented listener
+	 * 
+	 * @param l
+	 *            Implemented listener
 	 */
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
-	
-	
-	
+
 }

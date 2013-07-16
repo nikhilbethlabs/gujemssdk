@@ -16,6 +16,7 @@ import org.ormma.view.OrmmaView;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.webkit.JavascriptInterface;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
@@ -57,6 +58,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * @param flag - Should the location services be enabled / not.
 	 */
+	@JavascriptInterface
 	public void allowLocationServices(boolean flag) {
 		this.allowLocationServices = flag;
 	}
@@ -64,6 +66,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * @return - allowLocationServices
 	 */
+	@JavascriptInterface
 	public boolean allowLocationServices() {
 		return allowLocationServices;
 	}	
@@ -78,6 +81,7 @@ public class OrmmaLocationController extends OrmmaController {
 	 *
 	 * @return the location
 	 */
+	@JavascriptInterface
 	public String getLocation() {
 		SdkLog.d(SdkLog_TAG, "getLocation: hasPermission: " + hasPermission);
 		if (!hasPermission) {
@@ -105,6 +109,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * Start location listener.
 	 */
+	@JavascriptInterface
 	public void startLocationListener() {
 		if (mLocListenerCount == 0) {
 
@@ -119,6 +124,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * Stop location listener.
 	 */
+	@JavascriptInterface
 	public void stopLocationListener() {
 		mLocListenerCount--;
 		if (mLocListenerCount == 0) {
@@ -135,6 +141,7 @@ public class OrmmaLocationController extends OrmmaController {
 	 *
 	 * @param loc the loc
 	 */
+	@JavascriptInterface
 	public void success(Location loc) {
 		String script = "window.ormmaview.fireChangeEvent({ location: "+ formatLocation(loc) + "})";
 		SdkLog.d(SdkLog_TAG, script);
@@ -144,6 +151,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * Fail.
 	 */
+	@JavascriptInterface
 	public void fail() {
 		SdkLog.e(SdkLog_TAG, "Location can't be determined");
 		mOrmmaView.injectJavaScript("window.ormmaview.fireErrorEvent(\"Location cannot be identified\", \"OrmmaLocationController\")");
@@ -165,6 +173,7 @@ public class OrmmaLocationController extends OrmmaController {
 		}
 	}
 	
+	@JavascriptInterface
 	public boolean hasLocation() {
 		return hasLocation;
 	}

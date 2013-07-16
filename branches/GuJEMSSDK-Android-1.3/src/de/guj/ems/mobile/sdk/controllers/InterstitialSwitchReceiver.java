@@ -3,6 +3,7 @@ package de.guj.ems.mobile.sdk.controllers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
@@ -34,8 +35,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 	@Override
 	public void onReceive(Context arg0, Intent arg1) {
 
-		// Steffen F�hres, RTL Interactive
-		// getUserAgent hat sonst ein Problem, wenn interstitial 1. Werbemittel
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(arg0);
 		}
@@ -59,6 +58,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
+			Toast.makeText(SdkUtil.getContext(), url, Toast.LENGTH_LONG).show();
 			new AdServerAccess(this.userAgentString, this)
 					.execute(new String[] { url });
 
@@ -168,6 +168,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			// pass banner data and original intent to video interstitial
 			i.putExtra("data", data);
 			i.putExtra("target", target);
+			i.putExtra("unmuted", Boolean.valueOf(intent.getExtras().getBoolean("unmuted")));
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}

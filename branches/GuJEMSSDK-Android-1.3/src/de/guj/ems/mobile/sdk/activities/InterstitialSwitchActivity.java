@@ -192,6 +192,7 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 			// pass banner data and original intent to video interstitial
 			i.putExtra("data", data);
 			i.putExtra("target", target);
+			i.putExtra("unmuted", Boolean.valueOf(getIntent().getExtras().getBoolean("unmuted")));			
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}

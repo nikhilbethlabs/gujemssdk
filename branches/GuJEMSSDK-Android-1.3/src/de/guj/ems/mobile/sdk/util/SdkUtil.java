@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
+import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
+import de.guj.ems.mobile.sdk.views.AdResponseHandler;
+
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -55,12 +58,12 @@ public class SdkUtil {
 	/**
 	 * minor sdk version integer
 	 */
-	public final static int MINOR_VERSION = 2;
+	public final static int MINOR_VERSION = 3;
 
 	/**
 	 * revision sdk version integer
 	 */
-	public final static int REV_VERSION = 6;
+	public final static int REV_VERSION = 0;
 
 	/**
 	 * Version string containing major, minor and revision as string divided by
@@ -80,6 +83,7 @@ public class SdkUtil {
 
 	/**
 	 * Returns an app specific unique id used as a cookie replacement
+	 * 
 	 * @return
 	 */
 	public synchronized static String getCookieReplStr() {
@@ -121,9 +125,15 @@ public class SdkUtil {
 	 */
 	public static String getDeviceId() {
 		if (DEVICE_ID == null) {
-			TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
+			try {
+				TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
 					.getSystemService(Context.TELEPHONY_SERVICE);
-			DEVICE_ID = tm.getDeviceId();
+				DEVICE_ID = tm.getDeviceId();
+			}
+			catch (SecurityException se) {
+				SdkLog.w(TAG, "TelephonyManager not available, using replacement UID.");
+				DEVICE_ID = getCookieReplStr();
+			}
 		}
 
 		return DEVICE_ID;
@@ -181,7 +191,7 @@ public class SdkUtil {
 		}
 		return DEBUG ? DEBUG_USER_AGENT : USER_AGENT;
 	}
-	
+
 	private static WindowManager getWinMgr() {
 		if (SdkUtil.WINDOW_MANAGER == null) {
 			SdkUtil.WINDOW_MANAGER = (WindowManager) SdkUtil.getContext()
@@ -189,7 +199,7 @@ public class SdkUtil {
 		}
 		return WINDOW_MANAGER;
 	}
-	
+
 	/**
 	 * Check whether phone has mobile 3G connection
 	 * 
@@ -226,24 +236,27 @@ public class SdkUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check wheter GPS is active / allowed
+	 * 
 	 * @return
 	 */
 	public static boolean isGPSActive() {
-		final LocationManager manager = (LocationManager) CONTEXT.getSystemService( Context.LOCATION_SERVICE );
+		final LocationManager manager = (LocationManager) CONTEXT
+				.getSystemService(Context.LOCATION_SERVICE);
 		try {
-			return manager.isProviderEnabled( LocationManager.GPS_PROVIDER );
-		}
-		catch (Exception e) {
-			SdkLog.w(TAG,  "Access fine location not allowed by app - assuming no GPS");
+			return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		} catch (Exception e) {
+			SdkLog.w(TAG,
+					"Access fine location not allowed by app - assuming no GPS");
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check whether device is in portait mode
+	 * 
 	 * @return true if portrait mode, false if landscape mode
 	 */
 	public static boolean isPortrait() {
@@ -278,8 +291,7 @@ public class SdkUtil {
 					&& conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
 							.getState() == NetworkInfo.State.DISCONNECTED;
 		} catch (Exception e) {
-			SdkLog.w(TAG,
-					"Exception in getNetworkInfo - assuming ONLINE.");
+			SdkLog.w(TAG, "Exception in getNetworkInfo - assuming ONLINE.");
 			return false;
 		}
 	}
@@ -315,8 +327,7 @@ public class SdkUtil {
 					|| conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
 							.getState() == NetworkInfo.State.CONNECTING;
 		} catch (Exception e) {
-			SdkLog.w(TAG,
-					"Exception in getNetworkInfo - assuming ONLINE.");
+			SdkLog.w(TAG, "Exception in getNetworkInfo - assuming ONLINE.");
 			return true;
 		}
 	}
@@ -378,14 +389,33 @@ public class SdkUtil {
 		out.write(id.getBytes());
 		out.close();
 	}
-	
+
 	public static String getConfigString() {
-		return "[" + (isWifi() ? "1" : "0") + ","
-				+ (isGPSActive() ? "1" : "0") + ","
-				+ "0" + "," // TODO Charger connected?
-				+ (is3G() ? "1" : "0") + ","
-				+ (is4G() ? "1" : "0") + ","
+		return "[" + (isWifi() ? "1" : "0") + "," + (isGPSActive() ? "1" : "0")
+				+ "," + "0"
+				+ "," // TODO Charger connected?
+				+ (is3G() ? "1" : "0") + "," + (is4G() ? "1" : "0") + ","
 				+ (isPortrait() ? "1" : "0") + "]";
+	}
+
+	public static void httpRequest(final String url) {
+		(new AdServerAccess(getUserAgent(), new AdResponseHandler() {
+
+			@Override
+			public void processResponse(String response) {
+			}
+
+			@Override
+			public void processError(String msg, Throwable t) {
+				SdkLog.e(TAG, "Error at http request", t);
+
+			}
+
+			@Override
+			public void processError(String msg) {
+				SdkLog.e(TAG, "Error at http requesting " + url);
+			}
+		})).execute(new String[] { url });
 	}
 
 }

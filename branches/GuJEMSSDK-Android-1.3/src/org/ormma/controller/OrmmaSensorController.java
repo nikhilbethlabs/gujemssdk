@@ -11,6 +11,7 @@ import org.ormma.controller.listeners.AccelListener;
 import org.ormma.view.OrmmaView;
 
 import android.content.Context;
+import android.webkit.JavascriptInterface;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
@@ -38,6 +39,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Start tilt listener.
 	 */
+	@JavascriptInterface
 	public void startTiltListener() {
 		mAccel.startTrackingTilt();
 	}
@@ -45,6 +47,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Start shake listener.
 	 */
+	@JavascriptInterface
 	public void startShakeListener() {
 		mAccel.startTrackingShake();
 	}
@@ -52,6 +55,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Stop tilt listener.
 	 */
+	@JavascriptInterface
 	public void stopTiltListener() {
 		mAccel.stopTrackingTilt();
 	}
@@ -59,6 +63,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Stop shake listener.
 	 */
+	@JavascriptInterface
 	public void stopShakeListener() {
 		mAccel.stopTrackingShake();
 	}
@@ -66,6 +71,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Start heading listener.
 	 */
+	@JavascriptInterface
 	public void startHeadingListener() {
 		mAccel.startTrackingHeading();
 	}
@@ -73,6 +79,7 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Stop heading listener.
 	 */
+	@JavascriptInterface
 	public void stopHeadingListener() {
 		mAccel.stopTrackingHeading();
 	}
@@ -80,12 +87,14 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Stop.
 	 */
+	@JavascriptInterface
 	void stop() {
 	}
 
 	/**
 	 * On shake.
 	 */
+	@JavascriptInterface
 	public void onShake() {
 		mOrmmaView.injectJavaScript("window.ormmaview.fireShakeEvent()");
 	}
@@ -112,6 +121,7 @@ public class OrmmaSensorController extends OrmmaController {
 	 *
 	 * @return the tilt
 	 */
+	@JavascriptInterface
 	public String getTilt() {
 		String tilt = "{ x : \"" + mLastX + "\", y : \"" + mLastY + "\", z : \"" + mLastZ + "\"}";
 		SdkLog.d(SdkLog_TAG, "getTilt: " + tilt);
@@ -134,6 +144,7 @@ public class OrmmaSensorController extends OrmmaController {
 	 *
 	 * @return the heading
 	 */
+	@JavascriptInterface
 	public float getHeading() {
 		SdkLog.d(SdkLog_TAG, "getHeading: " + mAccel.getHeading());
 		return mAccel.getHeading();

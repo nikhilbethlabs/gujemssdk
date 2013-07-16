@@ -162,6 +162,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	protected String doInBackground(String... urls) {
 		StringBuilder rBuilder = new StringBuilder();
 		for (String url : urls) {
+			SdkLog.d(TAG, "Request: " + url);
 			rBuilder = httpGet(url);
 		}
 		return rBuilder.toString();

@@ -4,6 +4,7 @@ import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
+import android.webkit.JavascriptInterface;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.Targeting;
@@ -40,6 +41,7 @@ public class EMSInterface {
 	 * an exception is thrown and caught. 
 	 * @param l length of vibration
 	 */
+	@JavascriptInterface
 	public void vibrateOnce(long l) {
 		SdkLog.i(TAG, "ems_vibrate: " + l + " ms");
 		try {
@@ -64,6 +66,7 @@ public class EMSInterface {
 	 * the pattern would thus be [0,100,200,100]. 
 	 * @param l pattern of vibration
 	 */
+	@JavascriptInterface
 	public void vibratePattern(long[] l) {
 		SdkLog.i(TAG, "ems_vibrate: pattern called.");
 		try {
@@ -82,6 +85,7 @@ public class EMSInterface {
 	 * Returns the Android battery level received from BatteryManager
 	 * @return battery level or -1 if nothing was received yet
 	 */
+	@JavascriptInterface
 	public int getBatteryPercent() {
 		SdkLog.i(TAG, "ems_battery: status requested.");
 		return targeting.getBatteryPercent();
@@ -91,6 +95,7 @@ public class EMSInterface {
 	 * Returns boolean indicating whether headset is connected to phone
 	 * @return true if headset is connected, false if not
 	 */
+	@JavascriptInterface
 	public boolean headsetConnected() {
 		SdkLog.i(TAG, "ems_headset: status requested.");
 		return targeting.headsetConnected();		

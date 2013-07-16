@@ -46,6 +46,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -67,6 +68,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -545,6 +547,53 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			SdkLog.d("OrmmaView", message);
 			return false;
 		}
+		
+		@Override
+		public void onShowCustomView(View view, CustomViewCallback callback) {
+		    super.onShowCustomView(view, callback);
+		    if (view instanceof FrameLayout){
+		        FrameLayout frame = (FrameLayout) view;
+		        if (frame.getFocusedChild() instanceof VideoView){
+		            VideoView video = (VideoView) frame.getFocusedChild();
+		            video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+						
+						@Override
+						public void onCompletion(MediaPlayer mp) {
+							SdkLog.i(SdkLog_TAG, "video complete ");
+						}
+					});
+		            video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+						
+						@Override
+						public boolean onError(MediaPlayer mp, int what, int extra) {
+							SdkLog.e(SdkLog_TAG, "video error " + what + ", " + extra);
+							switch (what) {
+							case MediaPlayer.MEDIA_ERROR_IO:
+								SdkLog.w(SdkLog_TAG, "IO Error"); break;
+							case MediaPlayer.MEDIA_ERROR_MALFORMED:
+								SdkLog.w(SdkLog_TAG, "Malformed"); break;
+							case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
+								SdkLog.w(SdkLog_TAG, "Not valid for progressive"); break;
+							case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
+								SdkLog.w(SdkLog_TAG, "Server died"); break;
+							case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
+								SdkLog.w(SdkLog_TAG, "Timed Out"); break;
+							case MediaPlayer.MEDIA_ERROR_UNKNOWN:
+								SdkLog.w(SdkLog_TAG, "Unknown"); break;
+							case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
+								SdkLog.w(SdkLog_TAG, "Unsupported"); break;								
+							}
+							return false;
+						}
+					});
+		            video.start();
+		        }
+		    }
+		    else {
+		    	SdkLog.w(SdkLog_TAG, "onShowCustomView:: " + view);
+		    }
+		}
+				
 	};
 
 	/**
@@ -886,6 +935,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private void initialize() {
 		SdkUtil.setContext(getContext());
 		if (!isInEditMode()) {
+			getSettings().setPluginState(WebSettings.PluginState.ON);
 			getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
 			getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 			getSettings().setAppCacheEnabled(true);
@@ -910,12 +960,11 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		addJavascriptInterface(mUtilityController,
 				"ORMMAUtilityControllerBridge");
 
-		setWebViewClient(mWebViewClient);
-		setWebChromeClient(mWebChromeClient);
-
 		if (!isInEditMode()) {
 			setScriptPath();
 		}
+		setWebViewClient(mWebViewClient);
+		setWebChromeClient(mWebChromeClient);
 
 		mContentViewHeight = getContentViewHeight();
 

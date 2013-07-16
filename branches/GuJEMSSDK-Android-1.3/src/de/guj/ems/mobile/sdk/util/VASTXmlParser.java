@@ -38,7 +38,15 @@ public class VASTXmlParser {
 	private final static String VAST_MEDIAFILES_TAG = "MediaFiles";
 
 	private final static String VAST_MEDIAFILE_TAG = "MediaFile";
+	
+	private final static String VAST_VIDEOCLICKS_TAG = "VideoClicks";
+	
+	private final static String VAST_CLICKTHROUGH_TAG = "ClickThrough";
 
+	private String clickThroughUrl;
+	
+	private int skipOffset;
+	
 	private String impressionTrackerUrl;
 
 	private String duration;
@@ -137,7 +145,6 @@ public class VASTXmlParser {
 	private void readAd(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_AD_TAG);
-		SdkLog.d(TAG, "Found Ad node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -152,7 +159,6 @@ public class VASTXmlParser {
 	private void readMediaFiles(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILES_TAG);
-		SdkLog.d(TAG, "Found MediaFiles node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -162,7 +168,7 @@ public class VASTXmlParser {
 				p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILE_TAG);
 				this.mediaFileUrl = readText(p);
 				p.require(XmlPullParser.END_TAG, null, VAST_MEDIAFILE_TAG);
-				SdkLog.i(TAG, "VAST mediafile url: " + this.mediaFileUrl);
+				SdkLog.i(TAG, "Mediafile url: " + this.mediaFileUrl);
 			} else {
 				skip(p);
 			}
@@ -172,7 +178,6 @@ public class VASTXmlParser {
 	private void readTrackingEvents(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_TRACKINGEVENTS_TAG);
-		SdkLog.d(TAG, "Found TrackingEvents node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -190,27 +195,47 @@ public class VASTXmlParser {
 		}
 	}
 
-	private void readLinear(XmlPullParser p) throws IOException,
+	private void readClickThroughs(XmlPullParser p) throws IOException,
 			XmlPullParserException {
-		p.require(XmlPullParser.START_TAG, null, VAST_LINEAR_TAG);
-		SdkLog.d(TAG, "Found Linear node in VAST xml.");
+		p.require(XmlPullParser.START_TAG, null, VAST_VIDEOCLICKS_TAG);
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
 			}
 			String name = p.getName();
+			if (name != null && name.equals(VAST_CLICKTHROUGH_TAG)) {
+				p.require(XmlPullParser.START_TAG, null, VAST_CLICKTHROUGH_TAG);
+				this.clickThroughUrl = readText(p);
+				SdkLog.d(TAG, "Video clickthrough url: " + clickThroughUrl);
+				p.require(XmlPullParser.END_TAG, null, VAST_CLICKTHROUGH_TAG);
+			} else {
+				skip(p);
+			}
+		}
+	}	
+	
+	private void readLinear(XmlPullParser p) throws IOException,
+			XmlPullParserException {
+		p.require(XmlPullParser.START_TAG, null, VAST_LINEAR_TAG);
+		while (p.next() != XmlPullParser.END_TAG) {
+			String name = p.getName();
+			if (p.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
 			if (name != null && name.equals(VAST_DURATION_TAG)) {
-				SdkLog.d(TAG, "Found Duration node in VAST xml.");
 				p.require(XmlPullParser.START_TAG, null, VAST_DURATION_TAG);
 				this.duration = readText(p);
 				p.require(XmlPullParser.END_TAG, null, VAST_DURATION_TAG);
 
-				SdkLog.i(TAG, "VAST duration: " + this.duration);
+				SdkLog.i(TAG, "Video duration: " + this.duration);
 			} else if (name != null && name.equals(VAST_TRACKINGEVENTS_TAG)) {
 				readTrackingEvents(p);
 			} else if (name != null && name.equals(VAST_MEDIAFILES_TAG)) {
 				readMediaFiles(p);
-			} else {
+			} else if (name != null && name.equals(VAST_VIDEOCLICKS_TAG)) {
+				readClickThroughs(p);
+			}
+			else {
 				skip(p);
 			}
 		}
@@ -219,13 +244,21 @@ public class VASTXmlParser {
 	private void readCreative(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_CREATIVE_TAG);
-		SdkLog.d(TAG, "Found Creative node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
 			}
 			String name = p.getName();
 			if (name != null && name.equals(VAST_LINEAR_TAG)) {
+				String skipoffsetStr = p.getAttributeValue(null, "skipoffset");
+				if (skipoffsetStr != null && skipoffsetStr.indexOf(":") < 0) {
+					skipOffset = Integer.parseInt(skipoffsetStr.substring(0, skipoffsetStr.length() - 1));
+					SdkLog.i(TAG, "Linear skipoffset is " + skipOffset + " [%]");
+				}
+				else if (skipoffsetStr != null && skipoffsetStr.indexOf(":") >= 0) {
+					skipOffset = -1;
+					SdkLog.w(TAG, "Absolute time value ignored for skipOffset in VAST xml. Only percentage values will pe parsed.");
+				}
 				readLinear(p);
 			} else {
 				skip(p);
@@ -236,7 +269,6 @@ public class VASTXmlParser {
 	private void readCreatives(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_CREATIVES_TAG);
-		SdkLog.d(TAG, "Found Creatives node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -253,19 +285,17 @@ public class VASTXmlParser {
 	private void readInLine(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_INLINE_TAG);
-		SdkLog.d(TAG, "Found InLine node in VAST xml.");
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
 			}
 			String name = p.getName();
 			if (name != null && name.equals(VAST_IMPRESSION_TAG)) {
-				SdkLog.d(TAG, "Found Impression node in VAST xml.");
 				p.require(XmlPullParser.START_TAG, null, VAST_IMPRESSION_TAG);
 				this.impressionTrackerUrl = readText(p);
 				p.require(XmlPullParser.END_TAG, null, VAST_IMPRESSION_TAG);
 
-				SdkLog.i(TAG, "VAST impression tracker url: "
+				SdkLog.i(TAG, "Impression tracker url: "
 						+ this.impressionTrackerUrl);
 			} else if (name != null && name.equals(VAST_CREATIVES_TAG)) {
 				readCreatives(p);
@@ -300,7 +330,7 @@ public class VASTXmlParser {
 			result = parser.getText();
 			parser.nextTag();
 		} else {
-			SdkLog.w(TAG, "No text :: " + parser.getName());
+			SdkLog.w(TAG, "No text: " + parser.getName());
 		}
 		return result.trim();
 	}
@@ -329,7 +359,16 @@ public class VASTXmlParser {
 				return t.getUrl();
 			}
 		}
+		SdkLog.w(TAG, "Could not find tracking event url for type " + type);
 		return null;
+	}
+	
+	public int getSkipOffset() {
+		return skipOffset;
+	}
+	
+	public String getClickThroughUrl() {
+		return this.clickThroughUrl; 
 	}
 
 }

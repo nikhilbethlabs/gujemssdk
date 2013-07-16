@@ -31,6 +31,7 @@ import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
 import android.text.TextUtils;
+import android.webkit.JavascriptInterface;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -187,6 +188,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	/**
 	 * Ready.
 	 */
+	@JavascriptInterface
 	public void ready() {
 		mOrmmaView.injectJavaScript("Ormma.setState(\"" + mOrmmaView.getState()
 				+ "\");");
@@ -201,6 +203,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param body
 	 *            the body
 	 */
+	@JavascriptInterface
 	public void sendSMS(String recipient, String body) {
 		SdkLog.d(SdkLog_TAG, "sendSMS: recipient: " + recipient + " body: " + body);
 		Intent sendIntent = new Intent(Intent.ACTION_VIEW);
@@ -221,6 +224,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param body
 	 *            the body
 	 */
+	@JavascriptInterface
 	public void sendMail(String recipient, String subject, String body) {
 		SdkLog.d(SdkLog_TAG, "sendMail: recipient: " + recipient + " subject: "
 				+ subject + " body: " + body);
@@ -234,6 +238,7 @@ public class OrmmaUtilityController extends OrmmaController {
 		mContext.startActivity(i);
 	}
 	
+	@JavascriptInterface
 	public void storePicture(String url) {
 		mAssetController.storePicture(url);
 	}
@@ -261,6 +266,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param number
 	 *            the number
 	 */
+	@JavascriptInterface
 	public void makeCall(String number) {
 		SdkLog.d(SdkLog_TAG, "makeCall: number: " + number);
 		String url = createTelUrl(number);
@@ -284,6 +290,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 *            the body
 	 */
 	@SuppressLint("NewApi")
+	@JavascriptInterface
 	public void createEvent(final String date, final String title,
 			final String body) {
 		SdkLog.d(SdkLog_TAG, "createEvent: date: " + date + " title: " + title
@@ -354,6 +361,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 *            the body
 	 */
 	@SuppressLint("NewApi")
+	@JavascriptInterface
 	private void addCalendarEvent(final int callId, final String date,
 			final String title, final String body) {
 		long dtStart = Long.parseLong(date);
@@ -415,6 +423,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param h
 	 *            the h
 	 */
+	@JavascriptInterface
 	public void setMaxSize(int w, int h) {
 		mDisplayController.setMaxSize(w, h);
 	}
@@ -483,6 +492,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param event
 	 *            the event
 	 */
+	@JavascriptInterface
 	public void activate(String event) {
 		SdkLog.d(SdkLog_TAG, "activate: " + event);
 		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
@@ -507,6 +517,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param event
 	 *            the event
 	 */
+	@JavascriptInterface
 	public void deactivate(String event) {
 		SdkLog.d(SdkLog_TAG, "deactivate: " + event);
 		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
@@ -557,14 +568,17 @@ public class OrmmaUtilityController extends OrmmaController {
 		}
 	}
 
+	@JavascriptInterface
 	public void showAlert(final String message) {
 		SdkLog.e(SdkLog_TAG, message);
 	}
 	
+	@JavascriptInterface
 	public void addAsset(String url, String alias) {
 		mAssetController.addAsset(url, alias);
 	}
 	
+	@JavascriptInterface
 	public void removeAsset(String alias) {
 		mAssetController.removeAsset(alias);
 	}

@@ -19,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
@@ -58,6 +59,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param width the width
 	 * @param height the height
 	 */
+	@JavascriptInterface
 	public void resize(int width, int height) {
 		SdkLog.d(SdkLog_TAG, "resize: width: " + width + " height: " + height);
 		if (((mMaxHeight > 0) && (height > mMaxHeight)) || ((mMaxWidth > 0) && (width > mMaxWidth))) {
@@ -75,6 +77,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param forward show the forward button
 	 * @param refresh show the refresh button
 	 */
+	@JavascriptInterface
 	public void open(String url, boolean back, boolean forward, boolean refresh) {
 		SdkLog.d(SdkLog_TAG, "open: url: " + url + " back: " + back + " forward: " + forward + " refresh: " + refresh);
 		if(!URLUtil.isValidUrl(url)){
@@ -90,6 +93,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param url - map url
 	 * @param fullscreen - boolean indicating whether map to be launched in full screen
 	 */
+	@JavascriptInterface
 	public void openMap(String url, boolean fullscreen) {
 		SdkLog.d(SdkLog_TAG, "openMap: url: " + url);
 		mOrmmaView.openMap(url, fullscreen);
@@ -106,6 +110,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param startStyle - normal/full screen (if audio should play in native full screen mode)
 	 * @param stopStyle - normal/exit (exit if player should exit after audio stops)
 	 */
+	@JavascriptInterface
 	public void playAudio(String url, boolean autoPlay, boolean controls, boolean loop, boolean position, String startStyle, String stopStyle) {
 		SdkLog.d(SdkLog_TAG, "playAudio: url: " + url + " autoPlay: " + autoPlay + " controls: " + controls + " loop: " + loop + " position: " + position + " startStyle: " + startStyle + " stopStyle: "+stopStyle);
 		if(!URLUtil.isValidUrl(url)){
@@ -128,6 +133,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param startStyle - normal/fullscreen (if video should play in native full screen mode)
 	 * @param stopStyle - normal/exit (exit if player should exit after video stops)
 	 */
+	@JavascriptInterface
 	public void playVideo(String url, boolean audioMuted, boolean autoPlay, boolean controls, boolean loop, int[] position, String startStyle, String stopStyle) {
 		SdkLog.d(SdkLog_TAG, "playVideo: url: " + url + " audioMuted: " + audioMuted + " autoPlay: " + autoPlay + " controls: " + controls + " loop: " + loop + " x: " + position[0] + 
 				" y: " + position[1] + " width: " + position[2] + " height: " + position[3] + " startStyle: " + startStyle + " stopStyle: " + stopStyle);
@@ -179,6 +185,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param URL the uRL
 	 * @param properties the properties for the expansion
 	 */
+	@JavascriptInterface
 	public void expand(String dimensions, String URL, String properties) {
         SdkLog.d(SdkLog_TAG, "expand: dimensions: " + dimensions + " url: " + URL + " properties: " + properties);
 		try {
@@ -205,6 +212,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	/**
 	 * Close the view
 	 */
+	@JavascriptInterface
 	public void close() {
 		SdkLog.d(SdkLog_TAG, "close");
 		mOrmmaView.close();
@@ -213,6 +221,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	/**
 	 * Hide the view
 	 */
+	@JavascriptInterface
 	public void hide() {
 		SdkLog.d(SdkLog_TAG, "hide");
 		mOrmmaView.hide();
@@ -221,6 +230,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	/**
 	 * Show the view
 	 */
+	@JavascriptInterface
 	public void show() {
 		SdkLog.d(SdkLog_TAG, "show");
 		mOrmmaView.show();
@@ -231,6 +241,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return true, if is visible
 	 */
+	@JavascriptInterface
 	public boolean isVisible() {
 		return (mOrmmaView.getVisibility() == View.VISIBLE);
 	}
@@ -240,6 +251,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return the string
 	 */
+	@JavascriptInterface
 	public String dimensions() {
 		return "{ \"top\" :" + (int) (mOrmmaView.getTop() / mDensity) + "," + "\"left\" :"
 				+ (int) (mOrmmaView.getLeft() / mDensity) + "," + "\"bottom\" :"
@@ -252,6 +264,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return the orientation
 	 */
+	@JavascriptInterface
 	public int getOrientation() {
 		int orientation = mWindowManager.getDefaultDisplay().getRotation();
 		int ret = -1;
@@ -281,6 +294,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return the screen size
 	 */
+	@JavascriptInterface
 	public String getScreenSize() {
 		DisplayMetrics metrics = new DisplayMetrics();
 		mWindowManager.getDefaultDisplay().getMetrics(metrics);
@@ -294,6 +308,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return the size
 	 */
+	@JavascriptInterface
 	public String getSize() {
 		return mOrmmaView.getSize();
 	}
@@ -303,6 +318,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 *
 	 * @return the max size
 	 */
+	@JavascriptInterface
 	public String getMaxSize() {
 		if (bMaxSizeSet)
 			return "{ width: " + mMaxWidth + ", " + "height: " + mMaxHeight + "}";
@@ -316,6 +332,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param w the w
 	 * @param h the h
 	 */
+	@JavascriptInterface
 	public void setMaxSize(int w, int h) {
 		bMaxSizeSet = true;
 		mMaxWidth = w;
@@ -351,6 +368,7 @@ public class OrmmaDisplayController extends OrmmaController {
 		mBroadCastReceiver = null;
 	}
 
+	@JavascriptInterface
 	public void stopConfigurationListener() {
 		try {
 			mContext.unregisterReceiver(mBroadCastReceiver);
@@ -358,6 +376,7 @@ public class OrmmaDisplayController extends OrmmaController {
 		}
 	}
 	
+	@JavascriptInterface
 	public void startConfigurationListener() {
 		try {
 			if(mBroadCastReceiver == null) 

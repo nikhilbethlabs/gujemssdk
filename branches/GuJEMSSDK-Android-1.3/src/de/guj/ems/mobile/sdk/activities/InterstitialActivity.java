@@ -86,34 +86,38 @@ public final class InterstitialActivity extends Activity {
 	private Intent target;
 
 	private int time = -1;
+	
+	private boolean withProgress = false;
 
 	private InterstitialThread updateThread;
 
 	private void createView(Bundle savedInstanceState) {
-
+		String adData = getIntent().getExtras().getString("data");
+		this.withProgress = this.time > 0 && !adData.startsWith("<!-- <connectad>yes</connectad> -->");
 		// (1) set view layout
-		setContentView(time > 0 ? R.layout.interstitial_progress
+		setContentView(this.withProgress ? R.layout.interstitial_progress
 				: R.layout.interstitial_noprogress);
 
 		// (2) get views for display and hiding
-		this.spinner = (ProgressBar) findViewById(this.time > 0 ? R.id.emsIntSpinner
+		this.spinner = (ProgressBar) findViewById(this.withProgress ? R.id.emsIntSpinner
 				: R.id.emsIntSpinner2);
-		this.root = (RelativeLayout) findViewById(this.time > 0 ? R.id.emsIntProgLayout
+		this.root = (RelativeLayout) findViewById(this.withProgress ? R.id.emsIntProgLayout
 				: R.id.emsIntLayout);
 		this.adView = new GuJEMSAdView(InterstitialActivity.this);
 
 		// (3) configure interstitial adview
-		adView.loadData(getIntent().getExtras().getString("data"), "text/html",
+		
+		adView.loadData(adData, "text/html",
 				"utf-8");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.BELOW, time > 0 ? R.id.emsIntCloseButton
+		lp.addRule(RelativeLayout.BELOW, this.withProgress ? R.id.emsIntCloseButton
 				: R.id.emsIntCloseButton2);
 		adView.setLayoutParams(lp);
 
 		// (4) configure close button
-		ImageButton b = (ImageButton) findViewById(time > 0 ? R.id.emsIntCloseButton
+		ImageButton b = (ImageButton) findViewById(this.withProgress ? R.id.emsIntCloseButton
 				: R.id.emsIntCloseButton2);
 		b.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -255,14 +259,10 @@ public final class InterstitialActivity extends Activity {
 									root.removeView(spinner);
 									root.addView(adView);
 									fetchTime();
-									SdkLog.d(
-											TAG,
-											time > 0 ? "Interstitial loaded, starting progress bar."
-													: "Interstitial loaded.");
 								}
 							});
 						} else if (loaded && !InterstitialThread.PAUSED) {
-							if (time > 0 && t0 > 0) {
+							if (withProgress && t0 > 0) {
 								int t1 = (int) (System.currentTimeMillis() - t0);
 								if (progressBar != null) {
 									progressBar.setProgress(t1);

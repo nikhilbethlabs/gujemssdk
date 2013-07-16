@@ -78,7 +78,7 @@ public class OptimobileDelegator {
 						.getDirectBackfill().getZoneId()));
 		view.setLayoutParams(
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+		view.setId(emsMobileView.getId());
 		view.setBackgroundDrawable(emsMobileView.getBackground());			
 		view.setLocationDetection(true);
 		view.setVisibility(View.GONE);
@@ -206,6 +206,7 @@ public class OptimobileDelegator {
 					public void run() {
 						SdkLog.i(TAG, "Performing google admob request...");
 						AdView admobAdView = new AdView((Activity)context, AdSize.BANNER, pubId);
+						admobAdView.setId(emsMobileView.getId());
 						admobAdView.setGravity(Gravity.CENTER_HORIZONTAL);
 						admobAdView.setBackgroundDrawable(emsMobileView.getBackground());		
 						((ViewGroup)emsMobileView.getParent()).removeView(optimobileView);
