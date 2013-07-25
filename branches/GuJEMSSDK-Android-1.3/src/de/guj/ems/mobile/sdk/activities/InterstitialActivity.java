@@ -93,7 +93,7 @@ public final class InterstitialActivity extends Activity {
 
 	private void createView(Bundle savedInstanceState) {
 		String adData = getIntent().getExtras().getString("data");
-		this.withProgress = this.time > 0 && !adData.startsWith("<!-- <connectad>yes</connectad> -->");
+		this.withProgress = this.time > 0 && !adData.startsWith(getResources().getString(R.string.connectAd));
 		// (1) set view layout
 		setContentView(this.withProgress ? R.layout.interstitial_progress
 				: R.layout.interstitial_noprogress);

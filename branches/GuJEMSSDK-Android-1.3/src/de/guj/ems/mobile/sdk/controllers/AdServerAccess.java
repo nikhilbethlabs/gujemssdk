@@ -120,6 +120,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 			finally  {
 				if (con != null) {
 					con.disconnect();
+					SdkLog.d(TAG, "Request finished. [" + rBuilder.length() + "]");
 				}
 			}
 		}
@@ -154,6 +155,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 			} catch (Exception e) {
 				this.lastError = e;
 			}
+			SdkLog.d(TAG, "Request finished. [" + rBuilder.length() + "]");
 		}
 		return rBuilder;		
 	}
@@ -163,7 +165,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 		StringBuilder rBuilder = new StringBuilder();
 		for (String url : urls) {
 			SdkLog.d(TAG, "Request: " + url);
-			rBuilder = httpGet(url);
+			rBuilder = rBuilder.append(httpGet(url));
 		}
 		return rBuilder.toString();
 	}
@@ -171,10 +173,18 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		if (this.responseHandler != null && lastError == null) {
+			SdkLog.d(TAG, "Passing to handler " + responseHandler);
 			this.responseHandler.processResponse(result);
 		}
 		else if (this.responseHandler != null && lastError != null) {
+			SdkLog.d(TAG, "Passing to handler " + responseHandler);
 			this.responseHandler.processError(lastError.getMessage(), lastError);
+		}
+		else if (lastError != null) {
+			SdkLog.e(TAG, "Error post processing request", lastError);
+		}
+		else {
+			SdkLog.d(TAG, "No response handler");
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.activities;
 
+import java.util.List;
+
 import org.ormma.view.Browser;
 
 import android.app.Activity;
@@ -18,10 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser.Tracking;
+import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * This activity is executed when a VAST for video interstitial was delivered
@@ -44,7 +48,8 @@ import de.guj.ems.mobile.sdk.util.VASTXmlParser.Tracking;
  * @author stein16
  * 
  */
-public final class VideoInterstitialActivity extends Activity {
+public final class VideoInterstitialActivity extends Activity implements
+		VASTXmlParser.VASTWrapperListener, AdResponseHandler {
 
 	static class InterstitialThread extends Thread {
 
@@ -79,6 +84,8 @@ public final class VideoInterstitialActivity extends Activity {
 	private MediaPlayer mediaPlayer;
 
 	private boolean muted;
+	
+	private double percentPlayed;
 
 	private VASTXmlParser vastXml;
 
@@ -105,16 +112,18 @@ public final class VideoInterstitialActivity extends Activity {
 	private InterstitialThread updateThread;
 
 	private void initFromVastXml() {
-		// (3) configure video interstitial adview
-		this.videoView = (VideoView) findViewById(R.id.emsVideoView);
 
+		// configure video interstitial adview
+
+		this.videoView = (VideoView) findViewById(R.id.emsVideoView);
 		this.videoView
 				.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
 					@Override
 					public void onPrepared(MediaPlayer mp) {
 						mediaPlayer = mp;
-						mediaPlayer.setVolume(muted ? 0.0f : 1.0f, muted ? 0.0f : 1.0f);
+						mediaPlayer.setVolume(muted ? 0.0f : 1.0f, muted ? 0.0f
+								: 1.0f);
 						videoReady = true;
 					}
 				});
@@ -123,10 +132,17 @@ public final class VideoInterstitialActivity extends Activity {
 
 					@Override
 					public void onCompletion(MediaPlayer mp) {
-						String tx = vastXml
-								.getTrackingByType(Tracking.EVENT_COMPLETE);
-						if (tx != null) {
-							SdkUtil.httpRequest(tx);
+						if (percentPlayed > 0.75) {
+							List<String> tx = vastXml
+									.getTrackingByType(Tracking.EVENT_COMPLETE);
+							SdkLog.i(TAG, "Triggering " + tx.size() + " event_complete tracking requests");
+							if (tx != null && tx.size() > 0) {
+								String[] txS = new String[tx.size()];
+								SdkUtil.httpRequests(tx.toArray(txS));
+							}
+						}
+						else {
+							SdkLog.w(TAG, "onCompletion but no 100% played, skipping event_complete.");
 						}
 
 						if (target != null) {
@@ -138,22 +154,6 @@ public final class VideoInterstitialActivity extends Activity {
 						finish();
 					}
 				});
-		try {
-			// parse VAST xml
-			this.vastXml = new VASTXmlParser(getIntent().getExtras().getString(
-					"data"));
-			if (this.vastXml.getImpressionTrackerUrl() != null) {
-				SdkUtil.httpRequest(this.vastXml.getImpressionTrackerUrl());
-			}
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
-			if (this.target != null) {
-				startActivity(target);
-			}
-			finish();
-
-		}
-		this.videoView.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
 
 		// onClick handler for video
 		videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -172,6 +172,13 @@ public final class VideoInterstitialActivity extends Activity {
 						i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
 						i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
 						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+						List<String> tr = vastXml.getClickTrackingUrl();
+						SdkLog.i(TAG, "Triggering " + tr.size() + " click tracking requests");
+						if (tr != null && tr.size() > 0) {
+							String[] trS = new String[tr.size()];
+							SdkUtil.httpRequests(tr.toArray(trS));
+						}
 						startActivity(i);
 					} else {
 						SdkLog.w(TAG, "Video is not clickable.");
@@ -180,14 +187,51 @@ public final class VideoInterstitialActivity extends Activity {
 				return true;
 			}
 		});
-		
+
+		try {
+			// parse VAST xml
+			this.vastXml = new VASTXmlParser(this, this, getIntent()
+					.getExtras().getString("data"));
+			
+			if (!this.vastXml.hasWrapper()) {
+				
+				SdkLog.i(TAG, "Direct VAST xml response.");
+				
+				this.videoView.setVideoURI(Uri.parse(this.vastXml
+						.getMediaFileUrl()));
+				List<String> im = this.vastXml.getImpressionTrackerUrl();
+				SdkLog.i(TAG, "Triggering " + im.size() + " impression tracking requests");
+				if (im != null && im.size() > 0) {
+					String[] imS = new String[im.size()];
+					SdkUtil.httpRequests(im.toArray(imS));
+				}
+				
+			}
+
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
+			if (this.target != null) {
+				startActivity(target);
+			}
+			finish();
+
+		}
+
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void createView(Bundle savedInstanceState) {
 		boolean muteTest = getIntent().getExtras().getBoolean("unmuted");
-		SdkLog.d(TAG, "Sound settings forced=" + muteTest + ", headset=" + ((AudioManager)getApplicationContext().getSystemService(AUDIO_SERVICE)).isWiredHeadsetOn());
-		this.muted = !(muteTest || ((AudioManager)getApplicationContext().getSystemService(AUDIO_SERVICE)).isWiredHeadsetOn());
+		SdkLog.d(
+				TAG,
+				"Sound settings forced="
+						+ muteTest
+						+ ", headset="
+						+ ((AudioManager) getApplicationContext()
+								.getSystemService(AUDIO_SERVICE))
+								.isWiredHeadsetOn());
+		this.muted = !(muteTest || ((AudioManager) getApplicationContext()
+				.getSystemService(AUDIO_SERVICE)).isWiredHeadsetOn());
 
 		// (1) set view layout
 		setContentView(R.layout.video_interstitial);
@@ -196,9 +240,6 @@ public final class VideoInterstitialActivity extends Activity {
 		this.spinner = (ProgressBar) findViewById(R.id.emsVidIntSpinner);
 		this.root = (RelativeLayout) findViewById(R.id.emsVidIntLayout);
 
-		// (3) init video
-		this.initFromVastXml();
-				
 		// (4) configure close button
 		ImageButton b = (ImageButton) findViewById(R.id.emsVidIntButton);
 		b.setVisibility(View.INVISIBLE);
@@ -233,18 +274,23 @@ public final class VideoInterstitialActivity extends Activity {
 				mediaPlayer.setVolume(muted ? 0.0f : 1.0f, muted ? 0.0f : 1.0f);
 				s.setImageResource(muted ? R.drawable.sound_button_off
 						: R.drawable.sound_button_on);
-				String tr = muted ? vastXml
+				List<String> tr = muted ? vastXml
 						.getTrackingByType(VASTXmlParser.Tracking.EVENT_MUTE)
 						: vastXml
 								.getTrackingByType(VASTXmlParser.Tracking.EVENT_UNMUTE);
-				if (tr != null) {
-					SdkUtil.httpRequest(tr);
-				}
+					SdkLog.i(TAG, "Triggering " + tr.size() + (muted ? " event_mute " : " event_unmute ") + "tracking requests");
+					if (tr != null && tr.size() > 0) {
+						String trS[] = new String[tr.size()];
+						SdkUtil.httpRequests(tr.toArray(trS));
+					}
 			}
 		});
 
 		// configure text
 		videoText = (TextView) findViewById(R.id.emsVideoText);
+
+		// (3) init video
+		this.initFromVastXml();
 
 	}
 
@@ -281,8 +327,7 @@ public final class VideoInterstitialActivity extends Activity {
 				&& !InterstitialThread.PAUSED) {
 			try {
 				mediaPlayer.pause();
-			}
-			catch (IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				SdkLog.w(TAG, "MediaPlayer already released.");
 			}
 			updateThread.pause();
@@ -303,10 +348,15 @@ public final class VideoInterstitialActivity extends Activity {
 		super.onResume();
 
 		if (status == SUSPENDED) {
-
-			if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
-				mediaPlayer.pause();
-				SdkLog.d(TAG, "MediaPlayer stopped.");
+			try {
+				if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
+					mediaPlayer.pause();
+					SdkLog.d(TAG, "MediaPlayer stopped.");
+				}
+			}
+			catch (IllegalStateException e) {
+				SdkLog.w(TAG, "Media player already released.");
+				mediaPlayer = null;
 			}
 			if (target != null) {
 				SdkLog.d(TAG,
@@ -331,7 +381,7 @@ public final class VideoInterstitialActivity extends Activity {
 			SdkLog.d(TAG, "Video interstitial resume with paused thread.");
 			if (mediaPlayer != null) {
 				mediaPlayer.start();
-				SdkLog.d(TAG, "MediaPlayer resumed.");				
+				SdkLog.d(TAG, "MediaPlayer resumed.");
 			}
 			updateThread.unpause();
 		}
@@ -355,21 +405,29 @@ public final class VideoInterstitialActivity extends Activity {
 				double vl;
 
 				private void videoInit() {
-					
+
 					root.getHandler().post(new Runnable() {
 						@Override
 						public void run() {
 							ImageButton sndButton = (ImageButton) root
-									.findViewById(R.id.emsVidIntSndButton); 
+									.findViewById(R.id.emsVidIntSndButton);
 							spinner.setVisibility(View.GONE);
 
-							SdkUtil.httpRequest(vastXml
-									.getTrackingByType(Tracking.EVENT_START));
+							List<String> tx = vastXml
+									.getTrackingByType(Tracking.EVENT_START);
+							SdkLog.i(TAG, "Triggering " + tx.size() + " event_start tracking requests");
+							if (tx != null && tx.size() > 0) {
+								String[] txS = new String[tx.size()];
+								SdkUtil.httpRequests(tx.toArray(txS));
+							}
 
 							if (muted) {
-								String tr = vastXml.getTrackingByType(VASTXmlParser.Tracking.EVENT_MUTE);
-								if (tr != null) {
-									SdkUtil.httpRequest(tr);
+								List<String> tr = vastXml
+										.getTrackingByType(VASTXmlParser.Tracking.EVENT_MUTE);
+								SdkLog.i(TAG, "Triggering " + tr.size() + " event_mute tracking requests");
+								if (tr != null && tr.size() > 0) {
+									String[] trS = new String[tr.size()];
+									SdkUtil.httpRequests(tr.toArray(trS));
 								}
 							}
 
@@ -378,10 +436,10 @@ public final class VideoInterstitialActivity extends Activity {
 								mediaPlayer.start();
 								SdkLog.d(TAG, "MediaPlayer started.");
 							}
-							sndButton.setImageResource(muted ? R.drawable.sound_button_off
-									: R.drawable.sound_button_on);
 							sndButton
-									.setVisibility(View.VISIBLE);
+									.setImageResource(muted ? R.drawable.sound_button_off
+											: R.drawable.sound_button_on);
+							sndButton.setVisibility(View.VISIBLE);
 							if (vastXml.getSkipOffset() <= 0) {
 								((ImageButton) root
 										.findViewById(R.id.emsVidIntButton))
@@ -393,55 +451,62 @@ public final class VideoInterstitialActivity extends Activity {
 						}
 					});
 				}
-				
-				private void updateView(final boolean canClose, final String bottomText) {
-					root.getHandler().post(new Runnable() {
 
-						@Override
-						public void run() {
-							if (canClose
-									&& ((ImageButton) root
+				private void updateView(final boolean canClose,
+						final String bottomText) {
+					if (root != null && root.getHandler() != null) {
+						root.getHandler().post(new Runnable() {
+	
+							@Override
+							public void run() {
+								if (canClose
+										&& ((ImageButton) root
+												.findViewById(R.id.emsVidIntButton))
+												.getVisibility() == View.INVISIBLE) {
+									SdkLog.i(TAG, "Enabling video cancel button.");
+									((ImageButton) root
 											.findViewById(R.id.emsVidIntButton))
-											.getVisibility() == View.INVISIBLE) {
-								SdkLog.i(TAG,
-										"Enabling video cancel button.");
-								((ImageButton) root
-										.findViewById(R.id.emsVidIntButton))
-										.setVisibility(View.VISIBLE);
+											.setVisibility(View.VISIBLE);
+								}
+								videoText.setText(bottomText);
 							}
-							videoText.setText(bottomText);
-						}
-					});					
+						});
+					}
 				}
-				
-				private void trackEvent(double percentPlayed) {
+
+				private void trackEvent() {
 					if (percentPlayed >= 25.0 && !q1) {
-						String tx = vastXml
-								.getTrackingByType(Tracking.EVENT_FIRSTQ);
+						List<String> tx = vastXml.getTrackingByType(Tracking.EVENT_FIRSTQ);
 						q1 = true;
-						if (tx != null) {
-							SdkUtil.httpRequest(tx);
+						SdkLog.i(TAG, "Triggering " + tx.size() + " event_firstq tracking requests");
+						if (tx != null && tx.size() > 0) {
+							String[] txS = new String[tx.size()];
+							SdkUtil.httpRequests(tx.toArray(txS));
 						}
 					}
 					if (percentPlayed >= 50.0 && !q2) {
-						String tx = vastXml
+						List<String> tx = vastXml
 								.getTrackingByType(Tracking.EVENT_MID);
 						q2 = true;
-						if (tx != null) {
-							SdkUtil.httpRequest(tx);
+						SdkLog.i(TAG, "Triggering " + tx.size() + " event_mid tracking requests");
+						if (tx != null && tx.size() > 0) {
+							String[] txS = new String[tx.size()];
+							SdkUtil.httpRequests(tx.toArray(txS));
 						}
 					}
 					if (percentPlayed >= 75.0 && !q3) {
-						String tx = vastXml
+						List<String> tx = vastXml
 								.getTrackingByType(Tracking.EVENT_THIRDQ);
 						q3 = true;
-						if (tx != null) {
-							SdkUtil.httpRequest(tx);
+						SdkLog.i(TAG, "Triggering " + tx.size() + " event_thirdq tracking requests");
+						if (tx != null && tx.size() > 0) {
+							String[] txS = new String[tx.size()];
+							SdkUtil.httpRequests(tx.toArray(txS));
 						}
 						return;
-					}					
+					}
 				}
-				
+
 				public void run() {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {
@@ -449,22 +514,21 @@ public final class VideoInterstitialActivity extends Activity {
 							videoInit();
 							loaded = true;
 						} else if (loaded && !InterstitialThread.PAUSED) {
-							double p = ((double) videoView
-									.getCurrentPosition() / vl) * 100.0d;
+							percentPlayed = ((double) videoView.getCurrentPosition() / vl) * 100.0d;
 							String text = "-w-";
 							boolean close = false;
 							if (vastXml.getSkipOffset() > 0) {
-								close = (p >= vastXml.getSkipOffset());
+								close = (percentPlayed >= vastXml.getSkipOffset());
 								if (!close) {
 									text = "-w- Abbrechbar in "
-											+ ((int) ((vastXml.getSkipOffset() - p) / 100.0 * (vl / 1000)) + " Sekunden");
+											+ ((int) ((vastXml.getSkipOffset() - percentPlayed) / 100.0 * (vl / 1000)) + " Sekunden");
 								}
 							} else {
 								close = true;
 							}
 
 							updateView(close, text);
-							trackEvent(p);
+							trackEvent();
 
 						}
 						try {
@@ -475,10 +539,10 @@ public final class VideoInterstitialActivity extends Activity {
 						}
 					}
 					SdkLog.d(TAG, "Terminating control thread.");
-					
+
 					if (mediaPlayer != null) {
 						mediaPlayer.pause();
-						SdkLog.d(TAG, "MediaPlayer paused.");						
+						SdkLog.d(TAG, "MediaPlayer paused.");
 					}
 					if (target != null) {
 						startActivity(target);
@@ -514,6 +578,46 @@ public final class VideoInterstitialActivity extends Activity {
 			SdkLog.i(TAG, "Finishing interstitial activity.");
 		}
 	}
-	
+
+	@Override
+	public void onVASTWrapperFound(final String url) {
+		SdkLog.d(TAG, "Wrapped VAST xml response [" + url + "].");
+		AdServerAccess a = new AdServerAccess(SdkUtil.getUserAgent(), this);
+		a.execute(url);
+	}
+
+	@Override
+	public void processResponse(String response) {
+		try {
+			VASTXmlParser vast = vastXml;
+			while (vast.getWrappedVASTXml() != null) {
+				vast = vast.getWrappedVASTXml();
+			}
+			vast.setWrapper(new VASTXmlParser(getApplicationContext(), null,
+					response));
+			this.videoView
+					.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
+			List<String> im = this.vastXml.getImpressionTrackerUrl();
+			SdkLog.i(TAG, "Triggering " + im.size() + " impression tracking requests");
+			if (im != null && im.size() > 0) {
+				String[] imS = new String[im.size()];
+				SdkUtil.httpRequests(im.toArray(imS));
+			}
+
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error forcing VAST xml response", e);
+		}
+	}
+
+	@Override
+	public void processError(String msg) {
+		SdkLog.e(TAG, "Error fetching wrapped VAST xml: " + msg);
+	}
+
+	@Override
+	public void processError(String msg, Throwable t) {
+		SdkLog.e(TAG, "Error fetching wrapped VAST xml: " + msg, t);
+
+	}
 
 }

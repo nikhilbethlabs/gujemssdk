@@ -173,10 +173,8 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 		if (getLayoutParams() != null) {
 			getLayoutParams().width = w;
 			getLayoutParams().height = h;
-			SdkLog.i(TAG, "Configured existing layout.");
 		} else {
 			setLayoutParams(getNewLayoutParams(w, h));
-			SdkLog.i(TAG, "Configured new layout.");
 		}
 
 		if (bk != null) {
@@ -185,7 +183,6 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
 		return new ViewGroup.LayoutParams(w, h);
 	}
 
@@ -254,8 +251,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "START async. AdServer request");
-				SdkLog.d(TAG, "url = " + url);
+				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
 				new AdServerAccess(SdkUtil.getUserAgent(), this)
 						.execute(new String[] { url });
 			}
@@ -341,7 +337,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			if (response != null && response.length() > 0) {
 				setTimeoutRunnable(new TimeOutRunnable());
 				loadData(response, "text/html", "utf-8");
-				SdkLog.i(TAG, "Ad found and loading...");
+				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
@@ -349,7 +345,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 				setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null) {
 					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator.");
+						SdkLog.i(TAG, "Passing to optimobile delegator. [" + this.getId() + "]");
 						OptimobileDelegator optimobileDelegator = new OptimobileDelegator(
 								SdkUtil.getContext(), this, settings);
 						((ViewGroup) getParent())
@@ -371,13 +367,14 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
 					} else {
-						SdkLog.i(TAG, "No valid ad found.");
+						SdkLog.i(TAG, "No valid ad found. [" + this.getId() + "]");
 					}
 				}
 			}
-			SdkLog.i(TAG, "FINISH async. AdServer request");
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId() + "]");
 		} catch (Exception e) {
-			processError("Error loading ad", e);
+			processError("Error loading ad [" + 
+					 this.getId() + "]", e);
 		}
 	}
 
@@ -392,8 +389,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "START async. AdServer request");
-				SdkLog.d(TAG, "url = " + url);
+				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
 				new AdServerAccess(SdkUtil.getUserAgent(), this)
 						.execute(new String[] { url });
 			}
@@ -404,7 +400,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 				processError("No network connection.");
 			}
 		} else {
-			SdkLog.w(TAG, "AdView has no settings.");
+			SdkLog.w(TAG, "AdView has no settings. [" + this.getId() + "]");
 		}
 	}
 

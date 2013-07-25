@@ -399,6 +399,10 @@ public class SdkUtil {
 	}
 
 	public static void httpRequest(final String url) {
+		SdkUtil.httpRequests(new String [] {url});
+	}
+	
+	public static void httpRequests(final String [] url) {
 		(new AdServerAccess(getUserAgent(), new AdResponseHandler() {
 
 			@Override
@@ -407,15 +411,15 @@ public class SdkUtil {
 
 			@Override
 			public void processError(String msg, Throwable t) {
-				SdkLog.e(TAG, "Error at http request", t);
+				SdkLog.e(TAG, msg, t);
 
 			}
 
 			@Override
 			public void processError(String msg) {
-				SdkLog.e(TAG, "Error at http requesting " + url);
+				SdkLog.e(TAG, msg);
 			}
-		})).execute(new String[] { url });
+		})).execute(url);
 	}
 
 }

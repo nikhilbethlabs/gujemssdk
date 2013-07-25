@@ -182,7 +182,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			i.putExtra("data", data);
 			i.putExtra("target", target);
 			i.putExtra("timeout",
-					(Integer) this.intent.getExtras().get("timeout"));
+				(Integer) this.intent.getExtras().get("timeout"));
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}
