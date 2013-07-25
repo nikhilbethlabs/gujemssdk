@@ -7,7 +7,6 @@ import org.ormma.view.Browser;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -219,7 +218,6 @@ public final class VideoInterstitialActivity extends Activity implements
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void createView(Bundle savedInstanceState) {
 		boolean muteTest = getIntent().getExtras().getBoolean("unmuted");
 		SdkLog.d(
@@ -227,11 +225,8 @@ public final class VideoInterstitialActivity extends Activity implements
 				"Sound settings forced="
 						+ muteTest
 						+ ", headset="
-						+ ((AudioManager) getApplicationContext()
-								.getSystemService(AUDIO_SERVICE))
-								.isWiredHeadsetOn());
-		this.muted = !(muteTest || ((AudioManager) getApplicationContext()
-				.getSystemService(AUDIO_SERVICE)).isWiredHeadsetOn());
+						+ SdkUtil.isHeadsetConnected());
+		this.muted = !(muteTest || SdkUtil.isHeadsetConnected());
 
 		// (1) set view layout
 		setContentView(R.layout.video_interstitial);

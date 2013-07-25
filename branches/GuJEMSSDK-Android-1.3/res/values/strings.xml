@@ -24,4 +24,6 @@
     <string name="onAdError">onAdError</string>
     <string name="videoPreload">-w- Bitte einen Moment Geduld&#8230;</string>
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>
+    <string name="bLevelParam">bl</string>
+    <string name="pStatusParam">sx</string>
 </resources>

@@ -6,20 +6,23 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
-
 import android.Manifest.permission;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
+import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * Various global static methods for initialization, configuration of sdk plus
@@ -31,6 +34,8 @@ import android.webkit.WebView;
 public class SdkUtil {
 
 	private final static String TAG = "SdkUtil";
+
+	private static Intent BATTERY_INTENT = null;
 
 	private static DisplayMetrics METRICS = new DisplayMetrics();
 
@@ -127,11 +132,11 @@ public class SdkUtil {
 		if (DEVICE_ID == null) {
 			try {
 				TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
-					.getSystemService(Context.TELEPHONY_SERVICE);
+						.getSystemService(Context.TELEPHONY_SERVICE);
 				DEVICE_ID = tm.getDeviceId();
-			}
-			catch (SecurityException se) {
-				SdkLog.w(TAG, "TelephonyManager not available, using replacement UID.");
+			} catch (SecurityException se) {
+				SdkLog.w(TAG,
+						"TelephonyManager not available, using replacement UID.");
 				DEVICE_ID = getCookieReplStr();
 			}
 		}
@@ -390,19 +395,41 @@ public class SdkUtil {
 		out.close();
 	}
 
-	public static String getConfigString() {
-		return "[" + (isWifi() ? "1" : "0") + "," + (isGPSActive() ? "1" : "0")
-				+ "," + "0"
-				+ "," // TODO Charger connected?
-				+ (is3G() ? "1" : "0") + "," + (is4G() ? "1" : "0") + ","
-				+ (isPortrait() ? "1" : "0") + "]";
+	public static boolean isChargerConnected() {
+		if (BATTERY_INTENT == null) {
+			IntentFilter ifilter = new IntentFilter(
+					Intent.ACTION_BATTERY_CHANGED);
+			BATTERY_INTENT = getContext().registerReceiver(null, ifilter);
+		}
+		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+		return cp == BatteryManager.BATTERY_PLUGGED_AC
+				|| cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
+				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
+	}
+
+	public static int getBatteryLevel() {
+		if (BATTERY_INTENT == null) {
+			IntentFilter ifilter = new IntentFilter(
+					Intent.ACTION_BATTERY_CHANGED);
+			BATTERY_INTENT = getContext().registerReceiver(null, ifilter);
+		}
+		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+		return (int) (100.0f * (level / (float) scale));
+	}
+
+	@SuppressWarnings("deprecation")
+	public static boolean isHeadsetConnected() {
+		return ((AudioManager) getContext().getSystemService(
+				Context.AUDIO_SERVICE)).isWiredHeadsetOn();
 	}
 
 	public static void httpRequest(final String url) {
-		SdkUtil.httpRequests(new String [] {url});
+		SdkUtil.httpRequests(new String[] { url });
 	}
-	
-	public static void httpRequests(final String [] url) {
+
+	public static void httpRequests(final String[] url) {
 		(new AdServerAccess(getUserAgent(), new AdResponseHandler() {
 
 			@Override

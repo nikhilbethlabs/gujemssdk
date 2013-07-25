@@ -3,7 +3,6 @@ package de.guj.ems.mobile.sdk.controllers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
@@ -58,7 +57,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			Toast.makeText(SdkUtil.getContext(), url, Toast.LENGTH_LONG).show();
 			new AdServerAccess(this.userAgentString, this)
 					.execute(new String[] { url });
 

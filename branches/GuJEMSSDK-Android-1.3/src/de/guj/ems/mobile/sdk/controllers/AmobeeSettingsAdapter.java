@@ -27,6 +27,22 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
+	private final static int STATUS_3G_ON = 0;
+	
+	private final static int STATUS_4G_ON = 1;
+	
+	private final static int STATUS_GPS_ON = 2;
+	
+	private final static int STATUS_PORTRAIT_MODE = 3;
+	
+	private final static int STATUS_HEADSET_CONNECTED = 4;
+	
+	private final static int STATUS_CHARGER_CONNECTED = 5;
+	
+	private final static int STATUS_WIFI_ON = 6;
+	
+	private final static int STATUS_LANDSCAPE_MODE = 7;
+	
 	private final static String BASE_URL = SdkUtil.getContext()
 			.getString(R.string.baseUrl);
 
@@ -270,5 +286,45 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		return super.getRequestUrl() + "&t=" + System.currentTimeMillis();
 	}
 	
-
+	private String getBatteryStatus() {
+		return "&" + SdkUtil.getContext().getResources().getString(R.string.bLevelParam) + "=" + SdkUtil.getBatteryLevel(); 
+	}
+	
+	private String getPhoneStatus() {
+		String pStr = "&" + SdkUtil.getContext().getResources().getString(R.string.pStatusParam) + "=";
+		if (SdkUtil.is3G()) {
+			pStr += STATUS_3G_ON + ",";
+		}
+		if (SdkUtil.is4G()) {
+			pStr += STATUS_4G_ON + ",";
+		}
+		if (SdkUtil.isGPSActive()) {
+			pStr += STATUS_GPS_ON + ",";
+		}
+		if (SdkUtil.isPortrait()) {
+			pStr += STATUS_PORTRAIT_MODE + ",";
+		}
+		else {
+			pStr += STATUS_LANDSCAPE_MODE +	",";
+		}
+		if (SdkUtil.isHeadsetConnected()) {
+			pStr += STATUS_HEADSET_CONNECTED + ",";
+		}
+		if (SdkUtil.isChargerConnected()) {
+			pStr += STATUS_CHARGER_CONNECTED + ",";
+		}
+		if (SdkUtil.isWifi()) {
+			pStr += STATUS_WIFI_ON;
+		}
+		return pStr.endsWith(",") ? pStr.substring(0,  pStr.length() - 2) : pStr;
+	}
+	
+	@Override
+	public String getQueryString() {
+		String qStr = super.getQueryString();
+		qStr = qStr.concat(getPhoneStatus());
+		qStr = qStr.concat(getBatteryStatus());
+		return qStr;
+	}
+	
 }

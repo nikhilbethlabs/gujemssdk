@@ -524,6 +524,9 @@ public class VASTXmlParser {
 	}
 
 	private void waitForWrapper() {
+		if (!hasWrapper) {
+			return;
+		}
 		while (true) {
 			if (hasWrapper
 					&& (wrappedVASTXml == null || !wrappedVASTXml.isReady())) {
@@ -532,10 +535,8 @@ public class VASTXmlParser {
 				} catch (Exception e) {
 					SdkLog.e(TAG, "Error wraiting for wrapper", e);
 				}
-				SdkLog.d(TAG, "VAST wrapper present but not ready.");
 				Thread.yield();
 			} else {
-				SdkLog.d(TAG, "Wrapper initialized and ready or not present.");
 				return;
 			}
 		}

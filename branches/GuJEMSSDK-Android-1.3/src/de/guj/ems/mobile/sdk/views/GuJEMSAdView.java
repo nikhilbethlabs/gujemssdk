@@ -27,7 +27,6 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.controllers.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
-import de.guj.ems.mobile.sdk.util.Targeting;
 
 /**
  * The webview uses as container to display an ad. Derived from the ORMMA
@@ -47,8 +46,6 @@ import de.guj.ems.mobile.sdk.util.Targeting;
  * 
  */
 public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
-
-	private Targeting targeting;
 
 	private Handler handler = new Handler();
 
@@ -268,8 +265,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
 
-		this.targeting = new Targeting(context);
-		this.addJavascriptInterface(EMSInterface.getInstance(targeting),
+		this.addJavascriptInterface(EMSInterface.getInstance(),
 				"emsmobile");
 
 		if (set != null && !isInEditMode()) {
@@ -287,11 +283,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
 
-		// TODO this is debugging output
-		SdkLog.i(TAG, "SETTINGS STRING == " + SdkUtil.getConfigString());
-
-		this.targeting = new Targeting(context);
-		this.addJavascriptInterface(EMSInterface.getInstance(targeting),
+		this.addJavascriptInterface(EMSInterface.getInstance(),
 				"emsmobile");
 
 		if (set != null && !isInEditMode()) {

@@ -7,7 +7,6 @@ import android.os.Vibrator;
 import android.webkit.JavascriptInterface;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
-import de.guj.ems.mobile.sdk.util.Targeting;
 
 /**
  * This class is added to the GuJEMSAdView as
@@ -25,12 +24,9 @@ public class EMSInterface {
 	
 	private final static String TAG = "EMSInterface";
 	
-	private static Targeting targeting = null;
-	
-	public static EMSInterface getInstance(Targeting targeting) {
+	public static EMSInterface getInstance() {
 		if (EMSInterface.instance == null) {
 			EMSInterface.instance = new EMSInterface();
-			EMSInterface.targeting = targeting;
 		}
 		return EMSInterface.instance;
 	}
@@ -88,7 +84,7 @@ public class EMSInterface {
 	@JavascriptInterface
 	public int getBatteryPercent() {
 		SdkLog.i(TAG, "ems_battery: status requested.");
-		return targeting.getBatteryPercent();
+		return SdkUtil.getBatteryLevel();
 	}
 	
 	/**
@@ -98,7 +94,7 @@ public class EMSInterface {
 	@JavascriptInterface
 	public boolean headsetConnected() {
 		SdkLog.i(TAG, "ems_headset: status requested.");
-		return targeting.headsetConnected();		
+		return SdkUtil.isHeadsetConnected();		
 	}
 	
 
