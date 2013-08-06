@@ -3,14 +3,13 @@ package com.MASTAdView.core;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.ormma.view.Browser;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
 import com.MASTAdView.MASTAdLog;
+import com.MASTAdView.core.AdData;
 
 
 public class AdClickHandler implements View.OnClickListener
@@ -117,7 +116,6 @@ public class AdClickHandler implements View.OnClickListener
 		Uri uri = Uri.parse(newUrl);
 		if (parentContainer.getUseInternalBrowser() && (uri.getScheme().equals("http") || uri.getScheme().equals("https")))
 		{
-			/*
 			parentContainer.getHandler().post(new Runnable()
 			{			
 				@Override
@@ -133,14 +131,6 @@ public class AdClickHandler implements View.OnClickListener
 					}
 				}
 			});
-			*/
-			Intent i = new Intent(parentContainer.getContext(), Browser.class);
-			i.putExtra(Browser.URL_EXTRA, url);
-			i.putExtra(Browser.SHOW_BACK_EXTRA, true);
-			i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
-			i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			parentContainer.getContext().startActivity(i);
 		}
 		else
 		{

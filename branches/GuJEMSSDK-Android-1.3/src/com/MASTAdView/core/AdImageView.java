@@ -193,7 +193,7 @@ public class AdImageView extends WebView
 	public void setImage(AdData ad)
 	{ 
 		StringBuffer data = new StringBuffer("<html>");
-		data.append("<head><meta name=\"viewport\" content=\"initial-scale=1.0,user-scalable=no\"><style>body{margin:0; padding:0; width: 100%; height: 100%; display: table;} div{display: table-cell; vertical-align: middle; text-align:center;}</style>");
+		data.append("<head><meta name=\"viewport\" content=\"target-densityDpi=device-dpi\"><style>body{margin:0; padding:0; width: 100%; height: 100%; display: table;} div{display: table-cell; vertical-align: middle; text-align:center;}</style>");
 		data.append("<script language=\"javascript\">function AutoScale() {");
 		data.append("var normWidth  = document.body.clientWidth  / document.getElementById(\"ADIMAGE\").naturalWidth;");
 		data.append("var normHeight = document.body.clientHeight / document.getElementById(\"ADIMAGE\").naturalHeight;");

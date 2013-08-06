@@ -221,7 +221,7 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 				
 		setVisibility(View.GONE);
 		//setOrientation(LinearLayout.HORIZONTAL);
-		//setBackgroundColor(MASTAdConstants.DEFAULT_COLOR);
+		setBackgroundColor(MASTAdConstants.DEFAULT_COLOR);
 		
 		ContentManager.getInstance(this); // force create
 		
@@ -1413,7 +1413,7 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 	
 	/** Default viewport string injected into ad view **/
 	private static final String defaultViewportDefinition =
-		"<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\"/>";
+		"<meta name=\"viewport\" content=\"user-scalable=no\"/>";
 	
 	/** Default body style css injected into ad view **/
 	private static final String defaultBodyStyle =
