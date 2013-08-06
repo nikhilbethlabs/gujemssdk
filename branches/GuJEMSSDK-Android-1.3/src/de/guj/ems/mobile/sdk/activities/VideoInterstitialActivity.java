@@ -345,7 +345,11 @@ public final class VideoInterstitialActivity extends Activity implements
 		if (status == SUSPENDED) {
 			try {
 				if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
-					mediaPlayer.pause();
+					try {
+						mediaPlayer.pause();
+					} catch (IllegalStateException e) {
+						SdkLog.w(TAG, "MediaPlayer already released.");
+					}
 					SdkLog.d(TAG, "MediaPlayer stopped.");
 				}
 			}
@@ -436,6 +440,7 @@ public final class VideoInterstitialActivity extends Activity implements
 											: R.drawable.sound_button_on);
 							sndButton.setVisibility(View.VISIBLE);
 							if (vastXml.getSkipOffset() <= 0) {
+								SdkLog.w(TAG, "skipOffset not set in VAST xml!");
 								((ImageButton) root
 										.findViewById(R.id.emsVidIntButton))
 										.setVisibility(View.VISIBLE);
@@ -536,7 +541,11 @@ public final class VideoInterstitialActivity extends Activity implements
 					SdkLog.d(TAG, "Terminating control thread.");
 
 					if (mediaPlayer != null) {
-						mediaPlayer.pause();
+						try {
+							mediaPlayer.pause();
+						} catch (IllegalStateException e) {
+							SdkLog.w(TAG, "MediaPlayer already released.");
+						}
 						SdkLog.d(TAG, "MediaPlayer paused.");
 					}
 					if (target != null) {

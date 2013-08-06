@@ -27,21 +27,21 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
-	private final static int STATUS_3G_ON = 0;
+	private final static char STATUS_3G_ON = '3';
 	
-	private final static int STATUS_4G_ON = 1;
+	private final static char STATUS_4G_ON = '4';
 	
-	private final static int STATUS_GPS_ON = 2;
+	private final static char STATUS_GPS_ON = 'g';
 	
-	private final static int STATUS_PORTRAIT_MODE = 3;
+	private final static char STATUS_PORTRAIT_MODE = 'p';
 	
-	private final static int STATUS_HEADSET_CONNECTED = 4;
+	private final static char STATUS_HEADSET_CONNECTED = 'h';
 	
-	private final static int STATUS_CHARGER_CONNECTED = 5;
+	private final static char STATUS_CHARGER_CONNECTED = 'c';
 	
-	private final static int STATUS_WIFI_ON = 6;
+	private final static char STATUS_WIFI_ON = 'w';
 	
-	private final static int STATUS_LANDSCAPE_MODE = 7;
+	private final static char STATUS_LANDSCAPE_MODE = 'l';
 	
 	private final static String BASE_URL = SdkUtil.getContext()
 			.getString(R.string.baseUrl);
@@ -316,7 +316,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		if (SdkUtil.isWifi()) {
 			pStr += STATUS_WIFI_ON;
 		}
-		return pStr.endsWith(",") ? pStr.substring(0,  pStr.length() - 2) : pStr;
+		return pStr.endsWith(",") ? pStr.substring(0,  pStr.length() - 1) : pStr;
 	}
 	
 	@Override

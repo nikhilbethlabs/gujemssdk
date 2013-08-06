@@ -182,7 +182,7 @@ public class BackfillDelegator {
 	 */
 	public final static BackfillData isBackfill(String adSpace, String data) {
 		
-		if (data == null || data.startsWith("<div") || data.startsWith("<!DOC")  || data.startsWith("<html") || data.startsWith("<VAST")) {
+		if (data == null || data.startsWith("<div") || data.startsWith("<!DOC")  || data.startsWith("<html") || data.startsWith("<VAST") || data.startsWith("<!-- <connectad>")) {
 			return null;
 		}
 		SdkLog.d(TAG, "Checking string " + data + " for backfill...");
