@@ -5,8 +5,10 @@ import java.util.List;
 import org.ormma.view.Browser;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -152,12 +154,20 @@ public final class VideoInterstitialActivity extends Activity implements
 							SdkLog.w(TAG, "onCompletion but no 100% played, skipping event_complete.");
 						}
 
+						try {
+							((AudioManager)getSystemService(Context.AUDIO_SERVICE)).abandonAudioFocus(null);
+						}
+						catch (Exception e) {
+							SdkLog.w(TAG, "Could not abandon audio manager focus");
+						}
+
 						if (target != null) {
 							startActivity(target);
 						} else {
 							SdkLog.d(TAG,
 									"Video interstitial without target. Returning to previous view.");
 						}
+						
 						finish();
 					}
 				});
@@ -386,6 +396,7 @@ public final class VideoInterstitialActivity extends Activity implements
 					;
 				}
 			}
+			
 			finish();
 		} else if (updateThread != null && updateThread.isAlive() && status > 0) {
 			SdkLog.d(TAG, "Video interstitial resume with paused thread.");
@@ -504,6 +515,12 @@ public final class VideoInterstitialActivity extends Activity implements
 							adjustVideoView(null);
 							
 							if (mediaPlayer != null) {
+								try {
+									((AudioManager)getSystemService(Context.AUDIO_SERVICE)).requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+								}
+								catch (Exception e) {
+									SdkLog.w(TAG, "Could not request audio manager focus");
+								}
 								mediaPlayer.start();
 								SdkLog.d(TAG, "MediaPlayer started.");
 							}
