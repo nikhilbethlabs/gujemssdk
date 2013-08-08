@@ -109,11 +109,13 @@ public class VASTXmlParser {
 		public final static int EVENT_PAUSE = 9;
 
 		public final static int EVENT_RESUME = 10;
+		
+		public final static int EVENT_FULLSCREEN = 11;
 
 		public final String[] EVENT_MAPPING = new String[] { "finalReturn",
 				"impression", "start", "firstQuartile", "midpoint",
 				"thirdQuartile", "complete", "mute", "unmute", "pause",
-				"resume" };
+				"resume", "fullscreen" };
 
 		private int event;
 

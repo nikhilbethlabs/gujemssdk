@@ -2,7 +2,6 @@ package de.guj.ems.mobile.sdk.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -153,7 +152,7 @@ public final class InterstitialActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (status < 0) {
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			this.target = (Intent) getIntent().getExtras().get("target");
 			Integer time = (Integer) getIntent().getExtras().get("timeout");

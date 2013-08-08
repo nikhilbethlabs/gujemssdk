@@ -147,14 +147,9 @@ public class SdkUtil {
 	private static DisplayMetrics getMetrics() {
 		if (SdkUtil.WINDOW_MANAGER == null) {
 			SdkUtil.WINDOW_MANAGER = getWinMgr();
-			SdkUtil.WINDOW_MANAGER.getDefaultDisplay().getMetrics(
-					SdkUtil.METRICS);
-			SdkLog.i(TAG, "Screen density " + SdkUtil.METRICS.density + "[ "
-					+ SdkUtil.METRICS.densityDpi + "]");
-			SdkLog.i(TAG, "Screen resolution " + SdkUtil.METRICS.widthPixels
-					+ "x" + SdkUtil.METRICS.heightPixels);
 		}
-
+		SdkUtil.WINDOW_MANAGER.getDefaultDisplay().getMetrics(
+				SdkUtil.METRICS);
 		return METRICS;
 
 	}
