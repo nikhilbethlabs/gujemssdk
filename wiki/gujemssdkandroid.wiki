@@ -28,7 +28,7 @@ https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_Developer_Guide_EN
 || ||	Interstitials as BroadcastReceivers instead of Activity ||
 || ||	optimobile Integration ||
 || ||	Google AdMob Integration ||
-|| ||	Upgrade to ADT r21.x, adjusted resource handling ||
+|| ||	Upgrade to ADT rev.21.x, adjusted resource handling ||
 || ||	Reworked connectivity class ||
 || ||	Adjusted permissions ||
 || ||	For listviews: New view *GuJEMSListAdView* ||
