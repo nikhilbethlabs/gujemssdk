@@ -1,0 +1,36 @@
+#summary G+J EMS SDK iOS
+#labels iOS,Featured
+
+= Introduction =
+
+iOS SDK change history and downloads.
+
+= Details =
+
+*Downloads
+
+iOS SDK Starter Kit (v1.2.2 R3)
+http://gujemssdk.googlecode.com/files/iOSSDK_Starter-Pack_1.2.2R3.zip
+
+iOS SDK code and modules documentation (English)
+http://gujemssdk.googlecode.com/files/iOSSDK_CodeDocumentation.zip
+
+iOS SDK Developer Guide (Deutsch)
+http://gujemssdk.googlecode.com/files/GUJ_EMS_IOS_SDK_DEU_v1.01.pdf
+
+iOS SDK Developer Guide (English)
+http://gujemssdk.googlecode.com/files/GUJ_EMS_iOS_SDK_EN_v1.01.pdf
+
+*Changelog
+
+||*Version*      ||*Loginformation*                                               ||
+||v 1.0          || First iOS SDK with mocean SDK and XAXIS SDK Integration ||
+||v 1.2.1 R2     || Added Geo Location enabling/disabling method ||
+||v 1.2.1 R3     || Emergency Package (without fat libs and merged.a files)||
+||v 1.2.2 R2     || Enabled mocean retina support ||
+||               || Excluded testflight instance from Xaxis SDK||
+||               || Changed permission handling for ORMMA advertisement||
+||               || Bugfix InApp browser menuebar orientation landscape||
+||               || Bugfix statusbar display ||
+||               || Workaround to instantiate more than one banner with mocean MASTView||
+||v 1.2.2 R3     || solved critical bug which caused app rejection by Apple ||
