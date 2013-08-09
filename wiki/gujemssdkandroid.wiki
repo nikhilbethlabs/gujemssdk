@@ -3,11 +3,11 @@
 
 = Introduction =
 
-Change history and downloads
+Android SDK change history and downloads
 
 = Details =
 
-== Android SDK (v1.3) ==
+*Downloads
 
 Android SDK Starter Kit
 https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3.zip
