@@ -258,6 +258,15 @@ public final class VideoInterstitialActivity extends Activity implements
 		b.setVisibility(View.INVISIBLE);
 		b.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				
+				try {
+					((AudioManager)getSystemService(Context.AUDIO_SERVICE)).abandonAudioFocus(null);
+				}
+				catch (Exception e) {
+					SdkLog.w(TAG, "Could not abandon audio manager focus");
+				}
+
+				
 				if (updateThread != null && updateThread.isAlive()) {
 					try {
 						updateThread.beforeStop();
