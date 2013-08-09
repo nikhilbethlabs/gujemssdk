@@ -17,6 +17,7 @@ import java.util.Map;
 import org.ormma.view.OrmmaView;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -56,10 +57,11 @@ public class OrmmaUtilityController extends OrmmaController {
 	private OrmmaSensorController mSensorController;
 
 	// android calendar handling projection array
+	@SuppressLint("InlinedApi")
 	private static final String[] EVENT_PROJECTION = new String[] {
-			Calendars._ID, // 0
-			Calendars.ACCOUNT_NAME, // 1
-			Calendars.CALENDAR_DISPLAY_NAME };
+			Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH ? Calendars._ID : "0", // 0
+			Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH ? Calendars.ACCOUNT_NAME : "1", // 1
+			Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH ? Calendars.CALENDAR_DISPLAY_NAME : "2" };
 
 	// android calendar handling content provider uris below API 14
 	private final static Uri CALENDAR_PROVIDER_URI = Build.VERSION.SDK_INT >= 8 ? Uri
@@ -360,7 +362,7 @@ public class OrmmaUtilityController extends OrmmaController {
 	 * @param body
 	 *            the body
 	 */
-	@SuppressLint("NewApi")
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@JavascriptInterface
 	private void addCalendarEvent(final int callId, final String date,
 			final String title, final String body) {

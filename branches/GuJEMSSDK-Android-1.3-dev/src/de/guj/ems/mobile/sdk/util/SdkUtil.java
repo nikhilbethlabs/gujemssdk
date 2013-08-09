@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 import java.util.UUID;
 
 import android.Manifest.permission;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,6 +17,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
@@ -37,6 +39,8 @@ public class SdkUtil {
 
 	private static Intent BATTERY_INTENT = null;
 
+	private static TelephonyManager TELEPHONY_MANAGER;
+	
 	private static DisplayMetrics METRICS = new DisplayMetrics();
 
 	private static WindowManager WINDOW_MANAGER = null;
@@ -130,10 +134,12 @@ public class SdkUtil {
 	 */
 	public static String getDeviceId() {
 		if (DEVICE_ID == null) {
-			try {
-				TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
+			if (TELEPHONY_MANAGER == null) {
+				TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
 						.getSystemService(Context.TELEPHONY_SERVICE);
-				DEVICE_ID = tm.getDeviceId();
+			}
+			try {
+				DEVICE_ID = TELEPHONY_MANAGER.getDeviceId();
 			} catch (SecurityException se) {
 				SdkLog.w(TAG,
 						"TelephonyManager not available, using replacement UID.");
@@ -205,15 +211,21 @@ public class SdkUtil {
 	 * 
 	 * @return
 	 */
+	@SuppressLint("InlinedApi")
 	public static boolean is3G() {
 		if (!isWifi()) {
-			final TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
-					.getSystemService(Context.TELEPHONY_SERVICE);
-			int nt = tm.getNetworkType();
-			switch (nt) {
+			if (TELEPHONY_MANAGER == null) {
+				TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
+						.getSystemService(Context.TELEPHONY_SERVICE);
+			}
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				if (TELEPHONY_MANAGER.getNetworkType() == TelephonyManager.NETWORK_TYPE_LTE) {
+					return false;
+				}
+			}
+			switch (TELEPHONY_MANAGER.getNetworkType()) {
 			case TelephonyManager.NETWORK_TYPE_EDGE:
 			case TelephonyManager.NETWORK_TYPE_GPRS:
-			case TelephonyManager.NETWORK_TYPE_LTE:
 			case TelephonyManager.NETWORK_TYPE_UNKNOWN:
 				return false;
 			}
@@ -222,17 +234,20 @@ public class SdkUtil {
 		return false;
 	}
 
+	
 	/**
 	 * Check whether phone has mobile 4G connection
 	 * 
 	 * @return
 	 */
+	@SuppressLint("InlinedApi")
 	public static boolean is4G() {
-		if (!isWifi()) {
-			final TelephonyManager tm = (TelephonyManager) SdkUtil.getContext()
-					.getSystemService(Context.TELEPHONY_SERVICE);
-			int nt = tm.getNetworkType();
-			return nt == TelephonyManager.NETWORK_TYPE_LTE;
+		if (!isWifi() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			if (TELEPHONY_MANAGER == null) {
+				TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
+						.getSystemService(Context.TELEPHONY_SERVICE);
+			}
+			return TELEPHONY_MANAGER.getNetworkType() == TelephonyManager.NETWORK_TYPE_LTE;
 		}
 		return false;
 	}
@@ -398,7 +413,7 @@ public class SdkUtil {
 		}
 		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		return cp == BatteryManager.BATTERY_PLUGGED_AC
-				|| cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
+				// || cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
 				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
 	}
 
