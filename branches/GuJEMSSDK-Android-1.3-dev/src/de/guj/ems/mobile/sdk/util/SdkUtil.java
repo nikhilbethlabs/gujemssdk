@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ReceiverCallNotAllowedException;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -407,9 +408,16 @@ public class SdkUtil {
 
 	public static boolean isChargerConnected() {
 		if (BATTERY_INTENT == null) {
-			IntentFilter ifilter = new IntentFilter(
-					Intent.ACTION_BATTERY_CHANGED);
-			BATTERY_INTENT = getContext().registerReceiver(null, ifilter);
+			try {
+				IntentFilter ifilter = new IntentFilter(
+						Intent.ACTION_BATTERY_CHANGED);
+				BATTERY_INTENT = getContext().getApplicationContext().registerReceiver(null, ifilter);
+			}
+			catch (ReceiverCallNotAllowedException e) {
+				SdkLog.w(TAG, "Skipping start of phone status receivers from start interstitial.");
+				BATTERY_INTENT = null;
+				return false;
+			}
 		}
 		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		return cp == BatteryManager.BATTERY_PLUGGED_AC
@@ -419,9 +427,16 @@ public class SdkUtil {
 
 	public static int getBatteryLevel() {
 		if (BATTERY_INTENT == null) {
-			IntentFilter ifilter = new IntentFilter(
-					Intent.ACTION_BATTERY_CHANGED);
-			BATTERY_INTENT = getContext().registerReceiver(null, ifilter);
+			try {
+				IntentFilter ifilter = new IntentFilter(
+						Intent.ACTION_BATTERY_CHANGED);
+				BATTERY_INTENT = getContext().getApplicationContext().registerReceiver(null, ifilter);
+			}
+			catch (ReceiverCallNotAllowedException e) {
+				SdkLog.w(TAG, "Skipping start of phone status receivers from start interstitial.");
+				BATTERY_INTENT = null;
+				return 100;
+			}			
 		}
 		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
