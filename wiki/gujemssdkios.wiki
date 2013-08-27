@@ -34,3 +34,4 @@ http://gujemssdk.googlecode.com/files/GUJ_EMS_iOS_SDK_EN_v1.01.pdf
 ||               || Bugfix statusbar display ||
 ||               || Workaround to instantiate more than one banner with mocean MASTView||
 ||v 1.2.2 R3     || solved critical bug which caused app rejection by Apple ||
+||v 1.2.3        || implemented algorithm for Startstitial Integration
