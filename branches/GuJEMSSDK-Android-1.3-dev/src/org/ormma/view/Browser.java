@@ -281,7 +281,7 @@ public class Browser extends Activity {
 				if (orgTitle == null) {
 					orgTitle = a.getTitle().toString();
 				}
-				a.setTitle("Lädt...");
+				a.setTitle("LÃ¤dt...");
 				a.setProgress(progress * 100);
 				if (progress == 100) {
 					//TODO layout / title / image?

@@ -48,6 +48,7 @@ import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -735,7 +736,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	public void clearView() {
 		bPageFinished = false;
 		reset();
-		super.clearView();
+		loadUrl("about:blank");
 	}
 
 	/**
@@ -931,12 +932,15 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * Initialize the view
 	 */
-	@SuppressLint({ "SetJavaScriptEnabled", "NewApi" })
+	@SuppressWarnings("deprecation")
+	@SuppressLint({ "SetJavaScriptEnabled" })
 	private void initialize() {
 		SdkUtil.setContext(getContext());
 		if (!isInEditMode()) {
-			getSettings().setPluginState(WebSettings.PluginState.ON);
-			getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+				getSettings().setPluginState(WebSettings.PluginState.ON);
+				getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
+			}
 			getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 			getSettings().setAppCacheEnabled(true);
 			getSettings().setUseWideViewPort(false);

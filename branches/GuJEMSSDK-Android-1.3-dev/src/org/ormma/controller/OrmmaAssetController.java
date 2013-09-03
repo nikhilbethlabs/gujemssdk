@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -576,8 +577,9 @@ public class OrmmaAssetController extends OrmmaController {
 		image.put(Images.Media.ORIENTATION, 0);
 
 		File parent = img.getParentFile();
-		String path = parent.toString().toLowerCase();
-		String fname = parent.getName().toLowerCase();
+		String path = parent.toString().toLowerCase(Locale.GERMAN);
+		String fname = parent.getName().toLowerCase(Locale.GERMAN);
+		
 		image.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
 		image.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, fname);
 		image.put(Images.Media.SIZE, img.length());

@@ -228,7 +228,8 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			}
 			if (state == XmlPullParser.START_TAG) {
 				if (parser.getName().equals(
-						"de.guj.ems.mobile.sdk.views.GuJEMSAdView")) {
+						"de.guj.ems.mobile.sdk.views.GuJEMSAdView") || parser.getName().equals(
+								"de.guj.ems.mobile.sdk.views.GuJEMSListAdView")) {
 					as = Xml.asAttributeSet(parser);
 					break;
 				} else {
@@ -276,6 +277,9 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
 					"text/html", "utf-8", null);
 			setVisibility(VISIBLE);
+		}
+		else {
+			SdkLog.e(TAG, "No attribute set found from resource id?");
 		}
 
 	}
