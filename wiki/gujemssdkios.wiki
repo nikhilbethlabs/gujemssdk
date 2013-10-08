@@ -10,7 +10,7 @@ iOS SDK change history and downloads.
 *Downloads
 
 iOS SDK Starter Kit (v1.2.2 R3)
-http://gujemssdk.googlecode.com/files/GUJ_iOS_SDK_Starter-Pack_v1.2.3.zip
+http://gujemssdk.googlecode.com/files/GUJ_iOS_SDK_Starter-Pack_v1.2.3_R1.zip
 
 iOS SDK code and modules documentation (English)
 http://gujemssdk.googlecode.com/files/GUJ_iOS_SDK_ClassDoc_1.2.3.zip
@@ -35,3 +35,4 @@ http://gujemssdk.googlecode.com/files/GUJ_EMS_iOS_SDK_EN_v1.2.3.pdf
 ||               || Workaround to instantiate more than one banner with mocean MASTView||
 ||v 1.2.2 R3     || solved critical bug which caused app rejection by Apple ||
 ||v 1.2.3        || implemented algorithm for Startstitial Integration||
+||v 1.2.3 R1     || Bugfix for iOS 7 support                         || 
