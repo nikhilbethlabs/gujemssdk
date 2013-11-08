@@ -23,6 +23,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
 import de.guj.ems.mobile.sdk.views.AdResponseHandler;
@@ -73,7 +74,7 @@ public class SdkUtil {
 	/**
 	 * revision sdk version integer
 	 */
-	public final static int REV_VERSION = 0;
+	public final static int REV_VERSION = 1;
 
 	/**
 	 * Version string containing major, minor and revision as string divided by
@@ -184,6 +185,7 @@ public class SdkUtil {
 	 * 
 	 * @return device or fixed user agent as string
 	 */
+	@SuppressLint("NewApi")
 	public static String getUserAgent() {
 		if (DEBUG) {
 			SdkLog.w(TAG,
@@ -191,10 +193,16 @@ public class SdkUtil {
 		}
 		if (USER_AGENT == null) {
 			// determine user-agent
-			WebView w = new WebView(SdkUtil.getContext());
-			USER_AGENT = w.getSettings().getUserAgentString();
-			w.destroy();
-			w = null;
+			if (Build.VERSION.SDK_INT < 17) {
+				WebView w = new WebView(CONTEXT);
+				USER_AGENT = w.getSettings().getUserAgentString();
+				w.destroy();
+				w = null;
+			}
+			else {
+				USER_AGENT = WebSettings.getDefaultUserAgent(CONTEXT);
+			}
+			SdkLog.i(TAG, "G+J EMS SDK UserAgent: " + USER_AGENT);
 		}
 		return DEBUG ? DEBUG_USER_AGENT : USER_AGENT;
 	}
@@ -212,7 +220,6 @@ public class SdkUtil {
 	 * 
 	 * @return
 	 */
-	@SuppressLint("InlinedApi")
 	public static boolean is3G() {
 		if (!isWifi()) {
 			if (TELEPHONY_MANAGER == null) {

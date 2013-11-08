@@ -892,6 +892,8 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 		}
 		else 
 		{
+			lastResponse = ad;
+
 			// Callback to notify that ad download completed.
 			// if delegate defined, invoke
 			if (adDelegate != null)
@@ -903,10 +905,9 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 				}
 			}
 			
-			if (this.getParent() == null)
+			if (this.getParent() == null)			
 			{
 				// View not currently included in any layout, don't try to show content for now, just save it
-				lastResponse = ad;
 				adLog.log(MASTAdLog.LOG_LEVEL_DEBUG, "requestGet result["+String.valueOf(requestCounter)+"]", ad.toString());
 				adLog.log(MASTAdLog.LOG_LEVEL_DEBUG, "setResult", "no parent for ad view, skipping display for now...");
 				return false;
@@ -1463,6 +1464,10 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 	
 	public String getLastResponse()
 	{
+		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.richContent);
+		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.imageUrl);
+		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.clickUrl);
+		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.trackUrl);
 		return lastResponse.responseData;
 	}
 

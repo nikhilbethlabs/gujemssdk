@@ -63,7 +63,7 @@ public class OrmmaAssetController extends OrmmaController {
 	
 	//private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale=" + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
 	
-	private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='initial-scale=1.0, user-scalable=no' />").getBytes();
+	private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no' />").getBytes();
 
 	private final static byte[] WEBVIEW_BODY_STYLE = "<body style=\"margin:0; padding:0; overflow:hidden; background-color:transparent;margin: 0px; padding: 0px; display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-pack:center;-webkit-box-align:center;\">"
 			.getBytes();

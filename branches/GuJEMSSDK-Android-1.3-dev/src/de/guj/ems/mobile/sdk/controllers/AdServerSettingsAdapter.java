@@ -1,5 +1,6 @@
 package de.guj.ems.mobile.sdk.controllers;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
+
+	private static final long serialVersionUID = 314048983271226769L;
 
 	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
 			.getString(R.string.attributePrefix);
@@ -132,7 +135,7 @@ public abstract class AdServerSettingsAdapter implements
 	 * Global attribute name for identifying a placement for backfill
 	 */
 	public final static String EMS_BACKFILL_ZONEID = SdkUtil.getContext()
-			.getString(R.string.zoneId);
+			.getString(R.string.backfillZoneId);
 
 	protected final static int EMS_BACKFILL_ZONEID_ID = R.styleable.GuJEMSAdView_ems_bfZoneId;
 	
@@ -539,6 +542,8 @@ public abstract class AdServerSettingsAdapter implements
 		this.directBackfill = directBackfill;
 	}
 	
-	
+	public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
+		this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId, bfZoneId, "", id));
+	}
 	
 }

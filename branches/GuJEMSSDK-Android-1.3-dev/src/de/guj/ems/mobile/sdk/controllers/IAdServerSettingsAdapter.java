@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers;
 
+import java.io.Serializable;
+
 
 /**
  * Interface for the handling of data and settings
@@ -8,7 +10,7 @@ package de.guj.ems.mobile.sdk.controllers;
  * @author stein16
  *
  */
-public interface IAdServerSettingsAdapter {
+public interface IAdServerSettingsAdapter extends Serializable {
 	
 	/**
 	 * 

@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers;
 
+import java.io.Serializable;
+
 import android.content.Context;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -54,8 +56,10 @@ public class BackfillDelegator {
 	 * @author stein16
 	 *
 	 */
-	public static class BackfillData {
+	public static class BackfillData implements Serializable {
 		
+		private static final long serialVersionUID = 9154813314077555112L;
+
 		String data;
 		
 		String siteId;

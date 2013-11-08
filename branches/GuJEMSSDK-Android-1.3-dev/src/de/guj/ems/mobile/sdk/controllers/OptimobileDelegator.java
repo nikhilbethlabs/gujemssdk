@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.MASTAdView.MASTAdDelegate.AdDownloadEventHandler;
+import com.MASTAdView.MASTAdLog;
 import com.MASTAdView.MASTAdView;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
@@ -22,6 +23,7 @@ import com.google.ads.AdView;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
+import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 /**
  * Delegates requests to optimobile and possibly other networks
@@ -71,6 +73,7 @@ public class OptimobileDelegator {
 	@SuppressWarnings("deprecation")
 	private MASTAdView initOptimobileView(Context context, final IAdServerSettingsAdapter settings, int color) {
 		AdMobHandler delegator = new AdMobHandler();
+		MASTAdLog.setDefaultLogLevel(MASTAdLog.LOG_LEVEL_DEBUG);
 		final MASTAdView view = new MASTAdView(context,
 				Integer.valueOf(settings
 						.getDirectBackfill().getSiteId()),
@@ -116,6 +119,12 @@ public class OptimobileDelegator {
 			
 			@Override
 			public void onDownloadEnd(MASTAdView arg0) {
+				SdkLog.d(TAG,  "optimobile Ad loaded.");
+				if (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
+					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
+					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
+					emsMobileView.processResponse(optimobileView.getLastResponse());
+				}
 			}
 			
 			@Override
@@ -124,12 +133,6 @@ public class OptimobileDelegator {
 			
 			@Override
 			public void onAdViewable(MASTAdView arg0) {
-				if (settings.getOnAdSuccessListener() != null) {
-					settings.getOnAdSuccessListener().onAdSuccess();
-				}
-				else {
-					SdkLog.d(TAG, "optimobile Ad loaded.");
-				}								
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
@@ -137,6 +140,10 @@ public class OptimobileDelegator {
 						
 					}
 				});
+				SdkLog.d(TAG, "optimobile Ad loaded.");
+				if (settings.getOnAdSuccessListener() != null) {
+					settings.getOnAdSuccessListener().onAdSuccess();
+				}
 			}
 		});
 		

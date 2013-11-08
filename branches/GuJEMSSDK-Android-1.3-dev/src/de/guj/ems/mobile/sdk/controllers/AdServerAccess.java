@@ -75,7 +75,6 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
 		     System.setProperty("http.keepAlive", "false");
 		}
-		SdkLog.d(TAG, "User-Agent: " + userAgentString);
 	}
 	
 	private StringBuilder httpGet(String url) {

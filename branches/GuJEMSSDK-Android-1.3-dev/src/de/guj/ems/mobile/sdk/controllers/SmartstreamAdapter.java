@@ -1,5 +1,8 @@
 package de.guj.ems.mobile.sdk.controllers;
 
+import java.util.Locale;
+
+import android.app.Activity;
 import android.content.Context;
 
 import com.video.adsdk.VideoAdSDK;
@@ -27,7 +30,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 	private static BackfillDelegator.BackfillCallback callback;
 
 	@Override
-	public void execute(Context context,
+	public void execute(final Context context,
 			final BackfillDelegator.BackfillCallback callback, final BackfillDelegator.BackfillData bfData) {
 		SmartstreamAdapter.callback = callback;
 		if (!bfData.getData().equals(lastData)) {
@@ -36,6 +39,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 						public void onAdvertisingIsReadyToPlay() {
 							// autoplay when the video is prepared and
 							// buffered
+							SdkLog.d(TAG,  "Smartstream Ad is ready to play.");
 							VideoAdSDK.startAdvertising();
 						}
 
@@ -51,7 +55,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							// TODO view time event
 							SdkLog.d(TAG, "Smartstream Advertising Event: "
 									+ arg0);
-							if (arg0.toLowerCase().equals("impression")) {
+							if (arg0.toLowerCase(Locale.ENGLISH).equals("impression")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_IMPRESSION, false);
 							}
 							else if (arg0.toLowerCase().equals("start")) {
@@ -101,6 +105,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 
 						public void onAdvertisingWillShow() {
 							// the advertising appears in fullscreen mode
+							SdkLog.d(TAG, "Smartstream advertising will show");
 							SmartstreamAdapter.callback.receivedAdCallback();
 						}
 
@@ -113,7 +118,17 @@ public class SmartstreamAdapter implements BackfillAdapter {
 					});
 					SmartstreamAdapter.lastData = bfData.getData();
 		}
-		//VideoAdSDK.startPrefetching();
 		VideoAdSDK.playAdvertising();
+//		Intent i = new Intent(context, VideoAdSDKWrapperActivity.class);
+//		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		context.startActivity(i);
+//		((Activity)context).runOnUiThread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				VideoAdSDK.playAdvertising();
+//			}
+//		});
+		
 	}
 }

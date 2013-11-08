@@ -27,6 +27,8 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
+	private static final long serialVersionUID = -4637791449705402591L;
+
 	private final static char STATUS_3G_ON = '3';
 	
 	private final static char STATUS_4G_ON = '4';
@@ -254,20 +256,21 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 									.getString(R.string.amobeeLongitude));
 					putAttrValue(AdServerSettingsAdapter.EMS_LON,
 							String.valueOf(loc[1]));
-					SdkLog.i(TAG, "ems_geo: using " + loc[0] + "x" + loc[1] + " as location.");
+					SdkLog.i(TAG, "Using " + loc[0] + "x" + loc[1] + " as location.");
 				} else {
-					SdkLog.i(TAG, "ems_geo: location too old or not fetchable.");
+					SdkLog.i(TAG, "Location too old or not fetchable.");
 				}
 			}
 			else {
-				SdkLog.d(TAG, "ems_geo: location fetching not allowed by adspace.");
+				SdkLog.d(TAG, "Location fetching not allowed by adspace.");
 			}
 		}
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_BACKFILL_SITEID) != null && getAttrsToParams().get(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID) != null) {
 			String site = savedInstance.getString(AdServerSettingsAdapter.EMS_BACKFILL_SITEID);
 			String zone = savedInstance.getString(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID);
 			this.setDirectBackfill(new BackfillDelegator.BackfillData(site, zone, "", -1));
-			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone);		}
+			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone);		
+		}
 		
 	}
 
