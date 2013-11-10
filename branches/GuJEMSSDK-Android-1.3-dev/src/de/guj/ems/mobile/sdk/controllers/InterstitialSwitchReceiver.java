@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
-import de.guj.ems.mobile.sdk.activities.VideoAdSDKWrapperActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -80,12 +79,81 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 						data)) != null) {
 			SdkLog.d(TAG, "Possible backfill ad detected [id=" + bfD.getId()
 					+ ", data=" + bfD.getData() + "]");
+			try {
+
+				BackfillDelegator.process(context, bfD,
+						new BackfillDelegator.BackfillCallback() {
+							@Override
+							public void trackEventCallback(String arg0) {
+								SdkLog.d(TAG, "Backfill: An event occured ["
+										+ arg0 + "]");
+							}
+
+							@Override
+							public void noAdCallback() {
+								SdkLog.d(TAG, "Backfill: empty.");
+								if (settings.getOnAdEmptyListener() != null) {
+									settings.getOnAdEmptyListener().onAdEmpty();
+								}
+								if (target != null) {
+									context.startActivity(target);
+								} else {
+									SdkLog.i(TAG,
+											"No target. Back to previous view.");
+								}
+							}
+
+							@Override
+							public void finishedCallback() {
+								if (target != null) {
+									context.startActivity(target);
+								} else {
+									SdkLog.i(TAG,
+											"No target. Back to previous view.");
+								}
+							}
+
+							@Override
+							public void adFailedCallback(Exception e) {
+
+								if (settings.getOnAdErrorListener() != null) {
+									settings.getOnAdErrorListener().onAdError(
+											"Backfill exception", e);
+								} else {
+									SdkLog.e(TAG,
+											"Backfill: An exception occured.",
+											e);
+								}
+								if (target != null) {
+									context.startActivity(target);
+								} else {
+									SdkLog.i(TAG,
+											"No target. Back to previous view.");
+								}
+							}
+
+							@Override
+							public void receivedAdCallback() {
+								if (settings.getOnAdSuccessListener() != null) {
+									settings.getOnAdSuccessListener()
+											.onAdSuccess();
+								}
+							}
+
+						});
+
+			} catch (BackfillDelegator.BackfillException bfE) {
+				processError("Backfill error thrown.", bfE);
+			}
+
+/*
 			Intent wrapper = new Intent(context, VideoAdSDKWrapperActivity.class);
 			wrapper.putExtra("target", target);
 			wrapper.putExtra("delegator", bfD);
 			wrapper.putExtra("settings", settings);
 			wrapper.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(wrapper);
+*/			
 
 		} else if (data == null || data.length() < 10) {
 			// head to original intent

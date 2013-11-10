@@ -2,7 +2,6 @@ package de.guj.ems.mobile.sdk.controllers;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.video.adsdk.VideoAdSDK;
@@ -58,19 +57,19 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							if (arg0.toLowerCase(Locale.ENGLISH).equals("impression")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_IMPRESSION, false);
 							}
-							else if (arg0.toLowerCase().equals("start")) {
+							else if (arg0.toLowerCase(Locale.ENGLISH).equals("start")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_PLAY, false);								
 							}
-							else if (arg0.toLowerCase().equals("firstquartile")) {
+							else if (arg0.toLowerCase(Locale.ENGLISH).equals("firstquartile")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_1, false);								
 							}
-							else if (arg0.toLowerCase().equals("midpoint")) {
+							else if (arg0.toLowerCase(Locale.ENGLISH).equals("midpoint")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_MID, false);								
 							}
-							else if (arg0.toLowerCase().equals("thirdquartile")) {
+							else if (arg0.toLowerCase(Locale.ENGLISH).equals("thirdquartile")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_QUARTILE_3, false);
 							}
-							else if (arg0.toLowerCase().equals("complete")) {
+							else if (arg0.toLowerCase(Locale.ENGLISH).equals("complete")) {
 								SmartstreamEvents.processEvent(bfData.getUserAgent(), bfData.getZoneId(), bfData.getData(), SmartstreamEvents.SMARTSTREAM_EVENT_FINISH, false);								
 							}
 						}
@@ -119,16 +118,5 @@ public class SmartstreamAdapter implements BackfillAdapter {
 					SmartstreamAdapter.lastData = bfData.getData();
 		}
 		VideoAdSDK.playAdvertising();
-//		Intent i = new Intent(context, VideoAdSDKWrapperActivity.class);
-//		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		context.startActivity(i);
-//		((Activity)context).runOnUiThread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				VideoAdSDK.playAdvertising();
-//			}
-//		});
-		
 	}
 }
