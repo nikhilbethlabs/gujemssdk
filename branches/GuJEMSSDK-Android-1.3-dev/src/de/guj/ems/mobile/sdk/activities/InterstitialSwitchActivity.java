@@ -39,8 +39,6 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 
 	private IAdServerSettingsAdapter settings;
 	
-	private String userAgentString;
-	
 	private String data;
 	
 	private Intent target;
@@ -58,9 +56,6 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 			SdkUtil.setContext(getApplicationContext());
 		}
 		
-		// determine user-agent
-		this.userAgentString = SdkUtil.getUserAgent();
-
 		// original target when interstitial not available
 		this.target = (Intent) getIntent().getExtras().get("target");
 

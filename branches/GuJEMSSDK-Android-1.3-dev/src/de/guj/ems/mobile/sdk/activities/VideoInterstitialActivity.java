@@ -333,6 +333,9 @@ public final class VideoInterstitialActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(getApplicationContext());
+		}
 		if (status < 0) {
 			//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
