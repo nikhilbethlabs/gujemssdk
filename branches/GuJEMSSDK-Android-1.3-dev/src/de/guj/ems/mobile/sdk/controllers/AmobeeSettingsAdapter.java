@@ -338,6 +338,4 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		return SECURITY_HEADER_VALUE;
 	}
 	
-	
-	
 }
