@@ -27,4 +27,5 @@
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>
     <string name="bLevelParam">pbl</string>
     <string name="pStatusParam">psx</string>
+    <string name="securityHeaderName">Amobee-Account-ID</string>
 </resources>

@@ -75,8 +75,8 @@ public final class InterstitialSwitchActivity extends Activity implements AdResp
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			new AdServerAccess(
-					this.userAgentString, this).execute(new String[] { url });
+			new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+			.execute(new String[] { url });
 
 
 		} else {

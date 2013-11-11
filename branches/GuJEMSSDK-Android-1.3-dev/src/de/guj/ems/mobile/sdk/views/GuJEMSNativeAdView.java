@@ -276,8 +276,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), this)
-						.execute(new String[] { url });
+				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+				.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -410,8 +410,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), this)
-						.execute(new String[] { url });
+				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+				.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {

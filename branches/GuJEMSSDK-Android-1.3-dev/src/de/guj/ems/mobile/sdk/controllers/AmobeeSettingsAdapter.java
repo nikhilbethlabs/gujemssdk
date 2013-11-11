@@ -18,7 +18,8 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * Base URL http://vfdeprod.amobee.com Base Query String "?tp=4&prt=G+J" The
  * following parameters are addded at runtime: "as" for the zoneId, "uid" for a
  * unique device id and "t", containing the timestamp in milliseconds since Jan
- * 1st 1970, "lat", "lon" if "ems_geo" is set to true
+ * 1st 1970, "lat", "lon" if "ems_geo" is set to true, "pbl" for battery level and
+ * "psx" for various phone settings
  * 
  * Custom params and keywords (kw=/nkw=) can be added for programmatically added views.
  * 
@@ -29,6 +30,8 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	private static final long serialVersionUID = -4637791449705402591L;
 
+	private final static int SECURITY_HEADER_VALUE = 1958013300;
+	
 	private final static char STATUS_3G_ON = '3';
 	
 	private final static char STATUS_4G_ON = '4';
@@ -329,5 +332,12 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		qStr = qStr.concat(getBatteryStatus());
 		return qStr;
 	}
+
+	@Override
+	public int getSecurityHeaderValueHash() {
+		return SECURITY_HEADER_VALUE;
+	}
+	
+	
 	
 }

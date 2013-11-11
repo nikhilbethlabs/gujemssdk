@@ -33,6 +33,9 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
 			.getString(R.string.attributePrefix);
 	
+	private final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
+			.getString(R.string.securityHeaderName); 
+	
 	/**
 	 * Global attribute name for listener which reacts to empty ad
 	 */
@@ -544,5 +547,12 @@ public abstract class AdServerSettingsAdapter implements
 	public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
 		this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId, bfZoneId, "", id));
 	}
+
+	@Override
+	public String getSecurityHeaderName() {
+		return EMS_SECURITY_HEADER_NAME;
+	}
+	
+	
 	
 }

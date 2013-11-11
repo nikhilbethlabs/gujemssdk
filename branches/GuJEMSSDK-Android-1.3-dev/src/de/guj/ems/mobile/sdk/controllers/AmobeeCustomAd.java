@@ -193,8 +193,8 @@ public abstract class AmobeeCustomAd implements AdResponseHandler {
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			new AdServerAccess(
-					SdkUtil.getUserAgent(), this).execute(new String[] { url });
+			new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+			.execute(new String[] { url });
 
 
 		} else if (SdkUtil.isOffline()) {

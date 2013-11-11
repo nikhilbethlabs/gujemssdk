@@ -15,8 +15,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 
 	private IAdServerSettingsAdapter settings;
 
-	private String userAgentString;
-
 	private String data;
 
 	private Intent target;
@@ -38,9 +36,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			SdkUtil.setContext(arg0);
 		}
 
-		// determine user-agent
-		this.userAgentString = SdkUtil.getUserAgent();
-
 		// original target when interstitial not available
 		this.target = (Intent) arg1.getExtras().get("target");
 		if (this.target != null) {
@@ -57,8 +52,8 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			new AdServerAccess(this.userAgentString, this)
-					.execute(new String[] { url });
+			new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+			.execute(new String[] { url });
 
 		} else {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
