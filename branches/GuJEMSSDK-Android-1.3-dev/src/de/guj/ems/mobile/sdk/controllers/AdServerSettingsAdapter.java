@@ -1,6 +1,5 @@
 package de.guj.ems.mobile.sdk.controllers;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
