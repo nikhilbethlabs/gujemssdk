@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import android.Manifest.permission;
@@ -23,6 +24,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
@@ -39,6 +41,10 @@ public class SdkUtil {
 
 	private final static String TAG = "SdkUtil";
 
+	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[]{ String.class, ValueCallback.class };
+	
+	private static Method KITKAT_JS_METHOD = null;
+	
 	private static Intent BATTERY_INTENT = null;
 
 	private static TelephonyManager TELEPHONY_MANAGER;
@@ -479,6 +485,30 @@ public class SdkUtil {
 				SdkLog.e(TAG, msg);
 			}
 		})).execute(url);
+	}
+	
+	public static void evaluateJavascript(WebView webView, String javascript) {
+		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
+			try {
+				KITKAT_JS_METHOD = Class.forName("android.webkit.WebView").
+					getDeclaredMethod("evaluateJavascript", KITKAT_JS_PARAMTYPES);
+				KITKAT_JS_METHOD.setAccessible(true);
+				SdkLog.i(TAG, "G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
+			}
+			catch (Exception e0) {
+				SdkLog.e(TAG, "FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript", e0);				
+			}
+		}
+
+		if (Build.VERSION.SDK_INT < 19) {
+			webView.loadUrl("javascript:" + javascript);
+		}
+		else try {
+			KITKAT_JS_METHOD.invoke(webView, javascript, null);
+		}
+		catch (Exception e) {
+			SdkLog.e(TAG, "FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript", e);
+		}
 	}
 
 }

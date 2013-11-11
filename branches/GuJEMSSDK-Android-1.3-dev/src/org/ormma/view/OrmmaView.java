@@ -61,7 +61,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.webkit.JsResult;
 import android.webkit.URLUtil;
-import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -96,8 +95,6 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
-	private final Class<?>[] KITKAT_JS_PARAMTYPES = new Class[]{ String.class, ValueCallback.class };
-	
 	public enum ACTION {
 		PLAY_AUDIO, PLAY_VIDEO
 	}
@@ -988,22 +985,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 *            the java script to inject
 	 */
 	
-	//@SuppressLint("NewApi")
-	public void injectJavaScript(String str) {
+	public void injectJavaScript(final String str) {
 		if (str != null) {
-			if (Build.VERSION.SDK_INT < 19) {
-				super.loadUrl("javascript:" + str);
-			}
-			else try {
-				//TODO move the methods to a Method object at initialization
-				final java.lang.reflect.Method myMethodWithArrayMethod = Class.forName("android.webkit.WebView").
-						getDeclaredMethod("evaluateJavascript", KITKAT_JS_PARAMTYPES);
-			    myMethodWithArrayMethod.setAccessible(true);
-			    myMethodWithArrayMethod.invoke(this, str, null);
-			}
-			catch (Exception e) {
-				SdkLog.e(SdkLog_TAG, "FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript", e);
-			}
+			SdkUtil.evaluateJavascript(this, str);
 		}
 	}
 	
