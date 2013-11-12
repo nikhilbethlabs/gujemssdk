@@ -70,6 +70,7 @@ public class OptimobileDelegator {
 		this.context = context;
 		this.emsMobileView = adView;
 		this.handler = this.emsMobileView.getHandler();
+		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
 		this.optimobileView = initOptimobileView(context, settings, 0); 
 	}
 	
@@ -89,20 +90,19 @@ public class OptimobileDelegator {
 		this.context = context;
 		this.emsNativeMobileView = adView;
 		this.handler = this.emsNativeMobileView.getHandler();
+		SdkLog.d(TAG, "Original view (GuJEMSNativeAdView) handler is " + handler);
 		this.optimobileView = initOptimobileView(context, settings, 0); 
 	}
 
 	@SuppressWarnings("deprecation")
 	private MASTAdView initOptimobileView(Context context, final IAdServerSettingsAdapter settings, int color) {
 		AdMobHandler delegator = new AdMobHandler();
-		MASTAdLog.setDefaultLogLevel(MASTAdLog.LOG_LEVEL_DEBUG);
+		MASTAdLog.setDefaultLogLevel(SdkLog.isTestLogLevel() ? MASTAdLog.LOG_LEVEL_DEBUG : MASTAdLog.LOG_LEVEL_ERROR );
 		final MASTAdView view = new MASTAdView(context,
 				Integer.valueOf(settings
 						.getDirectBackfill().getSiteId()),
 				Integer.valueOf(settings
 						.getDirectBackfill().getZoneId()));
-		
-		handler = new Handler();
 		
 		view.setLayoutParams(
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -112,7 +112,12 @@ public class OptimobileDelegator {
 		view.setVisibility(View.GONE);
 		view.setUseInternalBrowser(true);
 		view.setUpdateTime(0);
-		view.getAdDelegate().setThirdPartyRequestHandler(delegator);
+		if (emsMobileView != null && !GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
+			view.getAdDelegate().setThirdPartyRequestHandler(delegator);
+		}
+		else {
+			SdkLog.d(TAG, "3rd party requests disabled for native optimobile view");
+		}
 		view.getAdDelegate().setAdDownloadHandler(new AdDownloadEventHandler() {
 			
 			@Override
@@ -133,19 +138,19 @@ public class OptimobileDelegator {
 						SdkLog.w(TAG, "optimobile: " + arg1);
 					}
 				}
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						view.setVisibility(View.GONE);
-						
-					}
-				});				
+				if (handler != null) {
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.GONE);
+						}
+					});				
+				}
 			}
 			
 			@Override
 			public void onDownloadEnd(MASTAdView arg0) {
 				SdkLog.d(TAG,  "optimobile Ad loaded.");
-				//TODO optimobile in list views
 				if (emsMobileView != null && (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass()))) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
@@ -154,7 +159,7 @@ public class OptimobileDelegator {
 				else if (emsNativeMobileView != null) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
-					emsNativeMobileView.processOptimobileResponse(optimobileView.getLastResponse());					
+					emsNativeMobileView.processResponse(optimobileView.getLastResponse());					
 				}
 			}
 			
@@ -225,7 +230,6 @@ public class OptimobileDelegator {
 		
 		@Override
 		public void onThirdPartyEvent(MASTAdView arg0, HashMap<String, String> arg1) {
-			//TODO AdMob with native views
 			String type = arg1.get("type");	
 			
 			if (type != null && "admob".equals(type)) {

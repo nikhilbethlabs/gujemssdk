@@ -105,5 +105,29 @@ public class SdkLog {
 			Log.w(tag, message);
 		}
 	}
+	
+	/**
+	 * Check whether log level is for testing (debug)
+	 * @return true if log level is test
+	 */
+	public static boolean isTestLogLevel() {
+		return LOG_LEVEL == LOG_LEVEL_TEST;
+	}
+	
+	/**
+	 * Check whether logging is off
+	 * @return true if logging is off
+	 */
+	public static boolean isLogLevelOff() {
+		return LOG_LEVEL == LOG_LEVEL_OFF;
+	}
+	
+	/**
+	 * Check whether log level is for production
+	 * @return true if log level is production
+	 */
+	public static boolean isProdLogLevel() {
+		return LOG_LEVEL == LOG_LEVEL_PROD;
+	}
 
 }

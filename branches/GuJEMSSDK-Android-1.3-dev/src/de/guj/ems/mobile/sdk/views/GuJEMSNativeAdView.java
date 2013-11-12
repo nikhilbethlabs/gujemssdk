@@ -30,6 +30,8 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.controllers.OptimobileDelegator;
+import de.guj.ems.mobile.sdk.util.AdResponseParser;
+import de.guj.ems.mobile.sdk.util.AdResponseParserFactory;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -62,8 +64,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(getContext(), Browser.class);
-					SdkLog.d(TAG, "open:" + clickUrl);
-					i.putExtra(Browser.URL_EXTRA, clickUrl);
+					SdkLog.d(TAG, "open:" + parser.getClickUrl());
+					i.putExtra(Browser.URL_EXTRA, parser.getClickUrl());
 					i.putExtra(Browser.SHOW_BACK_EXTRA, true);
 					i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
 					i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
@@ -80,10 +82,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 		}
 	}
 
-	private String clickUrl;
-
-	private String imageUrl;
-
+	private AdResponseParser parser;
+	
 	private IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSNativeAdView";
@@ -198,38 +198,6 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 		} else {
 			SdkLog.w(TAG, "Custom params constructor used with null-array.");
 		}
-	}
-
-	protected void getOptimobileClickUrl(String response) {
-		clickUrl = response.substring(response.indexOf("<url><![CDATA") + 14);
-		clickUrl = clickUrl.substring(0, clickUrl.indexOf("]"));
-		SdkLog.i(TAG, "optiomobile Ad Click URL = " + clickUrl);
-	}
-	
-	protected void getClickUrl(String response) {
-		clickUrl = response.substring(response.indexOf("href=") + 6);
-		clickUrl = clickUrl.substring(0, clickUrl.indexOf("\""));
-		SdkLog.i(TAG, "Ad Click URL = " + clickUrl);
-	}
-
-	protected void getOptimobileImageUrl(String response) {
-		imageUrl = response.substring(response.indexOf("img.ads") - 7);
-		imageUrl = imageUrl.substring(0, imageUrl.indexOf("]"));
-		SdkLog.i(TAG, "optimobile Ad Image URL = " + imageUrl);
-	}
-	
-	protected void getImageUrl(String response) {
-		imageUrl = response.substring(response.indexOf("src=") + 5);
-		imageUrl = imageUrl.substring(0, imageUrl.indexOf("\""));
-		SdkLog.i(TAG, "Ad Image URL = " + imageUrl);
-	}
-	
-	protected void getOptimobileTrackingUrl(String response) {
-	
-	}
-	
-	protected void getTrackingUrl(String response) {
-		
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
@@ -381,70 +349,18 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	@Override
 	public void processResponse(String response) {
 		try {
-			if (response != null && response.length() > 0) {
-				getImageUrl(response);
-				getClickUrl(response);
-
-				new DownloadImageTask(this).execute(imageUrl);
+			AdResponseParser parser = AdResponseParserFactory.getParser(response);
+			SdkLog.d(TAG, "Response is " + response);
+			SdkLog.d(TAG, "Native view response parser is " + parser + " [" + (parser != null ? parser.isValid() : false) + "]");
+			if (parser != null && parser.isValid()) {
+				new DownloadImageTask(this).execute(parser.getImageUrl());
 
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
-			} else {
-				setVisibility(GONE);
-
-				if (this.settings.getDirectBackfill() != null) {
-					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator. ["
-								+ this.getId() + "]");
-						OptimobileDelegator optimobileDelegator = new OptimobileDelegator(
-								getContext(), this, settings);
-						if (getParent() != null) {
-							((ViewGroup) getParent()).addView(
-									optimobileDelegator.getOptimobileView(),
-									((ViewGroup) getParent())
-											.indexOfChild(this) + 1);
-						} else {
-							SdkLog.d(TAG, "Primary view initialized off UI.");
-						}
-						optimobileDelegator.getOptimobileView().update();
-
-					} catch (Exception e) {
-						processError("Error delegating to optimobile.", e);
-					}
-					 
-				} else {
-					if (this.settings.getOnAdEmptyListener() != null) {
-						this.settings.getOnAdEmptyListener().onAdEmpty();
-					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
-								+ "]");
-					}
-				}
-			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
-					+ "]");
-		} catch (Exception e) {
-			processError("Error loading ad [" + this.getId() + "]", e);
-		}
-	}
-	
-	/**
-	 * Alternative processing for optimobile ad code
-	 * @param response optimobile ad response (XML)
-	 */
-	public void processOptimobileResponse(String response) {
-		try {
-			if (response != null && response.length() > 0) {
-				getOptimobileImageUrl(response);
-				getOptimobileClickUrl(response);
-
-				new DownloadImageTask(this).execute(imageUrl);
-
-				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
+				if (parser.getTrackingImageUrl() != null) {
+					new AdServerAccess(SdkUtil.getUserAgent(), null).execute(parser.getTrackingImageUrl());
 				}
 			} else {
 				setVisibility(GONE);
