@@ -3,7 +3,6 @@ package de.guj.ems.mobile.sdk.controllers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
@@ -75,13 +74,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 						data)) != null) {
 			SdkLog.d(TAG, "Possible backfill ad detected [id=" + bfD.getId()
 					+ ", data=" + bfD.getData() + "]");
-			if (Build.VERSION.SDK_INT >= 19) {
-				SdkLog.w(TAG, "KITKAT Build. Skipping Smartstream Backfill!");
-				if (target != null) {
-					context.startActivity(target);
-				}
-				return;
-			}
 			try {
 
 				BackfillDelegator.process(context, bfD,

@@ -12,35 +12,29 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 
 	public GuJEMSNativeListAdView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GuJEMSNativeListAdView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GuJEMSNativeListAdView(Context context, int resId) {
 		super(context, resId);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			int resId) {
 		super(context, customParams, resId);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String[] nkws, int resId) {
 		super(context, customParams, kws, nkws, resId);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
 			int resId) {
 		super(context, kws, nkws, resId);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

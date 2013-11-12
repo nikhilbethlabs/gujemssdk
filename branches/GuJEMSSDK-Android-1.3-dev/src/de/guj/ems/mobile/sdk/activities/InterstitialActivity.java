@@ -248,7 +248,7 @@ public final class InterstitialActivity extends Activity {
 							}
 							
 							loaded = true;
-							//TODO NPE when rotating device while loading 
+
 							root.getHandler().post(new Runnable() {
 								@Override
 								public void run() {

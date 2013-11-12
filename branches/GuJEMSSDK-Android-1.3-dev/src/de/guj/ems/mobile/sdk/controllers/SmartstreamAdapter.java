@@ -45,13 +45,13 @@ public class SmartstreamAdapter implements BackfillAdapter {
 						public void onAdvertisingClicked() {
 							// 3rd party tracking for the click event on the
 							// video layer
-							// TODO click event
+							// TODO Handle Smartstream click event tracking
 						}
 
 						public void onAdvertisingEventTracked(String arg0) {
 							// 3rd party tracking for VAST events incl.
 							// ViewTime
-							// TODO view time event
+							// TODO Handle Smartstream viewtime event
 							SdkLog.d(TAG, "Smartstream Advertising Event: "
 									+ arg0);
 							if (arg0.toLowerCase(Locale.ENGLISH).equals("impression")) {

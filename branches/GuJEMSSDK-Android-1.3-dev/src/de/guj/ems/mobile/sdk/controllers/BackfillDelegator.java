@@ -3,6 +3,7 @@ package de.guj.ems.mobile.sdk.controllers;
 import java.io.Serializable;
 
 import android.content.Context;
+import android.os.Build;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -186,6 +187,10 @@ public class BackfillDelegator {
 	 */
 	public final static BackfillData isBackfill(String adSpace, String data) {
 		
+		//TODO remove when Smartstream is fixed for 4.4
+		if (Build.VERSION.SDK_INT >= 19) {
+			return null;
+		}
 		if (data == null || data.startsWith("<div") || data.startsWith("<!DOC")  || data.startsWith("<html") || data.startsWith("<VAST") || data.startsWith("<!-- <connectad>")) {
 			return null;
 		}

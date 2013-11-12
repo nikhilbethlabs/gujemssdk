@@ -24,6 +24,7 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
+import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
 
 /**
  * Delegates requests to optimobile and possibly other networks
@@ -47,6 +48,8 @@ public class OptimobileDelegator {
 	
 	private GuJEMSAdView emsMobileView;
 	
+	private GuJEMSNativeAdView emsNativeMobileView;
+	
 	private Handler handler;
 	
 	private Context context;
@@ -69,6 +72,25 @@ public class OptimobileDelegator {
 		this.handler = this.emsMobileView.getHandler();
 		this.optimobileView = initOptimobileView(context, settings, 0); 
 	}
+	
+	/**
+	 * Constructor for native views
+	 * 
+	 * Initially creates an optimobile adview which an be added to the layout.
+	 * The optimobile view uses callbacks for error handling etc. and also
+	 * for a possible backfill. If a 3rd party network is active, the optimobile
+	 * ad view will actually be removed and replaced by the network's view.
+	 * 
+	 * @param context App/Activity context
+	 * @param adView original (first level) adview
+	 * @param settings settings of original adview 
+	 */
+	public OptimobileDelegator(Context context, GuJEMSNativeAdView adView, final IAdServerSettingsAdapter settings) {
+		this.context = context;
+		this.emsNativeMobileView = adView;
+		this.handler = this.emsNativeMobileView.getHandler();
+		this.optimobileView = initOptimobileView(context, settings, 0); 
+	}
 
 	@SuppressWarnings("deprecation")
 	private MASTAdView initOptimobileView(Context context, final IAdServerSettingsAdapter settings, int color) {
@@ -79,10 +101,13 @@ public class OptimobileDelegator {
 						.getDirectBackfill().getSiteId()),
 				Integer.valueOf(settings
 						.getDirectBackfill().getZoneId()));
+		
+		handler = new Handler();
+		
 		view.setLayoutParams(
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		view.setId(emsMobileView.getId());
-		view.setBackgroundDrawable(emsMobileView.getBackground());			
+		view.setId(emsMobileView != null ? emsMobileView.getId() : emsNativeMobileView.getId());
+		view.setBackgroundDrawable(emsMobileView != null ? emsMobileView.getBackground() : emsNativeMobileView.getBackground());			
 		view.setLocationDetection(true);
 		view.setVisibility(View.GONE);
 		view.setUseInternalBrowser(true);
@@ -120,10 +145,16 @@ public class OptimobileDelegator {
 			@Override
 			public void onDownloadEnd(MASTAdView arg0) {
 				SdkLog.d(TAG,  "optimobile Ad loaded.");
-				if (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
+				//TODO optimobile in list views
+				if (emsMobileView != null && (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass()))) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
 					emsMobileView.processResponse(optimobileView.getLastResponse());
+				}
+				else if (emsNativeMobileView != null) {
+					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
+					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
+					emsNativeMobileView.processOptimobileResponse(optimobileView.getLastResponse());					
 				}
 			}
 			
@@ -194,7 +225,7 @@ public class OptimobileDelegator {
 		
 		@Override
 		public void onThirdPartyEvent(MASTAdView arg0, HashMap<String, String> arg1) {
-			
+			//TODO AdMob with native views
 			String type = arg1.get("type");	
 			
 			if (type != null && "admob".equals(type)) {
@@ -213,12 +244,16 @@ public class OptimobileDelegator {
 					public void run() {
 						SdkLog.i(TAG, "Performing google admob request...");
 						AdView admobAdView = new AdView((Activity)context, AdSize.BANNER, pubId);
-						admobAdView.setId(emsMobileView.getId());
+						admobAdView.setId(emsMobileView != null ? emsMobileView.getId() : emsNativeMobileView.getId());
 						admobAdView.setGravity(Gravity.CENTER_HORIZONTAL);
-						admobAdView.setBackgroundDrawable(emsMobileView.getBackground());		
-						((ViewGroup)emsMobileView.getParent()).removeView(optimobileView);
-						((ViewGroup)emsMobileView.getParent()).addView(admobAdView,((ViewGroup)emsMobileView.getParent()).indexOfChild(emsMobileView) + 1);
-
+						admobAdView.setBackgroundDrawable(emsMobileView != null ?emsMobileView.getBackground() : emsNativeMobileView.getBackground());		
+						if (emsMobileView != null && !GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
+							((ViewGroup)emsMobileView.getParent()).removeView(optimobileView);
+							((ViewGroup)emsMobileView.getParent()).addView(admobAdView,((ViewGroup)emsMobileView.getParent()).indexOfChild(emsMobileView) + 1);
+						}
+						else {
+							SdkLog.w(TAG, "AdMob cannot be loaded in native or list ad views.");
+						}
 						admobAdView.loadAd(adRequest);
 						
 					}

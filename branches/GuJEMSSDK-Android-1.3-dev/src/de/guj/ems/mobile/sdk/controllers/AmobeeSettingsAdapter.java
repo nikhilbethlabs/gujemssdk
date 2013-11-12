@@ -112,7 +112,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 			String site = tVals.getString(AdServerSettingsAdapter.EMS_BACKFILL_SITEID_ID);
 			String zone = tVals.getString(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID_ID);
 			this.setDirectBackfill(new BackfillDelegator.BackfillData(site, zone, "", -1));
-			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone);			
+			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone + "]");			
 		}
 		tVals.recycle();
 	}
@@ -272,7 +272,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 			String site = savedInstance.getString(AdServerSettingsAdapter.EMS_BACKFILL_SITEID);
 			String zone = savedInstance.getString(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID);
 			this.setDirectBackfill(new BackfillDelegator.BackfillData(site, zone, "", -1));
-			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone);		
+			SdkLog.d(TAG, "Direct backfill configuration detected. [site=" + site + ", zone=" + zone + "]");		
 		}
 		
 	}

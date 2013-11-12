@@ -20,7 +20,7 @@ public class SdkLog {
 	
 	private final static int LOG_LEVEL_OFF = 2;
 	
-	private static int LOG_LEVEL = LOG_LEVEL_PROD;
+	private static int LOG_LEVEL = LOG_LEVEL_TEST;
 	
 	/**
 	 * Sets log level to production (max = info)

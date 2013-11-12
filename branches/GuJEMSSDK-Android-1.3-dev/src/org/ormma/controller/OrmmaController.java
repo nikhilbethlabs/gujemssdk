@@ -324,7 +324,6 @@ public abstract class OrmmaController {
 					f.set(obj, value);
 				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -385,10 +384,8 @@ public abstract class OrmmaController {
 				}
 				
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -422,10 +419,9 @@ public abstract class OrmmaController {
 					}
 				}
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 

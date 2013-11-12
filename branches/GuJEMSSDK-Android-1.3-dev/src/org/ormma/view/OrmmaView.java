@@ -853,7 +853,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * Dump.
 	 */
 	public void dump() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -1325,7 +1324,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			}
 		} else {
 			// if not fullscreen, display map in current OrmmaView space
-			// TODO
 			if (mapAPIKey != null) {
 
 				try {
@@ -1337,7 +1335,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 					 * mapView.setBuiltInZoomControls(true);
 					 */
 				} catch (Exception e) {
-					// TODO
 					e.printStackTrace();
 				}
 			} else {

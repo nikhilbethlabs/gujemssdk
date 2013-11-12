@@ -192,19 +192,14 @@ public class OrmmaDisplayController extends OrmmaController {
 			Dimensions d = (Dimensions) getFromJSON(new JSONObject(dimensions), Dimensions.class);
 			mOrmmaView.expand(getDeviceDimensions(d), URL, (Properties) getFromJSON(new JSONObject(properties), Properties.class));
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

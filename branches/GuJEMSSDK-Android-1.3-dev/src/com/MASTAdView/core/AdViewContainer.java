@@ -1464,10 +1464,6 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 	
 	public String getLastResponse()
 	{
-		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.richContent);
-		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.imageUrl);
-		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.clickUrl);
-		adLog.log(MASTAdLog.LOG_LEVEL_ERROR, "getLastResponse", lastResponse.trackUrl);
 		return lastResponse.responseData;
 	}
 

@@ -27,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.guj.ems.mobile.sdk.R;
 
-// TODO: Auto-generated Javadoc
 /**
  * Activity for implementing Ormma open calls. Configurable via the following
  * extras: URL_EXTRA String : url to load SHOW_BACK_EXTRA boolean (default
@@ -284,7 +283,7 @@ public class Browser extends Activity {
 				a.setTitle("Lädt...");
 				a.setProgress(progress * 100);
 				if (progress == 100) {
-					//TODO layout / title / image?
+					//TODO Browser: custom layout / title / image?
 					a.setTitle(orgTitle);
 				}
 			}
