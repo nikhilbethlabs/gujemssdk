@@ -14,7 +14,8 @@ public class AmobeeHtmlParser extends AdResponseParser {
 	
 	private void parseClickUrl() {
 		String c = getResponse().substring(getResponse().indexOf("href=") + 6);
-		setClickUrl(c.substring(0, c.indexOf("\"")));
+		String tC = c.substring(0, c.indexOf("\""));
+		setClickUrl(tC.replaceAll("&amp;", "&"));
 		SdkLog.i(TAG, "Ad Click URL = " + getClickUrl());
 	}
 
@@ -26,8 +27,11 @@ public class AmobeeHtmlParser extends AdResponseParser {
 	
 	private void parseTrackingUrl() {
 		String i = getResponse().substring(getResponse().lastIndexOf("notification"));
-		setTrackingImageUrl("http://vfdeprod.amobee.com/upsteed/" + i.substring(0, i.indexOf("\"")));
-		SdkLog.i(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
+		if (i != null && i.length() > 1) {
+			String tI = "http://vfdeprod.amobee.com/upsteed/" + i.substring(0, i.indexOf("\""));
+			setTrackingImageUrl(tI.replaceAll("&amp;", "&"));
+			SdkLog.i(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
+		}
 	}	
 
 	@Override

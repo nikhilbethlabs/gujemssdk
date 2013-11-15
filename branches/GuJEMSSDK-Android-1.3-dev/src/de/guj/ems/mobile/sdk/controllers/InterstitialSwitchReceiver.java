@@ -140,15 +140,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			} catch (BackfillDelegator.BackfillException bfE) {
 				processError("Backfill error thrown.", bfE);
 			}
-
-/*
-			Intent wrapper = new Intent(context, VideoAdSDKWrapperActivity.class);
-			wrapper.putExtra("target", target);
-			wrapper.putExtra("delegator", bfD);
-			wrapper.putExtra("settings", settings);
-			wrapper.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(wrapper);
-*/			
+		
 
 		} else if (data == null || data.length() < 10) {
 			// head to original intent

@@ -1209,10 +1209,12 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	@Override
 	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
 		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
 			mUtilityController.deleteOldAds(mLocalFilePath);
 		}
 		mUtilityController.stopAllListeners();
+		stopLoading();
 	}
 
 	// trap keyboard state and view height/width

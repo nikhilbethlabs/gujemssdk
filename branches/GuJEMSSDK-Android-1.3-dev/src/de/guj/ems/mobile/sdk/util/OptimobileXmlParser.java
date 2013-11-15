@@ -5,7 +5,7 @@ public class OptimobileXmlParser extends AdResponseParser {
 	private final static String TAG = "OptimobileXmlParser";
 	
 	public OptimobileXmlParser(String response) {
-		super(response);
+		super(response, true);
 	}
 
 	private OptimobileXmlParser(String response, boolean xml) {
@@ -19,16 +19,19 @@ public class OptimobileXmlParser extends AdResponseParser {
 	}
 
 	private void parseImageUrl() {
-		String i = getResponse().substring(getResponse().indexOf("<img>![CDATA") +14);
+		String i = getResponse().substring(getResponse().indexOf("img.ads.mocean") - 7);
 		setImageUrl(i.substring(0, i.indexOf("]")));
 		SdkLog.i(TAG, "Ad Image URL = " + getImageUrl());
 	}
 	
 	private void parseTrackingUrl() {
-		String i = getResponse().substring(getResponse().indexOf("<track>![CDATA") + 16);
+		String i = getResponse().substring(getResponse().indexOf("<track><![CDATA") + 16);
 		if (i != null) {
-			setTrackingImageUrl(i.substring(0, i.indexOf("]")));
-			SdkLog.i(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
+			String ti = i.substring(0, i.indexOf("]"));
+			if (ti != null && ti.startsWith("http")) {
+				setTrackingImageUrl(ti);
+				SdkLog.i(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
+			}
 		}
 		else {
 			SdkLog.d(TAG,  "No tracking image in optimobile XML");
