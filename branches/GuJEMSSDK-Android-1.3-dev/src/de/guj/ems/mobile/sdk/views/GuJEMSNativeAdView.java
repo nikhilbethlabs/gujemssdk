@@ -1,5 +1,6 @@
 package de.guj.ems.mobile.sdk.views;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -72,8 +73,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 				}
 
 				if (urldisplay.toLowerCase(Locale.getDefault()).endsWith("gif")) {
-					animatedGif = Movie.decodeStream(in);
-					play = true;
+					byte [] raw = streamToBytes(in);
+					animatedGif = Movie.decodeByteArray(raw, 0, raw.length);
 				} else {
 					stillImage = BitmapFactory.decodeStream(in);
 				}
@@ -91,6 +92,20 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 			}
 			return stillImage != null ? stillImage : animatedGif;
 		}
+		
+		private byte[] streamToBytes(InputStream is) {
+            ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
+            byte[] buffer = new byte[1024];
+            int len;
+            try {
+                while ((len = is.read(buffer)) >= 0) {
+                    os.write(buffer, 0, len);
+                }
+            } catch (java.io.IOException e) {
+            	SdkLog.e(TAG, "Error streaming image to bytes.", e);
+            }
+            return os.toByteArray();
+        }
 
 		protected void onPostExecute(Object result) {
 			Movie movie = null;
@@ -99,8 +114,9 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 				if (Movie.class.equals(result.getClass())) {
 					movie = (Movie) result;
+					play = true;
 					SdkLog.d(TAG, "Animation downloaded. [" + movie.width()
-							+ "x" + movie.height() + "]");
+							+ "x" + movie.height() + ", " + movie.duration() + "s]");
 				} else {
 					bitmap = (Bitmap) result;
 					SdkLog.d(TAG, "Image downloaded. [" + bitmap.getWidth()
@@ -540,19 +556,23 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.drawColor(Color.TRANSPARENT);
 		super.onDraw(canvas);
-		long now = android.os.SystemClock.uptimeMillis();
+		
 		if (animatedGif != null && play) {
+			long now = android.os.SystemClock.uptimeMillis();
 			float dens = SdkUtil.getDensity();
+			
+			canvas.drawColor(Color.TRANSPARENT);
 			canvas.scale(dens, dens);
 
 			if (movieStart == 0) {
 				movieStart = now;
 			}
 
-			int relTime = (int) ((now - movieStart) % animatedGif.duration());
-			animatedGif.setTime(relTime);
+			if (animatedGif.duration() > 0) {
+				int relTime = (int) ((now - movieStart) % animatedGif.duration());
+				animatedGif.setTime(relTime);
+			}
 			//SdkLog.d(TAG, "agif view width: " + getWidth() + ", agif width: " + animatedGif.width() + ", density: " + dens);
 			animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
 			this.invalidate();
