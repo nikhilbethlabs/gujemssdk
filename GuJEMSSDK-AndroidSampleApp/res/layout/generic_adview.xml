@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ad_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/ad_inner_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="100dip"
+        android:visibility="gone" >
+
+        <de.guj.ems.mobile.sdk.views.GuJEMSListAdView
+            	xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
+            android:id="@+id/ad_banner_top"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#fff"
+ 			ems:ems_bfSiteId="44496"
+            ems:ems_bfZoneId="174882"
+			ems:ems_geo="false"
+            ems:ems_kw="true"
+            ems:ems_nkw="false"
+            ems:ems_uid="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>
+
+<!-- 
+<de.guj.ems.mobile.sdk.views.GuJEMSAdView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
+    android:id="@+id/genericAd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0086D5"
+    ems:ems_geo="false"
+    ems:ems_kw="false"
+    ems:ems_nkw="false"
+    ems:ems_uid="true" />
+-->    

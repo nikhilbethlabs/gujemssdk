@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:id="@+id/appLayouts">
+	    <item android:id="@+id/list" android:title="ListView"></item>
+    	<item android:id="@+id/relative" android:title="RelativeLayout"></item>
+    	<item android:id="@+id/table" android:title="TableLayout"></item>
+    </group>
+    <item android:id="@+id/sep1" android:title=""></item>
+    <group android:id="@+id/adFormats">
+	    <item android:id="@+id/video" android:title="VideoInterstitial"></item>
+	    <item android:id="@+id/cad" android:title="ConnectAd"></item>
+	    <item android:id="@+id/targeting" android:title="Targeting"></item>
+	    <item android:id="@+id/xl" android:title="XL Banner"></item>
+	    <item android:id="@+id/sowefo" android:title="SoWeFo"></item>
+    </group>
+    <item android:id="@+id/sep2" android:title=""></item>
+    <item android:id="@+id/preRoll" android:title="PreRolls"></item>
+    <item android:id="@+id/adReload" android:title="AdReload"></item>
+</menu>

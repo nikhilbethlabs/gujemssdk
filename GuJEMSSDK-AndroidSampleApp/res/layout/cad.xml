@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <de.guj.ems.mobile.sdk.views.GuJEMSAdView
+        android:id="@+id/ad15302"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        ems:ems_debug="false"
+        ems:ems_geo="false"
+        ems:ems_kw="false"
+        ems:ems_nkw="false"
+        ems:ems_onAdEmpty="adEmpty"
+        ems:ems_onAdSuccess="adSuccess"
+        ems:ems_uid="true"
+        ems:ems_zoneId="15302" />
+
+    <WebView
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
