@@ -15,13 +15,13 @@ public class OptimobileXmlParser extends AdResponseParser {
 	private void parseClickUrl() {
 		String c = getResponse().substring(getResponse().indexOf("<url><![CDATA") + 14);
 		setClickUrl(c.substring(0, c.indexOf("]")));
-		SdkLog.i(TAG, "Ad Click URL = " + getClickUrl());
+		SdkLog.d(TAG, "Ad Click URL = " + getClickUrl());
 	}
 
 	private void parseImageUrl() {
 		String i = getResponse().substring(getResponse().indexOf("img.ads.mocean") - 7);
 		setImageUrl(i.substring(0, i.indexOf("]")));
-		SdkLog.i(TAG, "Ad Image URL = " + getImageUrl());
+		SdkLog.d(TAG, "Ad Image URL = " + getImageUrl());
 	}
 	
 	private void parseTrackingUrl() {
@@ -30,7 +30,7 @@ public class OptimobileXmlParser extends AdResponseParser {
 			String ti = i.substring(0, i.indexOf("]"));
 			if (ti != null && ti.startsWith("http")) {
 				setTrackingImageUrl(ti);
-				SdkLog.i(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
+				SdkLog.d(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
 			}
 		}
 		else {

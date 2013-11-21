@@ -240,21 +240,11 @@ public final class InterstitialActivity extends Activity {
 					while (InterstitialThread.SHOW) {
 						if (!loaded && adView.isPageFinished()) {
 							
-							if (root == null) {
-								SdkLog.e(TAG, "This should not happen... interstitial layout is null");
-								SdkLog.w(TAG, "Interstitial Thread = " + InterstitialThread.PAUSED + "/" + InterstitialThread.SHOW);
-								SdkLog.w(TAG, "status = " + status);
-								break;
-							}
-							
 							loaded = true;
 
 							root.getHandler().post(new Runnable() {
 								@Override
 								public void run() {
-									SdkLog.w(
-											TAG,
-											"root is " + root);
 									root.removeView(spinner);
 									root.addView(adView);
 									fetchTime();

@@ -4,22 +4,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import org.ormma.view.Browser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Movie;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
@@ -40,55 +43,79 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
-	private Bitmap bitmap;
-	
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	private Bitmap stillImage;
+
+	private Movie animatedGif;
+
+	private long movieStart = 0;
+
+	private boolean play = false;
+
+	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
 		private final WeakReference<ImageView> viewRef;
 
 		public DownloadImageTask(ImageView view) {
 			this.viewRef = new WeakReference<ImageView>(view);
 		}
 
-		protected Bitmap doInBackground(String... urls) {
+		protected Object doInBackground(String... urls) {
 			String urldisplay = urls[0];
-			
+
 			InputStream in = null;
 			try {
 				in = new java.net.URL(urldisplay).openStream();
-				
-				if (bitmap != null) {
-					bitmap.recycle();
-					SdkLog.w(TAG, "Recycling previous bitmap before initializing newly loaded.");
+
+				if (stillImage != null) {
+					stillImage.recycle();
+					SdkLog.w(TAG,
+							"Recycling previous bitmap before initializing newly loaded.");
 				}
-				
-				bitmap = BitmapFactory.decodeStream(in);
-				
+
+				if (urldisplay.toLowerCase(Locale.getDefault()).endsWith("gif")) {
+					animatedGif = Movie.decodeStream(in);
+					play = true;
+				} else {
+					stillImage = BitmapFactory.decodeStream(in);
+				}
+
 			} catch (Exception e) {
 				SdkLog.e(TAG, e.getMessage(), e);
-			}
-			finally {
+			} finally {
 				if (in != null) {
 					try {
 						in.close();
-					}
-					catch (Exception e) {
-						SdkLog.e(TAG, "Error closing bitmap input stream.", e);
+					} catch (Exception e) {
+						SdkLog.e(TAG, "Error closing image input stream.", e);
 					}
 				}
 			}
-			return bitmap;
+			return stillImage != null ? stillImage : animatedGif;
 		}
 
-		protected void onPostExecute(Bitmap result) {
-			SdkLog.d(TAG, "Image downloaded. [" + result.getWidth() + "x"
-					+ result.getHeight() + "]");
+		protected void onPostExecute(Object result) {
+			Movie movie = null;
+			Bitmap bitmap = null;
 			if (result != null) {
+
+				if (Movie.class.equals(result.getClass())) {
+					movie = (Movie) result;
+					SdkLog.d(TAG, "Animation downloaded. [" + movie.width()
+							+ "x" + movie.height() + "]");
+				} else {
+					bitmap = (Bitmap) result;
+					SdkLog.d(TAG, "Image downloaded. [" + bitmap.getWidth()
+							+ "x" + bitmap.getHeight() + "]");
+				}
+
 				ImageView view = viewRef.get();
 				if (view != null) {
-					
-					view.setBackgroundDrawable(new BitmapDrawable(result));
-					
-					//view.setImageBitmap(result);
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+							&& movie != null) {
+						disableHWAcceleration();
+					} else if (bitmap != null) {
+						view.setImageBitmap(bitmap);
+					}
+
 					view.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -101,27 +128,32 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 							getContext().startActivity(i);
 						}
 					});
-					LayoutParams lp = view.getLayoutParams();
-					lp.height = (int) ((float) result.getHeight() * SdkUtil
-							.getDensity());
-					view.setLayoutParams(lp);
-					view.setVisibility(VISIBLE);	
-					
-					try {
-						AnimationDrawable startAnimation = (AnimationDrawable) getBackground(); 
-						startAnimation.start();
-					}
-					catch (Exception e) {
-						SdkLog.e(TAG, "Error starting animation.", e);
-					}
-				}
 
+					LayoutParams lp = view.getLayoutParams();
+					if (movie != null) {
+						lp.height = (int) ((float) movie.height() * SdkUtil
+								.getDensity());
+					} else {
+						lp.height = (int) ((float) bitmap.getHeight() * SdkUtil
+								.getDensity());
+					}
+					view.setLayoutParams(lp);
+
+					view.setVisibility(VISIBLE);
+					/*
+					 * try { AnimationDrawable startAnimation =
+					 * (AnimationDrawable) getBackground();
+					 * startAnimation.start(); } catch (Exception e) {
+					 * SdkLog.e(TAG, "Error starting animation.", e); }
+					 */
+				}
 			}
+
 		}
 	}
 
 	private AdResponseParser parser;
-	
+
 	private IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSNativeAdView";
@@ -303,8 +335,10 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
-				.execute(new String[] { url });
+				new AdServerAccess(SdkUtil.getUserAgent(),
+						settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash(), this)
+						.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -371,8 +405,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	public void processError(String msg) {
 		if (this.settings.getOnAdErrorListener() != null) {
 			this.settings.getOnAdErrorListener().onAdError(msg);
-		}
-		else {
+		} else {
 			SdkLog.e(TAG, msg);
 		}
 	}
@@ -381,8 +414,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	public void processError(String msg, Throwable t) {
 		if (this.settings.getOnAdErrorListener() != null) {
 			this.settings.getOnAdErrorListener().onAdError(msg, t);
-		}
-		else {
+		} else {
 			SdkLog.e(TAG, msg, t);
 		}
 	}
@@ -391,12 +423,13 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	public void processResponse(String response) {
 		try {
 			this.parser = AdResponseParserFactory.getParser(response);
-			SdkLog.d(TAG, "Response is " + response);
-			SdkLog.d(TAG, "Native view response parser is " + parser + " [" + (parser != null ? parser.isValid() : false) + "]");
+			SdkLog.d(TAG, "Native view response parser is " + parser + " ["
+					+ (parser != null ? parser.isValid() : false) + "]");
 			if (parser != null && parser.isValid()) {
 				new DownloadImageTask(this).execute(parser.getImageUrl());
 				if (parser.getTrackingImageUrl() != null) {
-					new AdServerAccess(SdkUtil.getUserAgent(), null).execute(parser.getTrackingImageUrl());
+					new AdServerAccess(SdkUtil.getUserAgent(), null)
+							.execute(parser.getTrackingImageUrl());
 				}
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
@@ -424,7 +457,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 					} catch (Exception e) {
 						processError("Error delegating to optimobile.", e);
 					}
-					 
+
 				} else {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
@@ -450,9 +483,12 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
-				.execute(new String[] { url });
+				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
+						+ "]");
+				new AdServerAccess(SdkUtil.getUserAgent(),
+						settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash(), this)
+						.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -464,7 +500,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 			SdkLog.w(TAG, "AdView has no settings. [" + this.getId() + "]");
 		}
 	}
-	
+
 	/**
 	 * Add a listener to the view which responds to empty ad responses
 	 * 
@@ -499,6 +535,35 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
 		setImageBitmap(null);
+		play = false;
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		canvas.drawColor(Color.TRANSPARENT);
+		super.onDraw(canvas);
+		long now = android.os.SystemClock.uptimeMillis();
+		if (animatedGif != null && play) {
+			float dens = SdkUtil.getDensity();
+			canvas.scale(dens, dens);
+
+			if (movieStart == 0) {
+				movieStart = now;
+			}
+
+			int relTime = (int) ((now - movieStart) % animatedGif.duration());
+			animatedGif.setTime(relTime);
+			//SdkLog.d(TAG, "agif view width: " + getWidth() + ", agif width: " + animatedGif.width() + ", density: " + dens);
+			animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
+			this.invalidate();
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void disableHWAcceleration() {
+		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		SdkLog.d(TAG,
+				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}
 
 }
