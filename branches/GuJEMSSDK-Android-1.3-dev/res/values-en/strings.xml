@@ -1,7 +1,7 @@
 <resources>
-	<string name="loading">Lädt&#8230;</string>
-	<string name="close">Schliessen</string>
-	<string name="sound">Sound an/aus</string>
+	<string name="loading">Loading&#8230;</string>
+	<string name="close">Close</string>
+	<string name="sound">Sound on/off</string>
     <string name="siteId">siteId</string>
     <string name="zoneId">zoneId</string>
     <string name="backfillSiteId">bfSiteId</string>
@@ -23,8 +23,8 @@
     <string name="onAdSuccess">onAdSuccess</string>
     <string name="onAdEmpty">onAdEmpty</string>
     <string name="onAdError">onAdError</string>
-    <string name="videoPreload">-w- Bitte einen Moment Geduld&#8230;</string>
-    <string name="videoRunning">-w- Klick auf Video öffnet Website</string>
+    <string name="videoPreload">-w- Please be patient&#8230;</string>
+    <string name="videoRunning">-w- Click video for more</string>
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>
     <string name="bLevelParam">pbl</string>
     <string name="pStatusParam">psx</string>

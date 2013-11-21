@@ -280,7 +280,7 @@ public class Browser extends Activity {
 				if (orgTitle == null) {
 					orgTitle = a.getTitle().toString();
 				}
-				a.setTitle("Lädt...");
+				a.setTitle(R.string.loading);
 				a.setProgress(progress * 100);
 				if (progress == 100) {
 					//TODO Browser: custom layout / title / image?
