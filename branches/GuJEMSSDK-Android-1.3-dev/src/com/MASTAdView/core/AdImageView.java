@@ -16,6 +16,8 @@ import com.MASTAdView.MASTAdDelegate;
 import com.MASTAdView.MASTAdLog;
 import com.MASTAdView.MASTAdView;
 
+import de.guj.ems.mobile.sdk.util.SdkUtil;
+
 
 @SuppressLint("SetJavaScriptEnabled")
 public class AdImageView extends WebView
@@ -193,11 +195,11 @@ public class AdImageView extends WebView
 	public void setImage(AdData ad)
 	{ 
 		StringBuffer data = new StringBuffer("<html>");
-		data.append("<head><meta name=\"viewport\" content=\"target-densityDpi=device-dpi\"><style>body{margin:0; padding:0; width: 100%; height: 100%; display: table;} div{display: table-cell; vertical-align: middle; text-align:center;}</style>");
+		data.append("<head><meta name=\"viewport\" content=\"width=device-width,target-densityDpi=device-dpi,initial-scale=1.0,user-scalable=no\"><style>body{margin:0; padding:0; width: 100%; height: 100%; display: table;} div{display: table-cell; vertical-align: middle; text-align:center;}</style>");
 		data.append("<script language=\"javascript\">function AutoScale() {");
-		data.append("var normWidth  = document.body.clientWidth  / document.getElementById(\"ADIMAGE\").naturalWidth;");
-		data.append("var normHeight = document.body.clientHeight / document.getElementById(\"ADIMAGE\").naturalHeight;");
-		data.append("var scaleFactor = normWidth; if (normWidth > normHeight) scaleFactor = normHeight;");
+//		data.append("var normWidth  = document.body.clientWidth  / document.getElementById(\"ADIMAGE\").naturalWidth;");
+//		data.append("var normHeight = document.body.clientHeight / document.getElementById(\"ADIMAGE\").naturalHeight;");
+		data.append("var scaleFactor = " + SdkUtil.getDensity() + ";"); //normWidth; if (normWidth > normHeight) scaleFactor = normHeight;");
 		data.append("if (scaleFactor > 1 && scaleFactor != 0) {");
 		data.append("document.getElementById(\"ADIMAGE\").style.width = document.getElementById(\"ADIMAGE\").naturalWidth * scaleFactor;");
 		data.append("document.getElementById(\"ADIMAGE\").style.height = document.getElementById(\"ADIMAGE\").naturalHeight * scaleFactor;");

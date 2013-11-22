@@ -120,6 +120,8 @@ public class OptimobileDelegator {
 		}
 		view.getAdDelegate().setAdDownloadHandler(new AdDownloadEventHandler() {
 			
+			private boolean display = false;
+			
 			@Override
 			public void onDownloadError(MASTAdView arg0, String arg1) {
 				if (arg1 != null && arg1.startsWith("No ads")) {
@@ -161,6 +163,9 @@ public class OptimobileDelegator {
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
 					emsNativeMobileView.processResponse(optimobileView.getLastResponse());					
 				}
+				else {
+					display = true;
+				}
 			}
 			
 			@Override
@@ -169,13 +174,16 @@ public class OptimobileDelegator {
 			
 			@Override
 			public void onAdViewable(MASTAdView arg0) {
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						view.setVisibility(View.VISIBLE);
-						
-					}
-				});
+				if (display) {
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+							
+						}
+					});
+				}
+
 				SdkLog.d(TAG, "optimobile Ad loaded.");
 				if (settings.getOnAdSuccessListener() != null) {
 					settings.getOnAdSuccessListener().onAdSuccess();

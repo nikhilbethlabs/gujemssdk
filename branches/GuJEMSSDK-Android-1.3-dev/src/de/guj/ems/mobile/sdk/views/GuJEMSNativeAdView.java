@@ -3,7 +3,6 @@ package de.guj.ems.mobile.sdk.views;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -22,6 +21,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Movie;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -53,24 +54,21 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	private boolean play = false;
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
-		private final WeakReference<ImageView> viewRef;
+		//private final WeakReference<ImageView> viewRef;
+		private final ImageView viewRef;
 
 		public DownloadImageTask(ImageView view) {
-			this.viewRef = new WeakReference<ImageView>(view);
+			this.viewRef = view;
 		}
 
 		protected Object doInBackground(String... urls) {
 			String urldisplay = urls[0];
 
+			setTag(urldisplay);
+			
 			InputStream in = null;
 			try {
 				in = new java.net.URL(urldisplay).openStream();
-
-				if (stillImage != null) {
-					stillImage.recycle();
-					SdkLog.w(TAG,
-							"Recycling previous bitmap before initializing newly loaded.");
-				}
 
 				if (urldisplay.toLowerCase(Locale.getDefault()).endsWith("gif")) {
 					byte [] raw = streamToBytes(in);
@@ -123,16 +121,25 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 							+ "x" + bitmap.getHeight() + "]");
 				}
 
-				ImageView view = viewRef.get();
-				if (view != null) {
+				//ImageView view = viewRef.get();
+				if (viewRef != null) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 							&& movie != null) {
 						disableHWAcceleration();
-					} else if (bitmap != null) {
-						view.setImageBitmap(bitmap);
+					} else if (bitmap != null && viewRef.getTag().equals(parser.getImageUrl())) {
+						Drawable d = viewRef.getDrawable();
+						if (d instanceof BitmapDrawable) {
+							BitmapDrawable bd = (BitmapDrawable)d;
+							Bitmap bm = bd.getBitmap();
+							if (bm != null) {
+								bm.recycle();
+							}
+							SdkLog.i(TAG, "Recycled bitmap of view " + viewRef.getId());
+						}
+						//viewRef.setImageBitmap(bitmap);
 					}
 
-					view.setOnClickListener(new OnClickListener() {
+					viewRef.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							Intent i = new Intent(getContext(), Browser.class);
@@ -145,7 +152,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 						}
 					});
 
-					LayoutParams lp = view.getLayoutParams();
+					LayoutParams lp = viewRef.getLayoutParams();
 					if (movie != null) {
 						lp.height = (int) ((float) movie.height() * SdkUtil
 								.getDensity());
@@ -153,15 +160,9 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 						lp.height = (int) ((float) bitmap.getHeight() * SdkUtil
 								.getDensity());
 					}
-					view.setLayoutParams(lp);
+					viewRef.setLayoutParams(lp);
+					viewRef.setVisibility(VISIBLE);
 
-					view.setVisibility(VISIBLE);
-					/*
-					 * try { AnimationDrawable startAnimation =
-					 * (AnimationDrawable) getBackground();
-					 * startAnimation.start(); } catch (Exception e) {
-					 * SdkLog.e(TAG, "Error starting animation.", e); }
-					 */
 				}
 			}
 
@@ -201,7 +202,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	 * @param context
 	 *            android application context
 	 * @param customParams
-	 *            map of custom param names and thiur values
+	 *            map of custom param names and their values
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
@@ -392,7 +393,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
-		setImageDrawable(null);
+		//setImageDrawable(null);
+
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, set);
 		} else if (isInEditMode()) {
@@ -400,6 +402,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 		} else {
 			SdkLog.e(TAG, "No attribute set found from resource id?");
 		}
+		
+		
 
 	}
 
@@ -574,7 +578,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 				animatedGif.setTime(relTime);
 			}
 			//SdkLog.d(TAG, "agif view width: " + getWidth() + ", agif width: " + animatedGif.width() + ", density: " + dens);
-			animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
+			//animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
 			this.invalidate();
 		}
 	}
