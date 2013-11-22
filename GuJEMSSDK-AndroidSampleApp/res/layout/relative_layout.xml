@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
              android:layout_below="@id/ad15312"
-            android:src="@drawable/icon" />
+            android:src="@drawable/de5a9f0900" />
     </RelativeLayout>
 
 </RelativeLayout>
