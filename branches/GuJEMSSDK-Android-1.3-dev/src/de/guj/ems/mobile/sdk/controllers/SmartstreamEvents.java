@@ -4,6 +4,11 @@ import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
+/**
+ * Controls tracking URL requests for smartstream video events
+ * @author stein16
+ *
+ */
 public final class SmartstreamEvents {
 	
 	private final static String SMARTSTREAM_EVENT_URL = SdkUtil.getContext().getString(R.string.baseUrl) + "?" + SdkUtil.getContext().getString(R.string.baseParams).replaceAll("#version#", SdkUtil.VERSION_STR);
@@ -24,8 +29,15 @@ public final class SmartstreamEvents {
 	
 	private final static String TAG = "SmartstreamEvents";
 	
+	/**
+	 * Perform a tracking request
+	 * @param userAgent Current device user-agent
+	 * @param adSpace Tracking adspace
+	 * @param placement Smartstream placement
+	 * @param event Event ID
+	 * @param click true if a click should be tracked
+	 */
 	public static void processEvent(String userAgent, String adSpace, String placement, int event, boolean click) {
-		AdServerAccess access = null;
 		String url = SMARTSTREAM_EVENT_URL;
 		boolean ok = false;
 		switch (event) {
@@ -43,10 +55,10 @@ public final class SmartstreamEvents {
 			return;
 		}
 		if (ok && !click) {
-			access = new AdServerAccess(userAgent, null);
+			
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event + "&plmid=" + placement;
 			try {
-				((AdServerAccess) access.execute(new String []{url})).get();
+				SdkUtil.httpRequest(url);
 			}
 			catch (Exception e) {
 				SdkLog.e(TAG, "Error sending tracking event to AdServer", e);

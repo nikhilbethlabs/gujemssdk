@@ -10,6 +10,12 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
+/**
+ * Receiver which performs an ad requests and starts the
+ * corresponding activity - depending on the response.
+ * @author stein16
+ *
+ */
 public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		AdResponseHandler {
 

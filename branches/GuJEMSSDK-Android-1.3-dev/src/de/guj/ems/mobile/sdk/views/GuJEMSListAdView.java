@@ -7,6 +7,15 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+/**
+ * Alternative class for webview based adviews within lists
+ * 
+ * List view elements must have layout params of type AbsListView.LayoutParams
+ * which this class provides.
+ *  
+ * @author stein16
+ *
+ */
 public class GuJEMSListAdView extends GuJEMSAdView {
 
 	public GuJEMSListAdView(Context context) {

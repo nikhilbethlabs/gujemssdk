@@ -419,6 +419,10 @@ public class SdkUtil {
 		out.close();
 	}
 
+	/**
+	 * Check whether a charger is connected to the device
+	 * @return true if a charger is connected
+	 */
 	public static boolean isChargerConnected() {
 		if (BATTERY_INTENT == null) {
 			try {
@@ -438,6 +442,10 @@ public class SdkUtil {
 				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
 	}
 
+	/**
+	 * Get the battery charge level in percent
+	 * @return Integer value [0..100], indicating battery charge level in percent 
+	 */
 	public static int getBatteryLevel() {
 		if (BATTERY_INTENT == null) {
 			try {
@@ -457,16 +465,29 @@ public class SdkUtil {
 		return (int) (100.0f * (level / (float) scale));
 	}
 
+	/**
+	 * Check whether a headset is connected to the device
+	 * @return true if a headset is connected
+	 */
 	@SuppressWarnings("deprecation")
 	public static boolean isHeadsetConnected() {
 		return ((AudioManager) getContext().getSystemService(
 				Context.AUDIO_SERVICE)).isWiredHeadsetOn();
 	}
 
+	/**
+	 * Perform a quick simple http request without processing the response
+	 * @param url The url to request
+	 */
 	public static void httpRequest(final String url) {
 		SdkUtil.httpRequests(new String[] { url });
 	}
 
+	/**
+	 * Perform quick simple http requests without processing the response.
+	 * Errors are written to log output.
+	 * @param url An array of url strings
+	 */
 	public static void httpRequests(final String[] url) {
 		(new AdServerAccess(getUserAgent(), new AdResponseHandler() {
 
@@ -488,6 +509,14 @@ public class SdkUtil {
 		})).execute(url);
 	}
 	
+	/**
+	 * Helper method to determine the correct way to execute javascript
+	 * in a webview. Starting from Android 4.4, the Android webview is a
+	 * chrome webview and the method to execute javascript has changed from
+	 * loadUrl to evaluateJavascript
+	 * @param webView The webview to exeute the script in
+	 * @param javascript the actual script
+	 */
 	public static void evaluateJavascript(WebView webView, String javascript) {
 		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
 			try {
