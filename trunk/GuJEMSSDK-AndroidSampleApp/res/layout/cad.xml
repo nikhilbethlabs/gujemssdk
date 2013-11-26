@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        ems:ems_debug="false"
         ems:ems_geo="false"
         ems:ems_kw="false"
         ems:ems_nkw="false"

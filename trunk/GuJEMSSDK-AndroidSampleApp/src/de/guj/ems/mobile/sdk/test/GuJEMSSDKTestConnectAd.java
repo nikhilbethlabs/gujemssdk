@@ -48,8 +48,7 @@ public class GuJEMSSDKTestConnectAd extends Activity {
 		Intent target = MenuItemHelper.getTargetIntent(
 				getApplicationContext(), item.getItemId());
 		if (target != null) {
-			//sendBroadcast(target);
-			startActivity(target);
+			sendBroadcast(target);
 		}
 		return true;
 	}

@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
+import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView;
 
 public class ListViewTest extends Activity {
@@ -38,7 +39,7 @@ public class ListViewTest extends Activity {
         Map<String, Object> customParams2 = new HashMap<String, Object>();
         customParams2.put("as", Integer.valueOf(16542));
         final ListView l = (ListView)findViewById(R.id.testList);
-        final GuJEMSNativeListAdView av1 = new GuJEMSNativeListAdView(this,
+        final GuJEMSListAdView av1 = new GuJEMSListAdView(this,
                 customParams,
                 R.layout.generic_adview);
         
@@ -58,7 +59,7 @@ public class ListViewTest extends Activity {
 			}
 		});
         
-        final GuJEMSNativeListAdView av2 = new GuJEMSNativeListAdView(this,
+        final GuJEMSListAdView av2 = new GuJEMSListAdView(this,
                 customParams2,
                 R.layout.generic_adview);
         av2.setId(12616);
@@ -101,10 +102,10 @@ public class ListViewTest extends Activity {
 			Object ad1 = ca.getItem(2);
 			Object ad2 = ca.getItem(5);
 			if (ad1 != null && GuJEMSNativeListAdView.class.equals(ad1.getClass())) {
-				((GuJEMSNativeListAdView)ad1).reload();
+				((GuJEMSListAdView)ad1).reload();
 			}
 			if (ad2 != null && GuJEMSNativeListAdView.class.equals(ad2.getClass())) {
-				((GuJEMSNativeListAdView)ad2).reload();
+				((GuJEMSListAdView)ad2).reload();
 			}			
 		}
 		else { 
