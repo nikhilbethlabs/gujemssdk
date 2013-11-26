@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView
+        <de.guj.ems.mobile.sdk.views.GuJEMSAdView
             android:id="@+id/ad15306"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

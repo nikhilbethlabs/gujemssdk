@@ -3,7 +3,6 @@ package de.guj.ems.mobile.sdk.test;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import de.guj.ems.mobile.sdk.activities.InterstitialSwitchActivity;
 import de.guj.ems.mobile.sdk.controllers.InterstitialSwitchReceiver;
 
 
@@ -52,7 +51,7 @@ public class MenuItemHelper {
 		else if (menuId == R.id.cad) {
 			Log.i(TAG, "G+J EMS ConnectAd");
 			Intent target = new Intent(context, GuJEMSSDKTestConnectAd.class);
-	    	Intent i = new Intent(context, InterstitialSwitchActivity.class);
+	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("timeout", Integer.valueOf(15000));
 	    	i.putExtra("ems_zoneId", "15310");
 	    	i.putExtra("ems_uid", Boolean.valueOf(true));
