@@ -25,7 +25,6 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
  * Delegates requests to optimobile and possibly other networks

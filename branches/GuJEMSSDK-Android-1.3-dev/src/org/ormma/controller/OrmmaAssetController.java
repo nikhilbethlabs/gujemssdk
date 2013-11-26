@@ -265,6 +265,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 */
 	public String copyTextFromJarIntoAssetDir(String alias, String source) {
 		InputStream in = null;
+		JarFile jf = null;
 		try {
 			URL url = OrmmaAssetController.class.getClassLoader().getResource(
 					source);
@@ -275,7 +276,7 @@ public class OrmmaAssetController extends OrmmaController {
 			int pos = file.indexOf("!");
 			if (pos > 0)
 				file = file.substring(0, pos);
-			JarFile jf = new JarFile(file);
+			jf = new JarFile(file);
 			JarEntry entry = jf.getJarEntry(source);
 			in = jf.getInputStream(entry);
 			String name = writeToDisk(in, alias, false);
@@ -290,6 +291,14 @@ public class OrmmaAssetController extends OrmmaController {
 					// TODO: handle exception
 				}
 				in = null;
+			}
+			if (jf != null) {
+				try {
+					jf.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				jf = null;
 			}
 		}
 		return null;
