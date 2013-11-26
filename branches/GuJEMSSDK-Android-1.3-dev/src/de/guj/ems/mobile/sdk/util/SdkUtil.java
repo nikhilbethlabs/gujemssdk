@@ -63,7 +63,7 @@ public class SdkUtil {
 
 	private static String USER_AGENT = null;
 
-	private final static boolean DEBUG = true;
+	private final static boolean DEBUG = false;
 
 	private final static String DEBUG_USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.3; de-de; GT-I9100 Build/GRH78) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 

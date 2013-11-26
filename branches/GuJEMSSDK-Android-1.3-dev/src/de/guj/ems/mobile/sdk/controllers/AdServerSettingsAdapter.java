@@ -2,6 +2,7 @@ package de.guj.ems.mobile.sdk.controllers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +30,8 @@ public abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
 
 	private static final long serialVersionUID = 314048983271226769L;
+	
+	private final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat("#.##");
 
 	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
 			.getString(R.string.attributePrefix);
@@ -76,7 +79,7 @@ public abstract class AdServerSettingsAdapter implements
 	
 	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + "onAd";
 	
-	protected final static long EMS_LOCATION_MAXAGE_MS = 3600000;
+	protected final static long EMS_LOCATION_MAXAGE_MS = 7200000;
 	
 	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;	
 	
@@ -370,6 +373,13 @@ public abstract class AdServerSettingsAdapter implements
 		if (lastKnown != null && age <= EMS_LOCATION_MAXAGE_MS) {
 			loc[0] = lastKnown.getLatitude();
 			loc[1] = lastKnown.getLongitude();
+			
+			if (SdkUtil.getContext().getResources().getBoolean(R.bool.shorten_location)) {
+				loc[0] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[0]));
+				loc[1] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[1]));
+				SdkLog.d(TAG, "Geo location shortened to two digits.");
+			}
+			
 			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is " + loc[0] + "x" + loc[1]);
 			return loc;
 		}

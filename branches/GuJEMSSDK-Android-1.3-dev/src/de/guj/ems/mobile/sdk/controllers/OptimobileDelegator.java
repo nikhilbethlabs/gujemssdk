@@ -1,13 +1,10 @@
 package de.guj.ems.mobile.sdk.controllers;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
@@ -21,7 +18,6 @@ import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
-import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
@@ -53,26 +49,6 @@ public class OptimobileDelegator {
 	private Handler handler;
 	
 	private Context context;
-	
-	/**
-	 * Default constructor
-	 * 
-	 * Initially creates an optimobile adview which an be added to the layout.
-	 * The optimobile view uses callbacks for error handling etc. and also
-	 * for a possible backfill. If a 3rd party network is active, the optimobile
-	 * ad view will actually be removed and replaced by the network's view.
-	 * 
-	 * @param context App/Activity context
-	 * @param adView original (first level) adview
-	 * @param settings settings of original adview 
-	 */
-//	public OptimobileDelegator(Context context, GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
-//		this.context = context;
-//		this.emsMobileView = adView;
-//		this.handler = this.emsMobileView.getHandler();
-//		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
-//		this.optimobileView = initOptimobileView(context, settings, 0); 
-//	}
 	
 	/**
 	 * Default constructor
@@ -242,34 +218,7 @@ public class OptimobileDelegator {
 		private String pubId;
 		
 		private AdRequest adRequest;
-		
-		protected Location getLocation() {
-			LocationManager lm = (LocationManager) SdkUtil.getContext()
-					.getSystemService(Context.LOCATION_SERVICE);
-			List<String> providers = lm.getProviders(true);
-			Iterator<String> provider = providers.iterator();
-			Location lastKnown = null;
-			long age = 0;
-			while (provider.hasNext()) {
-				lastKnown = lm.getLastKnownLocation(provider.next());
-				if (lastKnown != null) {
-					age = System.currentTimeMillis() - lastKnown.getTime();
-					if (age <= AdServerSettingsAdapter.EMS_LOCATION_MAXAGE_MS) {
-						break;
-					}
-					else {
-						SdkLog.d(TAG, "Location [" + lastKnown.getProvider() + "] is " + (age / 60000) + " min old. [max = " + AdServerSettingsAdapter.EMS_LOCATION_MAXAGE_MIN + "]");
-					}
-				}
-			}
 
-			if (lastKnown != null && age <= AdServerSettingsAdapter.EMS_LOCATION_MAXAGE_MS) {
-				return lastKnown;
-			}
-
-			return null;			
-		}
-		
 		@Override
 		public void onThirdPartyEvent(MASTAdView arg0, HashMap<String, String> arg1) {
 			String type = arg1.get("type");	
@@ -278,29 +227,41 @@ public class OptimobileDelegator {
 				String zip = arg1.get("zip");
 				String lon = arg1.get("long");
 				String lat = arg1.get("lat");
+				Location location = new Location("gps");
+				try {
+					double dlon = Double.valueOf(lon);
+					double dlat = Double.valueOf(lat);
+					location.setLatitude(dlat);
+					location.setLongitude(dlon);
+				}
+				catch (Exception e) {
+					location = null;
+				}
 				this.pubId = arg1.get("publisherid");
 				SdkLog.i(TAG, "optimobile: AdMob backfill detected. [" + zip + ", " + lat + ", " + lon + ", " + pubId + "]");
 				this.adRequest = new AdRequest();
 				this.adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-				this.adRequest.setLocation(getLocation());
+				if (location != null) {
+					this.adRequest.setLocation(location);
+				}
 				handler.post(new Runnable() {
 					
 					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
-						SdkLog.i(TAG, "Performing google admob request...");
-						AdView admobAdView = new AdView((Activity)context, AdSize.BANNER, pubId);
-						admobAdView.setId(emsMobileView != null ? emsMobileView.getId() : emsNativeMobileView.getId());
-						admobAdView.setGravity(Gravity.CENTER_HORIZONTAL);
-						admobAdView.setBackgroundDrawable(emsMobileView != null ?emsMobileView.getBackground() : emsNativeMobileView.getBackground());		
 						if (emsMobileView != null && !GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
+							SdkLog.i(TAG, "Performing google admob request...");
+							AdView admobAdView = new AdView((Activity)context, AdSize.BANNER, pubId);
+							admobAdView.setId(emsMobileView != null ? emsMobileView.getId() : emsNativeMobileView.getId());
+							admobAdView.setGravity(Gravity.CENTER_HORIZONTAL);
+							admobAdView.setBackgroundDrawable(emsMobileView != null ?emsMobileView.getBackground() : emsNativeMobileView.getBackground());		
 							((ViewGroup)emsMobileView.getParent()).removeView(optimobileView);
 							((ViewGroup)emsMobileView.getParent()).addView(admobAdView,((ViewGroup)emsMobileView.getParent()).indexOfChild(emsMobileView) + 1);
+							admobAdView.loadAd(adRequest);
 						}
 						else {
 							SdkLog.w(TAG, "AdMob cannot be loaded in native or list ad views.");
 						}
-						admobAdView.loadAd(adRequest);
 					}
 				});
 			}

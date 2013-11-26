@@ -7,6 +7,23 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+/**
+ * WARNING: BETA
+ * 
+ * The native adview class implements an imageview to display JPEG,PNG or GIF
+ * files.
+ * 
+ * In case of animated GIFs, the file is loaded as a movie.
+ * 
+ * The view behaves all like a webview but cannot handle any javascript or
+ * html markup.
+ * 
+ * It is intended for performance improvements in table or listviews.
+ * 
+ * !Not indented for production use!
+ * @author stein16
+ *
+ */
 public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 		AdResponseHandler {
 

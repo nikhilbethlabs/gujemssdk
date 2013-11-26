@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Set this to true if you want the geolocation truncated to two digits -->
+    <bool name="shorten_location">true</bool>
+
+</resources>
