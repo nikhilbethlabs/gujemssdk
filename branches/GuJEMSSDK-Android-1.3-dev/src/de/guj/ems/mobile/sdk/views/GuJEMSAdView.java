@@ -51,7 +51,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
 
-	private final String TAG = "GuJEMSAdView";
+	private final String TAG = "GuJEMSWebAdView";
 
 	/**
 	 * Initialize view without configuration
@@ -179,7 +179,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 		}
 	}
 
-	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		return new ViewGroup.LayoutParams(w, h);
 	}
 

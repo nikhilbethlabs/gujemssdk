@@ -25,6 +25,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
+import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
  * Delegates requests to optimobile and possibly other networks
@@ -66,6 +67,26 @@ public class OptimobileDelegator {
 	 * @param adView original (first level) adview
 	 * @param settings settings of original adview 
 	 */
+//	public OptimobileDelegator(Context context, GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
+//		this.context = context;
+//		this.emsMobileView = adView;
+//		this.handler = this.emsMobileView.getHandler();
+//		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
+//		this.optimobileView = initOptimobileView(context, settings, 0); 
+//	}
+	
+	/**
+	 * Default constructor
+	 * 
+	 * Initially creates an optimobile adview which an be added to the layout.
+	 * The optimobile view uses callbacks for error handling etc. and also
+	 * for a possible backfill. If a 3rd party network is active, the optimobile
+	 * ad view will actually be removed and replaced by the network's view.
+	 * 
+	 * @param context App/Activity context
+	 * @param adView original (first level) adview
+	 * @param settings settings of original adview 
+	 */
 	public OptimobileDelegator(Context context, GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsMobileView = adView;
@@ -86,12 +107,26 @@ public class OptimobileDelegator {
 	 * @param adView original (first level) adview
 	 * @param settings settings of original adview 
 	 */
-	public OptimobileDelegator(Context context, GuJEMSNativeAdView adView, final IAdServerSettingsAdapter settings) {
+	public OptimobileDelegator(final Context context, GuJEMSNativeAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsNativeMobileView = adView;
+		
 		this.handler = this.emsNativeMobileView.getHandler();
 		SdkLog.d(TAG, "Original view (GuJEMSNativeAdView) handler is " + handler);
-		this.optimobileView = initOptimobileView(context, settings, 0); 
+		if (handler != null) {
+			handler.post(new Runnable() {
+				public void run() {
+					optimobileView = initOptimobileView(context, settings, 0);
+					optimobileView.update();
+				}
+			});
+		}
+		else {
+			SdkLog.w(TAG, "Original adview's handler is null.");
+			optimobileView = initOptimobileView(context, settings, 0);
+			optimobileView.update();			
+		}
+		 
 	}
 
 	@SuppressWarnings("deprecation")
@@ -267,7 +302,6 @@ public class OptimobileDelegator {
 							SdkLog.w(TAG, "AdMob cannot be loaded in native or list ad views.");
 						}
 						admobAdView.loadAd(adRequest);
-						
 					}
 				});
 			}

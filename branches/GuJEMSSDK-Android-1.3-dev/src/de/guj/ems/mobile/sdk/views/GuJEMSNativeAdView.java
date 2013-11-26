@@ -3,6 +3,7 @@ package de.guj.ems.mobile.sdk.views;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -54,11 +55,10 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	private boolean play = false;
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
-		//private final WeakReference<ImageView> viewRef;
-		private final ImageView viewRef;
+		private final WeakReference<ImageView> viewRef;
 
 		public DownloadImageTask(ImageView view) {
-			this.viewRef = view;
+			this.viewRef = new WeakReference<ImageView>(view);
 		}
 
 		protected Object doInBackground(String... urls) {
@@ -121,25 +121,25 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 							+ "x" + bitmap.getHeight() + "]");
 				}
 
-				//ImageView view = viewRef.get();
-				if (viewRef != null) {
+				ImageView view = viewRef.get();
+				if (view != null) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 							&& movie != null) {
 						disableHWAcceleration();
-					} else if (bitmap != null && viewRef.getTag().equals(parser.getImageUrl())) {
-						Drawable d = viewRef.getDrawable();
+					} else if (bitmap != null && view.getTag().equals(parser.getImageUrl())) {
+						Drawable d = view.getDrawable();
 						if (d instanceof BitmapDrawable) {
 							BitmapDrawable bd = (BitmapDrawable)d;
 							Bitmap bm = bd.getBitmap();
 							if (bm != null) {
 								bm.recycle();
 							}
-							SdkLog.i(TAG, "Recycled bitmap of view " + viewRef.getId());
+							SdkLog.i(TAG, "Recycled bitmap of view " + view.getId());
 						}
-						//viewRef.setImageBitmap(bitmap);
+						view.setImageBitmap(bitmap);
 					}
 
-					viewRef.setOnClickListener(new OnClickListener() {
+					view.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							Intent i = new Intent(getContext(), Browser.class);
@@ -152,7 +152,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 						}
 					});
 
-					LayoutParams lp = viewRef.getLayoutParams();
+					LayoutParams lp = view.getLayoutParams();
 					if (movie != null) {
 						lp.height = (int) ((float) movie.height() * SdkUtil
 								.getDensity());
@@ -160,8 +160,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 						lp.height = (int) ((float) bitmap.getHeight() * SdkUtil
 								.getDensity());
 					}
-					viewRef.setLayoutParams(lp);
-					viewRef.setVisibility(VISIBLE);
+					view.setLayoutParams(lp);
+					view.setVisibility(VISIBLE);
 
 				}
 			}
@@ -462,18 +462,8 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
 								+ this.getId() + "]");
-						OptimobileDelegator optimobileDelegator = new OptimobileDelegator(
+						new OptimobileDelegator(
 								getContext(), this, settings);
-						if (getParent() != null) {
-							((ViewGroup) getParent()).addView(
-									optimobileDelegator.getOptimobileView(),
-									((ViewGroup) getParent())
-											.indexOfChild(this) + 1);
-						} else {
-							SdkLog.d(TAG, "Primary view initialized off UI.");
-						}
-						optimobileDelegator.getOptimobileView().update();
-
 					} catch (Exception e) {
 						processError("Error delegating to optimobile.", e);
 					}
@@ -578,7 +568,7 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 				animatedGif.setTime(relTime);
 			}
 			//SdkLog.d(TAG, "agif view width: " + getWidth() + ", agif width: " + animatedGif.width() + ", density: " + dens);
-			//animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
+			animatedGif.draw(canvas, (getWidth() / dens - animatedGif.width()) / 2.0f,	0.0f);
 			this.invalidate();
 		}
 	}

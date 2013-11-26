@@ -159,7 +159,6 @@ public abstract class AdServerSettingsAdapter implements
 	private AdServerSettingsAdapter() {
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = new HashMap<String, String>();
-
 	}
 
 	/**

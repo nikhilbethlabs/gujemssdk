@@ -15,7 +15,6 @@
         <attr name="ems_geo" format="boolean" />
         <attr name="ems_lat" format="float" />
         <attr name="ems_lon" format="float" />
-        <attr name="ems_debug" format="boolean" />
     </declare-styleable>
 
 </resources>

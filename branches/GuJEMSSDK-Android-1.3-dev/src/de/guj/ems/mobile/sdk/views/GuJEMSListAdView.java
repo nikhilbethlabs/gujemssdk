@@ -37,7 +37,7 @@ public class GuJEMSListAdView extends GuJEMSAdView {
 	}
 	
 	@Override
-	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		//SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
 		return new AbsListView.LayoutParams(w, 1);
 	}
