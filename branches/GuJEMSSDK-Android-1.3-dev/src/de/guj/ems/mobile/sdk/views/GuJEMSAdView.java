@@ -51,7 +51,7 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
 
-	private final String TAG = "GuJEMSWebAdView";
+	private final String TAG = "GuJEMSAdView";
 
 	/**
 	 * Initialize view without configuration
