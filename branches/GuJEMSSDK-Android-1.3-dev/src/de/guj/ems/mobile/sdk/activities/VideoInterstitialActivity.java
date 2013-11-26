@@ -85,15 +85,15 @@ public final class VideoInterstitialActivity extends Activity implements
 	private MediaPlayer mediaPlayer;
 
 	private int videoWidth;
-    
+
 	private int videoHeight;
-	
+
 	private int videoLength;
-    
-    private float videoProportion;       
+
+	private float videoProportion;
 
 	private boolean muted;
-	
+
 	private double percentPlayed;
 
 	private VASTXmlParser vastXml;
@@ -144,21 +144,23 @@ public final class VideoInterstitialActivity extends Activity implements
 						if (percentPlayed > 0.75) {
 							List<String> tx = vastXml
 									.getTrackingByType(Tracking.EVENT_COMPLETE);
-							SdkLog.i(TAG, "Triggering " + tx.size() + " event_complete tracking requests");
+							SdkLog.i(TAG, "Triggering " + tx.size()
+									+ " event_complete tracking requests");
 							if (tx != null && tx.size() > 0) {
 								String[] txS = new String[tx.size()];
 								SdkUtil.httpRequests(tx.toArray(txS));
 							}
-						}
-						else {
-							SdkLog.w(TAG, "onCompletion but no 100% played, skipping event_complete.");
+						} else {
+							SdkLog.w(TAG,
+									"onCompletion but no 100% played, skipping event_complete.");
 						}
 
 						try {
-							((AudioManager)getSystemService(Context.AUDIO_SERVICE)).abandonAudioFocus(null);
-						}
-						catch (Exception e) {
-							SdkLog.w(TAG, "Could not abandon audio manager focus");
+							((AudioManager) getSystemService(Context.AUDIO_SERVICE))
+									.abandonAudioFocus(null);
+						} catch (Exception e) {
+							SdkLog.w(TAG,
+									"Could not abandon audio manager focus");
 						}
 
 						if (target != null) {
@@ -167,7 +169,7 @@ public final class VideoInterstitialActivity extends Activity implements
 							SdkLog.d(TAG,
 									"Video interstitial without target. Returning to previous view.");
 						}
-						
+
 						finish();
 					}
 				});
@@ -191,7 +193,8 @@ public final class VideoInterstitialActivity extends Activity implements
 						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 						List<String> tr = vastXml.getClickTrackingUrl();
-						SdkLog.i(TAG, "Triggering " + tr.size() + " click tracking requests");
+						SdkLog.i(TAG, "Triggering " + tr.size()
+								+ " click tracking requests");
 						if (tr != null && tr.size() > 0) {
 							String[] trS = new String[tr.size()];
 							SdkUtil.httpRequests(tr.toArray(trS));
@@ -209,20 +212,21 @@ public final class VideoInterstitialActivity extends Activity implements
 			// parse VAST xml
 			this.vastXml = new VASTXmlParser(this, this, getIntent()
 					.getExtras().getString("data"));
-			
+
 			if (!this.vastXml.hasWrapper()) {
-				
+
 				SdkLog.i(TAG, "Direct VAST xml response.");
-				
+
 				this.videoView.setVideoURI(Uri.parse(this.vastXml
 						.getMediaFileUrl()));
 				List<String> im = this.vastXml.getImpressionTrackerUrl();
-				SdkLog.i(TAG, "Triggering " + im.size() + " impression tracking requests");
+				SdkLog.i(TAG, "Triggering " + im.size()
+						+ " impression tracking requests");
 				if (im != null && im.size() > 0) {
 					String[] imS = new String[im.size()];
 					SdkUtil.httpRequests(im.toArray(imS));
 				}
-				
+
 			}
 
 		} catch (Exception e) {
@@ -238,12 +242,8 @@ public final class VideoInterstitialActivity extends Activity implements
 
 	private void createView(Bundle savedInstanceState) {
 		boolean muteTest = getIntent().getExtras().getBoolean("unmuted");
-		SdkLog.d(
-				TAG,
-				"Sound settings forced="
-						+ muteTest
-						+ ", headset="
-						+ SdkUtil.isHeadsetConnected());
+		SdkLog.d(TAG, "Sound settings forced=" + muteTest + ", headset="
+				+ SdkUtil.isHeadsetConnected());
 		this.muted = !(muteTest || SdkUtil.isHeadsetConnected());
 
 		// (1) set view layout
@@ -258,15 +258,14 @@ public final class VideoInterstitialActivity extends Activity implements
 		b.setVisibility(View.INVISIBLE);
 		b.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				
+
 				try {
-					((AudioManager)getSystemService(Context.AUDIO_SERVICE)).abandonAudioFocus(null);
-				}
-				catch (Exception e) {
+					((AudioManager) getSystemService(Context.AUDIO_SERVICE))
+							.abandonAudioFocus(null);
+				} catch (Exception e) {
 					SdkLog.w(TAG, "Could not abandon audio manager focus");
 				}
 
-				
 				if (updateThread != null && updateThread.isAlive()) {
 					try {
 						updateThread.beforeStop();
@@ -300,11 +299,13 @@ public final class VideoInterstitialActivity extends Activity implements
 						.getTrackingByType(VASTXmlParser.Tracking.EVENT_MUTE)
 						: vastXml
 								.getTrackingByType(VASTXmlParser.Tracking.EVENT_UNMUTE);
-					SdkLog.i(TAG, "Triggering " + tr.size() + (muted ? " event_mute " : " event_unmute ") + "tracking requests");
-					if (tr != null && tr.size() > 0) {
-						String trS[] = new String[tr.size()];
-						SdkUtil.httpRequests(tr.toArray(trS));
-					}
+				SdkLog.i(TAG, "Triggering " + tr.size()
+						+ (muted ? " event_mute " : " event_unmute ")
+						+ "tracking requests");
+				if (tr != null && tr.size() > 0) {
+					String trS[] = new String[tr.size()];
+					SdkUtil.httpRequests(tr.toArray(trS));
+				}
 			}
 		});
 
@@ -337,7 +338,7 @@ public final class VideoInterstitialActivity extends Activity implements
 			SdkUtil.setContext(getApplicationContext());
 		}
 		if (status < 0) {
-			//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			this.target = (Intent) getIntent().getExtras().get("target");
 			createView(savedInstanceState);
@@ -385,8 +386,7 @@ public final class VideoInterstitialActivity extends Activity implements
 					}
 					SdkLog.d(TAG, "MediaPlayer stopped.");
 				}
-			}
-			catch (IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				SdkLog.w(TAG, "Media player already released.");
 				mediaPlayer = null;
 			}
@@ -408,7 +408,7 @@ public final class VideoInterstitialActivity extends Activity implements
 					;
 				}
 			}
-			
+
 			finish();
 		} else if (updateThread != null && updateThread.isAlive() && status > 0) {
 			SdkLog.d(TAG, "Video interstitial resume with paused thread.");
@@ -425,60 +425,69 @@ public final class VideoInterstitialActivity extends Activity implements
 		SdkLog.w(TAG, "onSaveInstanceState!");
 		super.onSaveInstanceState(outState);
 	}
-	
-	private int getStatusBarHeight() {
-	   int result = 0;
-	   int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-	   try {
-		   if (resourceId > 0) {
-		      result = getResources().getDimensionPixelSize(resourceId);
-		   }
-	   }
-	   catch (Exception e) {
-		   result = 0;
-	   }
-	   SdkLog.d(TAG, "status bar height is " + result + " dpi");
-	   return result;
-	}
-	
-	private void adjustVideoView(Configuration newConfig) {
-			
-			int offset = getStatusBarHeight() + findViewById(R.id.emsVidIntSndButton).getMeasuredHeight() + findViewById(R.id.emsVideoText).getMeasuredHeight();
-		    int viewWidth = SdkUtil.getScreenWidth(); // = match_parent 
-		    int viewHeight = videoView.getMeasuredHeight();
-		    float viewProportion = (float) viewWidth / (float) viewHeight;
-		    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)videoView.getLayoutParams();
 
-		    SdkLog.d(TAG, "Text / buttons offset " + offset);
-		    SdkLog.d(TAG, "View dimensions: " + viewWidth + "x" + viewHeight + " [" + viewProportion + "]");
-		    SdkLog.d(TAG, "Video dimensions: " + videoWidth + "x" + videoHeight + " [" + videoProportion + "]");
-		    
-		    // view keeps previous height when rotating
-		    if (viewHeight + offset < SdkUtil.getScreenHeight() && newConfig != null) {
-		    	viewHeight = SdkUtil.getScreenHeight() - offset;
-		    	// recalculate proportion
-		    	viewProportion = (float) viewWidth / (float) viewHeight;
-		    	SdkLog.d(TAG, "Device rotation - corrected view height to " + viewHeight);
-		    }
-		    else if (viewHeight + offset > SdkUtil.getScreenHeight()) {
-		    	viewHeight = SdkUtil.getScreenHeight() - offset;
-		    	// recalculate proportion
-		    	viewProportion = (float) viewWidth / (float) viewHeight;
-		    	SdkLog.d(TAG, "Corrected view height to " + viewHeight);
-		    }
-		    
-		    if (videoProportion > viewProportion) {
-		        lp.width = viewWidth;
-		        lp.height = (int) ((float) viewWidth / videoProportion);
-		        SdkLog.d(TAG, "Adjusted video view height to reflect media aspect ratio. [" + viewHeight + "->" + lp.height + "]");
-		    }
-		    else if (viewProportion > videoProportion) {
-		        lp.width = (int) (videoProportion * (float) viewHeight);
-		        lp.height = viewHeight;
-		        SdkLog.d(TAG, "Adjusted video view width to reflect media aspect ratio. [" + viewWidth + "->" + lp.width + "]");	        
-		    }
-		    
-		    videoView.setLayoutParams(lp);
+	private int getStatusBarHeight() {
+		int result = 0;
+		int resourceId = getResources().getIdentifier("status_bar_height",
+				"dimen", "android");
+		try {
+			if (resourceId > 0) {
+				result = getResources().getDimensionPixelSize(resourceId);
+			}
+		} catch (Exception e) {
+			result = 0;
+		}
+		SdkLog.d(TAG, "status bar height is " + result + " dpi");
+		return result;
+	}
+
+	private void adjustVideoView(Configuration newConfig) {
+
+		int offset = getStatusBarHeight()
+				+ findViewById(R.id.emsVidIntSndButton).getMeasuredHeight()
+				+ findViewById(R.id.emsVideoText).getMeasuredHeight();
+		int viewWidth = SdkUtil.getScreenWidth(); // = match_parent
+		int viewHeight = videoView.getMeasuredHeight();
+		float viewProportion = (float) viewWidth / (float) viewHeight;
+		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) videoView
+				.getLayoutParams();
+
+		SdkLog.d(TAG, "Text / buttons offset " + offset);
+		SdkLog.d(TAG, "View dimensions: " + viewWidth + "x" + viewHeight + " ["
+				+ viewProportion + "]");
+		SdkLog.d(TAG, "Video dimensions: " + videoWidth + "x" + videoHeight
+				+ " [" + videoProportion + "]");
+
+		// view keeps previous height when rotating
+		if (viewHeight + offset < SdkUtil.getScreenHeight()
+				&& newConfig != null) {
+			viewHeight = SdkUtil.getScreenHeight() - offset;
+			// recalculate proportion
+			viewProportion = (float) viewWidth / (float) viewHeight;
+			SdkLog.d(TAG, "Device rotation - corrected view height to "
+					+ viewHeight);
+		} else if (viewHeight + offset > SdkUtil.getScreenHeight()) {
+			viewHeight = SdkUtil.getScreenHeight() - offset;
+			// recalculate proportion
+			viewProportion = (float) viewWidth / (float) viewHeight;
+			SdkLog.d(TAG, "Corrected view height to " + viewHeight);
+		}
+
+		if (videoProportion > viewProportion) {
+			lp.width = viewWidth;
+			lp.height = (int) ((float) viewWidth / videoProportion);
+			SdkLog.d(TAG,
+					"Adjusted video view height to reflect media aspect ratio. ["
+							+ viewHeight + "->" + lp.height + "]");
+		} else if (viewProportion > videoProportion) {
+			lp.width = (int) (videoProportion * (float) viewHeight);
+			lp.height = viewHeight;
+			SdkLog.d(TAG,
+					"Adjusted video view width to reflect media aspect ratio. ["
+							+ viewWidth + "->" + lp.width + "]");
+		}
+
+		videoView.setLayoutParams(lp);
 
 	}
 
@@ -621,8 +630,8 @@ public final class VideoInterstitialActivity extends Activity implements
 							if (vastXml.getSkipOffset() > 0) {
 								close = (percentPlayed >= vastXml.getSkipOffset());
 								if (!close) {
-									text = "-w- Abbrechbar in "
-											+ ((int) ((vastXml.getSkipOffset() - percentPlayed) / 100.0 * (videoLength / 1000.0)) + " Sekunden");
+									int t = (int) ((vastXml.getSkipOffset() - percentPlayed) / 100.0 * (videoLength / 1000.0));
+									text = getResources().getString(R.string.videoSkip).replaceAll("#", String.valueOf(t));
 								}
 							} else {
 								close = true;
@@ -703,7 +712,8 @@ public final class VideoInterstitialActivity extends Activity implements
 			this.videoView
 					.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
 			List<String> im = this.vastXml.getImpressionTrackerUrl();
-			SdkLog.i(TAG, "Triggering " + im.size() + " impression tracking requests");
+			SdkLog.i(TAG, "Triggering " + im.size()
+					+ " impression tracking requests");
 			if (im != null && im.size() > 0) {
 				String[] imS = new String[im.size()];
 				SdkUtil.httpRequests(im.toArray(imS));
@@ -731,15 +741,15 @@ public final class VideoInterstitialActivity extends Activity implements
 		if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
 			try {
 				mediaPlayer.pause();
-			}
-			catch (IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				SdkLog.w(TAG, "Problem pausing media player.");
 			}
 			// if switched to landscape we trigger fullscreen event
 			if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				List<String> tx = vastXml
 						.getTrackingByType(Tracking.EVENT_FULLSCREEN);
-				SdkLog.i(TAG, "Triggering " + tx.size() + " event_fullscreen tracking requests");
+				SdkLog.i(TAG, "Triggering " + tx.size()
+						+ " event_fullscreen tracking requests");
 				if (tx != null && tx.size() > 0) {
 					String[] txS = new String[tx.size()];
 					SdkUtil.httpRequests(tx.toArray(txS));
@@ -748,13 +758,10 @@ public final class VideoInterstitialActivity extends Activity implements
 			adjustVideoView(newConfig);
 			try {
 				mediaPlayer.start();
-			}
-			catch (IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				SdkLog.w(TAG, "Problem resuming media player.");
 			}
 		}
 	}
-	
-	
 
 }

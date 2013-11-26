@@ -23,6 +23,7 @@
     <string name="onAdSuccess">onAdSuccess</string>
     <string name="onAdEmpty">onAdEmpty</string>
     <string name="onAdError">onAdError</string>
+    <string name="videoSkip">-w- Abbrechbar in # Sekunden</string>
     <string name="videoPreload">-w- Bitte einen Moment Geduld&#8230;</string>
     <string name="videoRunning">-w- Klick auf Video öffnet Website</string>
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>

@@ -936,7 +936,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		SdkUtil.setContext(getContext());
 		if (!isInEditMode()) {
 			if (Build.VERSION.SDK_INT < 18) {
-				getSettings().setPluginState(WebSettings.PluginState.ON);
+				getSettings().setPluginState(WebSettings.PluginState.OFF);
 				getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
 			}
 			
