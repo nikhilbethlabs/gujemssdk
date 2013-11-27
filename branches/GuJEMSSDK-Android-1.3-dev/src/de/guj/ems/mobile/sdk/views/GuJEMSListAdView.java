@@ -12,9 +12,9 @@ import android.widget.AbsListView;
  * 
  * List view elements must have layout params of type AbsListView.LayoutParams
  * which this class provides.
- *  
+ * 
  * @author stein16
- *
+ * 
  */
 public class GuJEMSListAdView extends GuJEMSAdView {
 
@@ -44,10 +44,10 @@ public class GuJEMSListAdView extends GuJEMSAdView {
 			int resId) {
 		super(context, kws, nkws, resId);
 	}
-	
+
 	@Override
 	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		//SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
+		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
 		return new AbsListView.LayoutParams(w, 1);
 	}
 

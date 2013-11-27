@@ -21,15 +21,15 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 public class AmobeeAdRequest extends AdRequest {
-	
+
 	private final static String TAG = "AmobeeAdRequest";
-	
+
 	private final static String NEW_LINE = System.getProperty("line.separator");
 
 	private String securityHeaderName;
 
 	private int securityHeaderValueHash;
-	
+
 	private final static boolean USE_HTTPURLCONNECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
@@ -44,24 +44,24 @@ public class AmobeeAdRequest extends AdRequest {
 
 	private final static String ENCODING_STR = "utf-8";
 
-	private final static byte[] EMPTY_BUFFER = new byte[1024];	
+	private final static byte[] EMPTY_BUFFER = new byte[1024];
 
-	public AmobeeAdRequest(String securityHeader,
-			int securityHash, IAdResponseHandler handler) {
+	public AmobeeAdRequest(String securityHeader, int securityHash,
+			IAdResponseHandler handler) {
 		super(handler);
 		this.securityHeaderName = securityHeader;
 		this.securityHeaderValueHash = securityHash;
 	}
-	
+
 	public AmobeeAdRequest(IAdResponseHandler handler) {
 		super(handler);
 	}
 
 	@Override
-	protected IAdResponse httpGet(String url)  {
+	protected IAdResponse httpGet(String url) {
 		StringBuilder rBuilder = new StringBuilder();
 		boolean richAd = false;
-		
+
 		// from Gingerbread on it is recommended to use HttpUrlConnection
 		if (AmobeeAdRequest.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
@@ -70,7 +70,8 @@ public class AmobeeAdRequest extends AdRequest {
 				boolean ok = true;
 				URL uUrl = new URL(url);
 				con = (HttpURLConnection) uUrl.openConnection();
-				con.setRequestProperty(USER_AGENT_HEADER_NAME, SdkUtil.getUserAgent());
+				con.setRequestProperty(USER_AGENT_HEADER_NAME,
+						SdkUtil.getUserAgent());
 				con.setRequestProperty(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME,
 						ACCEPT_CHARSET_HEADER_VALUE);

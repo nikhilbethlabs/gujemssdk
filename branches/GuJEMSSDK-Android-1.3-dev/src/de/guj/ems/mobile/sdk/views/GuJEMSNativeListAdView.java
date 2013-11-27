@@ -17,14 +17,15 @@ import android.widget.AbsListView;
  * 
  * In case of animated GIFs, the file is loaded as a movie.
  * 
- * The view behaves all like a webview but cannot handle any javascript or
- * html markup.
+ * The view behaves all like a webview but cannot handle any javascript or html
+ * markup.
  * 
  * It is intended for performance improvements in table or listviews.
  * 
  * !Not indented for production use!
+ * 
  * @author stein16
- *
+ * 
  */
 public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 		IAdResponseHandler {
@@ -55,10 +56,10 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 			int resId) {
 		super(context, kws, nkws, resId);
 	}
-	
+
 	@Override
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		//SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
+		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
 		return new AbsListView.LayoutParams(w, 1);
 	}
 

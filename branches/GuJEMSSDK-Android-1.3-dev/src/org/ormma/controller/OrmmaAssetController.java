@@ -61,11 +61,15 @@ public class OrmmaAssetController extends OrmmaController {
 
 	private final static String SdkLog_TAG = "OrmmaAssetController";
 
-	//public final static float WEBVIEW_VIEWPORT_SCALE = Screen.getScreenWidth() / 320.0f;
-	
-	//private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale=" + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
-	
-	private final static byte [] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no' />").getBytes();
+	// public final static float WEBVIEW_VIEWPORT_SCALE =
+	// Screen.getScreenWidth() / 320.0f;
+
+	// private final static byte [] WEBVIEW_VIEWPORT_META =
+	// ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale="
+	// + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
+
+	private final static byte[] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no' />")
+			.getBytes();
 
 	private final static byte[] WEBVIEW_BODY_STYLE = "<body style=\"margin:0; padding:0; overflow:hidden; background-color:transparent;margin: 0px; padding: 0px; display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-pack:center;-webkit-box-align:center;\">"
 			.getBytes();
@@ -129,7 +133,8 @@ public class OrmmaAssetController extends OrmmaController {
 	 */
 	public OrmmaAssetController(OrmmaView adView, Context c) {
 		super(adView, c);
-		//SdkLog.i(SdkLog_TAG, "WebView viewport scale meta was set to " + WEBVIEW_VIEWPORT_SCALE);
+		// SdkLog.i(SdkLog_TAG, "WebView viewport scale meta was set to " +
+		// WEBVIEW_VIEWPORT_SCALE);
 	}
 
 	/**
@@ -314,7 +319,7 @@ public class OrmmaAssetController extends OrmmaController {
 		File adDir = new File(filesDir + java.io.File.separator + "ad");
 		deleteDirectory(adDir);
 	}
-	
+
 	public void deleteOldAds(String localAdDir) {
 		File adDir = new File(localAdDir);
 		deleteDirectory(adDir);
@@ -590,7 +595,7 @@ public class OrmmaAssetController extends OrmmaController {
 		File parent = img.getParentFile();
 		String path = parent.toString().toLowerCase(Locale.GERMAN);
 		String fname = parent.getName().toLowerCase(Locale.GERMAN);
-		
+
 		image.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
 		image.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, fname);
 		image.put(MediaColumns.SIZE, img.length());
@@ -932,7 +937,7 @@ public class OrmmaAssetController extends OrmmaController {
 		}
 		boolean hasHTMLWrap = data.indexOf("</html>") >= 0;
 		FileOutputStream out = getAssetOutputString(file);
-		
+
 		if (!hasHTMLWrap) {
 			out.write("<!DOCTYPE html>".getBytes());
 			out.write("<html>".getBytes());
@@ -943,10 +948,12 @@ public class OrmmaAssetController extends OrmmaController {
 					.getBytes());
 			out.write(("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>")
 					.getBytes());
-		}
-		else {
-			data = data.replace("<head>", ("<head><script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
-			+ ("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>"));
+		} else {
+			data = data
+					.replace(
+							"<head>",
+							("<head><script src=\"file://" + bridgePath + "\" type=\"text/javascript\"></script>")
+									+ ("<script src=\"file://" + ormmaPath + "\" type=\"text/javascript\"></script>"));
 		}
 
 		if (injection != null) {

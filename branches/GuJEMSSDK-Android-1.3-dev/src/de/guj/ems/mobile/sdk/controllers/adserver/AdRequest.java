@@ -16,7 +16,7 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 
 	private final String TAG = "AdRequest";
-	
+
 	private IAdResponseHandler responseHandler;
 
 	private Throwable lastError;
@@ -49,7 +49,9 @@ public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 		for (String url : urls) {
 			SdkLog.d(TAG, "Request: " + url);
 			if (response != null) {
-				SdkLog.w(TAG, "Multiple URLs in adserver request task. Ignoring " + url);
+				SdkLog.w(TAG,
+						"Multiple URLs in adserver request task. Ignoring "
+								+ url);
 			}
 			response = httpGet(url);
 		}
@@ -71,15 +73,15 @@ public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 			SdkLog.d(TAG, "No response handler");
 		}
 	}
-	
+
 	protected IAdResponseHandler getResponseHandler() {
 		return this.responseHandler;
 	}
-	
+
 	protected Throwable getLastError() {
 		return this.lastError;
 	}
-	
+
 	protected void setLastError(Throwable t) {
 		this.lastError = t;
 	}

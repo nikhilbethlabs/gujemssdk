@@ -27,31 +27,31 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * Tracking Requests have no response handlers
  * 
  * @author stein16
- *
+ * 
  */
 public class TrackingRequest extends AdRequest {
-	
+
 	private final static String TAG = "TrackingRequest";
-	
+
 	private final static boolean USE_HTTPURLCONNECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
 
 	private final static String USER_AGENT_HEADER_NAME = "User-Agent";
 
-	private TrackingRequest(String securityHeader,
-			int securityHash, IAdResponseHandler handler) {
+	private TrackingRequest(String securityHeader, int securityHash,
+			IAdResponseHandler handler) {
 		super(handler);
 	}
-	
+
 	private TrackingRequest(IAdResponseHandler handler) {
 		super(handler);
 	}
-	
+
 	public TrackingRequest() {
 		super(null);
 	}
 
 	@Override
-	protected IAdResponse httpGet(String url)  {
+	protected IAdResponse httpGet(String url) {
 		// from Gingerbread on it is recommended to use HttpUrlConnection
 		if (TrackingRequest.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
@@ -59,7 +59,8 @@ public class TrackingRequest extends AdRequest {
 			try {
 				URL uUrl = new URL(url);
 				con = (HttpURLConnection) uUrl.openConnection();
-				con.setRequestProperty(USER_AGENT_HEADER_NAME, SdkUtil.getUserAgent());
+				con.setRequestProperty(USER_AGENT_HEADER_NAME,
+						SdkUtil.getUserAgent());
 				con.setReadTimeout(2500);
 				con.setConnectTimeout(2500);
 				BufferedInputStream in = new BufferedInputStream(

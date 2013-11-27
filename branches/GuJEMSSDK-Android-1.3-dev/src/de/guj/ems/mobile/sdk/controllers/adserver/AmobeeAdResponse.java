@@ -1,6 +1,5 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
-
 public class AmobeeAdResponse extends AdResponse {
 
 	public AmobeeAdResponse(String response, boolean richMedia) {

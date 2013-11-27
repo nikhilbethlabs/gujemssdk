@@ -1,6 +1,5 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
-
 public class OptimobileAdResponse extends AdResponse {
 
 	public OptimobileAdResponse(String response) {

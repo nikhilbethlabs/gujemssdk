@@ -1,18 +1,17 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
-
 public abstract class AdResponse implements IAdResponse {
 
 	private String response;
-	
+
 	private boolean isRich;
-	
+
 	private boolean isTest;
-	
+
 	private boolean isEmpty;
-	
+
 	private AdResponseParser parser;
-	
+
 	public AdResponse(String response) {
 		this.response = response;
 	}
@@ -41,20 +40,20 @@ public abstract class AdResponse implements IAdResponse {
 	public boolean isTest() {
 		return isTest;
 	}
-	
+
 	@Override
 	public AdResponseParser getParser() {
 		return parser;
 	}
-	
+
 	protected void setIsRich(boolean rich) {
 		this.isRich = rich;
 	}
-	
+
 	protected void setParser(AdResponseParser parser) {
 		this.parser = parser;
 	}
-	
+
 	protected void setEmpty(boolean empty) {
 		isEmpty = empty;
 	}

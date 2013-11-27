@@ -230,7 +230,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			}
 			if (state == XmlPullParser.START_TAG) {
 				if (parser.getName().equals(
-						"de.guj.ems.mobile.sdk.views.GuJEMSAdView") || parser.getName().equals(
+						"de.guj.ems.mobile.sdk.views.GuJEMSAdView")
+						|| parser.getName().equals(
 								"de.guj.ems.mobile.sdk.views.GuJEMSListAdView")) {
 					as = Xml.asAttributeSet(parser);
 					break;
@@ -251,12 +252,11 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
-				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				SdkUtil.adRequest(
-						this,
-						settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash())
-						.execute(new String[] { url });
+				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
+						+ "]");
+				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash()).execute(
+						new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -271,8 +271,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
 
-		this.addJavascriptInterface(EMSInterface.getInstance(),
-				"emsmobile");
+		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, set);
@@ -282,8 +281,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
 					"text/html", "utf-8", null);
 			setVisibility(VISIBLE);
-		}
-		else {
+		} else {
 			SdkLog.e(TAG, "No attribute set found from resource id?");
 		}
 
@@ -292,8 +290,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
 
-		this.addJavascriptInterface(EMSInterface.getInstance(),
-				"emsmobile");
+		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
@@ -347,9 +344,10 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null) {
 					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator. [" + this.getId() + "]");
-						new OptimobileDelegator(
-								SdkUtil.getContext(), this, settings);
+						SdkLog.i(TAG, "Passing to optimobile delegator. ["
+								+ this.getId() + "]");
+						new OptimobileDelegator(SdkUtil.getContext(), this,
+								settings);
 					} catch (Exception e) {
 						if (this.settings.getOnAdErrorListener() != null) {
 							this.settings.getOnAdErrorListener().onAdError(
@@ -362,14 +360,15 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
 					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + this.getId() + "]");
+						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
+								+ "]");
 					}
 				}
 			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId() + "]");
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
+					+ "]");
 		} catch (Exception e) {
-			processError("Error loading ad [" + 
-					 this.getId() + "]", e);
+			processError("Error loading ad [" + this.getId() + "]", e);
 		}
 	}
 
@@ -383,12 +382,11 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
-				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				SdkUtil.adRequest(
-						this,
-						settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash())
-						.execute(new String[] { url });
+				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
+						+ "]");
+				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash()).execute(
+						new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -430,9 +428,9 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
-/*	
-	public void setDirectBackFill(String bfSiteId, String bfZoneId) {
-		((AmobeeSettingsAdapter)this.settings).setDirectBackfill(bfSiteId, bfZoneId, getId());		
-	}
-*/
+	/*
+	 * public void setDirectBackFill(String bfSiteId, String bfZoneId) {
+	 * ((AmobeeSettingsAdapter)this.settings).setDirectBackfill(bfSiteId,
+	 * bfZoneId, getId()); }
+	 */
 }

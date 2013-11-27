@@ -13,16 +13,16 @@ import android.content.Context;
 import android.util.Xml;
 
 /**
- * Implementation of VAST 2.0 XML Parser using XmlPullParser.
- * The parser finds all trackings, settings and the actual mediafile.
- * If the plain data contains a wrapped VAST xml, it is fetched by triggering 
- * a callback on the UI thread which should fetch the additional file.
+ * Implementation of VAST 2.0 XML Parser using XmlPullParser. The parser finds
+ * all trackings, settings and the actual mediafile. If the plain data contains
+ * a wrapped VAST xml, it is fetched by triggering a callback on the UI thread
+ * which should fetch the additional file.
  * 
- * Wrapped VAST xml trackings and original trackings will be combined, i.e.
- * you will receive a list of URLs for all trackings.
- *   
+ * Wrapped VAST xml trackings and original trackings will be combined, i.e. you
+ * will receive a list of URLs for all trackings.
+ * 
  * @author stein16
- *
+ * 
  */
 public class VASTXmlParser {
 
@@ -87,10 +87,10 @@ public class VASTXmlParser {
 	private List<Tracking> trackings;
 
 	/**
-	 * Simple bean to hold trackign URLs for various
-	 * VAST events
+	 * Simple bean to hold trackign URLs for various VAST events
+	 * 
 	 * @author stein16
-	 *
+	 * 
 	 */
 	public class Tracking {
 
@@ -148,7 +148,7 @@ public class VASTXmlParser {
 		 * Video was resumed
 		 */
 		public final static int EVENT_RESUME = 10;
-		
+
 		/**
 		 * Player went fullscreen
 		 */
@@ -167,10 +167,12 @@ public class VASTXmlParser {
 		private String url;
 
 		/**
-		 * Create a new bean for pinging tracking URLs upon specific
-		 * VAST events  
-		 * @param e VAST Event name
-		 * @param url Tracking URL
+		 * Create a new bean for pinging tracking URLs upon specific VAST events
+		 * 
+		 * @param e
+		 *            VAST Event name
+		 * @param url
+		 *            Tracking URL
 		 */
 		public Tracking(String e, String url) {
 			this.event = findEvent(e);
@@ -190,6 +192,7 @@ public class VASTXmlParser {
 
 		/**
 		 * Get the static integer as internal representation of the VAST event
+		 * 
 		 * @return Internal integer for the event
 		 */
 		public int getEvent() {
@@ -198,6 +201,7 @@ public class VASTXmlParser {
 
 		/**
 		 * Get the tracking url associated with this event
+		 * 
 		 * @return Tracking url
 		 */
 		public String getUrl() {
@@ -208,9 +212,13 @@ public class VASTXmlParser {
 
 	/**
 	 * Constructor for simple VAST parser
-	 * @param c Android Application context
-	 * @param listener Listener for VASTWrapper callbacks
-	 * @param data data of the initial VAST response/file
+	 * 
+	 * @param c
+	 *            Android Application context
+	 * @param listener
+	 *            Listener for VASTWrapper callbacks
+	 * @param data
+	 *            data of the initial VAST response/file
 	 */
 	public VASTXmlParser(Context c, VASTWrapperListener listener, String data) {
 		this.trackings = new ArrayList<Tracking>();
@@ -493,11 +501,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Get a list of all impression tracking URLs
+	 * 
 	 * @return List of impression tracking URLs
 	 */
 	public List<String> getImpressionTrackerUrl() {
 		waitForWrapper();
-		
+
 		List<String> urls = new ArrayList<String>();
 		urls.add(this.impressionTrackerUrl);
 		if (wrappedVASTXml != null) {
@@ -509,11 +518,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Get duration specified in URLs
+	 * 
 	 * @return String containing duration
 	 */
 	public String getDuration() {
 		waitForWrapper();
-		
+
 		if (duration == null && wrappedVASTXml != null) {
 			return wrappedVASTXml.getDuration();
 		}
@@ -522,6 +532,7 @@ public class VASTXmlParser {
 
 	/**
 	 * Get URL of actual media file
+	 * 
 	 * @return Mediafile URL string
 	 */
 	public String getMediaFileUrl() {
@@ -535,11 +546,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Get a list of all available tracking beans
+	 * 
 	 * @return List of tracking beans
 	 */
 	public List<Tracking> getTrackings() {
 		waitForWrapper();
-		
+
 		List<Tracking> t = trackings;
 		if (wrappedVASTXml != null) {
 			t.addAll(wrappedVASTXml.getTrackings());
@@ -549,12 +561,14 @@ public class VASTXmlParser {
 
 	/**
 	 * Get a list of tracking URLs for a specific event
-	 * @param type VAST event
+	 * 
+	 * @param type
+	 *            VAST event
 	 * @return List of tracking URLs for event
 	 */
 	public List<String> getTrackingByType(int type) {
 		waitForWrapper();
-		
+
 		Iterator<Tracking> i = this.trackings.iterator();
 		List<String> urls = new ArrayList<String>();
 		while (i.hasNext()) {
@@ -570,12 +584,13 @@ public class VASTXmlParser {
 	}
 
 	/**
-	 * Get time until skip button should be shown 
+	 * Get time until skip button should be shown
+	 * 
 	 * @return Integer defining time in millis until skip button should be shown
 	 */
 	public int getSkipOffset() {
 		waitForWrapper();
-		
+
 		if (skipOffset <= 0 && wrappedVASTXml != null) {
 			return wrappedVASTXml.getSkipOffset();
 		}
@@ -584,11 +599,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Get URL to load upon click on player
+	 * 
 	 * @return Target URL for clicks on player
 	 */
 	public String getClickThroughUrl() {
 		waitForWrapper();
-		
+
 		String url = this.clickThroughUrl;
 		if (url == null && wrappedVASTXml != null) {
 			url = wrappedVASTXml.getClickThroughUrl();
@@ -599,11 +615,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Tracking URLs for clickthru event
+	 * 
 	 * @return List of clicktracking URLs
 	 */
 	public List<String> getClickTrackingUrl() {
 		waitForWrapper();
-		
+
 		List<String> urls = new ArrayList<String>();
 		if (this.clickTrackingUrl != null) {
 			urls.add(this.clickTrackingUrl);
@@ -617,11 +634,12 @@ public class VASTXmlParser {
 
 	/**
 	 * Determine whether the contents of a wrapped VAST XML have been loaded
+	 * 
 	 * @return true if wrapped XML is loaded
 	 */
 	public synchronized boolean isReady() {
 		waitForWrapper();
-		
+
 		return ready
 				&& (wrappedVASTXml != null ? wrappedVASTXml.isReady()
 						: !hasWrapper);
@@ -648,29 +666,36 @@ public class VASTXmlParser {
 
 	/**
 	 * Set the additional parser for wrapped VAST xml
-	 * @param vastXml the parser for wrapped VAST xml
+	 * 
+	 * @param vastXml
+	 *            the parser for wrapped VAST xml
 	 */
 	public void setWrapper(VASTXmlParser vastXml) {
 		this.wrappedVASTXml = vastXml;
 	}
 
 	/**
-	 * Interface providing method to be executed when a wrapper was found within VAST xml
+	 * Interface providing method to be executed when a wrapper was found within
+	 * VAST xml
+	 * 
 	 * @author stein16
-	 *
+	 * 
 	 */
 	public interface VASTWrapperListener {
-		
+
 		/**
 		 * Listener method for wrapped VAST xml
-		 * @param url URL of the wrapped VAST xml
+		 * 
+		 * @param url
+		 *            URL of the wrapped VAST xml
 		 */
 		public void onVASTWrapperFound(String url);
 	}
 
 	/**
 	 * 
-	 * @return null if no wrapped XML is present, a reference to a wrapped VASTXmlParse if it is
+	 * @return null if no wrapped XML is present, a reference to a wrapped
+	 *         VASTXmlParse if it is
 	 */
 	public VASTXmlParser getWrappedVASTXml() {
 		return this.wrappedVASTXml;

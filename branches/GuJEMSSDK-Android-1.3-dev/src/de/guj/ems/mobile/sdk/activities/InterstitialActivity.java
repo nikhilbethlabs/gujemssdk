@@ -86,14 +86,16 @@ public final class InterstitialActivity extends Activity {
 	private Intent target;
 
 	private int time = -1;
-	
+
 	private boolean withProgress = false;
 
 	private InterstitialThread updateThread;
 
 	private void createView(Bundle savedInstanceState) {
 		String adData = getIntent().getExtras().getString("data");
-		this.withProgress = this.time > 0 && !adData.startsWith(getResources().getString(R.string.connectAd));
+		this.withProgress = this.time > 0
+				&& !adData.startsWith(getResources().getString(
+						R.string.connectAd));
 		// (1) set view layout
 		setContentView(this.withProgress ? R.layout.interstitial_progress
 				: R.layout.interstitial_noprogress);
@@ -106,14 +108,13 @@ public final class InterstitialActivity extends Activity {
 		this.adView = new GuJEMSAdView(InterstitialActivity.this);
 
 		// (3) configure interstitial adview
-		
-		adView.loadData(adData, "text/html",
-				"utf-8");
+
+		adView.loadData(adData, "text/html", "utf-8");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.BELOW, this.withProgress ? R.id.emsIntCloseButton
-				: R.id.emsIntCloseButton2);
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.BELOW,
+				this.withProgress ? R.id.emsIntCloseButton
+						: R.id.emsIntCloseButton2);
 		adView.setLayoutParams(lp);
 
 		// (4) configure close button
@@ -154,7 +155,7 @@ public final class InterstitialActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (status < 0) {
-			//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			this.target = (Intent) getIntent().getExtras().get("target");
 			Integer time = (Integer) getIntent().getExtras().get("timeout");
@@ -242,7 +243,7 @@ public final class InterstitialActivity extends Activity {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {
 						if (!loaded && adView.isPageFinished()) {
-							
+
 							loaded = true;
 
 							root.getHandler().post(new Runnable() {
@@ -312,7 +313,7 @@ public final class InterstitialActivity extends Activity {
 			SdkLog.i(TAG, "Finishing interstitial activity.");
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		if (updateThread != null && updateThread.isAlive()) {
@@ -326,6 +327,5 @@ public final class InterstitialActivity extends Activity {
 		}
 		super.onBackPressed();
 	}
-	
 
 }

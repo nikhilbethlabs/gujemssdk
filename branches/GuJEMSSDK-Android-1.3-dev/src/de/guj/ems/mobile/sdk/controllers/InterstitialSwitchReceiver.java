@@ -14,10 +14,11 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
- * Receiver which performs an ad requests and starts the
- * corresponding activity - depending on the response.
+ * Receiver which performs an ad requests and starts the corresponding activity
+ * - depending on the response.
+ * 
  * @author stein16
- *
+ * 
  */
 public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		IAdResponseHandler {
@@ -61,11 +62,9 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			SdkUtil.adRequest(
-					this,
-					settings.getSecurityHeaderName(),
-					settings.getSecurityHeaderValueHash())
-					.execute(new String[] { url });
+			SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
+					settings.getSecurityHeaderValueHash()).execute(
+					new String[] { url });
 		} else {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
@@ -151,7 +150,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			} catch (BackfillDelegator.BackfillException bfE) {
 				processError("Backfill error thrown.", bfE);
 			}
-		
 
 		} else if (data == null || data.isEmpty()) {
 			// head to original intent
@@ -167,14 +165,15 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 						"No interstitial, no target -> back to previous view.");
 			}
 		} else if (data.getResponse().startsWith("<VAST")) {
-			
+
 			// head to video interstitial intent
 			Intent i = new Intent(context, VideoInterstitialActivity.class);
 			SdkLog.i(TAG, "Found video interstitial -> show");
 			// pass banner data and original intent to video interstitial
 			i.putExtra("data", data.getResponse());
 			i.putExtra("target", target);
-			i.putExtra("unmuted", Boolean.valueOf(intent.getExtras().getBoolean("unmuted")));
+			i.putExtra("unmuted",
+					Boolean.valueOf(intent.getExtras().getBoolean("unmuted")));
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}
@@ -188,7 +187,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			i.putExtra("data", data.getResponse());
 			i.putExtra("target", target);
 			i.putExtra("timeout",
-				(Integer) this.intent.getExtras().get("timeout"));
+					(Integer) this.intent.getExtras().get("timeout"));
 			if (this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}

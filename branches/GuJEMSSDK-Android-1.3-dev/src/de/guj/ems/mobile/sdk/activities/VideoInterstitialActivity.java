@@ -515,7 +515,8 @@ public final class VideoInterstitialActivity extends Activity implements
 
 							List<String> tx = vastXml
 									.getTrackingByType(Tracking.EVENT_START);
-							SdkLog.i(TAG, "Triggering " + tx.size() + " event_start tracking requests");
+							SdkLog.i(TAG, "Triggering " + tx.size()
+									+ " event_start tracking requests");
 							if (tx != null && tx.size() > 0) {
 								String[] txS = new String[tx.size()];
 								SdkUtil.httpRequests(tx.toArray(txS));
@@ -524,7 +525,8 @@ public final class VideoInterstitialActivity extends Activity implements
 							if (muted) {
 								List<String> tr = vastXml
 										.getTrackingByType(VASTXmlParser.Tracking.EVENT_MUTE);
-								SdkLog.i(TAG, "Triggering " + tr.size() + " event_mute tracking requests");
+								SdkLog.i(TAG, "Triggering " + tr.size()
+										+ " event_mute tracking requests");
 								if (tr != null && tr.size() > 0) {
 									String[] trS = new String[tr.size()];
 									SdkUtil.httpRequests(tr.toArray(trS));
@@ -534,15 +536,20 @@ public final class VideoInterstitialActivity extends Activity implements
 							videoLength = mediaPlayer.getDuration();
 							videoWidth = mediaPlayer.getVideoWidth();
 							videoHeight = mediaPlayer.getVideoHeight();
-							videoProportion = (float)videoWidth / (float)videoHeight;
+							videoProportion = (float) videoWidth
+									/ (float) videoHeight;
 							adjustVideoView(null);
-							
+
 							if (mediaPlayer != null) {
 								try {
-									((AudioManager)getSystemService(Context.AUDIO_SERVICE)).requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-								}
-								catch (Exception e) {
-									SdkLog.w(TAG, "Could not request audio manager focus");
+									((AudioManager) getSystemService(Context.AUDIO_SERVICE))
+											.requestAudioFocus(
+													null,
+													AudioManager.STREAM_MUSIC,
+													AudioManager.AUDIOFOCUS_GAIN);
+								} catch (Exception e) {
+									SdkLog.w(TAG,
+											"Could not request audio manager focus");
 								}
 								mediaPlayer.start();
 								SdkLog.d(TAG, "MediaPlayer started.");
@@ -568,14 +575,15 @@ public final class VideoInterstitialActivity extends Activity implements
 						final String bottomText) {
 					if (root != null && root.getHandler() != null) {
 						root.getHandler().post(new Runnable() {
-	
+
 							@Override
 							public void run() {
 								if (canClose
 										&& ((ImageButton) root
 												.findViewById(R.id.emsVidIntButton))
 												.getVisibility() == View.INVISIBLE) {
-									SdkLog.i(TAG, "Enabling video cancel button.");
+									SdkLog.i(TAG,
+											"Enabling video cancel button.");
 									((ImageButton) root
 											.findViewById(R.id.emsVidIntButton))
 											.setVisibility(View.VISIBLE);
@@ -590,7 +598,8 @@ public final class VideoInterstitialActivity extends Activity implements
 					if (percentPlayed >= 25.0 && !q1) {
 						List<String> tx = vastXml.getTrackingByType(Tracking.EVENT_FIRSTQ);
 						q1 = true;
-						SdkLog.i(TAG, "Triggering " + tx.size() + " event_firstq tracking requests");
+						SdkLog.i(TAG, "Triggering " + tx.size()
+								+ " event_firstq tracking requests");
 						if (tx != null && tx.size() > 0) {
 							String[] txS = new String[tx.size()];
 							SdkUtil.httpRequests(tx.toArray(txS));
@@ -600,7 +609,8 @@ public final class VideoInterstitialActivity extends Activity implements
 						List<String> tx = vastXml
 								.getTrackingByType(Tracking.EVENT_MID);
 						q2 = true;
-						SdkLog.i(TAG, "Triggering " + tx.size() + " event_mid tracking requests");
+						SdkLog.i(TAG, "Triggering " + tx.size()
+								+ " event_mid tracking requests");
 						if (tx != null && tx.size() > 0) {
 							String[] txS = new String[tx.size()];
 							SdkUtil.httpRequests(tx.toArray(txS));
@@ -610,7 +620,8 @@ public final class VideoInterstitialActivity extends Activity implements
 						List<String> tx = vastXml
 								.getTrackingByType(Tracking.EVENT_THIRDQ);
 						q3 = true;
-						SdkLog.i(TAG, "Triggering " + tx.size() + " event_thirdq tracking requests");
+						SdkLog.i(TAG, "Triggering " + tx.size()
+								+ " event_thirdq tracking requests");
 						if (tx != null && tx.size() > 0) {
 							String[] txS = new String[tx.size()];
 							SdkUtil.httpRequests(tx.toArray(txS));
@@ -627,14 +638,19 @@ public final class VideoInterstitialActivity extends Activity implements
 							videoInit();
 							loaded = true;
 						} else if (loaded && !InterstitialThread.PAUSED) {
-							percentPlayed = ((double) videoView.getCurrentPosition() / videoLength) * 100.0d;
-							String text = getResources().getString(R.string.videoRunning);
+							percentPlayed = ((double) videoView
+									.getCurrentPosition() / videoLength) * 100.0d;
+							String text = getResources().getString(
+									R.string.videoRunning);
 							boolean close = false;
 							if (vastXml.getSkipOffset() > 0) {
-								close = (percentPlayed >= vastXml.getSkipOffset());
+								close = (percentPlayed >= vastXml
+										.getSkipOffset());
 								if (!close) {
 									int t = (int) ((vastXml.getSkipOffset() - percentPlayed) / 100.0 * (videoLength / 1000.0));
-									text = getResources().getString(R.string.videoSkip).replaceAll("#", String.valueOf(t));
+									text = getResources().getString(
+											R.string.videoSkip).replaceAll("#",
+											String.valueOf(t));
 								}
 							} else {
 								close = true;

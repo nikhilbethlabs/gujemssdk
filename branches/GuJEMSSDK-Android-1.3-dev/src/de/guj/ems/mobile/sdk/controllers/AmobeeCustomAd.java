@@ -12,19 +12,19 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
- * Abstract class template for custom ads. Performs an adrequest.
- * Classes implementing AmobeeCustomAd must implement the callback method "processResponse"
- * to actually handle the content of the adserver response.
+ * Abstract class template for custom ads. Performs an adrequest. Classes
+ * implementing AmobeeCustomAd must implement the callback method
+ * "processResponse" to actually handle the content of the adserver response.
  * 
  * @author stein16
- *
+ * 
  */
 public abstract class AmobeeCustomAd implements IAdResponseHandler {
 
 	private final static String TAG = "AmobeeCustomAd";
-	
+
 	AdServerSettingsAdapter settings;
-	
+
 	/**
 	 * The empty default constructor is hidden
 	 */
@@ -32,141 +32,228 @@ public abstract class AmobeeCustomAd implements IAdResponseHandler {
 	private AmobeeCustomAd() {
 		// Hidden default constructor
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId, boolean geo,
+			boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, false);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, false);
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, false);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, false);
 		this.settings = new AmobeeSettingsAdapter(context, bundle);
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
-	 * @param keywords optional array of keywords appended to the request
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
+	 * @param keywords
+	 *            optional array of keywords appended to the request
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, String [] keywords, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId, String[] keywords,
+			boolean geo, boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null && keywords.length > 0);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, false);
-		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords, null);		
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null
+				&& keywords.length > 0);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, false);
+		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords,
+				null);
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
-	 * @param keywords optional array of keywords appended to the request
-	 * @param nkeywords optional array of non-keywords appended to the request
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
+	 * @param keywords
+	 *            optional array of keywords appended to the request
+	 * @param nkeywords
+	 *            optional array of non-keywords appended to the request
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, String [] keywords, String [] nkeywords, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId, String[] keywords,
+			String[] nkeywords, boolean geo, boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null && keywords.length > 0);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, nkeywords != null && nkeywords.length > 0);
-		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords, nkeywords);		
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null
+				&& keywords.length > 0);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, nkeywords != null
+				&& nkeywords.length > 0);
+		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords,
+				nkeywords);
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
-	 * @param customParams Map of custom parameters (String, Double or Integer objects)
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
+	 * @param customParams
+	 *            Map of custom parameters (String, Double or Integer objects)
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, Map<String, ?> customParams, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId,
+			Map<String, ?> customParams, boolean geo, boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, false);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, false);
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, false);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, false);
 		this.settings = new AmobeeSettingsAdapter(context, bundle);
 		this.addCustomParams(customParams);
-		
+
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
-	 * @param keywords optional array of keywords appended to the request
-	 * @param customParams Map of custom parameters (String, Double or Integer objects)
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
+	 * @param keywords
+	 *            optional array of keywords appended to the request
+	 * @param customParams
+	 *            Map of custom parameters (String, Double or Integer objects)
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, Map<String, ?> customParams, String [] keywords, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId,
+			Map<String, ?> customParams, String[] keywords, boolean geo,
+			boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null && keywords.length > 0);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, false);
-		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords, null);
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null
+				&& keywords.length > 0);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, false);
+		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords,
+				null);
 		this.addCustomParams(customParams);
-				
+
 	}
-	
+
 	/**
 	 * Constructor for custom ads.
-	 * @param context Android application context
-	 * @param zoneId The ad space id
-	 * @param geo wether to append geo data to the request
-	 * @param uid whether to append a unique device id to the request
-	 * @param keywords optional array of keywords appended to the request
-	 * @param nkeywords optional array of non-keywords appended to the request
-	 * @param customParams Map of custom parameters (String, Double or Integer objects)
+	 * 
+	 * @param context
+	 *            Android application context
+	 * @param zoneId
+	 *            The ad space id
+	 * @param geo
+	 *            wether to append geo data to the request
+	 * @param uid
+	 *            whether to append a unique device id to the request
+	 * @param keywords
+	 *            optional array of keywords appended to the request
+	 * @param nkeywords
+	 *            optional array of non-keywords appended to the request
+	 * @param customParams
+	 *            Map of custom parameters (String, Double or Integer objects)
 	 */
-	public AmobeeCustomAd(Context context, String zoneId, Map<String, ?> customParams, String [] keywords, String [] nkeywords, boolean geo, boolean uid) {
-		if (SdkUtil.getContext()  == null) {
+	public AmobeeCustomAd(Context context, String zoneId,
+			Map<String, ?> customParams, String[] keywords, String[] nkeywords,
+			boolean geo, boolean uid) {
+		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ZONEID, zoneId);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_UUID, uid);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_GEO, geo);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null && keywords.length > 0);
-		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_NKEYWORDS, nkeywords != null && nkeywords.length > 0);
-		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords, nkeywords);
-		this.addCustomParams(customParams);		
+		bundle.putString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_ZONEID, zoneId);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_UUID, uid);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_GEO, geo);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_KEYWORDS, keywords != null
+				&& keywords.length > 0);
+		bundle.putBoolean(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+				+ AdServerSettingsAdapter.EMS_NKEYWORDS, nkeywords != null
+				&& nkeywords.length > 0);
+		this.settings = new AmobeeSettingsAdapter(context, bundle, keywords,
+				nkeywords);
+		this.addCustomParams(customParams);
 	}
-	
+
 	private void addCustomParams(Map<String, ?> params) {
 		Iterator<String> mi = params.keySet().iterator();
 		while (mi.hasNext()) {
@@ -186,8 +273,7 @@ public abstract class AmobeeCustomAd implements IAdResponseHandler {
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Performs the request to the adserver
 	 */
@@ -195,19 +281,21 @@ public abstract class AmobeeCustomAd implements IAdResponseHandler {
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			SdkUtil.adRequest(
-					this,
-					settings.getSecurityHeaderName(),
-					settings.getSecurityHeaderValueHash())
-					.execute(new String[] { url });
+			SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
+					settings.getSecurityHeaderValueHash()).execute(
+					new String[] { url });
 		} else if (SdkUtil.isOffline()) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
-		}		
+		}
 	}
-	
+
 	/**
-	 * Calback method for the finished ad request. Perform your tasks on the adserver's response here.
-	 * @param response The adservers response as a strign (null if the response was empty)
+	 * Calback method for the finished ad request. Perform your tasks on the
+	 * adserver's response here.
+	 * 
+	 * @param response
+	 *            The adservers response as a strign (null if the response was
+	 *            empty)
 	 */
 	@Override
 	public abstract void processResponse(IAdResponse response);

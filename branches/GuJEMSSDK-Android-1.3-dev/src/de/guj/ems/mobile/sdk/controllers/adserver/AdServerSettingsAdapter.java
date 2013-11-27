@@ -34,80 +34,84 @@ public abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
 
 	private static final long serialVersionUID = 314048983271226769L;
-	
-	private final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat("#.##");
+
+	private final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
+			"#.##");
 
 	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
 			.getString(R.string.attributePrefix);
-	
+
 	private final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
-			.getString(R.string.securityHeaderName); 
-	
+			.getString(R.string.securityHeaderName);
+
 	/**
 	 * Global attribute name for listener which reacts to empty ad
 	 */
-	private final static String EMS_ERROR_LISTENER = SdkUtil.getContext().getString(R.string.onAdError);
-	
+	private final static String EMS_ERROR_LISTENER = SdkUtil.getContext()
+			.getString(R.string.onAdError);
+
 	private final static int EMS_ERROR_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdError;
-	
+
 	/**
 	 * Global attribute name for listener which reacts to empty ad
 	 */
-	private final static String EMS_EMPTY_LISTENER = SdkUtil.getContext().getString(R.string.onAdEmpty);
-	
+	private final static String EMS_EMPTY_LISTENER = SdkUtil.getContext()
+			.getString(R.string.onAdEmpty);
+
 	private final static int EMS_EMPTY_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdEmpty;
 
 	/**
 	 * Global attribute name for allowing geo localization for a placement
 	 */
-	public final static String EMS_GEO = SdkUtil.getContext()
-			.getString(R.string.geo);
-	
+	public final static String EMS_GEO = SdkUtil.getContext().getString(
+			R.string.geo);
+
 	protected final static int EMS_GEO_ID = R.styleable.GuJEMSAdView_ems_geo;
-	
+
 	/**
 	 * Global attribute name for identifying keywords add to the request
 	 */
-	public final static String EMS_KEYWORDS = SdkUtil.getContext()
-			.getString(R.string.keyword);
-	
+	public final static String EMS_KEYWORDS = SdkUtil.getContext().getString(
+			R.string.keyword);
+
 	protected final static int EMS_KEYWORDS_ID = R.styleable.GuJEMSAdView_ems_kw;
-	
+
 	/**
 	 * Global attribute name for the geographical latitude
 	 */
-	public final static String EMS_LAT = SdkUtil.getContext()
-			.getString(R.string.latitude);
-	
+	public final static String EMS_LAT = SdkUtil.getContext().getString(
+			R.string.latitude);
+
 	protected final static int EMS_LAT_ID = R.styleable.GuJEMSAdView_ems_lat;
-	
-	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + "onAd";
-	
+
+	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+			+ "onAd";
+
 	protected final static long EMS_LOCATION_MAXAGE_MS = 7200000;
-	
-	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;	
-	
+
+	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
+
 	/**
 	 * Global attribute name for the geographical longitude
 	 */
-	public final static String EMS_LON = SdkUtil.getContext()
-			.getString(R.string.longitude);
+	public final static String EMS_LON = SdkUtil.getContext().getString(
+			R.string.longitude);
 
 	protected final static int EMS_LON_ID = R.styleable.GuJEMSAdView_ems_lon;
 
 	/**
 	 * Global attribute name for identifying non-keywords to the request
 	 */
-	public final static String EMS_NKEYWORDS = SdkUtil.getContext()
-			.getString(R.string.nkeyword);
+	public final static String EMS_NKEYWORDS = SdkUtil.getContext().getString(
+			R.string.nkeyword);
 
 	protected final static int EMS_NKEYWORDS_ID = R.styleable.GuJEMSAdView_ems_nkw;
 
 	/**
 	 * Global attribute name for identifying a site
 	 */
-	public final static String EMS_SITEID = SdkUtil.getContext()
-			.getString(R.string.siteId);
+	public final static String EMS_SITEID = SdkUtil.getContext().getString(
+			R.string.siteId);
 
 	protected final static int EMS_SITEID_ID = R.styleable.GuJEMSAdView_ems_siteId;
 
@@ -119,24 +123,24 @@ public abstract class AdServerSettingsAdapter implements
 
 	protected final static int EMS_BACKFILL_SITEID_ID = R.styleable.GuJEMSAdView_ems_bfSiteId;
 
-	
-	private final static String EMS_SUCCESS_LISTENER = SdkUtil.getContext().getString(R.string.onAdSuccess);
+	private final static String EMS_SUCCESS_LISTENER = SdkUtil.getContext()
+			.getString(R.string.onAdSuccess);
 
 	private final static int EMS_SUCCESS_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdSuccess;
 
 	/**
 	 * Global attribute name for identifying a unique user/device id
 	 */
-	public final static String EMS_UUID = SdkUtil.getContext()
-			.getString(R.string.deviceId);
+	public final static String EMS_UUID = SdkUtil.getContext().getString(
+			R.string.deviceId);
 
 	protected final static int EMS_UUID_ID = R.styleable.GuJEMSAdView_ems_uid;
 
 	/**
 	 * Global attribute name for identifying a placement
 	 */
-	public final static String EMS_ZONEID = SdkUtil.getContext()
-			.getString(R.string.zoneId);
+	public final static String EMS_ZONEID = SdkUtil.getContext().getString(
+			R.string.zoneId);
 
 	protected final static int EMS_ZONEID_ID = R.styleable.GuJEMSAdView_ems_zoneId;
 
@@ -147,21 +151,21 @@ public abstract class AdServerSettingsAdapter implements
 			.getString(R.string.backfillZoneId);
 
 	protected final static int EMS_BACKFILL_ZONEID_ID = R.styleable.GuJEMSAdView_ems_bfZoneId;
-	
+
 	private final static String TAG = "AdServerSettingsAdapter";
 
 	private final Map<String, String> attrsToParams;
 
 	private BackfillDelegator.BackfillData directBackfill;
-	
+
 	private IOnAdEmptyListener onAdEmptyListener = null;
 
 	private IOnAdSuccessListener onAdSuccessListener = null;
-	
+
 	private IOnAdErrorListener onAdErrorListener = null;
 
 	private final Map<String, String> paramValues;
-	
+
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
 		this.paramValues = new HashMap<String, String>();
@@ -203,65 +207,62 @@ public abstract class AdServerSettingsAdapter implements
 	public void addCustomRequestParameter(String param, int value) {
 		addCustomRequestParameter(param, String.valueOf(value));
 	}
-	
+
 	@Override
 	public void addCustomRequestParameter(String param, String value) {
 		putAttrToParam(param, param);
 		putAttrValue(param, value);
 	}
-	
-	
+
 	private final void createEmptyListener(final String lMethodName) {
 		this.onAdEmptyListener = new IOnAdEmptyListener() {
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onAdEmpty() {
 				try {
-					Class<?> [] noParams = null;
-					Object [] noArgs = null;
-					Method lMethod = SdkUtil.getContext().getClass().getMethod(lMethodName, noParams);
+					Class<?>[] noParams = null;
+					Object[] noArgs = null;
+					Method lMethod = SdkUtil.getContext().getClass()
+							.getMethod(lMethodName, noParams);
 					lMethod.invoke(SdkUtil.getContext(), noArgs);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdEmptyListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdEmptyListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdEmptyListener could not be accessed",
+							iae);
 				}
-				catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdEmptyListener " + lMethodName + " not found. Check your xml.", nsme);
-					
-				}
-				catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdEmptyListener could not be invoked", ivte);
-				}
-				catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdEmptyListener could not be accessed", iae);	
-				}
-				
+
 			}
-		};		
+		};
 	}
-	
+
 	private final void createEmptyListener(final Object listener) {
 		try {
-			this.onAdEmptyListener = (IOnAdEmptyListener)listener;
-		}
-		catch (Exception e) {
+			this.onAdEmptyListener = (IOnAdEmptyListener) listener;
+		} catch (Exception e) {
 			SdkLog.e(TAG, "Error setting onAdEmptyListener", e);
 		}
 	}
-	
+
 	private final void createErrorListener(final Object listener) {
 		try {
-			this.onAdErrorListener = (IOnAdErrorListener)listener;
-		}
-		catch (Exception e) {
+			this.onAdErrorListener = (IOnAdErrorListener) listener;
+		} catch (Exception e) {
 			SdkLog.e(TAG, "Error setting onAdErrorListener", e);
 		}
 	}
-	
+
 	private final void createSuccessListener(final Object listener) {
 		try {
-			this.onAdSuccessListener = (IOnAdSuccessListener)listener;
-		}
-		catch (Exception e) {
+			this.onAdSuccessListener = (IOnAdSuccessListener) listener;
+		} catch (Exception e) {
 			SdkLog.e(TAG, "Error setting onAdSuccessListener", e);
 		}
 	}
@@ -274,26 +275,27 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdSuccess() {
 				try {
-					Class<?> [] noParams = null;
-					Object [] noArgs = null;
-					Method lMethod = SdkUtil.getContext().getClass().getMethod(lMethodName, noParams);
+					Class<?>[] noParams = null;
+					Object[] noArgs = null;
+					Method lMethod = SdkUtil.getContext().getClass()
+							.getMethod(lMethodName, noParams);
 					lMethod.invoke(SdkUtil.getContext(), noArgs);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdSuccessListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdSuccessListener could not be accessed",
+							iae);
 				}
-				catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName + " not found. Check your xml.", nsme);
-					
-				}
-				catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdSuccessListener could not be invoked", ivte);
-				}
-				catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdSuccessListener could not be accessed", iae);	
-				}
-				
+
 			}
-		};		
+		};
 	}
-	
+
 	private final void createErrorListener(final String lMethodName) {
 		this.onAdErrorListener = new IOnAdErrorListener() {
 
@@ -302,41 +304,46 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdError(String msg, Throwable t) {
 				try {
-					Method lMethod = SdkUtil.getContext().getClass().getMethod(lMethodName, String.class, Throwable.class);
+					Method lMethod = SdkUtil
+							.getContext()
+							.getClass()
+							.getMethod(lMethodName, String.class,
+									Throwable.class);
 					lMethod.invoke(SdkUtil.getContext(), msg, t);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be accessed",
+							iae);
 				}
-				catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName + " not found. Check your xml.", nsme);
-					
-				}
-				catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be invoked", ivte);
-				}
-				catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be accessed", iae);	
-				}
-				
+
 			}
-			
+
 			@Override
 			public void onAdError(String msg) {
 				try {
-					Method lMethod = SdkUtil.getContext().getClass().getMethod(lMethodName, String.class);
+					Method lMethod = SdkUtil.getContext().getClass()
+							.getMethod(lMethodName, String.class);
 					lMethod.invoke(SdkUtil.getContext(), msg);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be accessed",
+							iae);
 				}
-				catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName + " not found. Check your xml.", nsme);
-					
-				}
-				catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be invoked", ivte);
-				}
-				catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be accessed", iae);	
-				}
-				
-			}			
-		};		
+
+			}
+		};
 	}
 
 	protected Map<String, String> getAttrsToParams() {
@@ -350,16 +357,16 @@ public abstract class AdServerSettingsAdapter implements
 
 	/**
 	 * Gets the location.
-	 *
+	 * 
 	 * @return the location
 	 */
-	protected double [] getLocation() {
+	protected double[] getLocation() {
 		LocationManager lm = (LocationManager) SdkUtil.getContext()
 				.getSystemService(Context.LOCATION_SERVICE);
 		List<String> providers = lm.getProviders(false);
 		Iterator<String> provider = providers.iterator();
 		Location lastKnown = null;
-		double [] loc = new double[2];
+		double[] loc = new double[2];
 		long age = 0;
 		while (provider.hasNext()) {
 			lastKnown = lm.getLastKnownLocation(provider.next());
@@ -367,9 +374,10 @@ public abstract class AdServerSettingsAdapter implements
 				age = System.currentTimeMillis() - lastKnown.getTime();
 				if (age <= EMS_LOCATION_MAXAGE_MS) {
 					break;
-				}
-				else {
-					SdkLog.d(TAG, "Location [" + lastKnown.getProvider() + "] is " + (age / 60000) + " min old. [max = " + EMS_LOCATION_MAXAGE_MIN + "]");
+				} else {
+					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
+							+ "] is " + (age / 60000) + " min old. [max = "
+							+ EMS_LOCATION_MAXAGE_MIN + "]");
 				}
 			}
 		}
@@ -377,14 +385,16 @@ public abstract class AdServerSettingsAdapter implements
 		if (lastKnown != null && age <= EMS_LOCATION_MAXAGE_MS) {
 			loc[0] = lastKnown.getLatitude();
 			loc[1] = lastKnown.getLongitude();
-			
-			if (SdkUtil.getContext().getResources().getBoolean(R.bool.ems_shorten_location)) {
+
+			if (SdkUtil.getContext().getResources()
+					.getBoolean(R.bool.ems_shorten_location)) {
 				loc[0] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[0]));
 				loc[1] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[1]));
 				SdkLog.d(TAG, "Geo location shortened to two digits.");
 			}
-			
-			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is " + loc[0] + "x" + loc[1]);
+
+			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is "
+					+ loc[0] + "x" + loc[1]);
 			return loc;
 		}
 
@@ -400,11 +410,11 @@ public abstract class AdServerSettingsAdapter implements
 	public IOnAdSuccessListener getOnAdSuccessListener() {
 		return this.onAdSuccessListener;
 	}
-	
+
 	@Override
 	public IOnAdErrorListener getOnAdErrorListener() {
 		return this.onAdErrorListener;
-	}	
+	}
 
 	@Override
 	public String getQueryString() {
@@ -415,8 +425,8 @@ public abstract class AdServerSettingsAdapter implements
 			String val = paramValues.get(key);
 			String param = attrsToParams.get(key);
 			if (val != null) {
-				SdkLog.d(TAG, "Adding: \"" + val + "\" as \"" + param + "\" for "
-						+ key);
+				SdkLog.d(TAG, "Adding: \"" + val + "\" as \"" + param
+						+ "\" for " + key);
 				qStr += "&" + param + "=" + val;
 			}
 		}
@@ -439,29 +449,35 @@ public abstract class AdServerSettingsAdapter implements
 
 					if (attr.startsWith(AdServerSettingsAdapter.EMS_LISTENER_PREFIX)) {
 						String lName = attr.substring(4);
-						TypedArray tVals = SdkUtil.getContext().obtainStyledAttributes(attrs,
-								R.styleable.GuJEMSAdView);
-						if (lName.equals(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER)) {
-							createSuccessListener(tVals.getString(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER_ID));
+						TypedArray tVals = SdkUtil.getContext()
+								.obtainStyledAttributes(attrs,
+										R.styleable.GuJEMSAdView);
+						if (lName
+								.equals(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER)) {
+							createSuccessListener(tVals
+									.getString(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER_ID));
+						} else if (lName
+								.equals(AdServerSettingsAdapter.EMS_EMPTY_LISTENER)) {
+							createEmptyListener(tVals
+									.getString(AdServerSettingsAdapter.EMS_EMPTY_LISTENER_ID));
+						} else if (lName
+								.equals(AdServerSettingsAdapter.EMS_ERROR_LISTENER)) {
+							createErrorListener(tVals
+									.getString(AdServerSettingsAdapter.EMS_ERROR_LISTENER_ID));
 						}
-						else if (lName.equals(AdServerSettingsAdapter.EMS_EMPTY_LISTENER)) {
-							createEmptyListener(tVals.getString(AdServerSettingsAdapter.EMS_EMPTY_LISTENER_ID));
-						}
-						else if (lName.equals(AdServerSettingsAdapter.EMS_ERROR_LISTENER)) {
-							createErrorListener(tVals.getString(AdServerSettingsAdapter.EMS_ERROR_LISTENER_ID));
-						}						
-						
+
 						else {
-							SdkLog.w(TAG, "Unknown listener type name: " + lName);
+							SdkLog.w(TAG, "Unknown listener type name: "
+									+ lName);
 						}
 						tVals.recycle();
-						
-					}
-					else { 
+
+					} else {
 						map.put(attr.substring(4), attr.substring(4));
-						SdkLog.d(TAG, "Found AdView attribute " + attr.substring(4));
+						SdkLog.d(TAG,
+								"Found AdView attribute " + attr.substring(4));
 					}
-					
+
 				}
 			}
 		}
@@ -478,42 +494,46 @@ public abstract class AdServerSettingsAdapter implements
 				if (key.startsWith(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX)) {
 					if (key.startsWith(AdServerSettingsAdapter.EMS_LISTENER_PREFIX)) {
 						String lName = key.substring(4);
-						if (lName.equals(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER)) {
-							Object l = savedInstance.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_SUCCESS_LISTENER);
+						if (lName
+								.equals(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER)) {
+							Object l = savedInstance
+									.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+											+ AdServerSettingsAdapter.EMS_SUCCESS_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createSuccessListener((String)l);
-							}
-							else {
+								createSuccessListener((String) l);
+							} else {
 								createSuccessListener(l);
 							}
-						}
-						else if (lName.equals(AdServerSettingsAdapter.EMS_EMPTY_LISTENER)) {
-							Object l = savedInstance.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_EMPTY_LISTENER);
+						} else if (lName
+								.equals(AdServerSettingsAdapter.EMS_EMPTY_LISTENER)) {
+							Object l = savedInstance
+									.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+											+ AdServerSettingsAdapter.EMS_EMPTY_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createEmptyListener((String)l);
-							}
-							else {
+								createEmptyListener((String) l);
+							} else {
 								createEmptyListener(l);
 							}
-						}
-						else if (lName.equals(AdServerSettingsAdapter.EMS_ERROR_LISTENER)) {
-							Object l = savedInstance.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX + AdServerSettingsAdapter.EMS_ERROR_LISTENER);
+						} else if (lName
+								.equals(AdServerSettingsAdapter.EMS_ERROR_LISTENER)) {
+							Object l = savedInstance
+									.get(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+											+ AdServerSettingsAdapter.EMS_ERROR_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createErrorListener((String)l);
-							}
-							else {
+								createErrorListener((String) l);
+							} else {
 								createErrorListener(l);
 							}
-						}						
-						else {
-							SdkLog.w(TAG, "Unknown listener type name: " + lName);
+						} else {
+							SdkLog.w(TAG, "Unknown listener type name: "
+									+ lName);
 						}
-					}
-					else {
+					} else {
 						map.put(key.substring(4), key.substring(4));
-						SdkLog.d(TAG, "Found AdView attribute " + key.substring(4));
+						SdkLog.d(TAG,
+								"Found AdView attribute " + key.substring(4));
 					}
-					
+
 				}
 			}
 		}
@@ -538,13 +558,13 @@ public abstract class AdServerSettingsAdapter implements
 	@Override
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.onAdSuccessListener = l;
-		
+
 	}
-	
+
 	@Override
 	public void setOnAdErrorListener(IOnAdErrorListener l) {
 		this.onAdErrorListener = l;
-		
+
 	}
 
 	@Override
@@ -556,17 +576,15 @@ public abstract class AdServerSettingsAdapter implements
 	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill) {
 		this.directBackfill = directBackfill;
 	}
-	
-/*
-	public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
-		this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId, bfZoneId, "", id));
-	}
-*/
+
+	/*
+	 * public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
+	 * this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId,
+	 * bfZoneId, "", id)); }
+	 */
 	@Override
 	public String getSecurityHeaderName() {
 		return EMS_SECURITY_HEADER_NAME;
 	}
-	
-	
-	
+
 }

@@ -43,14 +43,15 @@ public class SdkUtil {
 
 	private final static String TAG = "SdkUtil";
 
-	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[]{ String.class, ValueCallback.class };
-	
+	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[] {
+			String.class, ValueCallback.class };
+
 	private static Method KITKAT_JS_METHOD = null;
-	
+
 	private static Intent BATTERY_INTENT = null;
 
 	private static TelephonyManager TELEPHONY_MANAGER;
-	
+
 	private static DisplayMetrics METRICS = new DisplayMetrics();
 
 	private static WindowManager WINDOW_MANAGER = null;
@@ -164,8 +165,7 @@ public class SdkUtil {
 		if (SdkUtil.WINDOW_MANAGER == null) {
 			SdkUtil.WINDOW_MANAGER = getWinMgr();
 		}
-		SdkUtil.WINDOW_MANAGER.getDefaultDisplay().getMetrics(
-				SdkUtil.METRICS);
+		SdkUtil.WINDOW_MANAGER.getDefaultDisplay().getMetrics(SdkUtil.METRICS);
 		return METRICS;
 
 	}
@@ -206,8 +206,7 @@ public class SdkUtil {
 				USER_AGENT = w.getSettings().getUserAgentString();
 				w.destroy();
 				w = null;
-			}
-			else {
+			} else {
 				USER_AGENT = WebSettings.getDefaultUserAgent(CONTEXT);
 			}
 			SdkLog.i(TAG, "G+J EMS SDK UserAgent: " + USER_AGENT);
@@ -250,7 +249,6 @@ public class SdkUtil {
 		return false;
 	}
 
-	
 	/**
 	 * Check whether phone has mobile 4G connection
 	 * 
@@ -423,6 +421,7 @@ public class SdkUtil {
 
 	/**
 	 * Check whether a charger is connected to the device
+	 * 
 	 * @return true if a charger is connected
 	 */
 	public static boolean isChargerConnected() {
@@ -430,36 +429,40 @@ public class SdkUtil {
 			try {
 				IntentFilter ifilter = new IntentFilter(
 						Intent.ACTION_BATTERY_CHANGED);
-				BATTERY_INTENT = getContext().getApplicationContext().registerReceiver(null, ifilter);
-			}
-			catch (ReceiverCallNotAllowedException e) {
-				SdkLog.w(TAG, "Skipping start of phone status receivers from start interstitial.");
+				BATTERY_INTENT = getContext().getApplicationContext()
+						.registerReceiver(null, ifilter);
+			} catch (ReceiverCallNotAllowedException e) {
+				SdkLog.w(TAG,
+						"Skipping start of phone status receivers from start interstitial.");
 				BATTERY_INTENT = null;
 				return false;
 			}
 		}
 		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		return cp == BatteryManager.BATTERY_PLUGGED_AC
-				// || cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
+		// || cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
 				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
 	}
 
 	/**
 	 * Get the battery charge level in percent
-	 * @return Integer value [0..100], indicating battery charge level in percent 
+	 * 
+	 * @return Integer value [0..100], indicating battery charge level in
+	 *         percent
 	 */
 	public static int getBatteryLevel() {
 		if (BATTERY_INTENT == null) {
 			try {
 				IntentFilter ifilter = new IntentFilter(
 						Intent.ACTION_BATTERY_CHANGED);
-				BATTERY_INTENT = getContext().getApplicationContext().registerReceiver(null, ifilter);
-			}
-			catch (ReceiverCallNotAllowedException e) {
-				SdkLog.w(TAG, "Skipping start of phone status receivers from start interstitial.");
+				BATTERY_INTENT = getContext().getApplicationContext()
+						.registerReceiver(null, ifilter);
+			} catch (ReceiverCallNotAllowedException e) {
+				SdkLog.w(TAG,
+						"Skipping start of phone status receivers from start interstitial.");
 				BATTERY_INTENT = null;
 				return 100;
-			}			
+			}
 		}
 		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -469,6 +472,7 @@ public class SdkUtil {
 
 	/**
 	 * Check whether a headset is connected to the device
+	 * 
 	 * @return true if a headset is connected
 	 */
 	@SuppressWarnings("deprecation")
@@ -476,32 +480,43 @@ public class SdkUtil {
 		return ((AudioManager) getContext().getSystemService(
 				Context.AUDIO_SERVICE)).isWiredHeadsetOn();
 	}
-	
+
 	/**
 	 * Create an ad request object with url and response handler
-	 * @param url Ad request url
-	 * @param handler response handler
+	 * 
+	 * @param url
+	 *            Ad request url
+	 * @param handler
+	 *            response handler
 	 * @return initialized ad request
 	 */
 	public static AdRequest adRequest(IAdResponseHandler handler) {
 		return new AmobeeAdRequest(handler);
 	}
-	
+
 	/**
 	 * Create an ad request object url, response handler and security mechanism
-	 * @param url Ad request url
-	 * @param handler response handler
-	 * @param secHeaderName name of security header
-	 * @param secHeaderVal security hash value
+	 * 
+	 * @param url
+	 *            Ad request url
+	 * @param handler
+	 *            response handler
+	 * @param secHeaderName
+	 *            name of security header
+	 * @param secHeaderVal
+	 *            security hash value
 	 * @return initialized ad request
 	 */
-	public static AdRequest adRequest(IAdResponseHandler handler, String secHeaderName, int secHeaderVal) {
+	public static AdRequest adRequest(IAdResponseHandler handler,
+			String secHeaderName, int secHeaderVal) {
 		return new AmobeeAdRequest(secHeaderName, secHeaderVal, handler);
 	}
-	
+
 	/**
 	 * Perform a quick simple http request without processing the response
-	 * @param url The url to request
+	 * 
+	 * @param url
+	 *            The url to request
 	 */
 	public static void httpRequest(final String url) {
 		SdkUtil.httpRequests(new String[] { url });
@@ -510,42 +525,53 @@ public class SdkUtil {
 	/**
 	 * Perform quick simple http requests without processing the response.
 	 * Errors are written to log output.
-	 * @param url An array of url strings
+	 * 
+	 * @param url
+	 *            An array of url strings
 	 */
 	public static void httpRequests(final String[] url) {
 		new TrackingRequest().execute(url);
 	}
-	
+
 	/**
-	 * Helper method to determine the correct way to execute javascript
-	 * in a webview. Starting from Android 4.4, the Android webview is a
-	 * chrome webview and the method to execute javascript has changed from
-	 * loadUrl to evaluateJavascript
-	 * @param webView The webview to exeute the script in
-	 * @param javascript the actual script
+	 * Helper method to determine the correct way to execute javascript in a
+	 * webview. Starting from Android 4.4, the Android webview is a chrome
+	 * webview and the method to execute javascript has changed from loadUrl to
+	 * evaluateJavascript
+	 * 
+	 * @param webView
+	 *            The webview to exeute the script in
+	 * @param javascript
+	 *            the actual script
 	 */
 	public static void evaluateJavascript(WebView webView, String javascript) {
 		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
 			try {
-				KITKAT_JS_METHOD = Class.forName("android.webkit.WebView").
-					getDeclaredMethod("evaluateJavascript", KITKAT_JS_PARAMTYPES);
+				KITKAT_JS_METHOD = Class.forName("android.webkit.WebView")
+						.getDeclaredMethod("evaluateJavascript",
+								KITKAT_JS_PARAMTYPES);
 				KITKAT_JS_METHOD.setAccessible(true);
-				SdkLog.i(TAG, "G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
-			}
-			catch (Exception e0) {
-				SdkLog.e(TAG, "FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript", e0);				
+				SdkLog.i(TAG,
+						"G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
+			} catch (Exception e0) {
+				SdkLog.e(
+						TAG,
+						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
+						e0);
 			}
 		}
 
 		if (Build.VERSION.SDK_INT < 19) {
 			webView.loadUrl("javascript:" + javascript);
-		}
-		else try {
-			KITKAT_JS_METHOD.invoke(webView, javascript, null);
-		}
-		catch (Exception e) {
-			SdkLog.e(TAG, "FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript", e);
-		}
+		} else
+			try {
+				KITKAT_JS_METHOD.invoke(webView, javascript, null);
+			} catch (Exception e) {
+				SdkLog.e(
+						TAG,
+						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
+						e);
+			}
 	}
 
 }
