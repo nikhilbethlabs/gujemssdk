@@ -45,6 +45,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
+import android.provider.MediaStore.Images.ImageColumns;
+import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
@@ -557,7 +559,7 @@ public class OrmmaAssetController extends OrmmaController {
 		ListIterator<T> i = list.listIterator();
 		for (int j = 0; j < a.length; j++) {
 			i.next();
-			i.set((T) a[j]);
+			i.set(a[j]);
 		}
 	}
 
@@ -576,14 +578,14 @@ public class OrmmaAssetController extends OrmmaController {
 			String description, String dateTaken, String mimeType) {
 		ContentValues image = new ContentValues();
 
-		image.put(Images.Media.TITLE, title);
-		image.put(Images.Media.DISPLAY_NAME, name);
-		image.put(Images.Media.DESCRIPTION, description);
-		image.put(Images.Media.DATE_ADDED, dateTaken);
-		image.put(Images.Media.DATE_TAKEN, dateTaken);
-		image.put(Images.Media.DATE_MODIFIED, dateTaken);
-		image.put(Images.Media.MIME_TYPE, mimeType);
-		image.put(Images.Media.ORIENTATION, 0);
+		image.put(MediaColumns.TITLE, title);
+		image.put(MediaColumns.DISPLAY_NAME, name);
+		image.put(ImageColumns.DESCRIPTION, description);
+		image.put(MediaColumns.DATE_ADDED, dateTaken);
+		image.put(ImageColumns.DATE_TAKEN, dateTaken);
+		image.put(MediaColumns.DATE_MODIFIED, dateTaken);
+		image.put(MediaColumns.MIME_TYPE, mimeType);
+		image.put(ImageColumns.ORIENTATION, 0);
 
 		File parent = img.getParentFile();
 		String path = parent.toString().toLowerCase(Locale.GERMAN);
@@ -591,9 +593,9 @@ public class OrmmaAssetController extends OrmmaController {
 		
 		image.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
 		image.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, fname);
-		image.put(Images.Media.SIZE, img.length());
+		image.put(MediaColumns.SIZE, img.length());
 
-		image.put(Images.Media.DATA, img.getAbsolutePath());
+		image.put(MediaColumns.DATA, img.getAbsolutePath());
 
 		return mContext.getContentResolver().insert(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);

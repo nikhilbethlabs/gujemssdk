@@ -14,8 +14,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
@@ -79,20 +80,20 @@ public class Browser extends Activity {
 		bll.setId(ButtonId);
 		bll.setWeightSum(100);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
+				LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
 		lp.addRule(RelativeLayout.ABOVE, ButtonId);
 		rl.addView(webview, lp);
 
 		lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+				LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		rl.addView(bll, lp);
 
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT);
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
@@ -103,7 +104,7 @@ public class Browser extends Activity {
 		bll.addView(backButton, lp2);
 		if (!i.getBooleanExtra(SHOW_BACK_EXTRA, true))
 
-			backButton.setVisibility(ViewGroup.GONE);
+			backButton.setVisibility(View.GONE);
 		
 		backButton.setImageResource(R.drawable.leftarrow);
 		backButton.setOnClickListener(new OnClickListener() {
@@ -122,14 +123,14 @@ public class Browser extends Activity {
 		forwardButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		forwardButton.setId(ForwardId);
 		lp2 = new LinearLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT);
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
 		bll.addView(forwardButton, lp2);
 		if (!i.getBooleanExtra(SHOW_FORWARD_EXTRA, true))
-			forwardButton.setVisibility(ViewGroup.GONE);
+			forwardButton.setVisibility(View.GONE);
 		forwardButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -144,15 +145,15 @@ public class Browser extends Activity {
 		refreshButton.setImageResource(R.drawable.refresh);
 		refreshButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		lp2 = new LinearLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
 		bll.addView(refreshButton, lp2);
 		if (!i.getBooleanExtra(SHOW_REFRESH_EXTRA, true))
 
-			refreshButton.setVisibility(ViewGroup.GONE);
+			refreshButton.setVisibility(View.GONE);
 		refreshButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -167,8 +168,8 @@ public class Browser extends Activity {
 		closeButton.setImageResource(R.drawable.close);
 		closeButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		lp2 = new LinearLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
 		lp2.weight = 25;
 		lp2.gravity = Gravity.CENTER_VERTICAL;
 
@@ -192,6 +193,7 @@ public class Browser extends Activity {
 		webview.setId(WebViewId);
 
 		webview.setWebViewClient(new WebViewClient() {
+			@Override
 			public void onReceivedError(WebView view, int errorCode,
 					String description, String failingUrl) {
 				Activity a = (Activity) view.getContext();
@@ -274,6 +276,7 @@ public class Browser extends Activity {
 			
 			private String orgTitle = null;
 			
+			@Override
 			public void onProgressChanged(WebView view, int progress) {
 				// show progress bar while loading, url when loaded
 				Activity a = (Activity) view.getContext();

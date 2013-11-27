@@ -209,6 +209,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 	}
 
+	@Override
 	public Handler getHandler() {
 		return handler;
 	}
@@ -332,6 +333,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 	}
 
+	@Override
 	public final void processResponse(IAdResponse response) {
 		try {
 			if (!response.isEmpty()) {
@@ -346,20 +348,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				if (this.settings.getDirectBackfill() != null) {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. [" + this.getId() + "]");
-						OptimobileDelegator optimobileDelegator = new OptimobileDelegator(
+						new OptimobileDelegator(
 								SdkUtil.getContext(), this, settings);
-						if (getParent() != null) {
-							((ViewGroup) getParent())
-									.addView(optimobileDelegator
-											.getOptimobileView(),
-											((ViewGroup) getParent())
-													.indexOfChild(this) + 1);
-						}
-						else {
-							SdkLog.d(TAG, "Primary view initialized off UI.");
-						}
-						optimobileDelegator.getOptimobileView().update();						
-
 					} catch (Exception e) {
 						if (this.settings.getOnAdErrorListener() != null) {
 							this.settings.getOnAdErrorListener().onAdError(

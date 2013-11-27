@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -109,8 +110,8 @@ public final class InterstitialActivity extends Activity {
 		adView.loadData(adData, "text/html",
 				"utf-8");
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+				LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, this.withProgress ? R.id.emsIntCloseButton
 				: R.id.emsIntCloseButton2);
 		adView.setLayoutParams(lp);
@@ -119,6 +120,7 @@ public final class InterstitialActivity extends Activity {
 		ImageButton b = (ImageButton) findViewById(this.withProgress ? R.id.emsIntCloseButton
 				: R.id.emsIntCloseButton2);
 		b.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				if (updateThread != null && updateThread.isAlive()) {
 					try {
@@ -235,6 +237,7 @@ public final class InterstitialActivity extends Activity {
 					t0 = System.currentTimeMillis();
 				}
 
+				@Override
 				public void run() {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {

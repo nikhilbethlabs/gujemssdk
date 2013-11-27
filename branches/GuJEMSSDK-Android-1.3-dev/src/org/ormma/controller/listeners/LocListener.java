@@ -78,6 +78,7 @@ public class LocListener implements LocationListener {
 	/* (non-Javadoc)
 	 * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
 	 */
+	@Override
 	public void onProviderDisabled(String provider) {
 		mOrmmaLocationController.fail();
 	}
@@ -85,6 +86,7 @@ public class LocListener implements LocationListener {
 	/* (non-Javadoc)
 	 * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
 	 */
+	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		if (status == 0 && !mOrmmaLocationController.hasLocation()) {
 			mOrmmaLocationController.fail();
@@ -94,6 +96,7 @@ public class LocListener implements LocationListener {
 	/* (non-Javadoc)
 	 * @see android.location.LocationListener#onLocationChanged(android.location.Location)
 	 */
+	@Override
 	public void onLocationChanged(Location location) {
 		mOrmmaLocationController.success(location);
 	}

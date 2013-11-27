@@ -184,12 +184,14 @@ public class AccelListener implements SensorEventListener {
 	/* (non-Javadoc)
 	 * @see android.hardware.SensorEventListener#onAccuracyChanged(android.hardware.Sensor, int)
 	 */
+	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	}
 
 	/* (non-Javadoc)
 	 * @see android.hardware.SensorEventListener#onSensorChanged(android.hardware.SensorEvent)
 	 */
+	@Override
 	public void onSensorChanged(SensorEvent event) {
 		switch (event.sensor.getType()) {
 		case Sensor.TYPE_MAGNETIC_FIELD:

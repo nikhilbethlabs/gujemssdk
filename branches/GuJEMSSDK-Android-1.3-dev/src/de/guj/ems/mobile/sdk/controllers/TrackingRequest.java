@@ -17,6 +17,18 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
+/**
+ * Simple class for tracking requests / simple http requests.
+ * 
+ * Requests are implemented as asynchronous tasks.
+ * 
+ * Usage: (new TrackingRequest()).execute(url);
+ * 
+ * Tracking Requests have no response handlers
+ * 
+ * @author stein16
+ *
+ */
 public class TrackingRequest extends AdRequest {
 	
 	private final static String TAG = "TrackingRequest";

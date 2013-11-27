@@ -1,5 +1,6 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+
 /**
  * Generic class handling different types of ad responses, i.e.
  * extracting click URLs, image URLs and tracking URLs
@@ -54,14 +55,26 @@ public abstract class AdResponseParser {
 		return xml;
 	}
 
+	/**
+	 * Get the URL to the ad's image
+	 * @return image URL string
+	 */
 	public String getImageUrl() {
 		return imageUrl;
 	}
 
+	/**
+	 * Get the click URL associated with the ad
+	 * @return click URL string
+	 */
 	public String getClickUrl() {
 		return clickUrl;
 	}
 
+	/**
+	 * Get a tracking pixel URL if present
+	 * @return Pixel tracking URL String
+	 */
 	public String getTrackingImageUrl() {
 		return trackingImageUrl;
 	}

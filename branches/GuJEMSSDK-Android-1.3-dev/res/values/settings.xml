@@ -5,7 +5,5 @@
 
     <!--  Set this to true if you want test ads in all adviews -->
 	<bool name="ems_test_mode">false</bool>
-	
-	<!-- Set this to false to disable debug log -->
-	<bool name="ems_debug_log">false</bool>
+
 </resources>

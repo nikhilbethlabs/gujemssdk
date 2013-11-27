@@ -64,10 +64,12 @@ public abstract class OrmmaController {
 		 * The Constant CREATOR.
 		 */
 		public static final Parcelable.Creator<PlayerProperties> CREATOR = new Parcelable.Creator<PlayerProperties>() {
+			@Override
 			public PlayerProperties createFromParcel(Parcel in) {
 				return new PlayerProperties(in);
 			}
 
+			@Override
 			public PlayerProperties[] newArray(int size) {
 				return new PlayerProperties[size];
 			}
@@ -184,10 +186,12 @@ public abstract class OrmmaController {
 		 * The Constant CREATOR.
 		 */
 		public static final Parcelable.Creator<Dimensions> CREATOR = new Parcelable.Creator<Dimensions>() {
+			@Override
 			public Dimensions createFromParcel(Parcel in) {
 				return new Dimensions(in);
 			}
 
+			@Override
 			public Dimensions[] newArray(int size) {
 				return new Dimensions[size];
 			}
@@ -237,10 +241,12 @@ public abstract class OrmmaController {
 		 * The Constant CREATOR.
 		 */
 		public static final Parcelable.Creator<Properties> CREATOR = new Parcelable.Creator<Properties>() {
+			@Override
 			public Properties createFromParcel(Parcel in) {
 				return new Properties(in);
 			}
 
+			@Override
 			public Properties[] newArray(int size) {
 				return new Properties[size];
 			}

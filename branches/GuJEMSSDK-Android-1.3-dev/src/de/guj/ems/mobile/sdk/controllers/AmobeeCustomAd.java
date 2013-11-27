@@ -209,6 +209,7 @@ public abstract class AmobeeCustomAd implements IAdResponseHandler {
 	 * Calback method for the finished ad request. Perform your tasks on the adserver's response here.
 	 * @param response The adservers response as a strign (null if the response was empty)
 	 */
+	@Override
 	public abstract void processResponse(IAdResponse response);
 
 }

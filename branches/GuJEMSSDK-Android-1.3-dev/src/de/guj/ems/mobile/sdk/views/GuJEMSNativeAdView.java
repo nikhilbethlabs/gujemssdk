@@ -78,6 +78,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			this.viewRef = new WeakReference<ImageView>(view);
 		}
 
+		@Override
 		protected Object doInBackground(String... urls) {
 			String urldisplay = urls[0];
 
@@ -122,6 +123,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
             return os.toByteArray();
         }
 
+		@Override
 		protected void onPostExecute(Object result) {
 			Movie movie = null;
 			Bitmap bitmap = null;
@@ -171,10 +173,10 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 					LayoutParams lp = view.getLayoutParams();
 					if (movie != null) {
-						lp.height = (int) ((float) movie.height() * SdkUtil
+						lp.height = (int) (movie.height() * SdkUtil
 								.getDensity());
 					} else {
-						lp.height = (int) ((float) bitmap.getHeight() * SdkUtil
+						lp.height = (int) (bitmap.getHeight() * SdkUtil
 								.getDensity());
 					}
 					view.setLayoutParams(lp);

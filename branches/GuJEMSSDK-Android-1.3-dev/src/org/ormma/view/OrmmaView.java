@@ -463,6 +463,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * The webview client used for trapping certain events
 	 */
 	WebViewClient mWebViewClient = new WebViewClient() {
+		@Override
 		public void onLoadResource(WebView view, String url) {
 			SdkLog.d(SdkLog_TAG, "lr:" + url);
 		}
@@ -668,9 +669,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 		ViewGroup parent = (ViewGroup) getParent();
 		FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
-				(int) (d.width), (int) (d.height));
-		fl.topMargin = (int) (d.x);
-		fl.leftMargin = (int) (d.y);
+				(d.width), (d.height));
+		fl.topMargin = (d.x);
+		fl.leftMargin = (d.y);
 
 		int index = 0;
 		int count = parent.getChildCount();
@@ -683,7 +684,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		placeHolder.setId(PLACEHOLDER_ID);
 
 		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-				(int) mViewWidth, (int) mViewHeight);
+				mViewWidth, mViewHeight);
 
 		if (mScrollContainer == null && mFindScrollContainer) {
 			ViewGroup _p = parent;
@@ -716,10 +717,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		});
 
 		FrameLayout.LayoutParams bgfl = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 		backGround.setId(BACKGROUND_ID);
-		backGround.setPadding((int) (d.x), (int) (d.y), 0, 0);
+		backGround.setPadding((d.x), (d.y), 0, 0);
 		parent.removeView(OrmmaView.this);
 		backGround.addView(OrmmaView.this, fl);
 		contentView.addView(backGround, bgfl);
@@ -755,10 +756,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ (int) mViewWidth
+				+ mViewWidth
 				/ mDensity
 				+ ", "
-				+ "height: " + (int) mViewHeight / mDensity + "}" + "});";
+				+ "height: " + mViewHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeExpanded: injection: " + injection);
 		injectJavaScript(injection);
 
@@ -794,10 +795,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
 				+ " size: "
 				+ "{ width: "
-				+ (int) mViewWidth
+				+ mViewWidth
 				/ mDensity
 				+ ", "
-				+ "height: " + (int) mViewHeight / mDensity + "}" + "});";
+				+ "height: " + mViewHeight / mDensity + "}" + "});";
 		SdkLog.d(SdkLog_TAG, "closeResized: injection: " + injection);
 		injectJavaScript(injection);
 		resetLayout();
@@ -1220,6 +1221,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// trap keyboard state and view height/width
 
 
+	@Override
 	public void onGlobalLayout() {
 
 		boolean state = bKeyboardOut;
@@ -1480,9 +1482,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		videoPlayer.setPlayData(properties, url);
 
 		FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
-				(int) (d.width), (int) (d.height));
-		fl.topMargin = (int) (d.x);
-		fl.leftMargin = (int) (d.y);
+				(d.width), (d.height));
+		fl.topMargin = (d.x);
+		fl.leftMargin = (d.y);
 		videoPlayer.setLayoutParams(fl);
 
 		FrameLayout backGround = new FrameLayout(getContext());
@@ -1494,13 +1496,13 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			}
 		});
 		backGround.setId(BACKGROUND_ID);
-		backGround.setPadding((int) (d.x), (int) (d.y), 0, 0);
+		backGround.setPadding((d.x), (d.y), 0, 0);
 
 		FrameLayout contentView = (FrameLayout) getRootView().findViewById(
 				android.R.id.content);
 		contentView.addView(backGround, new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.MATCH_PARENT));
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 
 		backGround.addView(videoPlayer);
 		setVisibility(View.INVISIBLE);

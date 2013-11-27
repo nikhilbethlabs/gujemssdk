@@ -257,6 +257,7 @@ public final class VideoInterstitialActivity extends Activity implements
 		ImageButton b = (ImageButton) findViewById(R.id.emsVidIntButton);
 		b.setVisibility(View.INVISIBLE);
 		b.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 
 				try {
@@ -290,6 +291,7 @@ public final class VideoInterstitialActivity extends Activity implements
 		final ImageButton s = (ImageButton) findViewById(R.id.emsVidIntSndButton);
 		s.setVisibility(View.INVISIBLE);
 		s.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				muted = !muted; // switch
 				mediaPlayer.setVolume(muted ? 0.0f : 1.0f, muted ? 0.0f : 1.0f);
@@ -475,12 +477,12 @@ public final class VideoInterstitialActivity extends Activity implements
 
 		if (videoProportion > viewProportion) {
 			lp.width = viewWidth;
-			lp.height = (int) ((float) viewWidth / videoProportion);
+			lp.height = (int) (viewWidth / videoProportion);
 			SdkLog.d(TAG,
 					"Adjusted video view height to reflect media aspect ratio. ["
 							+ viewHeight + "->" + lp.height + "]");
 		} else if (viewProportion > videoProportion) {
-			lp.width = (int) (videoProportion * (float) viewHeight);
+			lp.width = (int) (videoProportion * viewHeight);
 			lp.height = viewHeight;
 			SdkLog.d(TAG,
 					"Adjusted video view width to reflect media aspect ratio. ["
@@ -617,6 +619,7 @@ public final class VideoInterstitialActivity extends Activity implements
 					}
 				}
 
+				@Override
 				public void run() {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {

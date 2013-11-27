@@ -8,8 +8,7 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 /**
  * Performs HTTP communication in the background, i.e. off the UI thread.
  * 
- * Pass the user-agent at construction time. Pass the URL to the get-Method when
- * actually fetching an ad.
+ * Pass the URL to the execute-Method when actually fetching an ad.
  * 
  * @author stein16
  * 

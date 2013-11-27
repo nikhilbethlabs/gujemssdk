@@ -34,7 +34,7 @@ public abstract class AdResponse implements IAdResponse {
 
 	@Override
 	public boolean isEmpty() {
-		return isEmpty && !isRich;
+		return isEmpty;
 	}
 
 	@Override

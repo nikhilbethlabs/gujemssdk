@@ -35,6 +35,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 		if (!bfData.getData().equals(lastData)) {
 			VideoAdSDK.registerWithPublisherID(context, bfData.getData(),
 					new VideoAdSDKListener() {
+						@Override
 						public void onAdvertisingIsReadyToPlay() {
 							// autoplay when the video is prepared and
 							// buffered
@@ -42,12 +43,14 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							VideoAdSDK.startAdvertising();
 						}
 
+						@Override
 						public void onAdvertisingClicked() {
 							// 3rd party tracking for the click event on the
 							// video layer
 							// TODO Handle Smartstream click event tracking
 						}
 
+						@Override
 						public void onAdvertisingEventTracked(String arg0) {
 							// 3rd party tracking for VAST events incl.
 							// ViewTime
@@ -74,6 +77,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							}
 						}
 
+						@Override
 						public void onAdvertisingFailedToLoad(Exception arg0) {
 							// exception handler for preloading or playback
 							// issues
@@ -85,6 +89,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							SmartstreamAdapter.callback.adFailedCallback(arg0);
 						}
 
+						@Override
 						public void onAdvertisingNotAvailable() {
 							// poor connectivity or no video advertising
 							SdkLog.e(TAG,
@@ -92,22 +97,26 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							SmartstreamAdapter.callback.noAdCallback();
 						}
 
+						@Override
 						public void onAdvertisingPrefetchingDidComplete() {
 							// prefetching (asynchronous background process)
 							// completed
 						}
 
+						@Override
 						public void onPrefetcherProgress(double arg0) {
 							// current status of prefetching (debugging
 							// only)
 						}
 
+						@Override
 						public void onAdvertisingWillShow() {
 							// the advertising appears in fullscreen mode
 							SdkLog.d(TAG, "Smartstream advertising will show");
 							SmartstreamAdapter.callback.receivedAdCallback();
 						}
 
+						@Override
 						public void onAdvertisingDidHide() {
 							// the advertising activity is released
 							SdkLog.d(TAG,

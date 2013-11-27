@@ -64,12 +64,36 @@ public class OptimobileDelegator {
 	 * @param adView original (first level) adview
 	 * @param settings settings of original adview 
 	 */
-	public OptimobileDelegator(Context context, GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
+	public OptimobileDelegator(final Context context, final GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsMobileView = adView;
 		this.handler = this.emsMobileView.getHandler();
 		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
-		this.optimobileView = initOptimobileView(context, settings, 0); 
+		if (handler != null) {
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					optimobileView = initOptimobileView(context, settings, 0);
+					
+					if (adView.getParent() != null) {
+						((ViewGroup) adView.getParent())
+								.addView(optimobileView,
+										((ViewGroup) adView.getParent())
+												.indexOfChild(adView) + 1);
+					}
+					else {
+						SdkLog.d(TAG, "Primary view initialized off UI.");
+					}
+					
+					optimobileView.update();
+				}
+			});
+		}
+		else {
+			SdkLog.w(TAG, "Original adview's handler is null.");
+			optimobileView = initOptimobileView(context, settings, 0);
+			optimobileView.update();			
+		}
 	}
 	
 	/**
@@ -92,6 +116,7 @@ public class OptimobileDelegator {
 		SdkLog.d(TAG, "Original view (GuJEMSNativeAdView) handler is " + handler);
 		if (handler != null) {
 			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					optimobileView = initOptimobileView(context, settings, 0);
 					optimobileView.update();
@@ -167,12 +192,10 @@ public class OptimobileDelegator {
 				SdkLog.d(TAG,  "optimobile Ad loaded.");
 				if (emsMobileView != null && (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass()))) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
-					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
 					emsMobileView.processResponse(new OptimobileAdResponse(optimobileView.getLastResponse()));
 				}
 				else if (emsNativeMobileView != null) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
-					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
 					emsNativeMobileView.processResponse(new OptimobileAdResponse(optimobileView.getLastResponse()));					
 				}
 				else {
@@ -191,7 +214,6 @@ public class OptimobileDelegator {
 						@Override
 						public void run() {
 							view.setVisibility(View.VISIBLE);
-							
 						}
 					});
 				}
