@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.controllers;
+package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -14,32 +14,22 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.os.AsyncTask;
 import android.os.Build;
+
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.util.SdkLog;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
-/**
- * Performs HTTP communication in the background, i.e. off the UI thread.
- * 
- * Pass the user-agent at construction time. Pass the URL to the get-Method when
- * actually fetching an ad.
- * 
- * @author stein16
- * 
- */
-public final class AdServerAccess extends AsyncTask<String, Void, String> {
-
+public class AmobeeAdRequest extends AdRequest {
+	
+	private final static String TAG = "AmobeeAdRequest";
+	
 	private final static String NEW_LINE = System.getProperty("line.separator");
-
-	private String userAgentString;
 
 	private String securityHeaderName;
 
 	private int securityHeaderValueHash;
-
-	private final String TAG = "AdServerAccess";
-
+	
 	private final static boolean USE_HTTPURLCONNECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
@@ -54,71 +44,33 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 
 	private final static String ENCODING_STR = "utf-8";
 
-	private final static byte[] EMPTY_BUFFER = new byte[1024];
+	private final static byte[] EMPTY_BUFFER = new byte[1024];	
 
-	private AdResponseHandler responseHandler;
-
-	private Throwable lastError;
-
-	@SuppressWarnings("unused")
-	private AdServerAccess() {
-
-	}
-
-	/**
-	 * Standard constructor
-	 * 
-	 * @param handler
-	 *            instance of a class handling ad server responses (like
-	 *            GuJEMSAdView, InterstitialSwitchActivity)
-	 * @param userAgentString
-	 *            the string to pass as the user-agent
-	 * 
-	 */
-	public AdServerAccess(String userAgentString, AdResponseHandler handler) {
-		this.userAgentString = userAgentString;
-		this.responseHandler = handler;
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-			System.setProperty("http.keepAlive", "false");
-		}
-	}
-
-	/**
-	 * Constructor with security token
-	 * 
-	 * @param handler
-	 *            instance of a class handling ad server responses (like
-	 *            GuJEMSAdView, InterstitialSwitchActivity)
-	 * @param userAgentString
-	 *            the string to pass as the user-agent
-	 * @param securityHeader
-	 *            an http header the response must contain
-	 * 
-	 * @param securityHash
-	 *            hash of value of securityHeader
-	 */
-	public AdServerAccess(String userAgentString, String securityHeader,
-			int securityHash, AdResponseHandler handler) {
-		this.userAgentString = userAgentString;
-		this.responseHandler = handler;
+	public AmobeeAdRequest(String securityHeader,
+			int securityHash, IAdResponseHandler handler) {
+		super(handler);
 		this.securityHeaderName = securityHeader;
 		this.securityHeaderValueHash = securityHash;
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-			System.setProperty("http.keepAlive", "false");
-		}
+	}
+	
+	public AmobeeAdRequest(IAdResponseHandler handler) {
+		super(handler);
 	}
 
-	private StringBuilder httpGet(String url) {
+	@Override
+	protected IAdResponse httpGet(String url)  {
 		StringBuilder rBuilder = new StringBuilder();
+		boolean richAd = false;
+		
 		// from Gingerbread on it is recommended to use HttpUrlConnection
-		if (AdServerAccess.USE_HTTPURLCONNECTION) {
+		if (AmobeeAdRequest.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
 			HttpURLConnection con = null;
 			try {
 				boolean ok = true;
 				URL uUrl = new URL(url);
 				con = (HttpURLConnection) uUrl.openConnection();
-				con.setRequestProperty(USER_AGENT_HEADER_NAME, userAgentString);
+				con.setRequestProperty(USER_AGENT_HEADER_NAME, SdkUtil.getUserAgent());
 				con.setRequestProperty(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME,
 						ACCEPT_CHARSET_HEADER_VALUE);
@@ -130,8 +82,9 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 					ok = (con.getHeaderField(this.securityHeaderName) != null && con
 							.getHeaderField(this.securityHeaderName).hashCode() == this.securityHeaderValueHash);
 				}
+				richAd = con.getHeaderField("Richmedia") != null;
 				if (ok && con.getResponseCode() == 200
-						&& this.responseHandler != null) {
+						&& this.getResponseHandler() != null) {
 					byte[] buffer = new byte[1024];
 					int l = 0;
 					while ((l = in.read(buffer)) > 0) {
@@ -148,7 +101,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				}
 				in.close();
 			} catch (Exception e) {
-				this.lastError = e;
+				setLastError(e);
 			} finally {
 				if (con != null) {
 					con.disconnect();
@@ -165,7 +118,7 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 			HttpConnectionParams.setSoTimeout(httpParameters, 1000);
 			DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 			HttpGet httpGet = new HttpGet(url);
-			httpGet.setHeader(USER_AGENT_HEADER_NAME, userAgentString);
+			httpGet.setHeader(USER_AGENT_HEADER_NAME, SdkUtil.getUserAgent());
 			httpGet.setHeader(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 			httpGet.setHeader(ACCEPT_CHARSET_HEADER_NAME,
 					ACCEPT_CHARSET_HEADER_VALUE);
@@ -183,14 +136,15 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 								&& secHd.getValue().hashCode() == this.securityHeaderValueHash;
 					}
 				}
+				richAd = execute.getLastHeader("Richmedia") != null;
 				if (ok && execute.getStatusLine().getStatusCode() == 200
-						&& this.responseHandler != null) {
+						&& getResponseHandler() != null) {
 					BufferedReader buffer = new BufferedReader(
 							new InputStreamReader(execute.getEntity()
 									.getContent(), ENCODING_STR));
 					String line;
 					while ((line = buffer.readLine()) != null) {
-						rBuilder.append(line + AdServerAccess.NEW_LINE);
+						rBuilder.append(line + AmobeeAdRequest.NEW_LINE);
 					}
 					buffer.close();
 				} else if (execute.getStatusLine().getStatusCode() != 200) {
@@ -203,37 +157,11 @@ public final class AdServerAccess extends AsyncTask<String, Void, String> {
 				}
 
 			} catch (Exception e) {
-				this.lastError = e;
+				setLastError(e);
 			}
 			SdkLog.d(TAG, "Request finished. [" + rBuilder.length() + "]");
 		}
-		return rBuilder;
-	}
-
-	@Override
-	protected String doInBackground(String... urls) {
-		StringBuilder rBuilder = new StringBuilder();
-		for (String url : urls) {
-			SdkLog.d(TAG, "Request: " + url);
-			rBuilder = rBuilder.append(httpGet(url));
-		}
-		return rBuilder.toString();
-	}
-
-	@Override
-	protected void onPostExecute(String result) {
-		if (this.responseHandler != null && lastError == null) {
-			SdkLog.d(TAG, "Passing to handler " + responseHandler);
-			this.responseHandler.processResponse(result);
-		} else if (this.responseHandler != null && lastError != null) {
-			SdkLog.d(TAG, "Passing to handler " + responseHandler);
-			this.responseHandler
-					.processError(lastError.getMessage(), lastError);
-		} else if (lastError != null) {
-			SdkLog.e(TAG, "Error post processing request", lastError);
-		} else {
-			SdkLog.d(TAG, "No response handler");
-		}
+		return new AmobeeAdResponse(rBuilder.toString(), richAd);
 	}
 
 }

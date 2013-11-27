@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.controllers;
+package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,13 +15,17 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
+import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
+import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
+import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * Base class for mapping various available data to adserver parameters.
  * 
- * @see de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter
+ * @see de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter
  * 
  * @author stein16
  * 
@@ -374,7 +378,7 @@ public abstract class AdServerSettingsAdapter implements
 			loc[0] = lastKnown.getLatitude();
 			loc[1] = lastKnown.getLongitude();
 			
-			if (SdkUtil.getContext().getResources().getBoolean(R.bool.shorten_location)) {
+			if (SdkUtil.getContext().getResources().getBoolean(R.bool.ems_shorten_location)) {
 				loc[0] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[0]));
 				loc[1] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[1]));
 				SdkLog.d(TAG, "Geo location shortened to two digits.");
@@ -553,10 +557,11 @@ public abstract class AdServerSettingsAdapter implements
 		this.directBackfill = directBackfill;
 	}
 	
+/*
 	public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
 		this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId, bfZoneId, "", id));
 	}
-
+*/
 	@Override
 	public String getSecurityHeaderName() {
 		return EMS_SECURITY_HEADER_NAME;

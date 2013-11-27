@@ -21,12 +21,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.R;
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser.Tracking;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * This activity is executed when a VAST for video interstitial was delivered
@@ -50,7 +50,7 @@ import de.guj.ems.mobile.sdk.views.AdResponseHandler;
  * 
  */
 public final class VideoInterstitialActivity extends Activity implements
-		VASTXmlParser.VASTWrapperListener, AdResponseHandler {
+		VASTXmlParser.VASTWrapperListener, IAdResponseHandler {
 
 	static class InterstitialThread extends Thread {
 
@@ -696,19 +696,18 @@ public final class VideoInterstitialActivity extends Activity implements
 	@Override
 	public void onVASTWrapperFound(final String url) {
 		SdkLog.d(TAG, "Wrapped VAST xml response [" + url + "].");
-		AdServerAccess a = new AdServerAccess(SdkUtil.getUserAgent(), this);
-		a.execute(url);
+		SdkUtil.adRequest(this).execute(url);
 	}
 
 	@Override
-	public void processResponse(String response) {
+	public void processResponse(IAdResponse response) {
 		try {
 			VASTXmlParser vast = vastXml;
 			while (vast.getWrappedVASTXml() != null) {
 				vast = vast.getWrappedVASTXml();
 			}
 			vast.setWrapper(new VASTXmlParser(getApplicationContext(), null,
-					response));
+					response.getResponse()));
 			this.videoView
 					.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
 			List<String> im = this.vastXml.getImpressionTrackerUrl();

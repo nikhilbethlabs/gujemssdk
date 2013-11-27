@@ -1,4 +1,6 @@
-package de.guj.ems.mobile.sdk.util;
+package de.guj.ems.mobile.sdk.controllers.adserver;
+
+import de.guj.ems.mobile.sdk.util.SdkLog;
 
 public class AmobeeHtmlParser extends AdResponseParser {
 

@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.controllers;
+package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import java.io.Serializable;
 
@@ -77,7 +77,7 @@ public class BackfillDelegator {
 		 * @param data data retrieved from the main adserver
 		 * @param id id of the backfill partner (0 = Smartstream)
 		 */
-		BackfillData(String zone, String data, int id) {
+		public BackfillData(String zone, String data, int id) {
 			this.data = data;
 			this.userAgent =  SdkUtil.getUserAgent();
 			this.zoneId = zone;
@@ -91,7 +91,7 @@ public class BackfillDelegator {
 		 * @param data data retrieved from the main adserver
 		 * @param id id of the backfill partner (0 = Smartstream)
 		 */
-		BackfillData(String site, String zone, String data, int id) {
+		public BackfillData(String site, String zone, String data, int id) {
 			this.data = data;
 			this.userAgent =  SdkUtil.getUserAgent();
 			this.siteId = site;

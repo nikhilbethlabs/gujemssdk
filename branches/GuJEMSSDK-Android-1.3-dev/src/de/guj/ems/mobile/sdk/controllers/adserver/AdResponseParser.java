@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.util;
+package de.guj.ems.mobile.sdk.controllers.adserver;
 
 /**
  * Generic class handling different types of ad responses, i.e.

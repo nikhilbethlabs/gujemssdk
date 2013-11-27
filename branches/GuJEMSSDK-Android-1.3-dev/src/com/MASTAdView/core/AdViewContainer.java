@@ -983,7 +983,7 @@ public class AdViewContainer extends RelativeLayout implements ContentManager.Co
 	{
 		if (mScriptPath == null)
 		{
-			mScriptPath = FileUtils.copyTextFromJarIntoAssetDir(context, "/mraid.js", "/mraid.js");
+			mScriptPath = FileUtils.copyTextFromJarIntoAssetDir(context, "/js/mraid.js", "/js/mraid.js");
 		}
 	}
 

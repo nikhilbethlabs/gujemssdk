@@ -6,9 +6,12 @@ import android.content.Intent;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * Receiver which performs an ad requests and starts the
@@ -17,11 +20,11 @@ import de.guj.ems.mobile.sdk.views.AdResponseHandler;
  *
  */
 public class InterstitialSwitchReceiver extends BroadcastReceiver implements
-		AdResponseHandler {
+		IAdResponseHandler {
 
 	private IAdServerSettingsAdapter settings;
 
-	private String data;
+	private IAdResponse data;
 
 	private Intent target;
 
@@ -58,9 +61,11 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
-			.execute(new String[] { url });
-
+			SdkUtil.adRequest(
+					this,
+					settings.getSecurityHeaderName(),
+					settings.getSecurityHeaderValueHash())
+					.execute(new String[] { url });
 		} else {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
@@ -68,16 +73,16 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 	}
 
 	@Override
-	public void processResponse(String response) {
+	public void processResponse(IAdResponse response) {
 		SdkLog.i(TAG, "FINISH AdServer request");
 		BackfillDelegator.BackfillData bfD;
 		this.data = response;
 		if (data != null
-				&& data.length() > 1
+				&& !data.isEmpty()
 				&& (bfD = BackfillDelegator.isBackfill(
 						(String) this.intent.getExtras().get(
 								context.getString(R.string.amobeeAdSpace)),
-						data)) != null) {
+						data.getResponse())) != null) {
 			SdkLog.d(TAG, "Possible backfill ad detected [id=" + bfD.getId()
 					+ ", data=" + bfD.getData() + "]");
 			try {
@@ -148,7 +153,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			}
 		
 
-		} else if (data == null || data.length() < 10) {
+		} else if (data == null || data.isEmpty()) {
 			// head to original intent
 
 			if (this.settings.getOnAdEmptyListener() != null) {
@@ -161,13 +166,13 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 				SdkLog.d(TAG,
 						"No interstitial, no target -> back to previous view.");
 			}
-		} else if (data.startsWith("<VAST")) {
+		} else if (data.getResponse().startsWith("<VAST")) {
 			
 			// head to video interstitial intent
 			Intent i = new Intent(context, VideoInterstitialActivity.class);
 			SdkLog.i(TAG, "Found video interstitial -> show");
 			// pass banner data and original intent to video interstitial
-			i.putExtra("data", data);
+			i.putExtra("data", data.getResponse());
 			i.putExtra("target", target);
 			i.putExtra("unmuted", Boolean.valueOf(intent.getExtras().getBoolean("unmuted")));
 			if (this.settings.getOnAdSuccessListener() != null) {
@@ -180,7 +185,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			Intent i = new Intent(this.context, InterstitialActivity.class);
 			SdkLog.i(TAG, "Found interstitial -> show");
 			// pass banner data and original intent to interstitial
-			i.putExtra("data", data);
+			i.putExtra("data", data.getResponse());
 			i.putExtra("target", target);
 			i.putExtra("timeout",
 				(Integer) this.intent.getExtras().get("timeout"));

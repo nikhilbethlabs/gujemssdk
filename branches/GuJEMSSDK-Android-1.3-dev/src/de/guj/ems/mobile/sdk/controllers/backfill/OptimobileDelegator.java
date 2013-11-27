@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.controllers;
+package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import java.util.HashMap;
 
@@ -17,6 +17,8 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
@@ -166,12 +168,12 @@ public class OptimobileDelegator {
 				if (emsMobileView != null && (emsMobileView.getParent() == null || GuJEMSListAdView.class.equals(emsMobileView.getClass()))) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
-					emsMobileView.processResponse(optimobileView.getLastResponse());
+					emsMobileView.processResponse(new OptimobileAdResponse(optimobileView.getLastResponse()));
 				}
 				else if (emsNativeMobileView != null) {
 					SdkLog.d(TAG, "Primary adView without parent / is list view, replacing content with secondary adview's.");
 					SdkLog.d(TAG, "optimobile response:" + optimobileView.getLastResponse());
-					emsNativeMobileView.processResponse(optimobileView.getLastResponse());					
+					emsNativeMobileView.processResponse(new OptimobileAdResponse(optimobileView.getLastResponse()));					
 				}
 				else {
 					display = true;

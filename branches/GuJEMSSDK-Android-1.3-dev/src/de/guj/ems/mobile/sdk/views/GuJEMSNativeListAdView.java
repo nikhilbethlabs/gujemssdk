@@ -2,6 +2,8 @@ package de.guj.ems.mobile.sdk.views;
 
 import java.util.Map;
 
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ import android.widget.AbsListView;
  *
  */
 public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
-		AdResponseHandler {
+		IAdResponseHandler {
 
 	public GuJEMSNativeListAdView(Context context) {
 		super(context);

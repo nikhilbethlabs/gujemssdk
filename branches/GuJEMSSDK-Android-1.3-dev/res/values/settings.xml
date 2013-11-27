@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Set this to true if you want the geolocation truncated to two digits -->
+    <bool name="ems_shorten_location">false</bool>
+
+    <!--  Set this to true if you want test ads in all adviews -->
+	<bool name="ems_test_mode">false</bool>
+	
+	<!-- Set this to false to disable debug log -->
+	<bool name="ems_debug_log">false</bool>
+</resources>

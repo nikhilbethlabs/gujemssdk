@@ -32,15 +32,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
-import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
-import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
-import de.guj.ems.mobile.sdk.controllers.OptimobileDelegator;
-import de.guj.ems.mobile.sdk.util.AdResponseParser;
-import de.guj.ems.mobile.sdk.util.AdResponseParserFactory;
+import de.guj.ems.mobile.sdk.controllers.adserver.AdResponseParser;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -61,7 +61,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  *
  */
-public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
+public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler {
 
 	private Bitmap stillImage;
 
@@ -369,9 +369,10 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				new AdServerAccess(SdkUtil.getUserAgent(),
+				SdkUtil.adRequest(
+						this,
 						settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash(), this)
+						settings.getSecurityHeaderValueHash())
 						.execute(new String[] { url });
 			}
 			// Do nothing if offline
@@ -457,15 +458,15 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 	}
 
 	@Override
-	public void processResponse(String response) {
+	public void processResponse(IAdResponse response) {
 		try {
-			this.parser = AdResponseParserFactory.getParser(response);
+			this.parser = response.getParser();
 			SdkLog.d(TAG, "Native view response parser is " + parser + " ["
 					+ (parser != null ? parser.isValid() : false) + "]");
 			if (parser != null && parser.isValid()) {
 				new DownloadImageTask(this).execute(parser.getImageUrl());
 				if (parser.getTrackingImageUrl() != null) {
-					new AdServerAccess(SdkUtil.getUserAgent(), null)
+					SdkUtil.adRequest(null)
 							.execute(parser.getTrackingImageUrl());
 				}
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
@@ -512,9 +513,10 @@ public class GuJEMSNativeAdView extends ImageView implements AdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				new AdServerAccess(SdkUtil.getUserAgent(),
+				SdkUtil.adRequest(
+						this,
 						settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash(), this)
+						settings.getSecurityHeaderValueHash())
 						.execute(new String[] { url });
 			}
 			// Do nothing if offline

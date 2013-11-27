@@ -17,14 +17,15 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
-import de.guj.ems.mobile.sdk.controllers.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
-import de.guj.ems.mobile.sdk.controllers.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
-import de.guj.ems.mobile.sdk.controllers.OptimobileDelegator;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -45,7 +46,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
+public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	private Handler handler = new Handler();
 
@@ -250,7 +251,10 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
+				SdkUtil.adRequest(
+						this,
+						settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash())
 						.execute(new String[] { url });
 			}
 			// Do nothing if offline
@@ -328,11 +332,11 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 		}
 	}
 
-	public final void processResponse(String response) {
+	public final void processResponse(IAdResponse response) {
 		try {
-			if (response != null && response.length() > 0) {
+			if (!response.isEmpty()) {
 				setTimeoutRunnable(new TimeOutRunnable());
-				loadData(response, "text/html", "utf-8");
+				loadData(response.getResponse(), "text/html", "utf-8");
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
@@ -389,10 +393,12 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
-
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId() + "]");
-				new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
-				.execute(new String[] { url });
+				SdkUtil.adRequest(
+						this,
+						settings.getSecurityHeaderName(),
+						settings.getSecurityHeaderValueHash())
+						.execute(new String[] { url });
 			}
 			// Do nothing if offline
 			else {
@@ -434,9 +440,9 @@ public class GuJEMSAdView extends OrmmaView implements AdResponseHandler {
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
-	
+/*	
 	public void setDirectBackFill(String bfSiteId, String bfZoneId) {
 		((AmobeeSettingsAdapter)this.settings).setDirectBackfill(bfSiteId, bfZoneId, getId());		
 	}
-
+*/
 }

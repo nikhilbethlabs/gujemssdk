@@ -5,9 +5,11 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Bundle;
+import de.guj.ems.mobile.sdk.controllers.adserver.AdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
 
 /**
  * Abstract class template for custom ads. Performs an adrequest.
@@ -17,7 +19,7 @@ import de.guj.ems.mobile.sdk.views.AdResponseHandler;
  * @author stein16
  *
  */
-public abstract class AmobeeCustomAd implements AdResponseHandler {
+public abstract class AmobeeCustomAd implements IAdResponseHandler {
 
 	private final static String TAG = "AmobeeCustomAd";
 	
@@ -193,10 +195,11 @@ public abstract class AmobeeCustomAd implements AdResponseHandler {
 		if (SdkUtil.isOnline()) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			new AdServerAccess(SdkUtil.getUserAgent(), settings.getSecurityHeaderName(), settings.getSecurityHeaderValueHash(), this)
-			.execute(new String[] { url });
-
-
+			SdkUtil.adRequest(
+					this,
+					settings.getSecurityHeaderName(),
+					settings.getSecurityHeaderValueHash())
+					.execute(new String[] { url });
 		} else if (SdkUtil.isOffline()) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 		}		
@@ -206,6 +209,6 @@ public abstract class AmobeeCustomAd implements AdResponseHandler {
 	 * Calback method for the finished ad request. Perform your tasks on the adserver's response here.
 	 * @param response The adservers response as a strign (null if the response was empty)
 	 */
-	public abstract void processResponse(String response);
+	public abstract void processResponse(IAdResponse response);
 
 }

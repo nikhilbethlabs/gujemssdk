@@ -27,8 +27,10 @@ import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import de.guj.ems.mobile.sdk.controllers.AdServerAccess;
-import de.guj.ems.mobile.sdk.views.AdResponseHandler;
+import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
+import de.guj.ems.mobile.sdk.controllers.TrackingRequest;
+import de.guj.ems.mobile.sdk.controllers.adserver.AdRequest;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdRequest;
 
 /**
  * Various global static methods for initialization, configuration of sdk plus
@@ -474,7 +476,29 @@ public class SdkUtil {
 		return ((AudioManager) getContext().getSystemService(
 				Context.AUDIO_SERVICE)).isWiredHeadsetOn();
 	}
-
+	
+	/**
+	 * Create an ad request object with url and response handler
+	 * @param url Ad request url
+	 * @param handler response handler
+	 * @return initialized ad request
+	 */
+	public static AdRequest adRequest(IAdResponseHandler handler) {
+		return new AmobeeAdRequest(handler);
+	}
+	
+	/**
+	 * Create an ad request object url, response handler and security mechanism
+	 * @param url Ad request url
+	 * @param handler response handler
+	 * @param secHeaderName name of security header
+	 * @param secHeaderVal security hash value
+	 * @return initialized ad request
+	 */
+	public static AdRequest adRequest(IAdResponseHandler handler, String secHeaderName, int secHeaderVal) {
+		return new AmobeeAdRequest(secHeaderName, secHeaderVal, handler);
+	}
+	
 	/**
 	 * Perform a quick simple http request without processing the response
 	 * @param url The url to request
@@ -489,24 +513,7 @@ public class SdkUtil {
 	 * @param url An array of url strings
 	 */
 	public static void httpRequests(final String[] url) {
-		(new AdServerAccess(getUserAgent(), new AdResponseHandler() {
-
-			@Override
-			public void processResponse(String response) {
-			}
-
-			@Override
-			public void processError(String msg, Throwable t) {
-				SdkLog.e(TAG, msg, t);
-
-			}
-
-			@Override
-			public void processError(String msg) {
-				SdkLog.e(TAG, msg);
-			}
-
-		})).execute(url);
+		new TrackingRequest().execute(url);
 	}
 	
 	/**
