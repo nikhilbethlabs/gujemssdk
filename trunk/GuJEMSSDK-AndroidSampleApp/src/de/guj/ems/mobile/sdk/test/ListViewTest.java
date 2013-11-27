@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
-import de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView;
 
 public class ListViewTest extends Activity {
 
@@ -101,10 +100,10 @@ public class ListViewTest extends Activity {
 		if (item.getItemId() == R.id.adReload) {
 			Object ad1 = ca.getItem(2);
 			Object ad2 = ca.getItem(5);
-			if (ad1 != null && GuJEMSNativeListAdView.class.equals(ad1.getClass())) {
+			if (ad1 != null && GuJEMSListAdView.class.equals(ad1.getClass())) {
 				((GuJEMSListAdView)ad1).reload();
 			}
-			if (ad2 != null && GuJEMSNativeListAdView.class.equals(ad2.getClass())) {
+			if (ad2 != null && GuJEMSListAdView.class.equals(ad2.getClass())) {
 				((GuJEMSListAdView)ad2).reload();
 			}			
 		}

@@ -16,7 +16,7 @@
             android:id="@+id/ad16511"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             android:background="#fff"
+            android:background="#0086d5"
             ems:ems_geo="true"
             ems:ems_kw="false"
             ems:ems_nkw="false"

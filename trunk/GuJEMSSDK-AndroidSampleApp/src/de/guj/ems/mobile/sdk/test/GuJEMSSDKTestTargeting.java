@@ -86,17 +86,19 @@ public class GuJEMSSDKTestTargeting extends Activity {
 		// Adding custom parameters to the request
 		Map<String,Object> customParams2 = new HashMap<String,Object>();
 		customParams.put("tm", Integer.valueOf(-11));
-
+		 */
 		// Adding a keyword to the request
-		String [] kws2 = {"ems"};
-		*/
+		
+		Map<String,Object> customParams2 = new HashMap<String,Object>();
+		customParams2.put("as", 15224);		
 		GuJEMSAdView adView2 = new GuJEMSAdView(
 				GuJEMSSDKTestTargeting.this,
-				null, //customParams2,
+				customParams2, //customParams2,
 				null, //kws2,
 				null,
 				R.layout.targeting_adview_bottom
 		);
+		
 		
 		// Programmatically add listeners
 		adView2.setOnAdSuccessListener(new IOnAdSuccessListener() {
