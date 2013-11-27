@@ -4,11 +4,10 @@
     android:id="@+id/ad15224"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
+    android:background="#0086d5"
     ems:ems_geo="false"
     ems:ems_kw="true"
     ems:ems_nkw="false"
     ems:ems_uid="false"
-    ems:ems_zoneId="15224"
  	ems:ems_bfSiteId="44496"
     ems:ems_bfZoneId="174882" />
