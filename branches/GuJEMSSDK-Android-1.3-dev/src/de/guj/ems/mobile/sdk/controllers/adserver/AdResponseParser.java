@@ -23,6 +23,8 @@ public abstract class AdResponseParser {
 	private String trackingImageUrl;
 
 	private boolean valid;
+	
+	private boolean processed;
 
 	/**
 	 * Creates a new ad response parser for HTML responses
@@ -46,7 +48,6 @@ public abstract class AdResponseParser {
 		this.response = response;
 		this.xml = xml;
 		this.valid = true;
-		this.process();
 	}
 
 	protected abstract void process();
@@ -65,6 +66,9 @@ public abstract class AdResponseParser {
 	 * @return image URL string
 	 */
 	public String getImageUrl() {
+		if (!processed) {
+			process();
+		}
 		return imageUrl;
 	}
 
@@ -74,6 +78,9 @@ public abstract class AdResponseParser {
 	 * @return click URL string
 	 */
 	public String getClickUrl() {
+		if (!processed) {
+			process();
+		}
 		return clickUrl;
 	}
 
@@ -83,6 +90,9 @@ public abstract class AdResponseParser {
 	 * @return Pixel tracking URL String
 	 */
 	public String getTrackingImageUrl() {
+		if (!processed) {
+			process();
+		}
 		return trackingImageUrl;
 	}
 
@@ -103,6 +113,9 @@ public abstract class AdResponseParser {
 	}
 
 	public boolean isValid() {
+		if (!processed) {
+			process();
+		}
 		return valid;
 	}
 

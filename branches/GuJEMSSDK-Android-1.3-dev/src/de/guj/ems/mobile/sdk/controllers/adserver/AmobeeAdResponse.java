@@ -1,4 +1,4 @@
-package de.guj.ems.mobile.sdk.controllers.adserver;
+ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 public class AmobeeAdResponse extends AdResponse {
 
