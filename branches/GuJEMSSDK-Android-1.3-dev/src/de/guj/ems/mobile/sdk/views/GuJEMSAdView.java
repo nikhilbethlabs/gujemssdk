@@ -25,6 +25,7 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
 import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -342,7 +343,9 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				}
 			} else {
 				setVisibility(GONE);
-				if (this.settings.getDirectBackfill() != null) {
+				if (this.settings.getDirectBackfill() != null
+						&& !OptimobileAdResponse.class.equals(response
+								.getClass())) {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
 								+ this.getId() + "]");
@@ -356,7 +359,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 							SdkLog.e(TAG, "Error delegating to optimobile", e);
 						}
 					}
-				} else {
+				} else if (response.isEmpty()) {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
 					} else {

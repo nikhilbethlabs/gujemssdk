@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import com.MASTAdView.MASTAdDelegate.AdDownloadEventHandler;
 import com.MASTAdView.MASTAdLog;
 import com.MASTAdView.MASTAdView;
+import com.google.ads.Ad;
+import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
+import com.google.ads.AdRequest.ErrorCode;
 
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
@@ -52,6 +55,8 @@ public class OptimobileDelegator {
 
 	private Context context;
 
+	private IAdServerSettingsAdapter settings;
+
 	/**
 	 * Default constructor
 	 * 
@@ -72,6 +77,7 @@ public class OptimobileDelegator {
 		this.context = context;
 		this.emsMobileView = adView;
 		this.handler = this.emsMobileView.getHandler();
+		this.settings = settings;
 		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
 		if (handler != null) {
 			handler.post(new Runnable() {
@@ -80,10 +86,13 @@ public class OptimobileDelegator {
 					optimobileView = initOptimobileView(context, settings, 0);
 
 					if (adView.getParent() != null) {
-						((ViewGroup) adView.getParent()).addView(
-								optimobileView,
-								((ViewGroup) adView.getParent())
-										.indexOfChild(adView) + 1);
+						ViewGroup parent = (ViewGroup) adView.getParent();
+						int index = parent.indexOfChild(adView);
+						SdkLog.d(TAG,
+								"Replacing original adview with optimobile adview.");
+						optimobileView.setLayoutParams(adView.getLayoutParams()); // lp
+						parent.removeView(adView);
+						parent.addView(optimobileView, index);
 					} else {
 						SdkLog.d(TAG, "Primary view initialized off UI.");
 					}
@@ -117,7 +126,7 @@ public class OptimobileDelegator {
 			GuJEMSNativeAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsNativeMobileView = adView;
-
+		this.settings = settings;
 		this.handler = this.emsNativeMobileView.getHandler();
 		SdkLog.d(TAG, "Original view (GuJEMSNativeAdView) handler is "
 				+ handler);
@@ -147,10 +156,8 @@ public class OptimobileDelegator {
 		final MASTAdView view = new MASTAdView(context,
 				Integer.valueOf(settings.getDirectBackfill().getSiteId()),
 				Integer.valueOf(settings.getDirectBackfill().getZoneId()));
+		// TODO list view layout params
 
-		view.setLayoutParams(new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT));
 		view.setId(emsMobileView != null ? emsMobileView.getId()
 				: emsNativeMobileView.getId());
 		view.setBackgroundDrawable(emsMobileView != null ? emsMobileView
@@ -159,6 +166,7 @@ public class OptimobileDelegator {
 		view.setVisibility(View.GONE);
 		view.setUseInternalBrowser(true);
 		view.setUpdateTime(0);
+
 		if (emsMobileView != null
 				&& !GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
 			view.getAdDelegate().setThirdPartyRequestHandler(delegator);
@@ -172,24 +180,25 @@ public class OptimobileDelegator {
 
 			@Override
 			public void onDownloadError(MASTAdView arg0, String arg1) {
-				if (arg1 != null && arg1.startsWith("No ads")) {
-					if (settings.getOnAdEmptyListener() != null) {
-						settings.getOnAdEmptyListener().onAdEmpty();
-					} else {
-						SdkLog.i(TAG, "optimobile: " + arg1);
-					}
-				} else {
-					if (settings.getOnAdErrorListener() != null) {
-						settings.getOnAdErrorListener().onAdError(
-								"optimobile: " + arg1);
-					} else {
-						SdkLog.w(TAG, "optimobile: " + arg1);
-					}
-				}
 				if (handler != null) {
+					final String s = arg1;
 					handler.post(new Runnable() {
 						@Override
 						public void run() {
+							if (s != null && s.startsWith("No ads")) {
+								if (settings.getOnAdEmptyListener() != null) {
+									settings.getOnAdEmptyListener().onAdEmpty();
+								} else {
+									SdkLog.i(TAG, "optimobile: " + s);
+								}
+							} else {
+								if (settings.getOnAdErrorListener() != null) {
+									settings.getOnAdErrorListener().onAdError(
+											"optimobile: " + s);
+								} else {
+									SdkLog.w(TAG, "optimobile: " + s);
+								}
+							}
 							view.setVisibility(View.GONE);
 						}
 					});
@@ -198,19 +207,19 @@ public class OptimobileDelegator {
 
 			@Override
 			public void onDownloadEnd(MASTAdView arg0) {
+
 				SdkLog.d(TAG, "optimobile Ad loaded.");
 				if (emsMobileView != null
-						&& (emsMobileView.getParent() == null || GuJEMSListAdView.class
-								.equals(emsMobileView.getClass()))) {
-					SdkLog.d(
-							TAG,
-							"Primary adView without parent / is list view, replacing content with secondary adview's.");
+						&& GuJEMSListAdView.class.equals(emsMobileView
+								.getClass())) {
+					SdkLog.d(TAG,
+							"Primary adView is list view, replacing content with secondary adview's.");
 					emsMobileView.processResponse(new OptimobileAdResponse(
 							optimobileView.getLastResponse()));
+
 				} else if (emsNativeMobileView != null) {
-					SdkLog.d(
-							TAG,
-							"Primary adView without parent / is list view, replacing content with secondary adview's.");
+					SdkLog.d(TAG,
+							"Primary adView is native view, replacing content with secondary adview's.");
 					emsNativeMobileView
 							.processResponse(new OptimobileAdResponse(
 									optimobileView.getLastResponse()));
@@ -225,19 +234,23 @@ public class OptimobileDelegator {
 
 			@Override
 			public void onAdViewable(MASTAdView arg0) {
-				if (display) {
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							view.setVisibility(View.VISIBLE);
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						if (display) {
+							optimobileView.setVisibility(View.VISIBLE);
+						} else {
+							optimobileView.removeAllViews();
+							optimobileView = null;
 						}
-					});
-				}
 
-				SdkLog.d(TAG, "optimobile Ad loaded.");
-				if (settings.getOnAdSuccessListener() != null) {
-					settings.getOnAdSuccessListener().onAdSuccess();
-				}
+						SdkLog.d(TAG, "optimobile Ad viewable.");
+						if (settings.getOnAdSuccessListener() != null) {
+							settings.getOnAdSuccessListener().onAdSuccess();
+						}
+					}
+				});
+
 			}
 		});
 
@@ -304,23 +317,65 @@ public class OptimobileDelegator {
 											.getId());
 							admobAdView.setGravity(Gravity.CENTER_HORIZONTAL);
 							admobAdView
+									.setLayoutParams(emsMobileView != null ? emsMobileView
+											.getLayoutParams()
+											: emsNativeMobileView
+													.getLayoutParams());
+							admobAdView
 									.setBackgroundDrawable(emsMobileView != null ? emsMobileView
 											.getBackground()
 											: emsNativeMobileView
 													.getBackground());
-							((ViewGroup) emsMobileView.getParent())
-									.removeView(optimobileView);
-							((ViewGroup) emsMobileView.getParent()).addView(
-									admobAdView, ((ViewGroup) emsMobileView
-											.getParent())
-											.indexOfChild(emsMobileView) + 1);
+							ViewGroup parent = (ViewGroup) optimobileView
+									.getParent();
+							int index = parent.indexOfChild(optimobileView);
+							parent.removeView(optimobileView);
+							parent.addView(admobAdView, index);
+
+							admobAdView.setAdListener(new AdListener() {
+
+								@Override
+								public void onReceiveAd(Ad arg0) {
+									SdkLog.d(TAG, "Admob Ad viewable.");
+									if (settings.getOnAdSuccessListener() != null) {
+										settings.getOnAdSuccessListener()
+												.onAdSuccess();
+									}
+								}
+
+								@Override
+								public void onPresentScreen(Ad arg0) {
+								}
+
+								@Override
+								public void onLeaveApplication(Ad arg0) {
+								}
+
+								@Override
+								public void onFailedToReceiveAd(Ad arg0,
+										ErrorCode arg1) {
+									SdkLog.d(TAG, "No Admob ad available.");
+									if (settings.getOnAdEmptyListener() != null) {
+										settings.getOnAdEmptyListener()
+												.onAdEmpty();
+									}
+								}
+
+								@Override
+								public void onDismissScreen(Ad arg0) {
+									// TODO Auto-generated method stub
+
+								}
+							});
 							admobAdView.loadAd(adRequest);
+
 						} else {
 							SdkLog.w(TAG,
 									"AdMob cannot be loaded in native or list ad views.");
 						}
 					}
 				});
+
 			} else {
 				SdkLog.w(TAG, "Unknown third party ad stream detected [" + type
 						+ "]");

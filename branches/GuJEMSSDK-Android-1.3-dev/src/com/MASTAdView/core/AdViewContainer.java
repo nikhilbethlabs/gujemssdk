@@ -307,7 +307,7 @@ public class AdViewContainer extends RelativeLayout implements
 			// Child will fill the parent container; we manage the size at the
 			// parent level
 			v.setLayoutParams(new ViewGroup.LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		}
 
 		// apply standard properties
@@ -352,8 +352,8 @@ public class AdViewContainer extends RelativeLayout implements
 
 	private RelativeLayout.LayoutParams createAdLayoutParameters() {
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.FILL_PARENT,
-				RelativeLayout.LayoutParams.FILL_PARENT);
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
 				RelativeLayout.TRUE);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP,

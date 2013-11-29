@@ -7,12 +7,14 @@
  */
 package de.guj.ems.mobile.sdk.test;
 
+import de.guj.ems.mobile.sdk.util.SdkLog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class RelativeLayoutTest extends Activity {
 
@@ -45,5 +47,21 @@ public class RelativeLayoutTest extends Activity {
 	
 	public void onInterstitialAdError(String msg, Throwable t) {
 		System.out.println(t.toString());
+	}
+	
+	public void onAdEmpty() {
+		Toast.makeText(this, "Ad is empty", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void onAdError(String msg) {
+		Toast.makeText(this, "Ad error: " + msg, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void onAdError(String msg, Throwable t) {
+		Toast.makeText(this, "Ad error: " + msg + " (" + t.getCause() + ")", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void onAdSuccess() {
+		Toast.makeText(this, "Ad displayed.", Toast.LENGTH_SHORT).show();
 	}
 }
