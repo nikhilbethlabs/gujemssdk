@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <ImageView
@@ -22,24 +22,28 @@
         android:inputType="none"
         android:text="Dies ist ein Textfeld, ein Textfeld, ein Textfeld" >
     </EditText>
-
+<!-- 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sampleText" >
- 
+ -->
         <de.guj.ems.mobile.sdk.views.GuJEMSAdView
             android:id="@+id/ad15312"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#0086d5"
+            android:layout_below="@id/sampleText"
             ems:ems_geo="false"
             ems:ems_kw="false"
             ems:ems_nkw="false"
             ems:ems_uid="true"
             ems:ems_zoneId="17944"
             ems:ems_bfSiteId="44496"
-            ems:ems_bfZoneId="174882" />
+            ems:ems_bfZoneId="174882"
+            ems:ems_onAdError="onAdError"
+            ems:ems_onAdEmpty="onAdEmpty"
+            ems:ems_onAdSuccess="onAdSuccess" />
    
 <!--  ems:ems_zoneId="15312" -->
         <ImageView
@@ -49,6 +53,7 @@
             
             android:layout_below="@id/ad15312"
             android:src="@drawable/de5a9f0900" />
-    </RelativeLayout>
-
+<!-- 
+        </RelativeLayout>
+-->
 </RelativeLayout>
