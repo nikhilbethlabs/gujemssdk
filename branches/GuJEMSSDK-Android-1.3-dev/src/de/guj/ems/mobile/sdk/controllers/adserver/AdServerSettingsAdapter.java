@@ -577,14 +577,37 @@ public abstract class AdServerSettingsAdapter implements
 		this.directBackfill = directBackfill;
 	}
 
-	/*
-	 * public void setDirectBackfill(String bfSiteId, String bfZoneId, int id) {
-	 * this.setDirectBackfill(new BackfillDelegator.BackfillData(bfSiteId,
-	 * bfZoneId, "", id)); }
-	 */
 	@Override
 	public String getSecurityHeaderName() {
 		return EMS_SECURITY_HEADER_NAME;
 	}
 
+	@Override
+	public void addCustomParams(Map<String, ?> params) {
+		if (params != null) {
+			Iterator<String> mi = params.keySet().iterator();
+			while (mi.hasNext()) {
+				String param = mi.next();
+				Object value = params.get(param);
+				if (value.getClass().equals(String.class)) {
+					addCustomRequestParameter(param,
+							(String) value);
+				} else if (value.getClass().equals(Double.class)) {
+					addCustomRequestParameter(param,
+							((Double) value).doubleValue());
+				} else if (value.getClass().equals(Integer.class)) {
+					addCustomRequestParameter(param,
+							((Integer) value).intValue());
+				} else {
+					SdkLog.e(TAG,
+							"Unknown object in custom params. Only String, Integer, Double allowed.");
+				}
+			}
+		} else {
+			SdkLog.w(TAG, "Custom params constructor used with null-array.");
+		}		
+	}
+
+
+	
 }

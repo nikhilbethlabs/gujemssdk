@@ -21,6 +21,13 @@ public interface IAdResponse {
 	 * @return ad server response as Strgin (html, xml, text, ...)
 	 */
 	public String getResponse();
+	
+	/**
+	 * Get the response as preformatted HTML
+	 * 
+	 * @return ad server response as HTML
+	 */
+	public String getResponseAsHTML();	
 
 	/**
 	 * For image only types of responses, a parser may be referenced

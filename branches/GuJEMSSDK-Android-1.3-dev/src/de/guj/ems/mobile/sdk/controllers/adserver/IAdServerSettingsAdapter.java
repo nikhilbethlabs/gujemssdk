@@ -1,6 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
@@ -181,5 +182,11 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 * @return Hashed value of the security header
 	 */
 	public int getSecurityHeaderValueHash();
+	
+	/**
+	 * Add a map of custom params to the request. Only String, Integer, Double allowed.
+	 * @param params Map of parameter names and values
+	 */
+	public void addCustomParams(Map<String, ?> params);
 
 }

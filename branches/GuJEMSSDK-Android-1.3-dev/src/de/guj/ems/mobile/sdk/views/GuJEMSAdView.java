@@ -1,7 +1,6 @@
 package de.guj.ems.mobile.sdk.views;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.ormma.view.OrmmaView;
@@ -110,7 +109,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
-		this.addCustomParams(customParams);
+		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
 		this.load();
 	}
@@ -135,7 +134,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
-		this.addCustomParams(customParams);
+		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
 		this.load();
 	}
@@ -183,31 +182,6 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		return new ViewGroup.LayoutParams(w, h);
-	}
-
-	private void addCustomParams(Map<String, ?> params) {
-		if (params != null) {
-			Iterator<String> mi = params.keySet().iterator();
-			while (mi.hasNext()) {
-				String param = mi.next();
-				Object value = params.get(param);
-				if (value.getClass().equals(String.class)) {
-					this.settings.addCustomRequestParameter(param,
-							(String) value);
-				} else if (value.getClass().equals(Double.class)) {
-					this.settings.addCustomRequestParameter(param,
-							((Double) value).doubleValue());
-				} else if (value.getClass().equals(Integer.class)) {
-					this.settings.addCustomRequestParameter(param,
-							((Integer) value).intValue());
-				} else {
-					SdkLog.e(TAG,
-							"Unknown object in custom params. Only String, Integer, Double allowed.");
-				}
-			}
-		} else {
-			SdkLog.w(TAG, "Custom params constructor used with null-array.");
-		}
 	}
 
 	@Override
@@ -334,19 +308,10 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	@Override
 	public final void processResponse(IAdResponse response) {
 		try {
-			if (!response.isEmpty() && !response.getParser().isXml()) {
+			if (!response.isEmpty()) {
 				setTimeoutRunnable(new TimeOutRunnable());
-				loadData(response.getResponse(), "text/html", "utf-8");
+				loadData(response.getParser().isXml() ? response.getResponseAsHTML() : response.getResponse(), "text/html", "utf-8");
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
-				}
-			}
-			else if (!response.isEmpty() && response.getParser().isXml()) {
-				SdkLog.w(TAG, "WebView received XML response...");
-				String data = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\"><a href=\"" + response.getParser().getClickUrl() + "\"><img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\"" + response.getParser().getImageUrl() + "\"></a></div>";
-				loadData(data, "text/html", "utf-8");
-				SdkLog.i(TAG, "Ad (XML) found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
