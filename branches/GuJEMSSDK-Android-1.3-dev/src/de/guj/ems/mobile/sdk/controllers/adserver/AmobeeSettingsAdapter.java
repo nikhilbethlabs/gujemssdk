@@ -69,7 +69,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 *            attribute set with configuration
 	 */
 	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set) {
-		super(set, viewClass);
+		super(context, set, viewClass);
 
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
@@ -248,7 +248,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 *            bundle with configuration
 	 */
 	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance) {
-		super(savedInstance, viewClass);
+		super(context, savedInstance, viewClass);
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_UUID) != null) {
 			if (savedInstance.getBoolean(
 					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX

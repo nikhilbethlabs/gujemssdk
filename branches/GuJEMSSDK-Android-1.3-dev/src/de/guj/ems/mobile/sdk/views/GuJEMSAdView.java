@@ -324,7 +324,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
 								+ this.getId() + "]");
-						new OptimobileDelegator(SdkUtil.getContext(), this,
+						new OptimobileDelegator(getContext(), this,
 								settings);
 					} catch (Exception e) {
 						if (this.settings.getOnAdErrorListener() != null) {

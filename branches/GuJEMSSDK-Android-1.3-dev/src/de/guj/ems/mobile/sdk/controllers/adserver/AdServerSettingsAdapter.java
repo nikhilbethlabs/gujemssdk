@@ -40,12 +40,14 @@ public abstract class AdServerSettingsAdapter implements
 	private final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
 			"#.##");
 
-
 	protected final static long EMS_LOCATION_MAXAGE_MS = 7200000;
 	
 	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
 
-	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
+			.getString(R.string.attributePrefix);
+	
+	private final static String EMS_LISTENER_PREFIX = EMS_ATTRIBUTE_PREFIX
 			+ "onAd";
 
 	/**
@@ -123,9 +125,6 @@ public abstract class AdServerSettingsAdapter implements
 			.getString(R.string.backfillZoneId);
 
 
-	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
-			.getString(R.string.attributePrefix);
-
 	private final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
 			.getString(R.string.securityHeaderName);
 
@@ -143,10 +142,13 @@ public abstract class AdServerSettingsAdapter implements
 
 	private final Map<String, String> paramValues;
 	
+	private Context context;
+	
 	protected Class<?> viewClass;
 
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
+		this.context = null;
 		this.viewClass = null;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = new HashMap<String, String>();
@@ -160,7 +162,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param set
 	 *            inflated layout parameters
 	 */
-	public AdServerSettingsAdapter(AttributeSet set, Class<?> viewClass) {
+	public AdServerSettingsAdapter(Context context, AttributeSet set, Class<?> viewClass) {
+		this.context = context;
 		this.viewClass = viewClass;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(set);
@@ -174,7 +177,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param savedInstance
 	 *            saved instance state
 	 */
-	public AdServerSettingsAdapter(Bundle savedInstance, Class<?> viewClass) {
+	public AdServerSettingsAdapter(Context context, Bundle savedInstance, Class<?> viewClass) {
+		this.context = context;
 		this.viewClass = viewClass;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(savedInstance);
@@ -206,9 +210,9 @@ public abstract class AdServerSettingsAdapter implements
 				try {
 					Class<?>[] noParams = null;
 					Object[] noArgs = null;
-					Method lMethod = SdkUtil.getContext().getClass()
+					Method lMethod = context.getClass()
 							.getMethod(lMethodName, noParams);
-					lMethod.invoke(SdkUtil.getContext(), noArgs);
+					lMethod.invoke(context, noArgs);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdEmptyListener " + lMethodName
 							+ " not found. Check your xml.", nsme);
@@ -260,9 +264,9 @@ public abstract class AdServerSettingsAdapter implements
 				try {
 					Class<?>[] noParams = null;
 					Object[] noArgs = null;
-					Method lMethod = SdkUtil.getContext().getClass()
+					Method lMethod = context.getClass()
 							.getMethod(lMethodName, noParams);
-					lMethod.invoke(SdkUtil.getContext(), noArgs);
+					lMethod.invoke(context, noArgs);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName
 							+ " not found. Check your xml.", nsme);
@@ -288,12 +292,11 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdError(String msg, Throwable t) {
 				try {
-					Method lMethod = SdkUtil
-							.getContext()
+					Method lMethod = context
 							.getClass()
 							.getMethod(lMethodName, String.class,
 									Throwable.class);
-					lMethod.invoke(SdkUtil.getContext(), msg, t);
+					lMethod.invoke(context, msg, t);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
 							+ " not found. Check your xml.", nsme);
@@ -311,9 +314,9 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdError(String msg) {
 				try {
-					Method lMethod = SdkUtil.getContext().getClass()
+					Method lMethod = context.getClass()
 							.getMethod(lMethodName, String.class);
-					lMethod.invoke(SdkUtil.getContext(), msg);
+					lMethod.invoke(context, msg);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
 							+ " not found. Check your xml.", nsme);
@@ -346,7 +349,7 @@ public abstract class AdServerSettingsAdapter implements
 	 * @return the location
 	 */
 	protected double[] getLocation() {
-		LocationManager lm = (LocationManager) SdkUtil.getContext()
+		LocationManager lm = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);
 		List<String> providers = lm.getProviders(false);
 		Iterator<String> provider = providers.iterator();
@@ -371,7 +374,7 @@ public abstract class AdServerSettingsAdapter implements
 			loc[0] = lastKnown.getLatitude();
 			loc[1] = lastKnown.getLongitude();
 
-			if (SdkUtil.getContext().getResources()
+			if (context.getResources()
 					.getBoolean(R.bool.ems_shorten_location)) {
 				loc[0] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[0]));
 				loc[1] = Double.valueOf(TWO_DIGITS_DECIMAL.format(loc[1]));
@@ -431,12 +434,11 @@ public abstract class AdServerSettingsAdapter implements
 				String attr = attrs.getAttributeName(i);
 				if (attr != null
 						&& attr.startsWith(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX)) {
-
 					if (attr.startsWith(AdServerSettingsAdapter.EMS_LISTENER_PREFIX)) {
 						String lName = attr.substring(4);
-						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? SdkUtil.getContext()
+						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? context
 								.obtainStyledAttributes(attrs,
-										R.styleable.GuJEMSAdView) : SdkUtil.getContext()
+										R.styleable.GuJEMSAdView) : context
 										.obtainStyledAttributes(attrs,
 												R.styleable.GuJEMSNativeAdView);
 						if (lName

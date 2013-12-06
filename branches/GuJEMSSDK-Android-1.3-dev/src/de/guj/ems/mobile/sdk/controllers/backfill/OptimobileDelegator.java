@@ -222,7 +222,7 @@ public class OptimobileDelegator {
 							"optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
-					emsMobileView.getHandler().post(new Runnable() {
+					handler.post(new Runnable() {
 						public void run() {
 							emsMobileView
 									.processResponse(new OptimobileAdResponse(
@@ -238,14 +238,14 @@ public class OptimobileDelegator {
 							"optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
-					emsNativeMobileView.post(new Runnable() {
-						public void run() {
+//					handler.post(new Runnable() {
+//						public void run() {
 							emsNativeMobileView
 									.processResponse(new OptimobileAdResponse(
 											response.indexOf("thirdparty") >= 0 ? null
 													: response));
-						}
-					});
+//						}
+//					});
 
 				} else {
 					display = true;

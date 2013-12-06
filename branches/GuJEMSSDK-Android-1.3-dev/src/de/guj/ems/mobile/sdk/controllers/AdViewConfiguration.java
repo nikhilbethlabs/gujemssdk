@@ -1,14 +1,11 @@
 package de.guj.ems.mobile.sdk.controllers;
 
 import de.guj.ems.mobile.sdk.R;
-import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 public class AdViewConfiguration {
 
-	private final static String TAG = "AdViewConfiguration";
-	
 	public static interface IViewConfiguration {
 		
 		public int getErrorListenerId();
@@ -179,7 +176,6 @@ public class AdViewConfiguration {
 	private final static NativeViewConfiguration NATIVEVIEWCONFIG = new NativeViewConfiguration();
 
 	public final static IViewConfiguration getConfig(Class<?> viewClass) {
-		SdkLog.d(TAG, "View configuration switched to " + viewClass.getName());
 		if (viewClass.equals(GuJEMSAdView.class)
 				|| viewClass.equals(GuJEMSListAdView.class)) {
 			return WEBVIEWCONFIG;
