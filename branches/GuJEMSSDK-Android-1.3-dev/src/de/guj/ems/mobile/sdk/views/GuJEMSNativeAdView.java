@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -40,6 +39,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.AdResponseParser;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
 import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -234,7 +234,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
-		this.addCustomParams(customParams);
+		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
 		this.load();
 	}
@@ -259,7 +259,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
-		this.addCustomParams(customParams);
+		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
 		this.load();
 	}
@@ -283,31 +283,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
 		this.load();
-	}
-
-	private void addCustomParams(Map<String, ?> params) {
-		if (params != null) {
-			Iterator<String> mi = params.keySet().iterator();
-			while (mi.hasNext()) {
-				String param = mi.next();
-				Object value = params.get(param);
-				if (value.getClass().equals(String.class)) {
-					this.settings.addCustomRequestParameter(param,
-							(String) value);
-				} else if (value.getClass().equals(Double.class)) {
-					this.settings.addCustomRequestParameter(param,
-							((Double) value).doubleValue());
-				} else if (value.getClass().equals(Integer.class)) {
-					this.settings.addCustomRequestParameter(param,
-							((Integer) value).intValue());
-				} else {
-					SdkLog.e(TAG,
-							"Unknown object in custom params. Only String, Integer, Double allowed.");
-				}
-			}
-		} else {
-			SdkLog.w(TAG, "Custom params constructor used with null-array.");
-		}
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
@@ -458,7 +433,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			SdkLog.e(TAG, msg, t);
 		}
 	}
-
+/*
 	@Override
 	public void processResponse(IAdResponse response) {
 		try {
@@ -502,7 +477,57 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			processError("Error loading ad [" + this.getId() + "]", e);
 		}
 	}
-
+*/
+	@Override
+	public final void processResponse(IAdResponse response) {
+		try {
+			if (!response.isEmpty()) {
+				SdkLog.d(TAG, "Native view handling response of type " + response.getClass());
+				parser = response.getParser();
+				new DownloadImageTask(this).execute(parser.getImageUrl());
+				if (parser.getTrackingImageUrl() != null) {
+					SdkUtil.adRequest(null).execute(
+							parser.getTrackingImageUrl());
+				}
+				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
+				if (this.settings.getOnAdSuccessListener() != null) {
+					this.settings.getOnAdSuccessListener().onAdSuccess();
+				}
+			}
+			else {
+				//setVisibility(GONE);
+				if (this.settings.getDirectBackfill() != null
+						&& !OptimobileAdResponse.class.equals(response
+								.getClass())) {
+					try {
+						SdkLog.i(TAG, "Passing to optimobile delegator. ["
+								+ this.getId() + "]");
+						new OptimobileDelegator(SdkUtil.getContext(), this,
+								settings);
+					} catch (Exception e) {
+						if (this.settings.getOnAdErrorListener() != null) {
+							this.settings.getOnAdErrorListener().onAdError(
+									"Error delegating to optimobile", e);
+						} else {
+							SdkLog.e(TAG, "Error delegating to optimobile", e);
+						}
+					}
+				} else if (response.isEmpty()) {
+					if (this.settings.getOnAdEmptyListener() != null) {
+						this.settings.getOnAdEmptyListener().onAdEmpty();
+					} else {
+						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
+								+ "]");
+					}
+				}
+			}
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
+					+ "]");
+		} catch (Exception e) {
+			processError("Error loading ad [" + this.getId() + "]", e);
+		}
+	}
+	
 	public void reload() {
 		if (settings != null) {
 			setVisibility(GONE);

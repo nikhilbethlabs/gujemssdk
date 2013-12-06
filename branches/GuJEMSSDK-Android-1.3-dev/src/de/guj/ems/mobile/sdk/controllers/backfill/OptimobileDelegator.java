@@ -78,7 +78,6 @@ public class OptimobileDelegator {
 		this.emsMobileView = adView;
 		this.handler = this.emsMobileView.getHandler();
 		this.settings = settings;
-		SdkLog.d(TAG, "Original view (GuJEMSAdView) handler is " + handler);
 		if (handler != null) {
 			handler.post(new Runnable() {
 				@Override
@@ -102,7 +101,6 @@ public class OptimobileDelegator {
 				}
 			});
 		} else {
-			SdkLog.w(TAG, "Original adview's handler is null.");
 			optimobileView = initOptimobileView(context, settings, 0);
 			optimobileView.update();
 		}
@@ -129,8 +127,6 @@ public class OptimobileDelegator {
 		this.emsNativeMobileView = adView;
 		this.settings = settings;
 		this.handler = this.emsNativeMobileView.getHandler();
-		SdkLog.d(TAG, "Original view (GuJEMSNativeAdView) handler is "
-				+ handler);
 		if (handler != null) {
 			handler.post(new Runnable() {
 				@Override
@@ -140,7 +136,6 @@ public class OptimobileDelegator {
 				}
 			});
 		} else {
-			SdkLog.w(TAG, "Original adview's handler is null.");
 			optimobileView = initOptimobileView(context, settings, 0);
 			optimobileView.update();
 		}
@@ -243,14 +238,14 @@ public class OptimobileDelegator {
 							"optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
-					emsNativeMobileView.post(new Runnable() {
-						public void run() {
+//					emsNativeMobileView.getHandler().post(new Runnable() {
+//						public void run() {
 							emsNativeMobileView
 									.processResponse(new OptimobileAdResponse(
 											response.indexOf("thirdparty") >= 0 ? null
 													: response));
-						}
-					});
+//						}
+//					});
 
 				} else {
 					display = true;
