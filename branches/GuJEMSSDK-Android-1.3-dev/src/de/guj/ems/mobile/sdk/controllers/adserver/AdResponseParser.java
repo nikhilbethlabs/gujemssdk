@@ -50,13 +50,15 @@ public abstract class AdResponseParser {
 		this.valid = true;
 	}
 
-	protected abstract void process();
+	protected void process() {
+		processed = true;
+	}
 
 	protected String getResponse() {
 		return response;
 	}
 
-	protected boolean isXml() {
+	public boolean isXml() {
 		return xml;
 	}
 
@@ -110,6 +112,7 @@ public abstract class AdResponseParser {
 
 	protected void setInvalid() {
 		valid = false;
+		processed = false;
 	}
 
 	public boolean isValid() {

@@ -40,6 +40,7 @@ public class AmobeeHtmlParser extends AdResponseParser {
 
 	@Override
 	protected void process() {
+		super.process();
 		try {
 			parseClickUrl();
 			parseImageUrl();

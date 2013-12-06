@@ -44,10 +44,12 @@ public class OptimobileXmlParser extends AdResponseParser {
 
 	@Override
 	protected void process() {
+		super.process();
 		try {
 			parseClickUrl();
 			parseImageUrl();
 			parseTrackingUrl();
+			
 		} catch (Exception e) {
 			SdkLog.e(TAG, "Error parsing optimoble XML.", e);
 			setInvalid();

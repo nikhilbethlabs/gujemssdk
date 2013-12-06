@@ -322,7 +322,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				TAG,
 				"The following error occured and is being handled by the appropriate listener if available.");
 		if (msg != null && msg.length() > 0) {
-			SdkLog.e(TAG, msg);
+			SdkLog.e(TAG, msg, t);
 		} else {
 			SdkLog.e(TAG, "Exception: ", t);
 		}
@@ -334,14 +334,24 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	@Override
 	public final void processResponse(IAdResponse response) {
 		try {
-			if (!response.isEmpty()) {
+			if (!response.isEmpty() && !response.getParser().isXml()) {
 				setTimeoutRunnable(new TimeOutRunnable());
 				loadData(response.getResponse(), "text/html", "utf-8");
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
-			} else {
+			}
+			else if (!response.isEmpty() && response.getParser().isXml()) {
+				SdkLog.w(TAG, "WebView received XML response...");
+				String data = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\"><a href=\"" + response.getParser().getClickUrl() + "\"><img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\"" + response.getParser().getImageUrl() + "\"></a></div>";
+				loadData(data, "text/html", "utf-8");
+				SdkLog.i(TAG, "Ad (XML) found and loading... [" + this.getId() + "]");
+				if (this.settings.getOnAdSuccessListener() != null) {
+					this.settings.getOnAdSuccessListener().onAdSuccess();
+				}
+			}
+			else {
 				setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
 						&& !OptimobileAdResponse.class.equals(response

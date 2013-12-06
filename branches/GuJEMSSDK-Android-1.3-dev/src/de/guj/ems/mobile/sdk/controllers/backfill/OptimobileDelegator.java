@@ -85,7 +85,8 @@ public class OptimobileDelegator {
 				public void run() {
 					optimobileView = initOptimobileView(context, settings, 0);
 
-					if (adView.getParent() != null) {
+					if (adView.getParent() != null
+							&& !GuJEMSListAdView.class.equals(adView.getClass())) {
 						ViewGroup parent = (ViewGroup) adView.getParent();
 						int index = parent.indexOfChild(adView);
 						SdkLog.d(TAG,
@@ -209,20 +210,49 @@ public class OptimobileDelegator {
 			public void onDownloadEnd(MASTAdView arg0) {
 
 				SdkLog.d(TAG, "optimobile Ad loaded.");
+
+				final String response = optimobileView.getLastResponse();
+				
 				if (emsMobileView != null
 						&& GuJEMSListAdView.class.equals(emsMobileView
 								.getClass())) {
 					SdkLog.d(TAG,
 							"Primary adView is list view, replacing content with secondary adview's.");
-					emsMobileView.processResponse(new OptimobileAdResponse(
-							optimobileView.getLastResponse()));
+
+					if (response != null
+							&& response.indexOf("thirdparty") >= 0) {
+
+						SdkLog.w(TAG,
+								"Received third party response for non compatible optimobile view (list).");
+
+					}
+					emsMobileView.getHandler().post(new Runnable() {
+						public void run() {
+							emsMobileView.processResponse(new OptimobileAdResponse(
+									response.indexOf("thirdparty") >= 0 ? null
+											: response));
+						}
+					});
 
 				} else if (emsNativeMobileView != null) {
 					SdkLog.d(TAG,
 							"Primary adView is native view, replacing content with secondary adview's.");
-					emsNativeMobileView
-							.processResponse(new OptimobileAdResponse(
-									optimobileView.getLastResponse()));
+					if (response != null
+							&& response.indexOf("thirdparty") >= 0) {
+
+						SdkLog.w(TAG,
+								"Received third party response for non compatible optimobile view (native).");
+
+					}
+
+					emsNativeMobileView.post(new Runnable() {
+						public void run() {
+							emsNativeMobileView.processResponse(new OptimobileAdResponse(
+									response.indexOf("thirdparty") >= 0 ? null
+											: response));
+						}
+					});
+
 				} else {
 					display = true;
 				}
@@ -240,6 +270,8 @@ public class OptimobileDelegator {
 						if (display) {
 							optimobileView.setVisibility(View.VISIBLE);
 						} else {
+							SdkLog.i(TAG,
+									"optimobile view unused, will be destroyed.");
 							optimobileView.removeAllViews();
 							optimobileView = null;
 						}
