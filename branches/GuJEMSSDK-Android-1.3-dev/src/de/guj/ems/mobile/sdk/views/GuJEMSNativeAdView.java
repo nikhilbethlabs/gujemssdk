@@ -326,9 +326,10 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			}
 			if (state == XmlPullParser.START_TAG) {
 				if (parser.getName().equals(
-						"de.guj.ems.mobile.sdk.views.GuJEMSAdView")
-						|| parser.getName().equals(
-								"de.guj.ems.mobile.sdk.views.GuJEMSListAdView")) {
+						"de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView")
+						|| parser
+								.getName()
+								.equals("de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView")) {
 					as = Xml.asAttributeSet(parser);
 					break;
 				} else {
@@ -393,7 +394,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		// setImageDrawable(null);
 
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, set);
+			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
 		} else if (isInEditMode()) {
 			loadEditorAsset();
 		} else {
@@ -409,7 +410,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		}
 		setImageDrawable(null);
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
+			this.settings = new AmobeeSettingsAdapter(context, getClass(), set, kws, nkws);
 		} else if (isInEditMode()) {
 			loadEditorAsset();
 		}
@@ -433,56 +434,38 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			SdkLog.e(TAG, msg, t);
 		}
 	}
-/*
-	@Override
-	public void processResponse(IAdResponse response) {
-		try {
-			this.parser = response.getParser();
-			SdkLog.d(TAG, "Native view response parser is " + parser + " ["
-					+ (parser != null ? parser.isValid() : false) + "]");
-			if (parser != null && parser.isValid()) {
-				new DownloadImageTask(this).execute(parser.getImageUrl());
-				if (parser.getTrackingImageUrl() != null) {
-					SdkUtil.adRequest(null).execute(
-							parser.getTrackingImageUrl());
-				}
-				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
-				}
-			} else {
-				setVisibility(GONE);
 
-				if (this.settings.getDirectBackfill() != null) {
-					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator. ["
-								+ this.getId() + "]");
-						new OptimobileDelegator(getContext(), this, settings);
-					} catch (Exception e) {
-						processError("Error delegating to optimobile.", e);
-					}
-
-				} else {
-					if (this.settings.getOnAdEmptyListener() != null) {
-						this.settings.getOnAdEmptyListener().onAdEmpty();
-					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
-								+ "]");
-					}
-				}
-			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
-					+ "]");
-		} catch (Exception e) {
-			processError("Error loading ad [" + this.getId() + "]", e);
-		}
-	}
-*/
+	/*
+	 * @Override public void processResponse(IAdResponse response) { try {
+	 * this.parser = response.getParser(); SdkLog.d(TAG,
+	 * "Native view response parser is " + parser + " [" + (parser != null ?
+	 * parser.isValid() : false) + "]"); if (parser != null && parser.isValid())
+	 * { new DownloadImageTask(this).execute(parser.getImageUrl()); if
+	 * (parser.getTrackingImageUrl() != null) { SdkUtil.adRequest(null).execute(
+	 * parser.getTrackingImageUrl()); } SdkLog.i(TAG,
+	 * "Ad found and loading... [" + this.getId() + "]"); if
+	 * (this.settings.getOnAdSuccessListener() != null) {
+	 * this.settings.getOnAdSuccessListener().onAdSuccess(); } } else {
+	 * setVisibility(GONE);
+	 * 
+	 * if (this.settings.getDirectBackfill() != null) { try { SdkLog.i(TAG,
+	 * "Passing to optimobile delegator. [" + this.getId() + "]"); new
+	 * OptimobileDelegator(getContext(), this, settings); } catch (Exception e)
+	 * { processError("Error delegating to optimobile.", e); }
+	 * 
+	 * } else { if (this.settings.getOnAdEmptyListener() != null) {
+	 * this.settings.getOnAdEmptyListener().onAdEmpty(); } else { SdkLog.i(TAG,
+	 * "No valid ad found. [" + this.getId() + "]"); } } } SdkLog.i(TAG,
+	 * "FINISH async. AdServer request [" + this.getId() + "]"); } catch
+	 * (Exception e) { processError("Error loading ad [" + this.getId() + "]",
+	 * e); } }
+	 */
 	@Override
 	public final void processResponse(IAdResponse response) {
 		try {
-			if (!response.isEmpty()) {
-				SdkLog.d(TAG, "Native view handling response of type " + response.getClass());
+			if (response != null && !response.isEmpty()) {
+				SdkLog.d(TAG, "Native view handling response of type "
+						+ response.getClass());
 				parser = response.getParser();
 				new DownloadImageTask(this).execute(parser.getImageUrl());
 				if (parser.getTrackingImageUrl() != null) {
@@ -493,10 +476,10 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
-			}
-			else {
-				//setVisibility(GONE);
+			} else {
+				// setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
+						&& response != null
 						&& !OptimobileAdResponse.class.equals(response
 								.getClass())) {
 					try {
@@ -512,7 +495,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 							SdkLog.e(TAG, "Error delegating to optimobile", e);
 						}
 					}
-				} else if (response.isEmpty()) {
+				} else if (response == null || response.isEmpty()) {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
 					} else {
@@ -527,7 +510,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			processError("Error loading ad [" + this.getId() + "]", e);
 		}
 	}
-	
+
 	public void reload() {
 		if (settings != null) {
 			setVisibility(GONE);

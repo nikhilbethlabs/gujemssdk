@@ -83,6 +83,11 @@ public class ListViewTest extends Activity {
 		data.add("a");
 		data.add("list");
 		data.add("yeah");
+		data.add("and");
+		data.add("I");
+		data.add("am");
+		data.add("long");
+		data.add("yeah");
 		this.ca = new CustomAdapter(data, this);
 		
 		l.setAdapter(ca);

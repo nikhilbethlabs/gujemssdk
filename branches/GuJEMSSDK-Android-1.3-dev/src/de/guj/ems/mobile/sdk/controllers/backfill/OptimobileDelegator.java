@@ -238,14 +238,14 @@ public class OptimobileDelegator {
 							"optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
-//					emsNativeMobileView.getHandler().post(new Runnable() {
-//						public void run() {
+					emsNativeMobileView.post(new Runnable() {
+						public void run() {
 							emsNativeMobileView
 									.processResponse(new OptimobileAdResponse(
 											response.indexOf("thirdparty") >= 0 ? null
 													: response));
-//						}
-//					});
+						}
+					});
 
 				} else {
 					display = true;

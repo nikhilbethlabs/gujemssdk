@@ -12,6 +12,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
+import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
  * Receiver which performs an ad requests and starts the corresponding activity
@@ -56,7 +57,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 
 		// ad space settings
 		this.settings = new AmobeeSettingsAdapter(SdkUtil.getContext(),
-				arg1.getExtras());
+				GuJEMSAdView.class, arg1.getExtras());
 
 		// adserver request
 		if (SdkUtil.isOnline()) {

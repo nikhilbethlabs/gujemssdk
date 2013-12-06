@@ -249,7 +249,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, set);
+			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
 		} else if (isInEditMode()) {
 			super.loadDataWithBaseURL(
 					"file:///android_asset/",
@@ -268,7 +268,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, set, kws, nkws);
+			this.settings = new AmobeeSettingsAdapter(context, getClass(), set, kws, nkws);
 		} else if (isInEditMode()) {
 			super.loadDataWithBaseURL(
 					"file:///android_asset/",
@@ -308,9 +308,9 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	@Override
 	public final void processResponse(IAdResponse response) {
 		try {
-			if (!response.isEmpty()) {
+			if (response != null && !response.isEmpty()) {
 				setTimeoutRunnable(new TimeOutRunnable());
-				loadData(response.getParser().isXml() ? response.getResponseAsHTML() : response.getResponse(), "text/html", "utf-8");
+				loadData(response.getParser() != null && response.getParser().isXml() ? response.getResponseAsHTML() : response.getResponse(), "text/html", "utf-8");
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
@@ -319,7 +319,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			else {
 				setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
-						&& !OptimobileAdResponse.class.equals(response
+						&& response != null && !OptimobileAdResponse.class.equals(response
 								.getClass())) {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
@@ -334,7 +334,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 							SdkLog.e(TAG, "Error delegating to optimobile", e);
 						}
 					}
-				} else if (response.isEmpty()) {
+				} else if (response == null || response.isEmpty()) {
 					if (this.settings.getOnAdEmptyListener() != null) {
 						this.settings.getOnAdEmptyListener().onAdEmpty();
 					} else {

@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdViewConfiguration;
 import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -67,13 +68,13 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param set
 	 *            attribute set with configuration
 	 */
-	public AmobeeSettingsAdapter(Context context, AttributeSet set) {
-		super(set);
+	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set) {
+		super(set, viewClass);
 
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_UUID) != null) {
-			if (tVals.getBoolean(AdServerSettingsAdapter.EMS_UUID_ID, false)) {
+			if (tVals.getBoolean(AdViewConfiguration.getConfig(viewClass).getUuidId(), false)) {
 				putAttrToParam(AdServerSettingsAdapter.EMS_UUID, SdkUtil
 						.getContext().getString(R.string.amobeeUserId));
 				putAttrValue(AdServerSettingsAdapter.EMS_UUID,
@@ -83,13 +84,13 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 			}
 		}
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_ZONEID) != null) {
-			String as = tVals.getString(AdServerSettingsAdapter.EMS_ZONEID_ID);
+			String as = tVals.getString(AdViewConfiguration.getConfig(viewClass).getZoneIdId());
 			putAttrToParam(AdServerSettingsAdapter.EMS_ZONEID, SdkUtil
 					.getContext().getString(R.string.amobeeAdSpace));
 			putAttrValue(AdServerSettingsAdapter.EMS_ZONEID, as);
 		}
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_GEO) != null) {
-			if (tVals.getBoolean(AdServerSettingsAdapter.EMS_GEO_ID, false)) {
+			if (tVals.getBoolean(AdViewConfiguration.getConfig(viewClass).getGeoId(), false)) {
 				double[] loc = getLocation();
 				if (loc != null && 0.0 != loc[0]) {
 					putAttrToParam(AdServerSettingsAdapter.EMS_LAT, SdkUtil
@@ -112,9 +113,9 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				&& getAttrsToParams().get(
 						AdServerSettingsAdapter.EMS_BACKFILL_ZONEID) != null) {
 			String site = tVals
-					.getString(AdServerSettingsAdapter.EMS_BACKFILL_SITEID_ID);
+					.getString(AdViewConfiguration.getConfig(viewClass).getBackfillSiteIdId());
 			String zone = tVals
-					.getString(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID_ID);
+					.getString(AdViewConfiguration.getConfig(viewClass).getBackfillZoneIdId());
 			this.setDirectBackfill(new BackfillDelegator.BackfillData(site,
 					zone, "", -1));
 			SdkLog.d(TAG, "Direct backfill configuration detected. [site="
@@ -157,16 +158,16 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param nkws
 	 *            non-matching keywords
 	 */
-	public AmobeeSettingsAdapter(Context context, AttributeSet set,
+	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set,
 			String[] kws, String[] nkws) {
-		this(context, set);
+		this(context, viewClass, set);
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
 		if (kws != null
 				&& kws.length > 0
 				&& getAttrsToParams().get(AdServerSettingsAdapter.EMS_KEYWORDS) != null) {
 			if (tVals
-					.getBoolean(AdServerSettingsAdapter.EMS_KEYWORDS_ID, false)) {
+					.getBoolean(AdViewConfiguration.getConfig(viewClass).getKeywordsId(), false)) {
 				String kwstr = strArrToString(kws);
 				putAttrValue(AdServerSettingsAdapter.EMS_KEYWORDS, kwstr);
 			} else {
@@ -206,9 +207,9 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param nkws
 	 *            non-matching keywords
 	 */
-	public AmobeeSettingsAdapter(Context context, Bundle savedInstance,
+	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance,
 			String[] kws, String[] nkws) {
-		this(context, savedInstance);
+		this(context, viewClass, savedInstance);
 		if (kws != null
 				&& kws.length > 0
 				&& getAttrsToParams().get(AdServerSettingsAdapter.EMS_KEYWORDS) != null) {
@@ -246,8 +247,8 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param savedInstance
 	 *            bundle with configuration
 	 */
-	public AmobeeSettingsAdapter(Context context, Bundle savedInstance) {
-		super(savedInstance);
+	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance) {
+		super(savedInstance, viewClass);
 		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_UUID) != null) {
 			if (savedInstance.getBoolean(
 					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX

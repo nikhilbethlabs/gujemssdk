@@ -15,12 +15,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdViewConfiguration;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
+import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
  * Base class for mapping various available data to adserver parameters.
@@ -38,11 +40,13 @@ public abstract class AdServerSettingsAdapter implements
 	private final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
 			"#.##");
 
-	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
-			.getString(R.string.attributePrefix);
 
-	private final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
-			.getString(R.string.securityHeaderName);
+	protected final static long EMS_LOCATION_MAXAGE_MS = 7200000;
+	
+	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
+
+	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
+			+ "onAd";
 
 	/**
 	 * Global attribute name for listener which reacts to empty ad
@@ -50,15 +54,11 @@ public abstract class AdServerSettingsAdapter implements
 	private final static String EMS_ERROR_LISTENER = SdkUtil.getContext()
 			.getString(R.string.onAdError);
 
-	private final static int EMS_ERROR_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdError;
-
 	/**
 	 * Global attribute name for listener which reacts to empty ad
 	 */
 	private final static String EMS_EMPTY_LISTENER = SdkUtil.getContext()
 			.getString(R.string.onAdEmpty);
-
-	private final static int EMS_EMPTY_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdEmpty;
 
 	/**
 	 * Global attribute name for allowing geo localization for a placement
@@ -66,38 +66,22 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_GEO = SdkUtil.getContext().getString(
 			R.string.geo);
 
-	protected final static int EMS_GEO_ID = R.styleable.GuJEMSAdView_ems_geo;
-
 	/**
 	 * Global attribute name for identifying keywords add to the request
 	 */
 	public final static String EMS_KEYWORDS = SdkUtil.getContext().getString(
 			R.string.keyword);
 
-	protected final static int EMS_KEYWORDS_ID = R.styleable.GuJEMSAdView_ems_kw;
-
 	/**
 	 * Global attribute name for the geographical latitude
 	 */
 	public final static String EMS_LAT = SdkUtil.getContext().getString(
 			R.string.latitude);
-
-	protected final static int EMS_LAT_ID = R.styleable.GuJEMSAdView_ems_lat;
-
-	private final static String EMS_LISTENER_PREFIX = AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-			+ "onAd";
-
-	protected final static long EMS_LOCATION_MAXAGE_MS = 7200000;
-
-	protected final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
-
 	/**
 	 * Global attribute name for the geographical longitude
 	 */
 	public final static String EMS_LON = SdkUtil.getContext().getString(
 			R.string.longitude);
-
-	protected final static int EMS_LON_ID = R.styleable.GuJEMSAdView_ems_lon;
 
 	/**
 	 * Global attribute name for identifying non-keywords to the request
@@ -105,15 +89,11 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_NKEYWORDS = SdkUtil.getContext().getString(
 			R.string.nkeyword);
 
-	protected final static int EMS_NKEYWORDS_ID = R.styleable.GuJEMSAdView_ems_nkw;
-
 	/**
 	 * Global attribute name for identifying a site
 	 */
 	public final static String EMS_SITEID = SdkUtil.getContext().getString(
 			R.string.siteId);
-
-	protected final static int EMS_SITEID_ID = R.styleable.GuJEMSAdView_ems_siteId;
 
 	/**
 	 * Global attribute name for identifying a site for backfill
@@ -121,12 +101,8 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_BACKFILL_SITEID = SdkUtil.getContext()
 			.getString(R.string.backfillSiteId);
 
-	protected final static int EMS_BACKFILL_SITEID_ID = R.styleable.GuJEMSAdView_ems_bfSiteId;
-
 	private final static String EMS_SUCCESS_LISTENER = SdkUtil.getContext()
 			.getString(R.string.onAdSuccess);
-
-	private final static int EMS_SUCCESS_LISTENER_ID = R.styleable.GuJEMSAdView_ems_onAdSuccess;
 
 	/**
 	 * Global attribute name for identifying a unique user/device id
@@ -134,15 +110,11 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_UUID = SdkUtil.getContext().getString(
 			R.string.deviceId);
 
-	protected final static int EMS_UUID_ID = R.styleable.GuJEMSAdView_ems_uid;
-
 	/**
 	 * Global attribute name for identifying a placement
 	 */
 	public final static String EMS_ZONEID = SdkUtil.getContext().getString(
 			R.string.zoneId);
-
-	protected final static int EMS_ZONEID_ID = R.styleable.GuJEMSAdView_ems_zoneId;
 
 	/**
 	 * Global attribute name for identifying a placement for backfill
@@ -150,7 +122,12 @@ public abstract class AdServerSettingsAdapter implements
 	public final static String EMS_BACKFILL_ZONEID = SdkUtil.getContext()
 			.getString(R.string.backfillZoneId);
 
-	protected final static int EMS_BACKFILL_ZONEID_ID = R.styleable.GuJEMSAdView_ems_bfZoneId;
+
+	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()
+			.getString(R.string.attributePrefix);
+
+	private final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
+			.getString(R.string.securityHeaderName);
 
 	private final static String TAG = "AdServerSettingsAdapter";
 
@@ -165,9 +142,12 @@ public abstract class AdServerSettingsAdapter implements
 	private IOnAdErrorListener onAdErrorListener = null;
 
 	private final Map<String, String> paramValues;
+	
+	protected Class<?> viewClass;
 
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
+		this.viewClass = null;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = new HashMap<String, String>();
 	}
@@ -180,7 +160,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param set
 	 *            inflated layout parameters
 	 */
-	public AdServerSettingsAdapter(AttributeSet set) {
+	public AdServerSettingsAdapter(AttributeSet set, Class<?> viewClass) {
+		this.viewClass = viewClass;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(set);
 	}
@@ -193,7 +174,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param savedInstance
 	 *            saved instance state
 	 */
-	public AdServerSettingsAdapter(Bundle savedInstance) {
+	public AdServerSettingsAdapter(Bundle savedInstance, Class<?> viewClass) {
+		this.viewClass = viewClass;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(savedInstance);
 	}
@@ -241,6 +223,7 @@ public abstract class AdServerSettingsAdapter implements
 
 			}
 		};
+		SdkLog.d(TAG, "Created onEmptyListener \"" + lMethodName + "\"");
 	}
 
 	private final void createEmptyListener(final Object listener) {
@@ -294,6 +277,7 @@ public abstract class AdServerSettingsAdapter implements
 
 			}
 		};
+		SdkLog.d(TAG, "Created onSuccessListener \"" + lMethodName + "\"");
 	}
 
 	private final void createErrorListener(final String lMethodName) {
@@ -344,6 +328,7 @@ public abstract class AdServerSettingsAdapter implements
 
 			}
 		};
+		SdkLog.d(TAG, "Created onErrorListener \"" + lMethodName + "\"");
 	}
 
 	protected Map<String, String> getAttrsToParams() {
@@ -449,21 +434,23 @@ public abstract class AdServerSettingsAdapter implements
 
 					if (attr.startsWith(AdServerSettingsAdapter.EMS_LISTENER_PREFIX)) {
 						String lName = attr.substring(4);
-						TypedArray tVals = SdkUtil.getContext()
+						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? SdkUtil.getContext()
 								.obtainStyledAttributes(attrs,
-										R.styleable.GuJEMSAdView);
+										R.styleable.GuJEMSAdView) : SdkUtil.getContext()
+										.obtainStyledAttributes(attrs,
+												R.styleable.GuJEMSNativeAdView);
 						if (lName
 								.equals(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER)) {
 							createSuccessListener(tVals
-									.getString(AdServerSettingsAdapter.EMS_SUCCESS_LISTENER_ID));
+									.getString(AdViewConfiguration.getConfig(viewClass).getSuccessListenerId()));
 						} else if (lName
 								.equals(AdServerSettingsAdapter.EMS_EMPTY_LISTENER)) {
 							createEmptyListener(tVals
-									.getString(AdServerSettingsAdapter.EMS_EMPTY_LISTENER_ID));
+									.getString(AdViewConfiguration.getConfig(viewClass).getEmptyListenerId()));
 						} else if (lName
 								.equals(AdServerSettingsAdapter.EMS_ERROR_LISTENER)) {
 							createErrorListener(tVals
-									.getString(AdServerSettingsAdapter.EMS_ERROR_LISTENER_ID));
+									.getString(AdViewConfiguration.getConfig(viewClass).getErrorListenerId()));
 						}
 
 						else {

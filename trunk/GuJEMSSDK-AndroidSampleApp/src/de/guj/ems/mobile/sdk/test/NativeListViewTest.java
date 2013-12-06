@@ -83,6 +83,12 @@ public class NativeListViewTest extends Activity {
 		data.add("a");
 		data.add("list");
 		data.add("yeah");
+		data.add("and");
+		data.add("I");
+		data.add("have");
+		data.add("native");
+		data.add("adViews");
+		data.add("yeah");
 		this.ca = new CustomAdapter(data, this);
 		
 		l.setAdapter(ca);
