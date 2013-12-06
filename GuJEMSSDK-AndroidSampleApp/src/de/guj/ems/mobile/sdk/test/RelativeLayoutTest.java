@@ -7,7 +7,6 @@
  */
 package de.guj.ems.mobile.sdk.test;
 
-import de.guj.ems.mobile.sdk.util.SdkLog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
