@@ -48,9 +48,9 @@ public class MenuItemHelper {
 			i.putExtra("target", target);
 	    	return i;
 		}
-		else if (menuId == R.id.cad) {
-			Log.i(TAG, "G+J EMS ConnectAd");
-			Intent target = new Intent(context, GuJEMSSDKTestConnectAd.class);
+		else if (menuId == R.id.list_native) {
+			Log.i(TAG, "G+J EMS ListView (native)");
+			Intent target = new Intent(context, NativeListViewTest.class);
 	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("timeout", Integer.valueOf(15000));
 	    	i.putExtra("ems_zoneId", "15310");
@@ -72,48 +72,24 @@ public class MenuItemHelper {
 	    	i.putExtra("ems_kw", Boolean.valueOf(true));
 	    	i.putExtra("ems_nkw", Boolean.valueOf(true));
 	    	i.putExtra("target", target);
-/*
-	    	i.putExtra("ems_onAdSuccess", new IOnAdSuccessListener() {
-				
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onAdSuccess() {
-					SdkLog.i(TAG, "InterstitialSwitchReceiver ADSUCCESS");
-					
-				}
-			});
-	    	i.putExtra("ems_onAdError", new IOnAdErrorListener() {
-				
-				private static final long serialVersionUID = 2L;
-
-				@Override
-				public void onAdError(String msg) {
-					SdkLog.e(TAG, "InterstitialSwitchReceiver ADERROR " + msg);
-					
-				}
-				@Override
-				public void onAdError(String msg, Throwable t) {
-					SdkLog.e(TAG, "InterstitialSwitchReceiver ADERROR " + msg, t);
-					
-				}				
-			});
-	    	i.putExtra("ems_onAdEmpty", new IOnAdEmptyListener() {
-				
-				private static final long serialVersionUID = 3L;
-
-				@Override
-				public void onAdEmpty() {
-					SdkLog.w(TAG, "InterstitialSwitchReceiver ADEMPTY");
-					
-				}
-			});
-*/			
+	    	return i;
+		}
+		else if (menuId == R.id.relative_native) {
+			Log.i(TAG, "GuJEMSAdView in Relative Layout");
+			Intent i = new Intent(context, InterstitialSwitchReceiver.class);
+			Intent target = new Intent(context, NativeRelativeLayoutTest.class);
+	    	i.putExtra("timeout", Integer.valueOf(5000));
+	    	i.putExtra("ems_zoneId", "15310");
+	    	i.putExtra("ems_uid", Boolean.valueOf(true));
+	    	i.putExtra("ems_geo",Boolean.valueOf(true));
+	    	i.putExtra("ems_kw", Boolean.valueOf(true));
+	    	i.putExtra("ems_nkw", Boolean.valueOf(true));
+	    	i.putExtra("target", target);
 	    	return i;
 		}
 		else if (menuId == R.id.targeting) {
 			Log.i(TAG, "G+J EMS Targeting");
-			Intent target = new Intent(context, GuJEMSSDKTestTargeting.class);
+			Intent target = new Intent(context, TargetingTest.class);
 	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("ems_zoneId", "15310");
 	    	i.putExtra("ems_uid", Boolean.valueOf(true));
@@ -125,7 +101,7 @@ public class MenuItemHelper {
 		}		
 		else if (menuId == R.id.xl) {
 			Log.i(TAG, "G+J EMS XL");
-			Intent target = new Intent(context, GuJEMSSDKTestXL.class);
+			Intent target = new Intent(context, XLBannerTest.class);
 	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("ems_zoneId", "15310");
 	    	i.putExtra("ems_uid", Boolean.valueOf(true));
@@ -137,7 +113,7 @@ public class MenuItemHelper {
 		}
 		else if (menuId == R.id.sowefo) {
 			Log.i(TAG, "G+J EMS SoWeFo");
-			Intent target = new Intent(context, GuJEMSSDKTestSoWeFo.class);
+			Intent target = new Intent(context, ORMMATest.class);
 	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("ems_zoneId", "15310");
 	    	i.putExtra("ems_uid", Boolean.valueOf(true));

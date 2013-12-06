@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <group android:id="@+id/appLayouts">
 	    <item android:id="@+id/list" android:title="ListView"></item>
+    	<item android:id="@+id/list_native" android:title="ListView (native)"></item>
     	<item android:id="@+id/relative" android:title="RelativeLayout"></item>
+    	<item android:id="@+id/relative_native" android:title="RelativeLayout (native)"></item>
     	<item android:id="@+id/table" android:title="TableLayout"></item>
     </group>
     <group android:id="@+id/adFormats">
 	    <item android:id="@+id/video" android:title="VideoInterstitial"></item>
-	    <item android:id="@+id/cad" android:title="ConnectAd"></item>
+	    
 	    <item android:id="@+id/targeting" android:title="Targeting"></item>
 	    <item android:id="@+id/xl" android:title="XL Banner"></item>
 	    <item android:id="@+id/sowefo" android:title="ORMMA"></item>

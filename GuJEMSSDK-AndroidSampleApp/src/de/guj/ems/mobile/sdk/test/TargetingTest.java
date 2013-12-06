@@ -24,7 +24,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 
 @SuppressLint("SetJavaScriptEnabled")
-public class GuJEMSSDKTestTargeting extends Activity {
+public class TargetingTest extends Activity {
 
 	// private final static String TAG = "GuJEMSSDKTestTargeting";
 
@@ -51,7 +51,7 @@ public class GuJEMSSDKTestTargeting extends Activity {
 		String [] kws = {"ems"};
 
 		GuJEMSAdView adView = new GuJEMSAdView(
-				GuJEMSSDKTestTargeting.this,
+				TargetingTest.this,
 				customParams,
 				kws,
 				null,
@@ -92,7 +92,7 @@ public class GuJEMSSDKTestTargeting extends Activity {
 		Map<String,Object> customParams2 = new HashMap<String,Object>();
 		customParams2.put("as", 15224);		
 		GuJEMSAdView adView2 = new GuJEMSAdView(
-				GuJEMSSDKTestTargeting.this,
+				TargetingTest.this,
 				customParams2, //customParams2,
 				null, //kws2,
 				null,
