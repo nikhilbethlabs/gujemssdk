@@ -8,7 +8,7 @@
     ems:ems_geo="true"
     ems:ems_kw="true"
     ems:ems_nkw="false"
-    ems:ems_uid="false"
+    ems:ems_uid="true"
     ems:ems_zoneId="15304"
  	ems:ems_bfSiteId="44496"
     ems:ems_bfZoneId="174882" />
