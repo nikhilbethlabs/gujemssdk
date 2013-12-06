@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 public class RelativeLayoutTest extends Activity {
 
@@ -32,11 +33,17 @@ public class RelativeLayoutTest extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent target = MenuItemHelper.getTargetIntent(
-				getApplicationContext(), item.getItemId());
-		if (target != null) {
-			sendBroadcast(target);
+		if (item.getItemId() == R.id.adReload) {
+			((GuJEMSAdView)findViewById(R.id.ad15312)).reload();		
 		}
+		else { 
+			Intent target = MenuItemHelper.getTargetIntent(
+					getApplicationContext(),
+					item.getItemId());
+			if (target != null) {
+				sendBroadcast(target);
+			}
+		} 
 		return true;
 	}
 
