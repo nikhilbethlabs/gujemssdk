@@ -182,6 +182,7 @@ public class OptimobileDelegator {
 						@Override
 						public void run() {
 							if (s != null && s.startsWith("No ads")) {
+								//TODO replace optimobile view with original adview...
 								if (settings.getOnAdEmptyListener() != null) {
 									settings.getOnAdEmptyListener().onAdEmpty();
 								} else {
