@@ -498,7 +498,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		if (settings != null) {
 			setVisibility(GONE);
 			setImageDrawable(null);
-
+			
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {

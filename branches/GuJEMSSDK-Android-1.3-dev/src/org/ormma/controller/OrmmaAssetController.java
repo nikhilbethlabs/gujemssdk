@@ -575,8 +575,6 @@ public class OrmmaAssetController extends OrmmaController {
 	 */
 	@Override
 	public void stopAllListeners() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private Uri addToGallery(File img, String title, String name,

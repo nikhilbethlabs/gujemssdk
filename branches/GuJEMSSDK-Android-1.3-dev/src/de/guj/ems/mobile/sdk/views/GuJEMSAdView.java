@@ -355,6 +355,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		if (settings != null) {
 
 			super.clearView();
+			removeAllViews();
 			setVisibility(View.GONE);
 
 			// Construct request URL

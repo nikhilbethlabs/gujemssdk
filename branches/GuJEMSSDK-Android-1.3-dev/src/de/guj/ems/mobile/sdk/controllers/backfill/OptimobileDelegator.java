@@ -16,9 +16,9 @@ import com.MASTAdView.MASTAdView;
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
-import com.google.ads.AdRequest.ErrorCode;
 
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
@@ -86,13 +86,15 @@ public class OptimobileDelegator {
 
 					if (adView.getParent() != null
 							&& !GuJEMSListAdView.class.equals(adView.getClass())) {
-						ViewGroup parent = (ViewGroup) adView.getParent();
+						/*ViewGroup parent = (ViewGroup) adView.getParent();
 						int index = parent.indexOfChild(adView);
 						SdkLog.d(TAG,
 								"Replacing original adview with optimobile adview.");
 						optimobileView.setLayoutParams(adView.getLayoutParams()); // lp
 						parent.removeView(adView);
 						parent.addView(optimobileView, index);
+						*/
+						adView.addView(optimobileView);
 					} else {
 						SdkLog.d(TAG, "Primary view initialized off UI.");
 					}
@@ -152,8 +154,6 @@ public class OptimobileDelegator {
 		final MASTAdView view = new MASTAdView(context,
 				Integer.valueOf(settings.getDirectBackfill().getSiteId()),
 				Integer.valueOf(settings.getDirectBackfill().getZoneId()));
-		// TODO list view layout params
-
 		view.setId(emsMobileView != null ? emsMobileView.getId()
 				: emsNativeMobileView.getId());
 		view.setBackgroundDrawable(emsMobileView != null ? emsMobileView
@@ -182,7 +182,17 @@ public class OptimobileDelegator {
 						@Override
 						public void run() {
 							if (s != null && s.startsWith("No ads")) {
-								//TODO replace optimobile view with original adview...
+								//TODO all cases handled, here?
+								/*
+								ViewGroup parent = (ViewGroup)optimobileView.getParent();
+								if (parent != null) {
+									int index = parent.indexOfChild(emsMobileView != null ? emsMobileView : emsNativeMobileView);
+									SdkLog.d(TAG,
+											"Replacing optimobile adview with original adview.");
+									parent.removeView(optimobileView);
+									parent.addView(emsMobileView != null ? emsMobileView : emsNativeMobileView, index);
+								}
+								*/
 								if (settings.getOnAdEmptyListener() != null) {
 									settings.getOnAdEmptyListener().onAdEmpty();
 								} else {
@@ -347,12 +357,15 @@ public class OptimobileDelegator {
 											.getBackground()
 											: emsNativeMobileView
 													.getBackground());
+							
 							ViewGroup parent = (ViewGroup) optimobileView
 									.getParent();
+							
 							int index = parent.indexOfChild(optimobileView);
 							parent.removeView(optimobileView);
 							parent.addView(admobAdView, index);
-
+							parent.setVisibility(View.VISIBLE);
+							
 							admobAdView.setAdListener(new AdListener() {
 
 								@Override
@@ -384,8 +397,6 @@ public class OptimobileDelegator {
 
 								@Override
 								public void onDismissScreen(Ad arg0) {
-									// TODO Auto-generated method stub
-
 								}
 							});
 							admobAdView.loadAd(adRequest);
