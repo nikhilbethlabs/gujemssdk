@@ -245,7 +245,10 @@ public final class InterstitialActivity extends Activity {
 						if (!loaded && adView.isPageFinished()) {
 
 							loaded = true;
-
+							if (root == null || root.getHandler() == null) {
+								SdkLog.w(TAG, "Interstitial root view or its handler is null!");
+								status = FINISHED;
+							}
 							root.getHandler().post(new Runnable() {
 								@Override
 								public void run() {

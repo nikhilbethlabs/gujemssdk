@@ -4,6 +4,6 @@
     <bool name="ems_shorten_location">false</bool>
 
     <!--  Set this to true if you want test ads in all adviews -->
-	<bool name="ems_test_mode">false</bool>
+	<bool name="ems_test_mode">true</bool>
 
 </resources>

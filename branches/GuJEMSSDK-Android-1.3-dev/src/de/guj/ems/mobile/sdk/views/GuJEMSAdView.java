@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
+import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
@@ -49,6 +50,8 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	private Handler handler = new Handler();
+
+	private boolean testMode = false;
 
 	private IAdServerSettingsAdapter settings;
 
@@ -220,8 +223,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	}
 
 	private final void load() {
-
-		if (settings != null) {
+		if (settings != null && !this.testMode) {
 
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
@@ -240,24 +242,30 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				processError("No network connection.");
 			}
 		} else {
-			SdkLog.w(TAG, "AdView has no settings.");
+			SdkLog.w(TAG, "AdView has no settings or is in test mode.");
+			if (testMode) {
+				setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
 
+		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
-		} else if (isInEditMode()) {
-			super.loadDataWithBaseURL(
-					"file:///android_asset/",
-					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
-					"text/html", "utf-8", null);
-			setVisibility(VISIBLE);
-		} else {
-			SdkLog.e(TAG, "No attribute set found from resource id?");
+		}
+		if (isInEditMode() || this.testMode) {
+			loadData(
+					"<div style=\"width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div>",
+					"text/html", "utf-8");
+			setVisibility(View.VISIBLE);
+			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
+				this.settings.getOnAdSuccessListener().onAdSuccess();
+			}			
 		}
 
 	}
@@ -265,16 +273,22 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
 
+		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
-		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, getClass(), set, kws, nkws);
-		} else if (isInEditMode()) {
-			super.loadDataWithBaseURL(
-					"file:///android_asset/",
-					"<!DOCTYPE html><html><head><title>G+J EMS AdView</title></head><body><img src=\"defaultad.png\"></body></html>",
-					"text/html", "utf-8", null);
-			setVisibility(VISIBLE);
+		if (set != null) {
+			this.settings = new AmobeeSettingsAdapter(context, getClass(), set,
+					kws, nkws);
+		}
+		if (isInEditMode() || this.testMode) {
+			loadData(
+					"<div style=\"width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div>",
+					"text/html", "utf-8");
+			setVisibility(View.VISIBLE);
+			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
+				this.settings.getOnAdSuccessListener().onAdSuccess();
+			}			
 		}
 
 	}
@@ -310,22 +324,24 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		try {
 			if (response != null && !response.isEmpty()) {
 				setTimeoutRunnable(new TimeOutRunnable());
-				loadData(response.getParser() != null && response.getParser().isXml() ? response.getResponseAsHTML() : response.getResponse(), "text/html", "utf-8");
+				loadData(
+						response.getParser() != null
+								&& response.getParser().isXml() ? response.getResponseAsHTML()
+								: response.getResponse(), "text/html", "utf-8");
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
-			}
-			else {
+			} else {
 				setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
-						&& response != null && !OptimobileAdResponse.class.equals(response
+						&& response != null
+						&& !OptimobileAdResponse.class.equals(response
 								.getClass())) {
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
 								+ this.getId() + "]");
-						new OptimobileDelegator(getContext(), this,
-								settings);
+						new OptimobileDelegator(getContext(), this, settings);
 					} catch (Exception e) {
 						if (this.settings.getOnAdErrorListener() != null) {
 							this.settings.getOnAdErrorListener().onAdError(
@@ -352,7 +368,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	@Override
 	public void reload() {
-		if (settings != null) {
+		if (settings != null && !this.testMode) {
 
 			super.clearView();
 			removeAllViews();
@@ -361,8 +377,9 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
-				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
-						+ "]");
+				SdkLog.i(TAG,
+						"RESTART async. AdServer request [" + this.getId()
+								+ "]");
 				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
 						settings.getSecurityHeaderValueHash()).execute(
 						new String[] { url });
@@ -374,7 +391,10 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				processError("No network connection.");
 			}
 		} else {
-			SdkLog.w(TAG, "AdView has no settings. [" + this.getId() + "]");
+			SdkLog.w(
+					TAG,
+					"AdView has no settings or is in test mode. ["
+							+ this.getId() + "]");
 		}
 	}
 

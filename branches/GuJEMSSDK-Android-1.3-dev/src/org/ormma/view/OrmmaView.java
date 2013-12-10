@@ -1071,8 +1071,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
+		} catch (Exception e2) {
+			super.loadData(data, type, enc);
+		} 
 	}
 
 	/**

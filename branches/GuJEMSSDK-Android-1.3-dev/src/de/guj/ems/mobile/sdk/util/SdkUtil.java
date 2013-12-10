@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
@@ -146,8 +147,14 @@ public class SdkUtil {
 	public static String getDeviceId() {
 		if (DEVICE_ID == null) {
 			if (TELEPHONY_MANAGER == null) {
-				TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
+				try {
+					TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
 						.getSystemService(Context.TELEPHONY_SERVICE);
+				}
+				catch (Exception e) {
+					DEVICE_ID = Secure.ANDROID_ID;
+					return DEVICE_ID;
+				}
 			}
 			try {
 				DEVICE_ID = TELEPHONY_MANAGER.getDeviceId();
@@ -202,10 +209,15 @@ public class SdkUtil {
 		if (USER_AGENT == null) {
 			// determine user-agent
 			if (Build.VERSION.SDK_INT < 17) {
-				WebView w = new WebView(CONTEXT);
-				USER_AGENT = w.getSettings().getUserAgentString();
-				w.destroy();
-				w = null;
+				try {
+					WebView w = new WebView(CONTEXT);
+					USER_AGENT = w.getSettings().getUserAgentString();
+					w.destroy();
+					w = null;
+				}
+				catch (Exception e) {
+					USER_AGENT = DEBUG_USER_AGENT;
+				}
 			} else {
 				USER_AGENT = WebSettings.getDefaultUserAgent(CONTEXT);
 			}

@@ -76,7 +76,7 @@ public class AmobeeAdRequest extends AdRequest {
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME,
 						ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(2500);
-				con.setConnectTimeout(2500);
+				con.setConnectTimeout(500);
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
 				if (this.securityHeaderName != null) {

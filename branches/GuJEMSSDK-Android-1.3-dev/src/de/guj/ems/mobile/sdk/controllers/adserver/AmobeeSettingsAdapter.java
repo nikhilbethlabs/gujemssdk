@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.AdViewConfiguration;
 import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
+import de.guj.ems.mobile.sdk.util.SdkGlobals;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -73,45 +74,45 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_UUID) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_UUID) != null) {
 			if (tVals.getBoolean(AdViewConfiguration.getConfig(viewClass).getUuidId(), false)) {
-				putAttrToParam(AdServerSettingsAdapter.EMS_UUID, SdkUtil
+				putAttrToParam(SdkGlobals.EMS_UUID, SdkUtil
 						.getContext().getString(R.string.amobeeUserId));
-				putAttrValue(AdServerSettingsAdapter.EMS_UUID,
+				putAttrValue(SdkGlobals.EMS_UUID,
 						SdkUtil.getDeviceId());
 			} else {
 				SdkLog.d(TAG, "Device id transmission not allowed by adspace.");
 			}
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_ZONEID) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_ZONEID) != null) {
 			String as = tVals.getString(AdViewConfiguration.getConfig(viewClass).getZoneIdId());
-			putAttrToParam(AdServerSettingsAdapter.EMS_ZONEID, SdkUtil
+			putAttrToParam(SdkGlobals.EMS_ZONEID, SdkUtil
 					.getContext().getString(R.string.amobeeAdSpace));
-			putAttrValue(AdServerSettingsAdapter.EMS_ZONEID, as);
+			putAttrValue(SdkGlobals.EMS_ZONEID, as);
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_GEO) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_GEO) != null) {
 			if (tVals.getBoolean(AdViewConfiguration.getConfig(viewClass).getGeoId(), false)) {
 				double[] loc = getLocation();
 				if (loc != null && 0.0 != loc[0]) {
-					putAttrToParam(AdServerSettingsAdapter.EMS_LAT, SdkUtil
+					putAttrToParam(SdkGlobals.EMS_LAT, SdkUtil
 							.getContext().getString(R.string.amobeeLatitude));
-					putAttrValue(AdServerSettingsAdapter.EMS_LAT,
+					putAttrValue(SdkGlobals.EMS_LAT,
 							String.valueOf(loc[0]));
-					putAttrToParam(AdServerSettingsAdapter.EMS_LON, SdkUtil
+					putAttrToParam(SdkGlobals.EMS_LON, SdkUtil
 							.getContext().getString(R.string.amobeeLongitude));
-					putAttrValue(AdServerSettingsAdapter.EMS_LON,
+					putAttrValue(SdkGlobals.EMS_LON,
 							String.valueOf(loc[1]));
 				} else {
-					SdkLog.i(TAG, "ems_geo: location too old or not fetchable.");
+					SdkLog.i(TAG, "Location too old or not fetchable.");
 				}
 			} else {
 				SdkLog.d(TAG,
-						"ems_geo: location fetching not allowed by adspace.");
+						"Location fetching not allowed by adspace.");
 			}
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_BACKFILL_SITEID) != null
+		if (getAttrsToParams().get(SdkGlobals.EMS_BACKFILL_SITEID) != null
 				&& getAttrsToParams().get(
-						AdServerSettingsAdapter.EMS_BACKFILL_ZONEID) != null) {
+						SdkGlobals.EMS_BACKFILL_ZONEID) != null) {
 			String site = tVals
 					.getString(AdViewConfiguration.getConfig(viewClass).getBackfillSiteIdId());
 			String zone = tVals
@@ -165,11 +166,11 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				R.styleable.GuJEMSAdView);
 		if (kws != null
 				&& kws.length > 0
-				&& getAttrsToParams().get(AdServerSettingsAdapter.EMS_KEYWORDS) != null) {
+				&& getAttrsToParams().get(SdkGlobals.EMS_KEYWORDS) != null) {
 			if (tVals
 					.getBoolean(AdViewConfiguration.getConfig(viewClass).getKeywordsId(), false)) {
 				String kwstr = strArrToString(kws);
-				putAttrValue(AdServerSettingsAdapter.EMS_KEYWORDS, kwstr);
+				putAttrValue(SdkGlobals.EMS_KEYWORDS, kwstr);
 			} else {
 				SdkLog.d(TAG,
 						"Skipped keywords because view is not configured with ems_kw=true.");
@@ -178,13 +179,13 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		if (nkws != null
 				&& nkws.length > 0
 				&& getAttrsToParams()
-						.get(AdServerSettingsAdapter.EMS_NKEYWORDS) != null) {
+						.get(SdkGlobals.EMS_NKEYWORDS) != null) {
 			if (Boolean.valueOf(
 					getAttrsToParams().get(
-							AdServerSettingsAdapter.EMS_NKEYWORDS))
+							SdkGlobals.EMS_NKEYWORDS))
 					.booleanValue()) {
 				String nkwstr = strArrToString(nkws);
-				putAttrValue(AdServerSettingsAdapter.EMS_NKEYWORDS, nkwstr);
+				putAttrValue(SdkGlobals.EMS_NKEYWORDS, nkwstr);
 			} else {
 				SdkLog.d(TAG,
 						"Skipped non-keywords because view is not configured with ems_nkw=true.");
@@ -212,12 +213,12 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		this(context, viewClass, savedInstance);
 		if (kws != null
 				&& kws.length > 0
-				&& getAttrsToParams().get(AdServerSettingsAdapter.EMS_KEYWORDS) != null) {
+				&& getAttrsToParams().get(SdkGlobals.EMS_KEYWORDS) != null) {
 			if (savedInstance.getBoolean(
-					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-							+ AdServerSettingsAdapter.EMS_KEYWORDS, false)) {
+					SdkGlobals.EMS_ATTRIBUTE_PREFIX
+							+ SdkGlobals.EMS_KEYWORDS, false)) {
 				String kwstr = strArrToString(kws);
-				putAttrValue(AdServerSettingsAdapter.EMS_KEYWORDS, kwstr);
+				putAttrValue(SdkGlobals.EMS_KEYWORDS, kwstr);
 			} else {
 				SdkLog.d(TAG,
 						"Skipped keywords because view is not configured with ems_kw=true.");
@@ -226,12 +227,12 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		if (nkws != null
 				&& nkws.length > 0
 				&& getAttrsToParams()
-						.get(AdServerSettingsAdapter.EMS_NKEYWORDS) != null) {
+						.get(SdkGlobals.EMS_NKEYWORDS) != null) {
 			if (savedInstance.getBoolean(
-					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-							+ AdServerSettingsAdapter.EMS_NKEYWORDS, false)) {
+					SdkGlobals.EMS_ATTRIBUTE_PREFIX
+							+ SdkGlobals.EMS_NKEYWORDS, false)) {
 				String nkwstr = strArrToString(nkws);
-				putAttrValue(AdServerSettingsAdapter.EMS_NKEYWORDS, nkwstr);
+				putAttrValue(SdkGlobals.EMS_NKEYWORDS, nkwstr);
 			} else {
 				SdkLog.d(TAG,
 						"Skipped non-keywords because view is not configured with ems_nkw=true.");
@@ -249,13 +250,13 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 */
 	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance) {
 		super(context, savedInstance, viewClass);
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_UUID) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_UUID) != null) {
 			if (savedInstance.getBoolean(
-					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-							+ AdServerSettingsAdapter.EMS_UUID, false)) {
-				putAttrToParam(AdServerSettingsAdapter.EMS_UUID, SdkUtil
+					SdkGlobals.EMS_ATTRIBUTE_PREFIX
+							+ SdkGlobals.EMS_UUID, false)) {
+				putAttrToParam(SdkGlobals.EMS_UUID, SdkUtil
 						.getContext().getString(R.string.amobeeUserId));
-				putAttrValue(AdServerSettingsAdapter.EMS_UUID,
+				putAttrValue(SdkGlobals.EMS_UUID,
 						SdkUtil.getDeviceId());
 			} else {
 				SdkLog.d(TAG,
@@ -263,27 +264,27 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 			}
 
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_ZONEID) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_ZONEID) != null) {
 			String as = savedInstance
-					.getString(AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-							+ AdServerSettingsAdapter.EMS_ZONEID);
-			putAttrToParam(AdServerSettingsAdapter.EMS_ZONEID, SdkUtil
+					.getString(SdkGlobals.EMS_ATTRIBUTE_PREFIX
+							+ SdkGlobals.EMS_ZONEID);
+			putAttrToParam(SdkGlobals.EMS_ZONEID, SdkUtil
 					.getContext().getString(R.string.amobeeAdSpace));
-			putAttrValue(AdServerSettingsAdapter.EMS_ZONEID, as);
+			putAttrValue(SdkGlobals.EMS_ZONEID, as);
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_GEO) != null) {
+		if (getAttrsToParams().get(SdkGlobals.EMS_GEO) != null) {
 			if (savedInstance.getBoolean(
-					AdServerSettingsAdapter.EMS_ATTRIBUTE_PREFIX
-							+ AdServerSettingsAdapter.EMS_GEO, false)) {
+					SdkGlobals.EMS_ATTRIBUTE_PREFIX
+							+ SdkGlobals.EMS_GEO, false)) {
 				double[] loc = getLocation();
 				if (loc != null && 0.0 != loc[0]) {
-					putAttrToParam(AdServerSettingsAdapter.EMS_LAT, SdkUtil
+					putAttrToParam(SdkGlobals.EMS_LAT, SdkUtil
 							.getContext().getString(R.string.amobeeLatitude));
-					putAttrValue(AdServerSettingsAdapter.EMS_LAT,
+					putAttrValue(SdkGlobals.EMS_LAT,
 							String.valueOf(loc[0]));
-					putAttrToParam(AdServerSettingsAdapter.EMS_LON, SdkUtil
+					putAttrToParam(SdkGlobals.EMS_LON, SdkUtil
 							.getContext().getString(R.string.amobeeLongitude));
-					putAttrValue(AdServerSettingsAdapter.EMS_LON,
+					putAttrValue(SdkGlobals.EMS_LON,
 							String.valueOf(loc[1]));
 					SdkLog.i(TAG, "Using " + loc[0] + "x" + loc[1]
 							+ " as location.");
@@ -294,13 +295,13 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				SdkLog.d(TAG, "Location fetching not allowed by adspace.");
 			}
 		}
-		if (getAttrsToParams().get(AdServerSettingsAdapter.EMS_BACKFILL_SITEID) != null
+		if (getAttrsToParams().get(SdkGlobals.EMS_BACKFILL_SITEID) != null
 				&& getAttrsToParams().get(
-						AdServerSettingsAdapter.EMS_BACKFILL_ZONEID) != null) {
+						SdkGlobals.EMS_BACKFILL_ZONEID) != null) {
 			String site = savedInstance
-					.getString(AdServerSettingsAdapter.EMS_BACKFILL_SITEID);
+					.getString(SdkGlobals.EMS_BACKFILL_SITEID);
 			String zone = savedInstance
-					.getString(AdServerSettingsAdapter.EMS_BACKFILL_ZONEID);
+					.getString(SdkGlobals.EMS_BACKFILL_ZONEID);
 			this.setDirectBackfill(new BackfillDelegator.BackfillData(site,
 					zone, "", -1));
 			SdkLog.d(TAG, "Direct backfill configuration detected. [site="

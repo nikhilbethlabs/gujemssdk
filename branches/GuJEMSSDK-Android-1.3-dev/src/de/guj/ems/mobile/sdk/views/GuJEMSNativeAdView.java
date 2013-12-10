@@ -21,6 +21,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Movie;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
@@ -64,6 +67,8 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler {
 
+	private boolean testMode = false;
+
 	private Bitmap stillImage;
 
 	private Movie animatedGif;
@@ -71,6 +76,8 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	private long movieStart = 0;
 
 	private boolean play = false;
+	
+	private Paint testPaint;
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
 		private final WeakReference<ImageView> viewRef;
@@ -165,13 +172,15 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					view.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent i = new Intent(getContext(), Browser.class);
-							SdkLog.d(TAG, "open:" + parser.getClickUrl());
-							i.putExtra(Browser.URL_EXTRA, parser.getClickUrl());
-							i.putExtra(Browser.SHOW_BACK_EXTRA, true);
-							i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
-							i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
-							getContext().startActivity(i);
+							if (parser != null && parser.getClickUrl() != null) {
+								Intent i = new Intent(getContext(), Browser.class);
+								SdkLog.d(TAG, "open:" + parser.getClickUrl());
+								i.putExtra(Browser.URL_EXTRA, parser.getClickUrl());
+								i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+								i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+								i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+								getContext().startActivity(i);
+							}
 						}
 					});
 
@@ -343,7 +352,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 	private final void load() {
 
-		if (settings != null) {
+		if (settings != null && !testMode && !isInEditMode()) {
 
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
@@ -361,39 +370,27 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				setVisibility(GONE);
 				processError("No network connection.");
 			}
+		} else if (testMode || isInEditMode()) {
+			if (!isInEditMode()) {
+				setLayoutParams(new ViewGroup.LayoutParams((int)(300.0 / SdkUtil.getDensity()), (int)(50.0 / SdkUtil.getDensity())));
+			}
+			setVisibility(VISIBLE);
+			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
+				this.settings.getOnAdSuccessListener().onAdSuccess();
+			}
 		} else {
 			SdkLog.w(TAG, "AdView has no settings.");
 		}
 	}
 
-	private void loadEditorAsset() {
-		String path = "file://android_asset/defaultad.png";
-		InputStream is = null;
-		try {
-			is = getContext().getAssets().open(path);
-			Bitmap bitmap = BitmapFactory.decodeStream(is);
-			setImageBitmap(bitmap);
-		} catch (Exception io) {
-			SdkLog.w(TAG, "Error loading standard asset in edit mode.");
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (Exception f) {
-					;
-				}
-			}
-		}
-		setVisibility(VISIBLE);
-	}
-
 	private void preLoadInitialize(Context context, AttributeSet set) {
+		setImageDrawable(null);
+		testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
-		} else if (isInEditMode()) {
-			loadEditorAsset();
 		} else {
-			SdkLog.e(TAG, "No attribute set found from resource id?");
+			SdkLog.w(TAG,
+					"No attribute set found from resource id (ok with interstitials).");
 		}
 
 	}
@@ -401,11 +398,13 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
 		setImageDrawable(null);
+		testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, getClass(), set,
 					kws, nkws);
-		} else if (isInEditMode()) {
-			loadEditorAsset();
+		} else {
+			SdkLog.w(TAG,
+					"No attribute set found from resource id (ok with interstitials).");
 		}
 
 	}
@@ -445,6 +444,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
 			} else {
+				// TODO setVisibility here?
 				// setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
 						&& response != null
@@ -453,8 +453,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					try {
 						SdkLog.i(TAG, "Passing to optimobile delegator. ["
 								+ this.getId() + "]");
-						new OptimobileDelegator(getContext(), this,
-								settings);
+						new OptimobileDelegator(getContext(), this, settings);
 					} catch (final Exception e) {
 						if (this.settings.getOnAdErrorListener() != null) {
 							getHandler().post(new Runnable() {
@@ -498,7 +497,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		if (settings != null) {
 			setVisibility(GONE);
 			setImageDrawable(null);
-			
+
 			// Construct request URL
 			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
@@ -560,8 +559,28 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
-		if (animatedGif != null && play) {
+		if (testMode) {
+			if (testPaint == null) {
+				testPaint = new Paint();
+				testPaint.setColor(Color.WHITE);
+				testPaint.setStyle(Style.FILL);
+			}
+			try {
+				float dens = SdkUtil.getDensity();
+				canvas.scale(dens, dens);
+			}
+			catch (Exception e) {
+				; //editor mode
+			}
+			if (settings != null) {
+				canvas.drawText(settings.toString(), 6.0f, 12.0f, testPaint);
+			}
+			else {
+				canvas.drawText("Native AdView Editor Mode", 6.0f, 12.0f, testPaint);
+			}
+			this.invalidate();
+		}
+		else if (animatedGif != null && play) {
 			long now = android.os.SystemClock.uptimeMillis();
 			float dens = SdkUtil.getDensity();
 
