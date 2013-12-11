@@ -20,10 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
+import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 public class ListViewTest extends Activity {
 
+	private final static String TAG = "ListViewTest";
+	
 	CustomAdapter ca;
 	
     ArrayList <Object> data = new ArrayList<Object>();
@@ -40,7 +43,8 @@ public class ListViewTest extends Activity {
         final ListView l = (ListView)findViewById(R.id.testList);
         final GuJEMSListAdView av1 = new GuJEMSListAdView(this,
                 customParams,
-                R.layout.generic_adview);
+                R.layout.generic_adview,
+                false);
         
         av1.setId(12615);
         av1.setOnAdSuccessListener(new IOnAdSuccessListener() {
@@ -52,6 +56,7 @@ public class ListViewTest extends Activity {
 				data.add(5, av1);
 				runOnUiThread(new Runnable() {
 					public void run() {
+						SdkLog.d(TAG, "Adding adview to listview");
 						l.setAdapter(ca);		
 					}
 				});
@@ -60,7 +65,8 @@ public class ListViewTest extends Activity {
         
         final GuJEMSListAdView av2 = new GuJEMSListAdView(this,
                 customParams2,
-                R.layout.generic_adview);
+                R.layout.generic_adview,
+                false);
         av2.setId(12616);
         av2.setOnAdSuccessListener(new IOnAdSuccessListener() {
 
@@ -71,6 +77,7 @@ public class ListViewTest extends Activity {
 				data.add(2, av2);
 				runOnUiThread(new Runnable() {
 					public void run() {
+						SdkLog.d(TAG, "Adding adview to listview");
 						l.setAdapter(ca);					
 					}
 				});
@@ -91,6 +98,9 @@ public class ListViewTest extends Activity {
 		this.ca = new CustomAdapter(data, this);
 		
 		l.setAdapter(ca);
+		
+		av1.load();
+		av2.load();
 	}
 
 	@Override

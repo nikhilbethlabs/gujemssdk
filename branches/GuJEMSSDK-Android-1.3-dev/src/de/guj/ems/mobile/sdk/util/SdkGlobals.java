@@ -13,16 +13,6 @@ public class SdkGlobals {
 			"#.##");
 
 	/**
-	 * Maximum age of existing geo location to be used (milliseconds)
-	 */
-	public final static long EMS_LOCATION_MAXAGE_MS = 7200000;
-
-	/**
-	 * Maximum age of existing geo location to be used (minutes)
-	 */
-	public final static long EMS_LOCATION_MAXAGE_MIN = EMS_LOCATION_MAXAGE_MS / 60000;
-
-	/**
 	 * xml layout attributes prefix
 	 */
 	public final static String EMS_ATTRIBUTE_PREFIX = SdkUtil.getContext()

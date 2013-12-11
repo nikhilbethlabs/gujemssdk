@@ -6,6 +6,7 @@ import android.content.Intent;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
+import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
@@ -33,6 +34,8 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 	private Intent intent;
 
 	private Context context;
+	
+	private boolean testMode = false;
 
 	private final static String TAG = "InterstitialSwitchReceiver";
 
@@ -46,7 +49,8 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(arg0);
 		}
-
+		testMode = arg0.getResources().getBoolean(R.bool.ems_test_mode);
+		
 		// original target when interstitial not available
 		this.target = (Intent) arg1.getExtras().get("target");
 		if (this.target != null) {
@@ -60,15 +64,19 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 				GuJEMSAdView.class, arg1.getExtras());
 
 		// adserver request
-		if (SdkUtil.isOnline()) {
+		if (SdkUtil.isOnline() && !testMode) {
 			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
 			SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
 					settings.getSecurityHeaderValueHash()).execute(
 					new String[] { url });
-		} else {
+		} else if (!testMode) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
+		}
+		else {
+			processResponse(new AmobeeAdResponse("<div style=\"font-size: 0.75em; width: 300px; height: 320px; color: #fff; background: #0086d5;\">"
+					+ settings + "</div>", false));
 		}
 	}
 

@@ -270,21 +270,23 @@ public abstract class AdServerSettingsAdapter implements
 		Location lastKnown = null;
 		double[] loc = new double[2];
 		long age = 0;
+		int maxage = context.getResources().getInteger(R.integer.ems_location_maxage_ms);
 		while (provider.hasNext()) {
 			lastKnown = lm.getLastKnownLocation(provider.next());
 			if (lastKnown != null) {
+				
 				age = System.currentTimeMillis() - lastKnown.getTime();
-				if (age <= SdkGlobals.EMS_LOCATION_MAXAGE_MS) {
+				if (age <= maxage) {
 					break;
 				} else {
 					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
 							+ "] is " + (age / 60000) + " min old. [max = "
-							+ SdkGlobals.EMS_LOCATION_MAXAGE_MIN + "]");
+							+ (maxage / 60000) + "]");
 				}
 			}
 		}
 
-		if (lastKnown != null && age <= SdkGlobals.EMS_LOCATION_MAXAGE_MS) {
+		if (lastKnown != null && age <= maxage) {
 			loc[0] = lastKnown.getLatitude();
 			loc[1] = lastKnown.getLongitude();
 

@@ -56,11 +56,35 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 			int resId) {
 		super(context, kws, nkws, resId);
 	}
+	
+	public GuJEMSNativeListAdView(Context context, AttributeSet attrs,
+			boolean load) {
+		super(context, attrs, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, int resId, boolean load) {
+		super(context, resId, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
+			int resId, boolean load) {
+		super(context, customParams, resId, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String[] nkws, int resId, boolean load) {
+		super(context, customParams, kws, nkws, resId, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
+			int resId, boolean load) {
+		super(context, kws, nkws, resId, load);
+	}
 
 	@Override
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
-		return new AbsListView.LayoutParams(w, 1);
+		return new AbsListView.LayoutParams(w, h);
 	}
 
 	@Override

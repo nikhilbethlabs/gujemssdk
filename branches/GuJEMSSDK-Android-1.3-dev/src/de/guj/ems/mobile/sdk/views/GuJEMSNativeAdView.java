@@ -76,7 +76,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	private long movieStart = 0;
 
 	private boolean play = false;
-	
+
 	private Paint testPaint;
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
@@ -173,9 +173,11 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 						@Override
 						public void onClick(View v) {
 							if (parser != null && parser.getClickUrl() != null) {
-								Intent i = new Intent(getContext(), Browser.class);
+								Intent i = new Intent(getContext(),
+										Browser.class);
 								SdkLog.d(TAG, "open:" + parser.getClickUrl());
-								i.putExtra(Browser.URL_EXTRA, parser.getClickUrl());
+								i.putExtra(Browser.URL_EXTRA,
+										parser.getClickUrl());
 								i.putExtra(Browser.SHOW_BACK_EXTRA, true);
 								i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
 								i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
@@ -212,19 +214,69 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		this.preLoadInitialize(context, null);
 	}
 
+	/**
+	 * Initialize view implicitly from layout
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 */
 	public GuJEMSNativeAdView(Context context, AttributeSet attrs) {
+		this(context, attrs, true);
+	}
+
+	/**
+	 * Initialize view implicitly from layout
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitity, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSNativeAdView(Context context, AttributeSet attrs, boolean load) {
 		super(context, attrs);
 		this.preLoadInitialize(context, attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
+	}
+
+	/**
+	 * Initialize view from XML resource
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 */
+	public GuJEMSNativeAdView(Context context, int resId) {
+		this(context, resId, true);
 
 	}
 
-	public GuJEMSNativeAdView(Context context, int resId) {
+	/**
+	 * Initialize view from XML resource
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitity, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSNativeAdView(Context context, int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 
 	}
 
@@ -240,12 +292,32 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 */
 	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			int resId) {
+		this(context, customParams, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add any custom parameters to the request
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param customParams
+	 *            map of custom param names and their values
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitity, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -265,12 +337,37 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 */
 	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId) {
+		this(context, customParams, kws, nkws, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add matching or non-matching keywords as
+	 * well as any custom parameters to the request
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param customParams
+	 *            map of custom param names and their values
+	 * @param kws
+	 *            matching keywords
+	 * @param nkws
+	 *            non-matching keywords
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitity, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String nkws[], int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -287,11 +384,33 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 */
 	public GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
 			int resId) {
+		this(context, kws, nkws, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add matching or non-matching keywords
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param kws
+	 *            matching keywords
+	 * @param nkws
+	 *            non-matching keywords
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitity, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
+			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
@@ -350,7 +469,11 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		return as;
 	}
 
-	private final void load() {
+	/**
+	 * Perform the actual request. Should only be invoked if a constructor with
+	 * the boolean load flag was used and it was false
+	 */
+	public final void load() {
 
 		if (settings != null && !testMode && !isInEditMode()) {
 
@@ -371,11 +494,16 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				processError("No network connection.");
 			}
 		} else if (testMode || isInEditMode()) {
+
 			if (!isInEditMode()) {
-				setLayoutParams(new ViewGroup.LayoutParams((int)(300.0 / SdkUtil.getDensity()), (int)(50.0 / SdkUtil.getDensity())));
+				SdkLog.w(TAG, "AdView is in test mode");
+				setLayoutParams(getNewLayoutParams(
+						(int) (300.0 * SdkUtil.getDensity()),
+						(int) (50.0 * SdkUtil.getDensity())));
 			}
 			setVisibility(VISIBLE);
-			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
+			if (this.settings != null
+					&& this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}
 		} else {
@@ -546,6 +674,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 *            Implemented listener
 	 */
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
+		SdkLog.d(TAG, "Added onSuccessListener " + l);
 		this.settings.setOnAdSuccessListener(l);
 	}
 
@@ -568,19 +697,27 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			try {
 				float dens = SdkUtil.getDensity();
 				canvas.scale(dens, dens);
-			}
-			catch (Exception e) {
-				; //editor mode
+			} catch (Exception e) {
+				; // editor mode
 			}
 			if (settings != null) {
-				canvas.drawText(settings.toString(), 6.0f, 12.0f, testPaint);
-			}
-			else {
-				canvas.drawText("Native AdView Editor Mode", 6.0f, 12.0f, testPaint);
+				String txt = settings.toString();
+				if (txt.indexOf("uid") >= 0) {
+					canvas.drawText(
+							txt.substring(0, txt.substring(1).indexOf("&")),
+							6.0f, 12.0f, testPaint);
+					canvas.drawText(
+							txt.substring(txt.substring(1).indexOf("&") + 1),
+							6.0f, 24.0f, testPaint);
+				} else {
+					canvas.drawText(settings.toString(), 6.0f, 12.0f, testPaint);
+				}
+			} else {
+				canvas.drawText("Native AdView Editor Mode", 6.0f, 12.0f,
+						testPaint);
 			}
 			this.invalidate();
-		}
-		else if (animatedGif != null && play) {
+		} else if (animatedGif != null && play) {
 			long now = android.os.SystemClock.uptimeMillis();
 			float dens = SdkUtil.getDensity();
 
@@ -596,8 +733,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 						.duration());
 				animatedGif.setTime(relTime);
 			}
-			// SdkLog.d(TAG, "agif view width: " + getWidth() + ", agif width: "
-			// + animatedGif.width() + ", density: " + dens);
 			animatedGif.draw(canvas,
 					(getWidth() / dens - animatedGif.width()) / 2.0f, 0.0f);
 			this.invalidate();

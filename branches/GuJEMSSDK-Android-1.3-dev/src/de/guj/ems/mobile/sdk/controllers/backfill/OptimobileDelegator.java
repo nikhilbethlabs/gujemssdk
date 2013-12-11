@@ -176,10 +176,10 @@ public class OptimobileDelegator {
 					handler.post(new Runnable() {
 						@Override
 						public void run() {
-							ViewGroup parent = (ViewGroup)optimobileView.getParent();
+							ViewGroup parent = (ViewGroup) optimobileView
+									.getParent();
 							if (parent != null) {
-								SdkLog.d(TAG,
-										"Removing optimobile view.");
+								SdkLog.d(TAG, "Removing optimobile view.");
 								parent.removeView(optimobileView);
 							}
 							if (s != null && s.startsWith("No ads")) {
@@ -219,8 +219,7 @@ public class OptimobileDelegator {
 								.getClass())) {
 					SdkLog.d(TAG,
 							"Primary adView is list view, replacing content with secondary adview's.");
-					SdkLog.i(TAG,
-							"optimobile view unused, will be destroyed.");
+					SdkLog.i(TAG, "optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
 					handler.post(new Runnable() {
@@ -235,19 +234,25 @@ public class OptimobileDelegator {
 				} else if (emsNativeMobileView != null) {
 					SdkLog.d(TAG,
 							"Primary adView is native view, replacing content with secondary adview's.");
-					SdkLog.i(TAG,
-							"optimobile view unused, will be destroyed.");
+					SdkLog.i(TAG, "optimobile view unused, will be destroyed.");
 					optimobileView.removeAllViews();
 					optimobileView = null;
-
-					handler.post(new Runnable() {
-						public void run() {
-							emsNativeMobileView
-									.processResponse(new OptimobileAdResponse(
-											response.indexOf("thirdparty") >= 0 ? null
-													: response));
-						}
-					});
+					if (handler != null) {
+						handler.post(new Runnable() {
+							public void run() {
+								emsNativeMobileView
+										.processResponse(new OptimobileAdResponse(
+												response.indexOf("thirdparty") >= 0 ? null
+														: response));
+							}
+						});
+					} else {
+						//TODO off ui thread without handler?
+						emsNativeMobileView
+								.processResponse(new OptimobileAdResponse(
+										response.indexOf("thirdparty") >= 0 ? null
+												: response));
+					}
 
 				} else {
 					display = true;
@@ -331,8 +336,8 @@ public class OptimobileDelegator {
 								&& !GuJEMSListAdView.class.equals(emsMobileView
 										.getClass())) {
 							SdkLog.i(TAG, "Performing google admob request...");
-							final AdView admobAdView = new AdView((Activity) context,
-									AdSize.BANNER, pubId);
+							final AdView admobAdView = new AdView(
+									(Activity) context, AdSize.BANNER, pubId);
 							admobAdView
 									.setId(emsMobileView != null ? emsMobileView
 											.getId() : emsNativeMobileView
@@ -348,15 +353,16 @@ public class OptimobileDelegator {
 											.getBackground()
 											: emsNativeMobileView
 													.getBackground());
-							
+
 							final ViewGroup parent = (ViewGroup) optimobileView
 									.getParent();
-							
-							final int index = parent.indexOfChild(optimobileView);
+
+							final int index = parent
+									.indexOfChild(optimobileView);
 							parent.removeView(optimobileView);
 							optimobileView.removeAllViews();
 							optimobileView = null;
-							
+
 							admobAdView.setAdListener(new AdListener() {
 
 								@Override

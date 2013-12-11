@@ -77,9 +77,26 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 *            resource ID of the XML layout file to inflate from
 	 */
 	public GuJEMSAdView(Context context, AttributeSet set) {
+		this(context, set, true);
+	}
+
+	/**
+	 * Initialize view with attribute set (this is the common constructor)
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitly, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSAdView(Context context, AttributeSet set, boolean load) {
 		super(context, set);
 		this.preLoadInitialize(context, set);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -91,11 +108,28 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 *            resource ID of the XML layout file to inflate from
 	 */
 	public GuJEMSAdView(Context context, int resId) {
+		this(context, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitly, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSAdView(Context context, int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -109,12 +143,32 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 *            resource ID of the XML layout file to inflate from
 	 */
 	public GuJEMSAdView(Context context, Map<String, ?> customParams, int resId) {
+		this(context, customParams, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add any custom parameters to the request
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param customParams
+	 *            map of custom param names and thiur values
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitly, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSAdView(Context context, Map<String, ?> customParams,
+			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -134,12 +188,37 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 */
 	public GuJEMSAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId) {
+		this(context, customParams, kws, nkws, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add matching or non-matching keywords as
+	 * well as any custom parameters to the request
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param customParams
+	 *            map of custom param names and their values
+	 * @param kws
+	 *            matching keywords
+	 * @param nkws
+	 *            non-matching keywords
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitly, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String nkws[], int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	/**
@@ -155,11 +234,33 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 *            resource ID of the XML layout file to inflate from
 	 */
 	public GuJEMSAdView(Context context, String[] kws, String nkws[], int resId) {
+		this(context, kws, nkws, resId, true);
+	}
+
+	/**
+	 * Initialize view from XML and add matching or non-matching keywords
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param kws
+	 *            matching keywords
+	 * @param nkws
+	 *            non-matching keywords
+	 * @param resId
+	 *            resource ID of the XML layout file to inflate from
+	 * @param load
+	 *            if set to true, the adview loads implicitly, if false, call
+	 *            load by yourself
+	 */
+	public GuJEMSAdView(Context context, String[] kws, String nkws[],
+			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
-		this.load();
+		if (load) {
+			this.load();
+		}
 	}
 
 	private void handleInflatedLayout(AttributeSet attrs) {
@@ -222,7 +323,11 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		return as;
 	}
 
-	private final void load() {
+	/**
+	 * Perform the actual request. Should only be invoked if a constructor with
+	 * the boolean load flag was used and it was false
+	 */
+	public final void load() {
 		if (settings != null && !this.testMode) {
 
 			// Construct request URL
@@ -243,8 +348,13 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 			}
 		} else {
 			SdkLog.w(TAG, "AdView has no settings or is in test mode.");
-			if (testMode) {
-				setVisibility(View.VISIBLE);
+			setLayoutParams(getNewLayoutParams(
+					(int) (300.0 * SdkUtil.getDensity()),
+					(int) (50.0 * SdkUtil.getDensity())));
+			setVisibility(VISIBLE);
+			if (this.settings != null
+					&& this.settings.getOnAdSuccessListener() != null) {
+				this.settings.getOnAdSuccessListener().onAdSuccess();
 			}
 		}
 	}
@@ -259,13 +369,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>",
-					"text/html", "utf-8");
-			setVisibility(View.VISIBLE);
-			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
-				this.settings.getOnAdSuccessListener().onAdSuccess();
-			}			
+					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div>", "text/html", "utf-8");
 		}
 
 	}
@@ -282,13 +387,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>",
-					"text/html", "utf-8");
-			setVisibility(View.VISIBLE);
-			if (this.settings != null && this.settings.getOnAdSuccessListener() != null) {
-				this.settings.getOnAdSuccessListener().onAdSuccess();
-			}			
+					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div>", "text/html", "utf-8");
 		}
 
 	}

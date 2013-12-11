@@ -244,19 +244,22 @@ public final class InterstitialActivity extends Activity {
 					while (InterstitialThread.SHOW) {
 						if (!loaded && adView.isPageFinished()) {
 
-							loaded = true;
 							if (root == null || root.getHandler() == null) {
-								SdkLog.w(TAG, "Interstitial root view or its handler is null!");
-								status = FINISHED;
+								SdkLog.w(TAG,
+										"Interstitial root view or its handler is null!");
+								Thread.yield();
+								//status = FINISHED;
+							} else {
+								loaded = true;
+								root.getHandler().post(new Runnable() {
+									@Override
+									public void run() {
+										root.removeView(spinner);
+										root.addView(adView);
+										fetchTime();
+									}
+								});
 							}
-							root.getHandler().post(new Runnable() {
-								@Override
-								public void run() {
-									root.removeView(spinner);
-									root.addView(adView);
-									fetchTime();
-								}
-							});
 						} else if (loaded && !InterstitialThread.PAUSED) {
 							if (withProgress && t0 > 0) {
 								int t1 = (int) (System.currentTimeMillis() - t0);

@@ -20,10 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
+import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView;
 
 public class NativeListViewTest extends Activity {
 
+	private final static String TAG = "NativeListViewTest";
+	
 	CustomAdapter ca;
 	
     ArrayList <Object> data = new ArrayList<Object>();
@@ -40,7 +43,8 @@ public class NativeListViewTest extends Activity {
         final ListView l = (ListView)findViewById(R.id.testList);
         final GuJEMSNativeListAdView av1 = new GuJEMSNativeListAdView(this,
                 customParams,
-                R.layout.generic_nativeadview);
+                R.layout.generic_nativeadview,
+                false);
         
         av1.setId(12615);
         av1.setOnAdSuccessListener(new IOnAdSuccessListener() {
@@ -52,6 +56,7 @@ public class NativeListViewTest extends Activity {
 				data.add(5, av1);
 				runOnUiThread(new Runnable() {
 					public void run() {
+						SdkLog.d(TAG, "Adding adview to listview");
 						l.setAdapter(ca);		
 					}
 				});
@@ -60,7 +65,8 @@ public class NativeListViewTest extends Activity {
         
         final GuJEMSNativeListAdView av2 = new GuJEMSNativeListAdView(this,
                 customParams2,
-                R.layout.generic_nativeadview);
+                R.layout.generic_nativeadview,
+                false);
         av2.setId(12616);
         av2.setOnAdSuccessListener(new IOnAdSuccessListener() {
 
@@ -71,6 +77,7 @@ public class NativeListViewTest extends Activity {
 				data.add(2, av2);
 				runOnUiThread(new Runnable() {
 					public void run() {
+						SdkLog.d(TAG, "Adding adview to listview");
 						l.setAdapter(ca);					
 					}
 				});
@@ -92,6 +99,9 @@ public class NativeListViewTest extends Activity {
 		this.ca = new CustomAdapter(data, this);
 		
 		l.setAdapter(ca);
+		
+		av1.load();
+		av2.load();
 	}
 
 	@Override
