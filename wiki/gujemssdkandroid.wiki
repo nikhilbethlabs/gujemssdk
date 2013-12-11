@@ -24,19 +24,23 @@ https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_Developer_Guide_EN
 *Changelog
 
 ||*Version*      ||*Loginformation*||
-||v 1.3.1||	Added English localization ||
-|| ||	Added high resolution icons ||
-|| ||	Added native adviews ||
-|| ||	Added support for Android 4.4 (KitKat) Chrome webview ||
-|| ||	Added ability to shorten geocoords via settings.xml ||
-|| ||	Added test mode via settings.xml ||
-|| ||	App manifest no longer needs SDK declarations (merged manifest) ||
-|| ||	Fixed optimobile banner size ||
-|| ||	Fixed Smartstream SDK resources ||
-|| ||	Optimized optimobile in ListViews ||
-|| ||	Reduced view swapping ||
-|| ||	More bugfixes ||
-|| ||	Updated documentation ||
+||v 1.3.1||Added English localization||
+|| ||	Added high resolution icons||
+|| ||	Added native adviews||
+|| ||	Added support for Android 4.4 (KitKat) Chrome webview||
+|| ||	Added ability to shorten geocoords via settings.xml||
+|| ||	Added test mode via settings.xml||
+|| ||	App manifest no longer needs SDK declarations (merged manifest)||
+|| ||	Fixed optimobile banner size||
+|| ||	Fixed Smartstream SDK resources||
+|| ||	Optimized optimobile in ListViews||
+|| ||	Reduced view swapping||
+|| ||	Removed deprecated InterstitialSwitchActivity||
+|| ||	Code merging and cleaning||
+|| ||	Compatibility with Android SDK Tools rev.22.3||
+|| ||	Compatibility with Android SDK Plattform-Tools rev.19||
+|| ||	More bugfixes||
+|| ||	Updated documentation||
 ||v 1.3       || Bugfixes ||
 || ||	New targeting methods ||
 || ||	New in-ad javascript methods ||
