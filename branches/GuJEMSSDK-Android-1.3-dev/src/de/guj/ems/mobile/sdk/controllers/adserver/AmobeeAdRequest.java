@@ -76,7 +76,7 @@ public class AmobeeAdRequest extends AdRequest {
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME,
 						ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(2500);
-				con.setConnectTimeout(500);
+				con.setConnectTimeout(750);
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
 				if (this.securityHeaderName != null) {
@@ -115,8 +115,8 @@ public class AmobeeAdRequest extends AdRequest {
 		else {
 			SdkLog.d(TAG, "Older than Gingerbread - using DefaultHttpClient.");
 			HttpParams httpParameters = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 500);
-			HttpConnectionParams.setSoTimeout(httpParameters, 1000);
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 750);
+			HttpConnectionParams.setSoTimeout(httpParameters, 2500);
 			DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setHeader(USER_AGENT_HEADER_NAME, SdkUtil.getUserAgent());
