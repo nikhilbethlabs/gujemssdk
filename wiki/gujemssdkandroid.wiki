@@ -10,7 +10,10 @@ Android SDK change history and downloads
 *Downloads
 
 Android SDK Starter Kit
-https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3.zip
+https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3_1.zip
+
+Android SDK Starter Kit (Gradle)
+https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3_1_gradle.zip
 
 Android SDK documentation (German)
 https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_Developer_Guide_DE.pdf
@@ -21,6 +24,19 @@ https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_Developer_Guide_EN
 *Changelog
 
 ||*Version*      ||*Loginformation*||
+||v 1.3.1||	Added English localization
+|| ||	Added high resolution icons
+|| ||	Added native adviews
+|| ||	Added support for Android 4.4 (KitKat) Chrome webview
+|| ||	Added ability to shorten geocoords via settings.xml
+|| ||	Added test mode via settings.xml
+|| ||	App manifest no longer needs SDK declarations (merged manifest)
+|| ||	Fixed optimobile banner size
+|| ||	Fixed Smartstream SDK resources
+|| ||	Optimized optimobile in ListViews
+|| ||	Reduced view swapping
+|| ||	More bugfixes
+|| ||	Updated documentation
 ||v 1.3       || Bugfixes ||
 || ||	New targeting methods ||
 || ||	New in-ad javascript methods ||
