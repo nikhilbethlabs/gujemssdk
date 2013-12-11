@@ -11,6 +11,13 @@ import android.widget.TextView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView;
 
+/**
+ * Custom listview adapter fore the ListViewTest and NativeListTest
+ * activities
+ * 
+ * @author stein16
+ *
+ */
 public class CustomAdapter extends BaseAdapter {
 	 
     
@@ -40,14 +47,10 @@ public class CustomAdapter extends BaseAdapter {
    
     public View getView(int position, View convertView, ViewGroup parent) {
          View v = convertView;
-/*         
-         System.out.println("---");
-         for (int i = 0; i < getCount(); i++) {
-        	 System.out.println(getItem(i));
-         }
-         System.out.println("---");
-*/         
+
          Object item = getItem(position);
+         // if the current view is no adview we fill it
+         // via /res/layout/list_item_default.xml
          if (v == null && !(item.getClass().equals(GuJEMSListAdView.class) || item.getClass().equals(GuJEMSNativeListAdView.class)))
          {
             LayoutInflater vi = (LayoutInflater)_c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,6 +59,7 @@ public class CustomAdapter extends BaseAdapter {
             
             return v;
          }
+         // otherwise we return the adview
          else if (v == null) {
         	 return (View)getItem(position);
          }

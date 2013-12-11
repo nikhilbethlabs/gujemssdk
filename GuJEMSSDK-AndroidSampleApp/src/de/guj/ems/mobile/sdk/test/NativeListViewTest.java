@@ -23,6 +23,14 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeListAdView;
 
+/**
+ * This is basically the same activity as ListViewTest
+ * with the exception of using native instead of
+ * web based views.
+ * 
+ * @author stein16
+ *
+ */
 public class NativeListViewTest extends Activity {
 
 	private final static String TAG = "NativeListViewTest";

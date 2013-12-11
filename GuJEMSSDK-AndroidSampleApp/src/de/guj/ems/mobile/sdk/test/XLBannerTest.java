@@ -15,6 +15,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+/**
+ * This samples uses a scrollable layout
+ * with various adviews
+ * 
+ * The top adview shows a 320x50 Mobile App Banner
+ * 
+ * @author mrbungle
+ *
+ */
 @SuppressLint("SetJavaScriptEnabled")
 public class XLBannerTest extends Activity {
 
@@ -24,15 +33,6 @@ public class XLBannerTest extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.xl);
-/*
-		WebView webView = (WebView) findViewById(R.id.webView1);
-		webView.setBackgroundColor(0);
-		webView.getSettings().setJavaScriptEnabled(true);
-		webView.setScrollContainer(false);
-		webView.setVerticalScrollBarEnabled(false);
-		webView.setHorizontalScrollBarEnabled(false);
-		webView.loadUrl("http://m.ems.guj.de//#uid2687");
-*/
 	}
 
 	@Override
@@ -52,15 +52,5 @@ public class XLBannerTest extends Activity {
 		}
 		return true;
 	}
-/*
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-*/
 }

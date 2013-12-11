@@ -5,7 +5,15 @@ import android.content.Intent;
 import android.util.Log;
 import de.guj.ems.mobile.sdk.controllers.InterstitialSwitchReceiver;
 
-
+/**
+ * This is a helper class for the menu
+ * Each menu entry triggers an activity,
+ * but before showing it we try to 
+ * fetch an interstitial
+ * 
+ * @author stein16
+ *
+ */
 public class MenuItemHelper {
 	
 	private final static String TAG = "MenuItemHelper";
@@ -15,8 +23,11 @@ public class MenuItemHelper {
 		if (menuId == R.id.video) {
 			double rand = Math.random();
 			Log.i(TAG, rand >= 0.5 ? "Wrapped Video Interstitial" : "Video Interstitial");
+			// get the interstitial receiver's intent
 			Intent i = new Intent(context, InterstitialSwitchReceiver.class);
-	    	i.putExtra("ems_zoneId", rand >= 0.5 ? "9002" : "9001");
+	    	// configure it, this interstitial has no target,
+			// i.e. it returns to the previous activity when finishing
+			i.putExtra("ems_zoneId", rand >= 0.5 ? "9002" : "9001");
 	    	i.putExtra("ems_uid", Boolean.valueOf(true));
 	    	i.putExtra("ems_geo",Boolean.valueOf(true));
 	    	//i.putExtra("unmuted", Boolean.valueOf(true));
@@ -24,6 +35,7 @@ public class MenuItemHelper {
 		}
 		else if (menuId == R.id.table) {
 			Log.i(TAG, "GuJEMSAdView in TableView");
+			// add a target activity to the interstitial
 			Intent target = new Intent(context, TableLayoutTest.class);
 	    	Intent i = new Intent(context, InterstitialSwitchReceiver.class);
 	    	i.putExtra("timeout", Integer.valueOf(5000));
@@ -124,7 +136,7 @@ public class MenuItemHelper {
 	    	return i;
 		}
 		else if (menuId == R.id.adReload) {
-			
+			// ignored because it is handled by the current activity
 		}
 		else if (menuId == R.id.preRoll) {
 			Log.i(TAG, "G+J EMS PreRolls");

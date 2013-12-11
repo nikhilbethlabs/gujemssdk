@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Simple sample activity with table layout
+ * The adview is defined in /res/layout/table_layout.xml
+ * 
+ * @author stein16
+ *
+ */
 public class TableLayoutTest extends Activity {
 
 	@Override

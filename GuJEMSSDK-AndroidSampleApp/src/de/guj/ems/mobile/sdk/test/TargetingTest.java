@@ -24,6 +24,21 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 
 @SuppressLint("SetJavaScriptEnabled")
+/**
+ * This is a simple activity with a boxed layout
+ * and two programmatically added adviews
+ * 
+ *  The campaigns running on these adviews are targeted on:
+ *  - the keyword "ems"
+ *  - Geo Location Hamburg or Düsseldorf
+ *  - mobile provider "Vodafone"
+ *  
+ *  adviews are created with deferred loading because
+ *  we also add callback listeners programmatically
+ *  
+ * @author stein16
+ *
+ */
 public class TargetingTest extends Activity {
 
 	// private final static String TAG = "GuJEMSSDKTestTargeting";
@@ -32,30 +47,25 @@ public class TargetingTest extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.targeting);
-		/*
-		WebView webView = (WebView) findViewById(R.id.webView1);
-		webView.setBackgroundColor(0);
-		webView.getSettings().setJavaScriptEnabled(true);
-		webView.setScrollContainer(false);
-		webView.setVerticalScrollBarEnabled(false);
-		webView.setHorizontalScrollBarEnabled(false);
-		webView.loadUrl("http://m.ems.guj.de//#uid2686");
-		*/
-		// Adding custom parameters to the request
+
+		
 		ViewGroup main = (ViewGroup)findViewById(R.id.main);
 		
+		// Adding custom parameters to the request
 		Map<String,Object> customParams = new HashMap<String,Object>();
 		customParams.put("tm", Integer.valueOf(-11));
 
 		// Adding a keyword to the request
 		String [] kws = {"ems"};
 
+		// create one adview with deferred loading
 		GuJEMSAdView adView = new GuJEMSAdView(
 				TargetingTest.this,
 				customParams,
 				kws,
 				null,
-				R.layout.targeting_adview_top
+				R.layout.targeting_adview_top,
+				false
 		);
 		
 		// Programmatically add listeners
@@ -82,21 +92,18 @@ public class TargetingTest extends Activity {
 
 		// Programmatically add adview
 		main.addView(adView, main.indexOfChild(findViewById(R.id.imageView1)));
-		/*
-		// Adding custom parameters to the request
-		Map<String,Object> customParams2 = new HashMap<String,Object>();
-		customParams.put("tm", Integer.valueOf(-11));
-		 */
+
 		// Adding a keyword to the request
-		
 		Map<String,Object> customParams2 = new HashMap<String,Object>();
 		customParams2.put("as", 15224);		
+		// Create second adview with deferred loading
 		GuJEMSAdView adView2 = new GuJEMSAdView(
 				TargetingTest.this,
 				customParams2, //customParams2,
 				null, //kws2,
 				null,
-				R.layout.targeting_adview_bottom
+				R.layout.targeting_adview_bottom,
+				false
 		);
 		
 		
@@ -125,7 +132,10 @@ public class TargetingTest extends Activity {
 		// Programmatically add adview
 		
 		main.addView(adView2,main.indexOfChild(findViewById(R.id.sampleText)) + 1);
-
+		
+		// perform the actual ad request
+		adView.load();
+		adView2.load();
 		
 	}
 
@@ -145,15 +155,5 @@ public class TargetingTest extends Activity {
 		}
 		return true;
 	}
-/*
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-*/
 }
