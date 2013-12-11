@@ -16,6 +16,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
+/** This is an activity
+ * displaying a relative layout with
+ * one embedded adview
+ * 
+ * The adview is defined in /res/layout/relative_layout.xml
+ * 
+ * @author stein16
+ *
+ */
 public class RelativeLayoutTest extends Activity {
 
 	@Override
@@ -55,18 +64,37 @@ public class RelativeLayoutTest extends Activity {
 		System.out.println(t.toString());
 	}
 	
+	/**
+	 * ems_onAdEmpty is defined in the xml
+	 * This is the actual callback method
+	 * Invoked when no ad was received
+	 */
 	public void onAdEmpty() {
 		Toast.makeText(this, "Ad is empty", Toast.LENGTH_SHORT).show();
 	}
 	
+	/**
+	 * ems_onAdError is defined in the xml
+	 * This is the actual callback method
+	 */
 	public void onAdError(String msg) {
 		Toast.makeText(this, "Ad error: " + msg, Toast.LENGTH_SHORT).show();
 	}
 	
+	/**
+	 * ems_onAdError is defined in the xml
+	 * This is the actual callback method
+	 * Invoked if an exception occurs
+	 */
 	public void onAdError(String msg, Throwable t) {
 		Toast.makeText(this, "Ad error: " + msg + " (" + t.getCause() + ")", Toast.LENGTH_SHORT).show();
 	}
 	
+	/**
+	 * ems_onAdSuccess is defined in the xml
+	 * This is the actual callback method
+	 * Invoked when we successfully receive an ad
+	 */
 	public void onAdSuccess() {
 		Toast.makeText(this, "Ad displayed.", Toast.LENGTH_SHORT).show();
 	}

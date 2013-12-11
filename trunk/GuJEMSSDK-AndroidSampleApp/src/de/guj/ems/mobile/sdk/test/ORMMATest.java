@@ -16,6 +16,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+/** 
+ * SImple activity with a webview displaying
+ * a webpage and one adview defined in its
+ * layout xml (/res/layout/sowefo.xml)
+ * 
+ * @author stein16
+ *
+ */
 public class ORMMATest extends Activity {
 
 	//private final static String TAG = "GuJEMSSDKTestSoWeFo";
@@ -50,15 +58,5 @@ public class ORMMATest extends Activity {
 		}
 		return true;
 	}
-/*
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-*/
 }

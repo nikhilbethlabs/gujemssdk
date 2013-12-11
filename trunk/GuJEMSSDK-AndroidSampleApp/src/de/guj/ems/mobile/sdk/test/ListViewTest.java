@@ -23,6 +23,11 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
+/** Sample activity with list view. The list contains two web based adviews.
+ * 
+ * @author stein16
+ *
+ */
 public class ListViewTest extends Activity {
 
 	private final static String TAG = "ListViewTest";
@@ -35,24 +40,35 @@ public class ListViewTest extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
+		// set layout resource to /res/layout/list.xml
 		setContentView(R.layout.list);
-        Map<String, Object> customParams = new HashMap<String, Object>();
+        // create custom params for both views, setting the
+		// "as" (adspace) parameter manually
+		Map<String, Object> customParams = new HashMap<String, Object>();
         customParams.put("as", Integer.valueOf(15224));
         Map<String, Object> customParams2 = new HashMap<String, Object>();
         customParams2.put("as", Integer.valueOf(16542));
+        // obtain the list view
         final ListView l = (ListView)findViewById(R.id.testList);
+        // create one adview with deferred loading
         final GuJEMSListAdView av1 = new GuJEMSListAdView(this,
                 customParams,
                 R.layout.generic_adview,
                 false);
-        
+        // set unique id
         av1.setId(12615);
+        // ad listener callbacks
+        // upon the success callback, the adview
+        // is added to the list view
+        // this prevents flickering list views
         av1.setOnAdSuccessListener(new IOnAdSuccessListener() {
 			
 			private static final long serialVersionUID = 6459396127068144820L;
 
 			@Override
 			public void onAdSuccess() {
+				// only add adview if not already present
+				// i.e. upon reload
 				if (!data.contains(av1)) {
 					data.add(5, av1);
 					runOnUiThread(new Runnable() {
@@ -64,7 +80,7 @@ public class ListViewTest extends Activity {
 				}
 			}
 		});
-        
+        // create second adview in a similiar way
         final GuJEMSListAdView av2 = new GuJEMSListAdView(this,
                 customParams2,
                 R.layout.generic_adview,
@@ -87,7 +103,8 @@ public class ListViewTest extends Activity {
 				}
 			}
 		});
-		data.add("hello");
+		// add data to the list adapter
+        data.add("hello");
 		data.add("world");
 		data.add("I");
 		data.add("am");
@@ -99,10 +116,13 @@ public class ListViewTest extends Activity {
 		data.add("am");
 		data.add("long");
 		data.add("yeah");
+		// this custom adapters knows which
+		// views are adviews and which are not
 		this.ca = new CustomAdapter(data, this);
 		
 		l.setAdapter(ca);
-		
+
+		// deferred loading / triggering of an ad request
 		av1.load();
 		av2.load();
 	}
@@ -117,6 +137,9 @@ public class ListViewTest extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.adReload) {
+			// if a user presses "AdReload" we iterate
+			// through the adapter data and if we find
+			// an adview we call reload() on it
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i) != null && GuJEMSListAdView.class.equals(data.get(i).getClass())) {
 					((GuJEMSListAdView)data.get(i)).reload();
@@ -124,6 +147,8 @@ public class ListViewTest extends Activity {
 			}
 		}
 		else { 
+			// other menu actions, i.e. activities
+			// before each activity we try to show an interstitial
 			Intent target = MenuItemHelper.getTargetIntent(
 					getApplicationContext(),
 					item.getItemId());
@@ -133,6 +158,7 @@ public class ListViewTest extends Activity {
 		} 
 		return true;
 	}
+
 	public void onInterstitialAdError(String msg) {
 		System.out.println(msg);
 	}

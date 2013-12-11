@@ -16,6 +16,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
 
+/**
+ * This is the same activity as RelativeLayoutTest
+ * but it uses native instead of web based views
+ * 
+ * @author stein16
+ *
+ */
 public class NativeRelativeLayoutTest extends Activity {
 
 	@Override

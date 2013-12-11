@@ -10,6 +10,17 @@ import android.view.MenuItem;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+/**
+ * SImple activity showing a video player
+ * Used to demonstrate pre-roll video ads
+ * implemented by VideoInterstitialActivity
+ * 
+ * The actual logic of calling the PreRoll
+ * is handled in MenuItemHelper
+ * 
+ * @author stein16
+ *
+ */
 public class VideoPlayer extends Activity {
 
 	@Override
