@@ -16,6 +16,9 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.ads.AdView;
+
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
@@ -336,8 +339,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash()).execute(
+				SdkUtil.adRequest(this).execute(
 						new String[] { url });
 			}
 			// Do nothing if offline
@@ -469,27 +471,19 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	@Override
 	public void reload() {
 		if (settings != null && !this.testMode) {
-
-			super.clearView();
-			removeAllViews();
+			if (getParent() != null) {
+				ViewGroup p = (ViewGroup)getParent();
+				int index = p.indexOfChild(this);
+				View o = p.getChildAt(index + 1);
+				if (com.MASTAdView.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass())) {
+					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
+					p.removeViewAt(index + 1);
+				}
+			}
 			setVisibility(View.GONE);
+			loadUrl("about:blank");
+			load();
 
-			// Construct request URL
-			final String url = this.settings.getRequestUrl();
-			if (SdkUtil.isOnline()) {
-				SdkLog.i(TAG,
-						"RESTART async. AdServer request [" + this.getId()
-								+ "]");
-				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash()).execute(
-						new String[] { url });
-			}
-			// Do nothing if offline
-			else {
-				SdkLog.i(TAG, "No network connection - not requesting ads.");
-				setVisibility(GONE);
-				processError("No network connection.");
-			}
 		} else {
 			SdkLog.w(
 					TAG,
@@ -527,9 +521,5 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
-	/*
-	 * public void setDirectBackFill(String bfSiteId, String bfZoneId) {
-	 * ((AmobeeSettingsAdapter)this.settings).setDirectBackfill(bfSiteId,
-	 * bfZoneId, getId()); }
-	 */
+
 }

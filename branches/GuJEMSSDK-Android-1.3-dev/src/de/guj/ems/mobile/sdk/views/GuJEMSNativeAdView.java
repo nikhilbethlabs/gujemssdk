@@ -426,13 +426,14 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		String bk = attrs.getAttributeValue(
 				"http://schemas.android.com/apk/res/android", "background");
-		if (getLayoutParams() != null) {
-			getLayoutParams().width = w;
-			getLayoutParams().height = h;
-		} else {
-			setLayoutParams(getNewLayoutParams(w, h));
+		if (!testMode) {
+			if (getLayoutParams() != null) {
+				getLayoutParams().width = w;
+				getLayoutParams().height = h;
+			} else {
+				setLayoutParams(getNewLayoutParams(w, h));
+			}
 		}
-
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
@@ -483,8 +484,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash()).execute(
+				SdkUtil.adRequest(this).execute(
 						new String[] { url });
 			}
 			// Do nothing if offline
@@ -621,29 +621,20 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		}
 	}
 
+	/**
+	 * Repopulate the adview after a new adserver request 
+	 */
 	public void reload() {
-		if (settings != null) {
-			setVisibility(GONE);
+		if (settings != null && !this.testMode) {
+			setVisibility(View.GONE);
 			setImageDrawable(null);
+			load();
 
-			// Construct request URL
-			final String url = this.settings.getRequestUrl();
-			if (SdkUtil.isOnline()) {
-
-				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
-						+ "]");
-				SdkUtil.adRequest(this, settings.getSecurityHeaderName(),
-						settings.getSecurityHeaderValueHash()).execute(
-						new String[] { url });
-			}
-			// Do nothing if offline
-			else {
-				SdkLog.i(TAG, "No network connection - not requesting ads.");
-				setVisibility(GONE);
-				processError("No network connection.");
-			}
 		} else {
-			SdkLog.w(TAG, "AdView has no settings. [" + this.getId() + "]");
+			SdkLog.w(
+					TAG,
+					"AdView has no settings or is in test mode. ["
+							+ this.getId() + "]");
 		}
 	}
 
