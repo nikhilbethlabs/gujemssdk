@@ -208,11 +208,15 @@ public class OptimobileDelegator {
 				SdkLog.d(TAG, "optimobile Ad loaded.");
 
 				final String response = optimobileView.getLastResponse();
-				if (response != null && response.indexOf("thirdparty") >= 0) {
-
-					SdkLog.w(TAG,
-							"Received third party response for non compatible optimobile view (list).");
-
+				if (response != null
+						&& (response.indexOf("thirdparty") >= 0 || response
+								.indexOf("richmedia") >= 0)) {
+					if (emsNativeMobileView != null
+							|| (emsMobileView != null && GuJEMSListAdView.class
+									.equals(emsMobileView.getClass()))) {
+						SdkLog.w(TAG,
+								"Received third party response for non compatible optimobile view (list).");
+					}
 				}
 				if (emsMobileView != null
 						&& GuJEMSListAdView.class.equals(emsMobileView
@@ -226,7 +230,7 @@ public class OptimobileDelegator {
 						public void run() {
 							emsMobileView
 									.processResponse(new OptimobileAdResponse(
-											response.indexOf("thirdparty") >= 0 ? null
+											response.indexOf("richmedia") >= 0 || response.indexOf("thirdparty") >= 0 ? null
 													: response));
 						}
 					});
@@ -242,12 +246,12 @@ public class OptimobileDelegator {
 							public void run() {
 								emsNativeMobileView
 										.processResponse(new OptimobileAdResponse(
-												response.indexOf("thirdparty") >= 0 ? null
+												response.indexOf("richmedia") >= 0 || response.indexOf("thirdparty") >= 0 ? null
 														: response));
 							}
 						});
 					} else {
-						//TODO off ui thread without handler?
+						// TODO off ui thread without handler?
 						emsNativeMobileView
 								.processResponse(new OptimobileAdResponse(
 										response.indexOf("thirdparty") >= 0 ? null
