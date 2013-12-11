@@ -53,13 +53,15 @@ public class ListViewTest extends Activity {
 
 			@Override
 			public void onAdSuccess() {
-				data.add(5, av1);
-				runOnUiThread(new Runnable() {
-					public void run() {
-						SdkLog.d(TAG, "Adding adview to listview");
-						l.setAdapter(ca);		
-					}
-				});
+				if (!data.contains(av1)) {
+					data.add(5, av1);
+					runOnUiThread(new Runnable() {
+						public void run() {
+							SdkLog.d(TAG, "Adding adview to listview");
+							l.setAdapter(ca);		
+						}
+					});
+				}
 			}
 		});
         
@@ -74,13 +76,15 @@ public class ListViewTest extends Activity {
 
 			@Override
 			public void onAdSuccess() {
-				data.add(2, av2);
-				runOnUiThread(new Runnable() {
-					public void run() {
-						SdkLog.d(TAG, "Adding adview to listview");
-						l.setAdapter(ca);					
-					}
-				});
+				if (!data.contains(av2)) {
+					data.add(2, av2);
+					runOnUiThread(new Runnable() {
+						public void run() {
+							SdkLog.d(TAG, "Adding adview to listview");
+							l.setAdapter(ca);					
+						}
+					});
+				}
 			}
 		});
 		data.add("hello");
@@ -113,14 +117,11 @@ public class ListViewTest extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.adReload) {
-			Object ad1 = ca.getItem(2);
-			Object ad2 = ca.getItem(5);
-			if (ad1 != null && GuJEMSListAdView.class.equals(ad1.getClass())) {
-				((GuJEMSListAdView)ad1).reload();
+			for (int i = 0; i < data.size(); i++) {
+				if (data.get(i) != null && GuJEMSListAdView.class.equals(data.get(i).getClass())) {
+					((GuJEMSListAdView)data.get(i)).reload();
+				}
 			}
-			if (ad2 != null && GuJEMSListAdView.class.equals(ad2.getClass())) {
-				((GuJEMSListAdView)ad2).reload();
-			}			
 		}
 		else { 
 			Intent target = MenuItemHelper.getTargetIntent(
