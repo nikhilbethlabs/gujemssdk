@@ -3,11 +3,6 @@
 //
 package com.MASTAdView.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -38,7 +33,7 @@ public class AdWebView extends WebView {
 	private boolean mraidLoaded = false; // has mraid library been loaded?
 	private Object mraidLoadSync = new Object();
 	final private StringBuffer defferedJavascript;
-	private DisplayMetrics metrics;
+	//private DisplayMetrics metrics;
 	final private boolean supportMraid;
 	// final private boolean launchBrowserOnClicks;
 	private AdClickHandler adClickHandler = null;
@@ -51,8 +46,8 @@ public class AdWebView extends WebView {
 
 		adViewContainer = parent;
 		adLog = log;
-		this.metrics = metrics;
-		supportMraid = false;
+		//this.metrics = metrics;
+		supportMraid = mraid;
 		// launchBrowserOnClicks = handleClicks;
 
 		// dataToInject = null;
@@ -77,11 +72,11 @@ public class AdWebView extends WebView {
 			javascriptInterface = new JavascriptInterface(parent, this);
 			mraidInterface = new MraidInterface(parent, this);
 
-			// mraidScript = FileUtils.readTextFromJar(parent.getContext(),
-			// "/mraid.js");
+			/*mraidScript = FileUtils.readTextFromJar(parent.getContext(),
+			 "/js/mraid.js");*/
 		}
 
-		// System.out.println("mread script read: " + mraidScript);
+		//System.out.println("mraid script read: " + mraidScript);
 
 		if (handleClicks) {
 			adClickHandler = new AdClickHandler(adViewContainer);
@@ -166,7 +161,7 @@ public class AdWebView extends WebView {
 					"injectJavascript - exception", e.getMessage());
 		}
 	}
-
+/*
 	private void initializeExpandProperties() {
 		if (supportMraid) {
 			List<NameValuePair> list = new ArrayList<NameValuePair>(2);
@@ -190,7 +185,7 @@ public class AdWebView extends WebView {
 			mraidInterface.setExpandProperties(list);
 		}
 	}
-
+*/
 	protected void defaultOnAdClickHandler(AdWebView viev, String url) {
 		if (adClickHandler != null) {
 			adClickHandler.openUrlForBrowsing(getContext(), url);
@@ -251,11 +246,11 @@ public class AdWebView extends WebView {
 
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			if (supportMraid) {
+			/* if (supportMraid) {
 				adLog.log(MASTAdLog.LOG_LEVEL_DEBUG, "onPageStarted",
 						"loading javascript library");
 				
-				// loadUrl("javascript:" + mraidScript);
+				SdkUtil.evaluateJavascript(view, mraidScript);
 
 				// Wait for mraid loaded to be true, set by js bridge
 				if (!getMraidLoaded()) {
@@ -369,7 +364,7 @@ public class AdWebView extends WebView {
 			}
 
 			adLog.log(MASTAdLog.LOG_LEVEL_DEBUG, "onPageStarted",
-					"loading ad url: " + url);
+					"loading ad url: " + url); */
 			super.onPageStarted(view, url, favicon);
 		}
 
