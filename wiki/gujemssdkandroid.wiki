@@ -9,6 +9,9 @@ Android SDK change history and downloads
 
 *Downloads (Google Drive)
 
+Android SDK Sample App Binary (APK)
+https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing
+
 Android SDK Library Project (Eclipse ADT)
 https://drive.google.com/file/d/0B5R-ThsBtb-3RXlsZzhBQmJuTjQ/edit?usp=sharing
 
