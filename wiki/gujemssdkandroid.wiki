@@ -9,16 +9,16 @@ Android SDK change history and downloads
 
 *Downloads
 
-Android SDK Starter Kit
+Android SDK Library Project (Eclipse ADT)
 https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3_1.zip
 
-Android SDK Starter Kit (Gradle)
+Android SDK Library Project (Gradle)
 https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3_1_gradle.zip
 
-Android SDK documentation (German)
+Android SDK Dokumentation (DE)
 https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_1_Developer_Guide_DE.pdf
 
-Android SDK documentation (English)
+Android SDK documentation (EN)
 https://gujemssdk.googlecode.com/files/GUJEMSSDK_Android_v1_3_1_Developer_Guide_EN.pdf
 
 *Changelog
