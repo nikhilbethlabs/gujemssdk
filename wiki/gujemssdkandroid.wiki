@@ -16,7 +16,7 @@ Android SDK Library Project (Gradle)
 https://drive.google.com/file/d/0B5R-ThsBtb-3T203Z3VMQ3dsRE0/edit?usp=sharing
 
 Android SDK Dokumentation (DE)
-https://drive.google.com/file/d/0B5R-ThsBtb-3T203Z3VMQ3dsRE0/edit?usp=sharing
+https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing
 
 Android SDK documentation (EN)
 https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing
