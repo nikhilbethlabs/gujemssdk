@@ -7,6 +7,20 @@ Android SDK change history and downloads
 
 = Details =
 
+*Downloads (Google Drive)
+
+Android SDK Library Project (Eclipse ADT)
+https://drive.google.com/file/d/0B5R-ThsBtb-3RXlsZzhBQmJuTjQ/edit?usp=sharing
+
+Android SDK Library Project (Gradle)
+https://drive.google.com/file/d/0B5R-ThsBtb-3T203Z3VMQ3dsRE0/edit?usp=sharing
+
+Android SDK Dokumentation (DE)
+https://drive.google.com/file/d/0B5R-ThsBtb-3T203Z3VMQ3dsRE0/edit?usp=sharing
+
+Android SDK documentation (EN)
+https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing
+
 *Downloads
 
 Android SDK Library Project (Eclipse ADT)
