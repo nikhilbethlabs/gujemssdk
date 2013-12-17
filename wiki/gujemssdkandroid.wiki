@@ -13,10 +13,10 @@ Android SDK Sample App Binary (APK)
 https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing
 
 Android SDK Library Project (Eclipse ADT)
-https://drive.google.com/file/d/0B5R-ThsBtb-3RXlsZzhBQmJuTjQ/edit?usp=sharing
+https://drive.google.com/file/d/0B5R-ThsBtb-3a3VsSVRrMmJlSlk/edit?usp=sharing
 
 Android SDK Library Project (Gradle)
-https://drive.google.com/file/d/0B5R-ThsBtb-3T203Z3VMQ3dsRE0/edit?usp=sharing
+https://drive.google.com/file/d/0B5R-ThsBtb-3Tl9YZDBqMWhXQ1E/edit?usp=sharing
 
 Android SDK Dokumentation (DE)
 https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing
