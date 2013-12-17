@@ -24,7 +24,7 @@ https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing
 Android SDK documentation (EN)
 https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing
 
-*Downloads
+*Downloads (these links will be removed after January 2014)
 
 Android SDK Library Project (Eclipse ADT)
 https://gujemssdk.googlecode.com/files/GuJEMSSDK_Android_v1_3_1.zip
