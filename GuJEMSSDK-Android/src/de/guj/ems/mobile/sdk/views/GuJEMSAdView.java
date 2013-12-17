@@ -475,7 +475,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				ViewGroup p = (ViewGroup)getParent();
 				int index = p.indexOfChild(this);
 				View o = p.getChildAt(index + 1);
-				if (com.MASTAdView.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass())) {
+				if (o != null && (com.MASTAdView.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass()))) {
 					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
 					p.removeViewAt(index + 1);
 				}
