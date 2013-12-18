@@ -1228,7 +1228,14 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mViewWidth = getWidth();
 			mUtilityController.init(mDensity);
 			
-			if (getMeasuredWidth() / SdkUtil.getDensity() < 728.0f && (getHeight() / SdkUtil.getDensity() < 150.0f)) {
+			// scaling for 7" superbanner
+			boolean scale = getMeasuredWidth() / SdkUtil.getDensity() < 728.0f && (getHeight() / SdkUtil.getDensity() < 150.0f);
+			// scaling for 7" interstitial in landscape mode
+			scale = scale || getMeasuredWidth() / SdkUtil.getDensity() < 1024.0f && (getHeight() / SdkUtil.getDensity() > 500.0f);
+			// scaling for 7" interstitial in portrait mode
+			scale = scale || getMeasuredWidth() / SdkUtil.getDensity() < 704.0f && (getHeight() / SdkUtil.getDensity() > 500.0f);
+			
+			if (scale) {
 				setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 			    setScrollbarFadingEnabled(false);
 				getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
