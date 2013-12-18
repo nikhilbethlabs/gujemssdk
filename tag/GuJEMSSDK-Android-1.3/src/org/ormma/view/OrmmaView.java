@@ -40,7 +40,6 @@ import org.ormma.controller.util.OrmmaPlayerListener;
 import org.ormma.controller.util.OrmmaUtils;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -1196,7 +1195,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// trap keyboard state and view height/width
 
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void onGlobalLayout() {
 
 		boolean state = bKeyboardOut;
