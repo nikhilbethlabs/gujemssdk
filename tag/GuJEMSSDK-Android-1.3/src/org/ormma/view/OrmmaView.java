@@ -40,6 +40,7 @@ import org.ormma.controller.util.OrmmaPlayerListener;
 import org.ormma.controller.util.OrmmaUtils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -432,29 +433,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// Should this be a static variable?
 	private final HashSet<String> registeredProtocols = new HashSet<String>();
 
-	/*
-	 * public OrmmaView(Context context, String mapAPIKey){ super(context);
-	 * 
-	 * if(!(context instanceof MapActivity)){ throw new
-	 * IllegalArgumentException("MapActivity context required"); }
-	 * 
-	 * this.mapAPIKey = mapAPIKey;
-	 * 
-	 * initialize(); }
-	 * 
-	 * public OrmmaView(Context context, String mapAPIKey, OrmmaViewListener
-	 * listener){ super(context);
-	 * 
-	 * if(!(context instanceof MapActivity)){ throw new
-	 * IllegalArgumentException("MapActivity context required"); }
-	 * 
-	 * this.mapAPIKey = mapAPIKey;
-	 * 
-	 * setListener(listener);
-	 * 
-	 * initialize(); }
-	 */
-
 	private String mapAPIKey;
 
 	private Handler mHandler = new OrmmaHandler(this);
@@ -471,7 +449,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
 			bPageFinished = true;
-			view.setVisibility(View.VISIBLE);
+			view.setVisibility(View.INVISIBLE);
 		}
 
 		@Override
@@ -953,11 +931,12 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 					this.getContext());
 
 		}
+		setBackgroundColor(0);
 		setScrollContainer(false);
 		setVerticalScrollBarEnabled(false);
 		setHorizontalScrollBarEnabled(false);
 
-		setBackgroundColor(0);
+		
 		mDensity = SdkUtil.getDensity();
 		bPageFinished = false;
 
@@ -1217,6 +1196,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// trap keyboard state and view height/width
 
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void onGlobalLayout() {
 
 		boolean state = bKeyboardOut;
@@ -1247,6 +1227,14 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mViewHeight = getHeight();
 			mViewWidth = getWidth();
 			mUtilityController.init(mDensity);
+			
+			if (getMeasuredWidth() / SdkUtil.getDensity() < 728.0f && (getHeight() / SdkUtil.getDensity() < 150.0f)) {
+				setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+			    setScrollbarFadingEnabled(false);
+				getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
+			}
+			
+			setVisibility(View.VISIBLE);
 		}
 
 		bKeyboardOut = state;
