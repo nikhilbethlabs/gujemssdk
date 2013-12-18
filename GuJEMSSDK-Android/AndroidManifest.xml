@@ -65,9 +65,7 @@
         <activity android:name="org.ormma.view.OrmmaActionHandler" />
 		
 		<!-- Receiver to check whether an interstitial can be displayed  -->
-        <receiver android:name="de.guj.ems.mobile.sdk.controllers.InterstitialSwitchReceiver" >
-            <action android:name="de.guj.android.gala.broadcasts.interstitialBroadcast" />
-        </receiver>
+        <receiver android:name="de.guj.ems.mobile.sdk.controllers.InterstitialSwitchReceiver" />
 
         <!-- *** Smartstream Video Interstitial SDK (3rd party video interstitials) *** -->
         <activity
