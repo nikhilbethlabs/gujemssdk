@@ -9,17 +9,17 @@ iOS SDK change history and downloads.
 
 *Downloads
 
-iOS SDK Starter Kit (v1.2.2 R3)
-http://gujemssdk.googlecode.com/files/GUJiOSSDK_v1.2.3R1_%28a%29%20Starter-Pack.zip
+iOS SDK Starter Kit (v1.2.3.2)
+https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing
 
 iOS SDK code and modules documentation (English)
-http://gujemssdk.googlecode.com/files/GUJ_iOS_SDK_ClassDoc_1.2.3.zip
+https://drive.google.com/file/d/0B5R-ThsBtb-3endXX3FsZlp4QW8/edit?usp=sharing
 
 iOS SDK Developer Guide (Deutsch)
-http://gujemssdk.googlecode.com/files/GUJ_EMS_IOS_SDK_DEU_v1.2.3.pdf
+https://drive.google.com/file/d/0B5R-ThsBtb-3T1dJbW5GR0lNYkE/edit?usp=sharing
 
 iOS SDK Developer Guide (English)
-http://gujemssdk.googlecode.com/files/GUJ_EMS_iOS_SDK_EN_v1.2.3.pdf
+https://drive.google.com/file/d/0B5R-ThsBtb-3SUhEWkxsdFduQzQ/edit?usp=sharing
 
 *Changelog
 
