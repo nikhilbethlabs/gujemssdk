@@ -1,5 +1,5 @@
 #labels Featured
-= G+J EMS Android SDK v1.3.1 [https://drive.google.com/file/d/0B5R-ThsBtb-3YWNtMGJJSF9QUTA/edit?usp=sharing] =
+= G+J EMS Android SDK v1.3.1 [http://ems.avault.net/img/android_logo_ico.png] =
 == Library Source Code ==
 * Eclipse Library Project *
 ----
@@ -22,7 +22,7 @@
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing GuJEMSSDK-Android-Sample-v1.3.1]
 ----
-= G+J EMS iOS SDK v1.2.3.2 [https://drive.google.com/file/d/0B5R-ThsBtb-3OU9jQy1NdGU5Wkk/edit?usp=sharing]=
+= G+J EMS iOS SDK v1.2.3.2 [http://ems.avault.net/img/apple_logo_ico.jpg]=
 === Library Source Code ===
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing GuJEMSSDK-iOS-v1.2.3.2]
