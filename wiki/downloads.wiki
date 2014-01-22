@@ -25,8 +25,14 @@
 [https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing Starter Kit]
 === Documentation ===
 * German *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3T1dJbW5GR0lNYkE/edit?usp=sharing GuJEMSSDK-iOS-v1.2.3.2-DE]
+----
 * English *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3SUhEWkxsdFduQzQ/edit?usp=sharing GuJEMSSDK-iOS-v1.2.3.2-EN]
+----
 * Code and Modules *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3endXX3FsZlp4QW8/edit?usp=sharing GuJEMSDSDK-iOS-v1.2.3.2-Developer-EN]
+----
