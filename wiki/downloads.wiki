@@ -25,7 +25,7 @@
 = G+J EMS iOS SDK v1.2.3.2 =
 === Library Source Code ===
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing Starter Kit]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing GuJEMSSDK-iOS-v1.2.3.2]
 ----
 === Documentation ===
 * German *
