@@ -9,21 +9,16 @@ Android SDK change history and downloads
 
 == Downloads (Google Drive)==
 
-Android SDK Sample App Binary (APK)
-https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing
+[https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing Android SDK Sample App Binary (APK)]
 ----
-Android SDK Library Project (Eclipse ADT)
-https://drive.google.com/file/d/0B5R-ThsBtb-3a3VsSVRrMmJlSlk/edit?usp=sharing
+[https://drive.google.com/file/d/0B5R-ThsBtb-3a3VsSVRrMmJlSlk/edit?usp=sharing Android SDK Library Project (Eclipse ADT)]
 ----
 Android SDK Library Project (Gradle)
 https://drive.google.com/file/d/0B5R-ThsBtb-3Tl9YZDBqMWhXQ1E/edit?usp=sharing
 ----
-Android SDK Dokumentation (DE)
-https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing
+[https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing Android SDK Dokumentation (DE)]
 ----
-Android SDK documentation (EN)
-https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing
-
+[https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing Android SDK documentation (EN)]
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
