@@ -1,23 +1,23 @@
-#summary All G+J EMS Mobile SDK Downloads.
 #labels Featured
-
-= Introduction =
-
-Downloads for G+J Mobile SDK
-
-= Details =
-
-== G+J EMS Android SDK v1.3.1 ==
-=== Library Source Code ===
+= G+J EMS Android SDK v1.3.1 =
+== Library Source Code ==
 * Eclipse Library Project *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3a3VsSVRrMmJlSlk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1]
+----
 * Gradle Library Project *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3Tl9YZDBqMWhXQ1E/edit?usp=sharing GuJEMSSDK-Android-v1.3.1]
-=== Documentation ===
+----
+== Documentation ==
 * German *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-DE]
+----
 * English *
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-EN]
+----
 === Sample Application ===
 [https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing GuJEMSSDK-Android-Sample-v1.3.1]
 == G+J EMS iOS SDK v1.2.3.2 ==
