@@ -19,8 +19,10 @@
 [https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-EN]
 ----
 === Sample Application ===
+----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing GuJEMSSDK-Android-Sample-v1.3.1]
-== G+J EMS iOS SDK v1.2.3.2 ==
+----
+= G+J EMS iOS SDK v1.2.3.2 =
 === Library Source Code ===
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing Starter Kit]
