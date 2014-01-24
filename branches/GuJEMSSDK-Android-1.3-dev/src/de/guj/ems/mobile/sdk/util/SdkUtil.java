@@ -202,6 +202,7 @@ public class SdkUtil {
 	 */
 	@SuppressLint("NewApi")
 	public static String getUserAgent() {
+		
 		if (DEBUG) {
 			SdkLog.w(TAG,
 					"UserAgentHelper is in DEBUG mode. Do not deploy to production like this.");
@@ -584,6 +585,10 @@ public class SdkUtil {
 						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
 						e);
 			}
+	}
+
+	public static File getConfigFileDir() {
+		return getContext().getFilesDir();
 	}
 
 }

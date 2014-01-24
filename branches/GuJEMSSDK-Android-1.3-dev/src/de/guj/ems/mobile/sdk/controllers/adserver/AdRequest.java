@@ -3,6 +3,7 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 import android.os.AsyncTask;
 import android.os.Build;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
+import de.guj.ems.mobile.sdk.util.SdkConfig;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
@@ -47,13 +48,14 @@ public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 	protected IAdResponse doInBackground(String... urls) {
 		IAdResponse response = null;
 		for (String url : urls) {
-			SdkLog.d(TAG, "Request: " + url);
+			String nurl = SdkConfig.SINGLETON.process(url);
+			SdkLog.d(TAG, "Request: " + nurl);
 			if (response != null) {
 				SdkLog.w(TAG,
 						"Multiple URLs in adserver request task. Ignoring "
-								+ url);
+								+ nurl);
 			}
-			response = httpGet(url);
+			response = httpGet(nurl);
 		}
 		return response;
 	}
