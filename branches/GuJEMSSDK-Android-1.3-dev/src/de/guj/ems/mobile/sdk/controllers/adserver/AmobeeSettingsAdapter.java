@@ -131,7 +131,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				String res = new String();
 				for (int i = 0; i < strs.length; i++) {
 					if (i > 0) {
-						res += "%7C" + URLEncoder.encode(strs[i], "utf-8");
+						res += "|" + URLEncoder.encode(strs[i], "utf-8");
 					} else {
 						res = strs[i];
 					}

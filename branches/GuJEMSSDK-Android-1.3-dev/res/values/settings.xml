@@ -10,6 +10,6 @@
 	<item format="integer" name="ems_location_maxage_ms" type="integer">7200000</item>
 	
 	<!-- The root path of the remote json config file for the SDK -->
-	<string name="ems_remote_config_root">http://box.emsmobile.de/jws/</string>
+	<string name="ems_jws_root">http://box.emsmobile.de/jws/</string>
 
 </resources>
