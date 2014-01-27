@@ -6,6 +6,18 @@ import org.json.JSONObject;
 
 import de.guj.ems.mobile.sdk.R;
 
+/**
+ * Singleton that holds the data fetched from a remote json file
+ * 
+ * The json contains:
+ * 	alternative base url for adserver
+ *  URL manipulation based on regular expressions
+ *  URL manipulation based on simple concatenation
+ *  URL manipulation based on additional keywords
+ * 
+ * @author stein16
+ *
+ */
 public enum SdkConfig {
 	SINGLETON;
 
@@ -36,6 +48,11 @@ public enum SdkConfig {
 		jsonSdkConfig = jsonConfig;
 	}
 
+	/**
+	 * Processes a request URL based on the json config
+	 * @param url original URL
+	 * @return manipulated URL
+	 */
 	public String process(String url) {
 		if (jsonSdkConfig != null) {
 			try {

@@ -15,6 +15,10 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
+/**
+ * Asynschronously fetches a remote json file with configuration data for the SDK.
+ * File is stored locally and only re-fetched upon app start if the remote file is younger than the local.
+ */
 public class SdkConfigFetcher extends AsyncTask<Void, Void, JSONObject> {
 
 	private String remote;
@@ -41,13 +45,20 @@ public class SdkConfigFetcher extends AsyncTask<Void, Void, JSONObject> {
 
 	private final static byte[] EMPTY_BUFFER = new byte[1024];
 
+	/**
+	 * Constructor
+	 * @param remote Remote path
+	 * @param localDir Local Directory
+	 */
 	public SdkConfigFetcher(String remote, File localDir) {
 		this.remote = remote;
 		this.localDir = localDir;
 		this.localAge = checkLocal();
 	}
 
+	
 	private void storeLocal() {
+		// locally store current config
 		File f = new File(this.localDir, this.local);
 		FileOutputStream fo = null;
 		try {
@@ -70,6 +81,7 @@ public class SdkConfigFetcher extends AsyncTask<Void, Void, JSONObject> {
 		File f = new File(this.localDir, this.local);
 		long age = f.lastModified();
 		if (f.exists()) {
+			// scan local file
 			BufferedInputStream in = null;
 			StringBuilder rBuilder = null;
 			try {
@@ -96,6 +108,7 @@ public class SdkConfigFetcher extends AsyncTask<Void, Void, JSONObject> {
 			try {
 				SdkLog.d(TAG, "Parsing local json config...");
 				SdkLog.d(TAG, rBuilder.toString());
+				// parse local file
 				this.localConfig = new JSONObject(rBuilder.toString());
 			} catch (JSONException e3) {
 				SdkLog.e(TAG, "Error reading json config", e3);
