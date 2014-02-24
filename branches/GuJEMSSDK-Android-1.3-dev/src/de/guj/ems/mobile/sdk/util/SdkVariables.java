@@ -9,37 +9,36 @@ import de.guj.ems.mobile.sdk.R;
 /**
  * Singleton that holds the data fetched from a remote json file
  * 
- * The json contains: alternative base url for adserver URL manipulation based
- * on regular expressions URL manipulation based on simple concatenation URL
- * manipulation based on additional keywords
+ * The json contains: variables returned from a webservive which are added to the adserver request
  * 
  * @author stein16
  * 
  */
-public enum SdkConfig {
+public enum SdkVariables {
 	SINGLETON;
 
-	private JSONObject jsonSdkConfig;
+	private JSONObject jsonSdkVariables;
 
-	public class JSONConfig extends JSONContent {
+	public class JSONVariables extends JSONContent {
 
 		@Override
 		void init() {
 			JsonFetcher fetcher = new JsonFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
-					+ getRemotePath() + "config.json",
-					SdkUtil.getConfigFileDir());
+					+ getRemotePath() + "config.json", "variables.json",
+					SdkUtil.getConfigFileDir(), 1800000);
 			feed(fetcher.getJson());
 			fetcher.execute();
 		}
 
 		@Override
 		public String process(String url) {
-			if (jsonSdkConfig != null) {
+			if (jsonSdkVariables != null) {
 				try {
-					JSONArray regexp = jsonSdkConfig.getJSONArray("urlReplace");
+					JSONArray regexp = jsonSdkVariables
+							.getJSONArray("urlReplace");
 					String nURL = url.replaceAll(SdkUtil.getContext()
-							.getString(R.string.baseUrl), jsonSdkConfig
+							.getString(R.string.baseUrl), jsonSdkVariables
 							.getString("baseUrl"));
 					SdkLog.d(TAG, "Processing URL " + url);
 					// process regexp replacements
@@ -51,24 +50,24 @@ public enum SdkConfig {
 					// additional keywords
 					// TODO debug / check whether works correctly
 					// TODO &kw= is amobee specific
-					if (jsonSdkConfig.getString("additionalKeyword") != null) {
+					if (jsonSdkVariables.getString("additionalKeyword") != null) {
 						if (nURL.indexOf("&kw=") >= 0) {
 							nURL = nURL
 									.replaceAll(
 											"(&kw=)(.*&)",
 											"$1"
-													+ jsonSdkConfig
+													+ jsonSdkVariables
 															.getString("additionalKeyword")
 													+ "|$2");
 						} else {
 							nURL = nURL.concat("&kw="
-									+ jsonSdkConfig
+									+ jsonSdkVariables
 											.getString("additionalKeyword"));
 						}
 					}
 					// query extensions
-					return jsonSdkConfig.getString("urlAppend") != null ? nURL
-							.concat(jsonSdkConfig.getString("urlAppend"))
+					return jsonSdkVariables.getString("urlAppend") != null ? nURL
+							.concat(jsonSdkVariables.getString("urlAppend"))
 							: nURL;
 
 				} catch (JSONException e) {
@@ -82,19 +81,19 @@ public enum SdkConfig {
 
 			return url;
 		}
-		
+
 	}
 
-	private final static String TAG = "SdkConfig";
+	private final static String TAG = "SdkVariables";
 
-	private JSONConfig jsonConfig;
+	private JSONVariables jsonVariables;
 
-	SdkConfig() {
-		this.jsonConfig = new JSONConfig();
+	SdkVariables() {
+		this.jsonVariables = new JSONVariables();
 	}
 
-	public JSONConfig getJsonConfig() {
-		return this.jsonConfig;
+	public JSONVariables getJsonVariables() {
+		return this.jsonVariables;
 	}
 
 	String getRemotePath() {

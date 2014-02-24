@@ -5,6 +5,7 @@ import android.os.Build;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.util.SdkConfig;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.SdkVariables;
 
 /**
  * Performs HTTP communication in the background, i.e. off the UI thread.
@@ -48,7 +49,8 @@ public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 	protected IAdResponse doInBackground(String... urls) {
 		IAdResponse response = null;
 		for (String url : urls) {
-			String nurl = SdkConfig.SINGLETON.process(url);
+			String nurl = SdkVariables.SINGLETON.getJsonVariables().process(
+					SdkConfig.SINGLETON.getJsonConfig().process(url));
 			SdkLog.d(TAG, "Request: " + nurl);
 			if (response != null) {
 				SdkLog.w(TAG,
