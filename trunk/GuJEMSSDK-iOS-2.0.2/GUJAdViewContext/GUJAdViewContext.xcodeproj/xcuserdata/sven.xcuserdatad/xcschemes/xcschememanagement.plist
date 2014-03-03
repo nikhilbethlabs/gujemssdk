@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>ExtBuild: BuildRelease.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>ExtBuild: CreateReleaseBundle.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>GUJAdViewContext.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
+		<key>GUJAdViewContextSimulator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>263F680F165CFB550017EF3D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2653CF87166660FF004BB035</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2653CF8B16666140004BB035</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26E33F12165BED5D005ADC51</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
