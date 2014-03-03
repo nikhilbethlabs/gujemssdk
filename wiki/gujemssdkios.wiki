@@ -8,17 +8,26 @@ iOS SDK change history and downloads.
 = Details =
 
 == Downloads ==
-[https://drive.google.com/file/d/0B5R-ThsBtb-3aW00SVJXU3Ywams/edit?usp=sharing iOS SDK Starter Kit (v1.2.3.2)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3cXpIMFgzb2JZaVk/edit?usp=sharing iOS SDK Starter Kit (v2.0.2)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3endXX3FsZlp4QW8/edit?usp=sharing iOS SDK code and modules documentation (English)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3ak1MQjhyMk16aGs/edit?usp=sharing iOS SDK Developer Guide (Deutsch)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3T1dJbW5GR0lNYkE/edit?usp=sharing iOS SDK Developer Guide (Deutsch)]
-----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3SUhEWkxsdFduQzQ/edit?usp=sharing iOS SDK Developer Guide (English)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3QzZMTkhjYk1vR2s/edit?usp=sharing iOS SDK Developer Guide (English)]
 ----
 == Changelog ==
 
-||*Version*      ||*Loginformation*                                               ||
+||*Version*      ||*Loginformation*||
+||v 2.0.2        || Completely revamped version ||
+|| || No more singletones ||
+|| || Using GCD (blocks) ||
+|| || Update to iOS 5.0+ standards ||
+|| || ARMV7s compatibility ||
+|| || Various bugs fixed ||
+|| || Easy adding of more than one adview per screen ||
+|| || Better positioning of adviews ||
+|| || AdView are now dynamically resizing to the correct height ||
+|| || Bugs fixed in and extension to SDK modules like ORMMA, Smartstream and mOcean ||
+|| || All objects & libraries now use their own namespace ||
 ||v 1.2.3 R1     || Bugfix for iOS 7 support                         || 
 ||v 1.2.3        || implemented algorithm for Startstitial Integration||
 ||v 1.2.2 R3     || solved critical bug which caused app rejection by Apple ||
