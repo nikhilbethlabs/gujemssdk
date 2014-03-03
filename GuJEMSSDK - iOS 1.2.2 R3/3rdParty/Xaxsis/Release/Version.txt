@@ -1,1 +1,0 @@
-VideoAdSDK_iOS_v1.2
