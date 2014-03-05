@@ -23,6 +23,7 @@ public enum SdkVariables {
 
 		@Override
 		void init() {
+			//TODO max age of variables is in SdkConfig 
 			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
 					+ SdkUtil.getContext().getResources()
