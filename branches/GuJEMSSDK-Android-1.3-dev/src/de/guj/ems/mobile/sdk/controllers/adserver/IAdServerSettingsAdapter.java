@@ -3,6 +3,8 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.json.JSONArray;
+
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
@@ -188,5 +190,37 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 * @param params Map of parameter names and values
 	 */
 	public void addCustomParams(Map<String, ?> params);
+	
+	
+	/**
+	 * Override the initial base url for the request
+	 * @param baseUrl new base url for ad request servlet
+	 */
+	public void setBaseUrlString(String baseUrl);
+	
+	/** Add an array of regular expressions which should be applied to the
+	 * resulting ad request
+	 * @param regexp json array with regular expressions
+	 */
+	public void addRegexp(JSONArray regexp);
+	
+	/**
+	 * Retrieve a map of all actual request params defined in the settings 
+	 * @return map with all configured param values
+	 */
+	public Map<String, String> getParams();
+	
+	/**
+	 * Returns an appending string to the query string
+	 * @return query string extension
+	 */
+	public String getQueryAppendix();
+	
+	/**
+	 * Add a predefined string which is appended to the servlet url 
+	 * @param str query string extension
+	 */
+	public void setQueryAppendix(String str);
+	
 
 }

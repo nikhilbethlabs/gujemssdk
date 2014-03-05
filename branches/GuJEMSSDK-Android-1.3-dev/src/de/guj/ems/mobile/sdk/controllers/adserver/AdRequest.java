@@ -15,7 +15,7 @@ import de.guj.ems.mobile.sdk.util.SdkVariables;
  * @author stein16
  * 
  */
-public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
+public abstract class AdRequest extends AsyncTask<IAdServerSettingsAdapter, Void, IAdResponse> {
 
 	private final String TAG = "AdRequest";
 
@@ -46,18 +46,12 @@ public abstract class AdRequest extends AsyncTask<String, Void, IAdResponse> {
 	protected abstract IAdResponse httpGet(String url);
 
 	@Override
-	protected IAdResponse doInBackground(String... urls) {
+	protected IAdResponse doInBackground(IAdServerSettingsAdapter... settings) {
 		IAdResponse response = null;
-		for (String url : urls) {
-			String nurl = SdkVariables.SINGLETON.getJsonVariables().process(
-					SdkConfig.SINGLETON.getJsonConfig().process(url));
-			SdkLog.d(TAG, "Request: " + nurl);
-			if (response != null) {
-				SdkLog.w(TAG,
-						"Multiple URLs in adserver request task. Ignoring "
-								+ nurl);
-			}
-			response = httpGet(nurl);
+		for (IAdServerSettingsAdapter set : settings) {
+			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON.getJsonVariables().process(
+					SdkConfig.SINGLETON.getJsonConfig().process(set));
+			response = httpGet(nSet.getRequestUrl());
 		}
 		return response;
 	}

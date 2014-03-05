@@ -1,6 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -72,7 +73,7 @@ public final class SmartstreamEvents {
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event
 					+ "&plmid=" + placement;
 			try {
-				SdkUtil.adRequest(null).execute(url);
+				SdkUtil.adRequest(null).execute(new TrackingSettingsAdapter(url));
 			} catch (Exception e) {
 				SdkLog.e(TAG, "Error sending tracking event to AdServer", e);
 			}

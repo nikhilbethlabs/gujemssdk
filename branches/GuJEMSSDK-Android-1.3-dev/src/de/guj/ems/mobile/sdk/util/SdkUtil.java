@@ -32,6 +32,7 @@ import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.TrackingRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.AdRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdRequest;
+import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 
 /**
  * Various global static methods for initialization, configuration of sdk plus
@@ -406,6 +407,34 @@ public class SdkUtil {
 			return false;
 		}
 	}
+	
+	/**
+	 * Check the network subtype, i.e. carrier name
+	 * 
+	 * @return carrier name if available, "unknown" otherwise
+	 */
+	public static String getNetworkName() {
+
+		Context c = SdkUtil.getContext();
+		if (c.getPackageManager().checkPermission(
+				permission.ACCESS_NETWORK_STATE, c.getPackageName()) != PackageManager.PERMISSION_GRANTED) {
+			SdkLog.w(TAG,
+					"Access Network State not granted in Manifest - unable to determine provider.");
+			return "Unknown";
+		}
+
+		final ConnectivityManager conMgr = (ConnectivityManager) c
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		try {
+			return conMgr.getActiveNetworkInfo().getExtraInfo();
+		} catch (Exception e) {
+			SdkLog.w(TAG,
+					"Exception in getNetworkInfo - unable to determine provider.");
+			return "Unknown";
+		}
+	}
+
 
 	private static String readUUID(File fuuid) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(fuuid, "r");
@@ -542,8 +571,10 @@ public class SdkUtil {
 	 * @param url
 	 *            An array of url strings
 	 */
-	public static void httpRequests(final String[] url) {
-		new TrackingRequest().execute(url);
+	public static void httpRequests(final String[] urls) {
+		for (String url : urls) {
+			new TrackingRequest().execute(new TrackingSettingsAdapter(url));
+		}
 	}
 
 	/**

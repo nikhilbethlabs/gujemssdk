@@ -65,10 +65,8 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 
 		// adserver request
 		if (SdkUtil.isOnline() && !testMode) {
-			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			SdkUtil.adRequest(this).execute(
-					new String[] { url });
+			SdkUtil.adRequest(this).execute(settings);
 		} else if (!testMode) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");

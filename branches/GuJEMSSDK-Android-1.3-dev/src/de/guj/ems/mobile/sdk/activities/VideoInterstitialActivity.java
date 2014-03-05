@@ -715,7 +715,8 @@ public final class VideoInterstitialActivity extends Activity implements
 	@Override
 	public void onVASTWrapperFound(final String url) {
 		SdkLog.d(TAG, "Wrapped VAST xml response [" + url + "].");
-		SdkUtil.adRequest(this).execute(url);
+		//TODO VASTWrapper with new url?!
+		//SdkUtil.adRequest(this).execute(url);
 	}
 
 	@Override

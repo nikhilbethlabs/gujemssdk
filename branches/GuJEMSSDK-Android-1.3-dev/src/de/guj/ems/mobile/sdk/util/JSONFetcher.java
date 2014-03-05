@@ -20,15 +20,15 @@ import android.os.AsyncTask;
  * SDK. File is stored locally and only re-fetched upon app start if the remote
  * file is younger than the local.
  */
-public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
+public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 
 	private JSONContent jsonContent;
-	
-	private boolean doFetch = true;
+
+	private boolean doFetch;
 
 	private String remote;
 
-	private String local = "emsJsonConfig.json";
+	private String local;
 
 	private File localDir;
 
@@ -36,7 +36,7 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 
 	private JSONObject localJson;
 
-	private final static String TAG = "SdkConfigFetcher";
+	private final static String TAG = "JSONFetcher";
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
 
@@ -53,36 +53,50 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 	/**
 	 * Constructor
 	 * 
+	 * @param listener
+	 *            Content to be filled with fetched json
 	 * @param remote
 	 *            Remote path
+	 * @param local
+	 *            Local filename
 	 * @param localDir
 	 *            Local Directory
 	 */
-	public JsonFetcher(JSONContent listener, String remote, File localDir) {
-		this.jsonContent = listener;
-		this.remote = remote;
-		this.localDir = localDir;
-		this.localAge = checkLocal();
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param remote
-	 *            Remote path
-	 * @param localDir
-	 *            Local Directory
-	 * @param use
-	 *            this age instead of remote file age
-	 */
-	public JsonFetcher(JSONContent listener, String remote, String local, File localDir, long maxAge) {
+	public JSONFetcher(JSONContent listener, String remote, String local,
+			File localDir) {
 		this.jsonContent = listener;
 		this.remote = remote;
 		this.local = local;
 		this.localDir = localDir;
 		this.localAge = checkLocal();
-		this.doFetch = localAge > maxAge;
+		this.doFetch = true;
 	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param listener
+	 *            Content to be filled with fetched json
+	 * @param remote
+	 *            Remote path
+	 * @param local
+	 *            Local filename
+	 * @param localDir
+	 *            Local Directory
+	 * @param maxAge
+	 *            Use this age instead of remote file age
+	 */
+	public JSONFetcher(JSONContent listener, String remote, String local,
+			File localDir, long maxAge) {
+		this.jsonContent = listener;
+		this.remote = remote;
+		this.local = local;
+		this.localDir = localDir;
+		this.localAge = checkLocal();
+		this.doFetch = localAge <= 0 || localAge > maxAge;
+	}
+
+	// TODO constructor with optional params for fetching request
 
 	private void storeLocal() {
 		// locally store current config
@@ -91,9 +105,9 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 		try {
 			fo = new FileOutputStream(f);
 			fo.write(localJson.toString().getBytes());
-			SdkLog.d(TAG, "Local config is now " + this.localJson);
+			SdkLog.d(TAG, "Local json: " + this.localJson);
 		} catch (Exception e) {
-			SdkLog.e(TAG, "Error storing config locally", e);
+			SdkLog.e(TAG, "Error storing json locally", e);
 		} finally {
 			if (fo != null) {
 				try {
@@ -123,7 +137,7 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 			} catch (FileNotFoundException e0) {
 				SdkLog.w(TAG, "File not found: " + this.local);
 			} catch (IOException e1) {
-				SdkLog.e(TAG, "Could not read config file.", e1);
+				SdkLog.e(TAG, "Could not read json file.", e1);
 			} finally {
 				try {
 					if (in != null) {
@@ -133,12 +147,12 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 				}
 			}
 			try {
-				SdkLog.d(TAG, "Parsing local json config...");
+				SdkLog.d(TAG, "Parsing local json...");
 				SdkLog.d(TAG, rBuilder.toString());
 				// parse local file
 				this.localJson = new JSONObject(rBuilder.toString());
 			} catch (JSONException e3) {
-				SdkLog.e(TAG, "Error reading json config", e3);
+				SdkLog.e(TAG, "Error parsing json", e3);
 			}
 		}
 		f = null;
@@ -150,7 +164,7 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 	protected JSONObject doInBackground(Void... params) {
 		if (doFetch) {
 			StringBuilder rBuilder = new StringBuilder();
-
+			SdkLog.d(TAG, "Trying to fetch " + this.remote);
 			HttpURLConnection con = null;
 			try {
 				URL uUrl = new URL(this.remote);
@@ -160,7 +174,7 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 						ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(2500);
 				con.setConnectTimeout(750);
-				SdkLog.d(TAG, "Local last config change: "
+				SdkLog.d(TAG, "Local last json change: "
 						+ new Date(this.localAge));
 				con.setIfModifiedSince(this.localAge);
 				BufferedInputStream in = new BufferedInputStream(
@@ -178,20 +192,20 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 					}
 				} else if (con.getResponseCode() == 304) {
 					SdkLog.i(TAG,
-							"Local config is up to date - ignoring remote config.");
+							"Local json is up to date - ignoring remote file.");
 				} else if (con.getResponseCode() != 200) {
 
-					throw new Exception("SdKConfigFetch remote returned HTTP "
+					throw new Exception("JSNOFetcher remote returned HTTP "
 							+ con.getResponseCode());
 				}
 				in.close();
 			} catch (Exception e) {
-				SdkLog.e(TAG, "Error fetching config.", e);
+				SdkLog.e(TAG, "Error fetching json.", e);
 			} finally {
 				if (con != null) {
 					con.disconnect();
 					SdkLog.d(TAG,
-							"Config request finished. [" + rBuilder.length()
+							"Json request finished. [" + rBuilder.length()
 									+ "]");
 				}
 			}
@@ -201,8 +215,10 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 					return new JSONObject(rBuilder.toString());
 				}
 			} catch (Exception e) {
-				SdkLog.e(TAG, "Error reading json config", e);
+				SdkLog.e(TAG, "Error reading json", e);
 			}
+		} else {
+			SdkLog.d(TAG, "Not fetching remote json due to file age control");
 		}
 
 		return null;
@@ -212,7 +228,7 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 	protected void onPostExecute(JSONObject response) {
 		if (response != null) {
 			if (response.length() > 1) {
-				SdkLog.i(TAG, "Received new config from remote server.");
+				SdkLog.i(TAG, "Received new json from remote server.");
 			}
 			if (localJson == null
 					|| (localJson != null && response.length() > 1)) {
@@ -221,9 +237,9 @@ public class JsonFetcher extends AsyncTask<Void, Void, JSONObject> {
 			}
 		} else if (localJson == null) {
 			SdkLog.e(TAG,
-					"SDK has no JSON config! Please contact mobile.tech@ems.guj.de");
+					"Missing json file! Please contact mobile.tech@ems.guj.de");
 		} else {
-			SdkLog.d(TAG, "Remote config is not younger than local");
+			SdkLog.d(TAG, "Remote json is not younger than local");
 		}
 		jsonContent.feed(this.localJson);
 	}

@@ -2,6 +2,8 @@ package de.guj.ems.mobile.sdk.util;
 
 import org.json.JSONObject;
 
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+
 /**
  * Singleton that holds the data fetched from a remote json file
  * 
@@ -30,6 +32,10 @@ public abstract class JSONContent {
 		this.json = j;
 	}
 
-	public abstract String process(String url);
+	synchronized JSONObject getJSON() {
+		return this.json;
+	}
+
+	public abstract IAdServerSettingsAdapter process(IAdServerSettingsAdapter settings);
 
 }

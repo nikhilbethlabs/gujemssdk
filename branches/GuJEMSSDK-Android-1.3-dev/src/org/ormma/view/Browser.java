@@ -202,17 +202,19 @@ public class Browser extends Activity {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				Uri uri = Uri.parse(url);
 				try {
+		            if (url.startsWith("market")) {
+						return false;
+		            }
+						
 					if (url.startsWith("tel:")) {
-						Intent intent = new Intent(Intent.ACTION_DIAL, Uri
-								.parse(url));
+						Intent intent = new Intent(Intent.ACTION_DIAL, uri);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 						return true;
 					}
 
 					if (url.startsWith("mailto:")) {
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-								.parse(url));
+						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 						return true;

@@ -1,10 +1,11 @@
 package de.guj.ems.mobile.sdk.util;
 
-import org.json.JSONArray;
+import java.util.Map;
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 
 /**
  * Singleton that holds the data fetched from a remote json file
@@ -19,57 +20,121 @@ import de.guj.ems.mobile.sdk.R;
 public enum SdkConfig {
 	SINGLETON;
 
-	private JSONObject jsonSdkConfig;
+	private static final int VODAFONE_APN = 0;
+
+	private static final int TELEFONICA_APN = 1;
+
+	private static final int UNKNOWN_APN = 2;
+
+	private int apn = -1;
 
 	public class JSONConfig extends JSONContent {
 
 		@Override
 		void init() {
-			JsonFetcher fetcher = new JsonFetcher(this, SdkUtil.getContext()
+			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
-					+ getRemotePath() + "config.json",
+					+ getRemotePath()
+					+ SdkUtil.getContext().getString(
+							R.string.jsonRemoteConfigFileName), SdkUtil
+					.getContext().getString(R.string.jsonLocalConfigFileName),
 					SdkUtil.getConfigFileDir());
 			feed(fetcher.getJson());
 			fetcher.execute();
 		}
 
+		private void checkApn() {
+			String nName = SdkUtil.getNetworkName();
+			if (nName.indexOf("vodafone") >= 0) {
+				apn = VODAFONE_APN;
+			}
+			else if ("internet".equals(nName)) {
+				apn = TELEFONICA_APN;
+			}
+			else {
+				apn = UNKNOWN_APN;
+			}
+		}
+		
+		private void setBaseUrl(IAdServerSettingsAdapter settings) throws Exception {
+			if (apn < 0) {
+				checkApn();
+				switch (apn) {
+				case VODAFONE_APN:
+						SdkLog.i(TAG, "Found Vodafone APN.");
+						break;
+				case TELEFONICA_APN:
+					SdkLog.i(TAG, "Found Telefonica APN.");
+					break;						
+				default:
+					SdkLog.i(TAG, "Found unknown APN.");
+				}
+			}
+			if (getJSON().getString(
+					SdkUtil.getContext().getString(
+							R.string.jsonBaseUrlVodafone)) != null && apn == VODAFONE_APN) {
+				settings.setBaseUrlString(getJSON().getString(
+						SdkUtil.getContext().getString(
+								R.string.jsonBaseUrlVodafone)));
+			}
+			else if (getJSON().getString(
+					SdkUtil.getContext().getString(
+							R.string.jsonBaseUrlTelefonica)) != null && apn == TELEFONICA_APN) {
+				settings.setBaseUrlString(getJSON().getString(
+						SdkUtil.getContext().getString(
+								R.string.jsonBaseUrlTelefonica)));
+			}
+			else if (getJSON().getString(
+					SdkUtil.getContext().getString(
+							R.string.jsonBaseUrlDefault)) != null) {
+				settings.setBaseUrlString(getJSON().getString(
+						SdkUtil.getContext().getString(
+								R.string.jsonBaseUrlDefault)));
+			}			
+		}
+
 		@Override
-		public String process(String url) {
-			if (jsonSdkConfig != null) {
+		public IAdServerSettingsAdapter process(
+				IAdServerSettingsAdapter settings) {
+			if (getJSON() != null) {
 				try {
-					JSONArray regexp = jsonSdkConfig.getJSONArray("urlReplace");
-					String nURL = url.replaceAll(SdkUtil.getContext()
-							.getString(R.string.baseUrl), jsonSdkConfig
-							.getString("baseUrl"));
-					SdkLog.d(TAG, "Processing URL " + url);
-					// process regexp replacements
-					for (int i = 0; i < regexp.length(); i++) {
-						JSONArray regexpn = regexp.getJSONArray(i);
-						nURL = nURL.replaceAll(regexpn.getString(0),
-								regexpn.getString(1));
+					
+					try {
+						setBaseUrl(settings);
 					}
-					// additional keywords
-					// TODO debug / check whether works correctly
-					// TODO &kw= is amobee specific
-					if (jsonSdkConfig.getString("additionalKeyword") != null) {
-						if (nURL.indexOf("&kw=") >= 0) {
-							nURL = nURL
-									.replaceAll(
-											"(&kw=)(.*&)",
-											"$1"
-													+ jsonSdkConfig
-															.getString("additionalKeyword")
-													+ "|$2");
+					catch (Exception e) {
+						SdkLog.e(TAG, "Could not set baseUrl!", e);
+					}
+
+					settings.addRegexp(getJSON().getJSONArray(
+							SdkUtil.getContext().getString(
+									R.string.jsonUrlReplace)));
+
+					if (getJSON().getString(
+							SdkUtil.getContext()
+									.getString(R.string.jsonKeyword)) != null) {
+						Map<String, String> params = settings.getParams();
+						if (params.get(SdkGlobals.EMS_KEYWORDS) != null) {
+							String newKw = (params.get(SdkGlobals.EMS_KEYWORDS).concat("|"))
+									.concat(getJSON().getString(
+											SdkUtil.getContext().getString(
+													R.string.jsonKeyword)));
+							params.put(SdkGlobals.EMS_KEYWORDS, newKw);
 						} else {
-							nURL = nURL.concat("&kw="
-									+ jsonSdkConfig
-											.getString("additionalKeyword"));
+							params.put(
+									SdkGlobals.EMS_KEYWORDS,
+									getJSON().getString(
+											SdkUtil.getContext().getString(
+													R.string.jsonKeyword)));
 						}
 					}
 					// query extensions
-					return jsonSdkConfig.getString("urlAppend") != null ? nURL
-							.concat(jsonSdkConfig.getString("urlAppend"))
-							: nURL;
+					if (getJSON().getString(
+							SdkUtil.getContext().getString(
+									R.string.jsonUrlAppend)) != null) {
+						settings.setQueryAppendix(SdkUtil.getContext()
+								.getString(R.string.jsonUrlAppend));
+					}
 
 				} catch (JSONException e) {
 					SdkLog.e(TAG, "Error processing json config", e);
@@ -77,12 +142,12 @@ public enum SdkConfig {
 				}
 			} else {
 				SdkLog.w(TAG, "JSON config not yet loaded upon processing "
-						+ url);
+						+ settings.getRequestUrl());
 			}
 
-			return url;
+			return settings;
 		}
-		
+
 	}
 
 	private final static String TAG = "SdkConfig";
@@ -95,11 +160,6 @@ public enum SdkConfig {
 
 	public JSONConfig getJsonConfig() {
 		return this.jsonConfig;
-	}
-
-	String getRemotePath() {
-		return SdkUtil.getContext().getPackageName().replaceAll("\\.", "/")
-				+ "/";
 	}
 
 }

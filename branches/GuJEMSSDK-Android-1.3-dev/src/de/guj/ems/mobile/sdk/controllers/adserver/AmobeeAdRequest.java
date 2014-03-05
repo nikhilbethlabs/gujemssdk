@@ -61,7 +61,7 @@ public class AmobeeAdRequest extends AdRequest {
 	protected IAdResponse httpGet(String url) {
 		StringBuilder rBuilder = new StringBuilder();
 		boolean richAd = false;
-
+		SdkLog.i(TAG, "Performing " + url);
 		// from Gingerbread on it is recommended to use HttpUrlConnection
 		if (AmobeeAdRequest.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");

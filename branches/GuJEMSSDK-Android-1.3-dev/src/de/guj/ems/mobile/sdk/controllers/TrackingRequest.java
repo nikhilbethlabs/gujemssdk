@@ -53,6 +53,7 @@ public class TrackingRequest extends AdRequest {
 	@Override
 	protected IAdResponse httpGet(String url) {
 		// from Gingerbread on it is recommended to use HttpUrlConnection
+		SdkLog.i(TAG, "Performing " + url);
 		if (TrackingRequest.USE_HTTPURLCONNECTION) {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
 			HttpURLConnection con = null;
@@ -101,5 +102,6 @@ public class TrackingRequest extends AdRequest {
 		}
 		return null;
 	}
+
 
 }

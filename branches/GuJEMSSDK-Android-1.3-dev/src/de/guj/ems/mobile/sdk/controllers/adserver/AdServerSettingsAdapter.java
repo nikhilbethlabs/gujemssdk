@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.location.Location;
@@ -41,6 +43,8 @@ public abstract class AdServerSettingsAdapter implements
 
 	private final static String TAG = "AdServerSettingsAdapter";
 
+	private String queryAppendix;
+	
 	private final Map<String, String> attrsToParams;
 
 	private BackfillDelegator.BackfillData directBackfill;
@@ -52,6 +56,8 @@ public abstract class AdServerSettingsAdapter implements
 	private IOnAdErrorListener onAdErrorListener = null;
 
 	private final Map<String, String> paramValues;
+	
+	private JSONArray regExps;
 	
 	private Context context;
 	
@@ -335,13 +341,29 @@ public abstract class AdServerSettingsAdapter implements
 					this.requestQueryString += "&" + param + "=" + val;
 				}
 			}
+				if (regExps != null) {
+					String backup = this.requestQueryString;
+					try {
+						for (int i = 0; i < regExps.length(); i++) {
+							JSONArray regexpn = regExps.getJSONArray(i);
+							this.requestQueryString = this.requestQueryString.replaceAll(regexpn.getString(0),
+									regexpn.getString(1));
+						}		
+					}
+					catch (Exception e) {
+						SdkLog.e(TAG, "Error applying regular expressions to query string.", e);
+						return backup;
+					}						
+				}			
+
 		}
+		
 		return this.requestQueryString;
 	}
 
 	@Override
 	public String getRequestUrl() {
-		return getBaseUrlString() + getBaseQueryString() + getQueryString();
+		return getBaseUrlString() + getBaseQueryString() + getQueryString() + getQueryAppendix();
 	}
 
 	protected final Map<String, String> init(AttributeSet attrs) {
@@ -516,6 +538,26 @@ public abstract class AdServerSettingsAdapter implements
 
 	public String toString() {
 		return getQueryString();
+	}
+	
+	@Override
+	public void addRegexp(JSONArray regexp) {
+		this.regExps = regexp;
+	}
+	
+	@Override
+	public Map<String,String> getParams() {
+		return this.paramValues;
+	}
+	
+	@Override
+	public String getQueryAppendix() {
+		return this.queryAppendix;
+	}
+	
+	@Override
+	public void setQueryAppendix(String str) {
+		this.queryAppendix = str;
 	}
 	
 }

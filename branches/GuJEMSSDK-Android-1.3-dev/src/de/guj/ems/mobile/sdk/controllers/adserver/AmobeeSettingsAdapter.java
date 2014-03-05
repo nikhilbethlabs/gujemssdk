@@ -52,7 +52,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	private final static char STATUS_LANDSCAPE_MODE = 'l';
 
-	private final static String BASE_URL = SdkUtil.getContext().getString(
+	private String baseUrl = SdkUtil.getContext().getString(
 			R.string.baseUrl);
 
 	private final static String BASE_PARAMS = "?"
@@ -312,7 +312,12 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	@Override
 	public String getBaseUrlString() {
-		return AmobeeSettingsAdapter.BASE_URL;
+		return this.baseUrl;
+	}
+	
+	@Override
+	public void setBaseUrlString(String baseUrl) {
+		this.baseUrl = baseUrl;
 	}
 
 	@Override

@@ -340,7 +340,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
 				SdkUtil.adRequest(this).execute(
-						new String[] { url });
+						this.settings);
 			}
 			// Do nothing if offline
 			else {

@@ -43,6 +43,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -479,13 +480,11 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		if (settings != null && !testMode && !isInEditMode()) {
 
 			// Construct request URL
-			final String url = this.settings.getRequestUrl();
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this).execute(
-						new String[] { url });
+				SdkUtil.adRequest(this).execute(this.settings);
 			}
 			// Do nothing if offline
 			else {
@@ -565,7 +564,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				new DownloadImageTask(this).execute(parser.getImageUrl());
 				if (parser.getTrackingImageUrl() != null) {
 					SdkUtil.adRequest(null).execute(
-							parser.getTrackingImageUrl());
+							new TrackingSettingsAdapter(parser.getTrackingImageUrl()));
 				}
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
 				if (this.settings.getOnAdSuccessListener() != null) {
