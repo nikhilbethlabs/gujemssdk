@@ -220,7 +220,7 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 * Add a predefined string which is appended to the servlet url 
 	 * @param str query string extension
 	 */
-	public void setQueryAppendix(String str);
+	public void addQueryAppendix(String str);
 	
 
 }

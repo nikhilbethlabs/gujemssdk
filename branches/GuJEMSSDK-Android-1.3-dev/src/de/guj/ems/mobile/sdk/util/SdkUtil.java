@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import android.Manifest.permission;
@@ -14,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ReceiverCallNotAllowedException;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -28,6 +31,7 @@ import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.TrackingRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.AdRequest;
@@ -85,7 +89,7 @@ public class SdkUtil {
 	/**
 	 * revision sdk version integer
 	 */
-	public final static int REV_VERSION = 1;
+	public final static int REV_VERSION = 2;
 
 	/**
 	 * Version string containing major, minor and revision as string divided by
@@ -621,5 +625,54 @@ public class SdkUtil {
 	public static File getConfigFileDir() {
 		return getContext().getFilesDir();
 	}
+	
+	/**
+	 * Gets the location.
+	 * 
+	 * @return the location
+	 */
+	public static double[] getLocation() {
+		LocationManager lm = (LocationManager) getContext()
+				.getSystemService(Context.LOCATION_SERVICE);
+		List<String> providers = lm.getProviders(false);
+		Iterator<String> provider = providers.iterator();
+		Location lastKnown = null;
+		double[] loc = new double[4];
+		long age = 0;
+		int maxage = getContext().getResources().getInteger(R.integer.ems_location_maxage_ms);
+		while (provider.hasNext()) {
+			lastKnown = lm.getLastKnownLocation(provider.next());
+			if (lastKnown != null) {
+				
+				age = System.currentTimeMillis() - lastKnown.getTime();
+				if (age <= maxage) {
+					break;
+				} else {
+					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
+							+ "] is " + (age / 60000) + " min old. [max = "
+							+ (maxage / 60000) + "]");
+				}
+			}
+		}
+
+		if (lastKnown != null && age <= maxage) {
+			loc[0] = lastKnown.getLatitude();
+			loc[1] = lastKnown.getLongitude();
+			loc[2] = lastKnown.getSpeed() * 3.6;
+			loc[3] = lastKnown.getAltitude();
+			if (getContext().getResources()
+					.getBoolean(R.bool.ems_shorten_location)) {
+				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
+				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
+				SdkLog.d(TAG, "Geo location shortened to two digits.");
+			}
+
+			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is "
+					+ loc[0] + "x" + loc[1] + "," + loc[2] + "," + loc[3]);
+			return loc;
+		}
+
+		return null;
+	}	
 
 }

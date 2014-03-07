@@ -27,8 +27,10 @@
     <string name="videoPreload">-w- Bitte einen Moment Geduld&#8230;</string>
     <string name="videoRunning">-w- Klick auf Video öffnet Website</string>
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>
-    <string name="bLevelParam">pbl</string>
+    <string name="pBatteryLevel">pbl</string>
     <string name="pStatusParam">psx</string>
+    <string name="pGpsVelocity">pgv</string>
+    <string name="pGpsAltitude">pga</string>
     <string name="securityHeaderName">Amobee-Account-ID</string>
     <string name="jsonRemoteConfigFileName">config_tar.json</string>
     <string name="jsonLocalConfigFileName">cfg.json</string>
@@ -40,5 +42,6 @@
     <string name="jsonBaseUrlVodafone">baseUrlAdVF</string>
     <string name="jsonBaseUrlTelefonica">baseUrlAdTEF</string>
     <string name="jsonBaseUrlVariables">baseUrlRC</string>
+    <string name="jsonRefreshCapVariables">refreshCap</string>
     <string name="jsonVariablesScript">json_web.php</string>
 </resources>

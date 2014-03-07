@@ -2,6 +2,7 @@ package de.guj.ems.mobile.sdk.util;
 
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import de.guj.ems.mobile.sdk.R;
@@ -11,8 +12,9 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
  * Singleton that holds the data fetched from a remote json file
  * 
  * The json contains: alternative base url for adserver URL manipulation based
- * on regular expressions URL manipulation based on simple concatenation URL
- * manipulation based on additional keywords
+ * on regular expressions, URL manipulation based on simple concatenation, URL
+ * manipulation based on additional keywords, different adserver servlets for
+ * different apns, a refresh cap for the variables service
  * 
  * @author stein16
  * 
@@ -20,15 +22,18 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 public enum SdkConfig {
 	SINGLETON;
 
-	private static final int VODAFONE_APN = 0;
-
-	private static final int TELEFONICA_APN = 1;
-
-	private static final int UNKNOWN_APN = 2;
-
-	private int apn = -1;
-
 	public class JSONConfig extends JSONContent {
+
+		private void checkApn() {
+			String nName = SdkUtil.getNetworkName();
+			if (nName.indexOf("vodafone") >= 0) {
+				apn = VODAFONE_APN;
+			} else if ("internet".equals(nName)) {
+				apn = TELEFONICA_APN;
+			} else {
+				apn = UNKNOWN_APN;
+			}
+		}
 
 		@Override
 		void init() {
@@ -39,58 +44,10 @@ public enum SdkConfig {
 							R.string.jsonRemoteConfigFileName), SdkUtil
 					.getContext().getString(R.string.jsonLocalConfigFileName),
 					SdkUtil.getConfigFileDir());
+			// feed initially available json
 			feed(fetcher.getJson());
+			// try fetching newer json
 			fetcher.execute();
-		}
-
-		private void checkApn() {
-			String nName = SdkUtil.getNetworkName();
-			if (nName.indexOf("vodafone") >= 0) {
-				apn = VODAFONE_APN;
-			}
-			else if ("internet".equals(nName)) {
-				apn = TELEFONICA_APN;
-			}
-			else {
-				apn = UNKNOWN_APN;
-			}
-		}
-		
-		private void setBaseUrl(IAdServerSettingsAdapter settings) throws Exception {
-			if (apn < 0) {
-				checkApn();
-				switch (apn) {
-				case VODAFONE_APN:
-						SdkLog.i(TAG, "Found Vodafone APN.");
-						break;
-				case TELEFONICA_APN:
-					SdkLog.i(TAG, "Found Telefonica APN.");
-					break;						
-				default:
-					SdkLog.i(TAG, "Found unknown APN.");
-				}
-			}
-			if (getJSON().getString(
-					SdkUtil.getContext().getString(
-							R.string.jsonBaseUrlVodafone)) != null && apn == VODAFONE_APN) {
-				settings.setBaseUrlString(getJSON().getString(
-						SdkUtil.getContext().getString(
-								R.string.jsonBaseUrlVodafone)));
-			}
-			else if (getJSON().getString(
-					SdkUtil.getContext().getString(
-							R.string.jsonBaseUrlTelefonica)) != null && apn == TELEFONICA_APN) {
-				settings.setBaseUrlString(getJSON().getString(
-						SdkUtil.getContext().getString(
-								R.string.jsonBaseUrlTelefonica)));
-			}
-			else if (getJSON().getString(
-					SdkUtil.getContext().getString(
-							R.string.jsonBaseUrlDefault)) != null) {
-				settings.setBaseUrlString(getJSON().getString(
-						SdkUtil.getContext().getString(
-								R.string.jsonBaseUrlDefault)));
-			}			
 		}
 
 		@Override
@@ -98,42 +55,52 @@ public enum SdkConfig {
 				IAdServerSettingsAdapter settings) {
 			if (getJSON() != null) {
 				try {
-					
+					// parse variables service refresh cap
+					try {
+						varsRefreshCapMin = getJSON().getInt(
+								SdkUtil.getContext().getString(
+										R.string.jsonRefreshCapVariables));
+					} catch (Exception e) {
+						SdkLog.w(TAG,
+								"Variables refresh cap is not set in config json.");
+						varsRefreshCapMin = 30;
+					}
+					// set base url by apn
 					try {
 						setBaseUrl(settings);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						SdkLog.e(TAG, "Could not set baseUrl!", e);
 					}
-
-					settings.addRegexp(getJSON().getJSONArray(
+					// add regular expressions for query string replacements
+					JSONArray reg = getJSON().getJSONArray(
 							SdkUtil.getContext().getString(
-									R.string.jsonUrlReplace)));
-
-					if (getJSON().getString(
+									R.string.jsonUrlReplace));
+					if (reg != null) {
+						settings.addRegexp(reg);
+					}
+					// check additional keywords
+					String kw = getJSON().getString(
 							SdkUtil.getContext()
-									.getString(R.string.jsonKeyword)) != null) {
+									.getString(R.string.jsonKeyword));
+					if (kw != null) {
 						Map<String, String> params = settings.getParams();
 						if (params.get(SdkGlobals.EMS_KEYWORDS) != null) {
-							String newKw = (params.get(SdkGlobals.EMS_KEYWORDS).concat("|"))
-									.concat(getJSON().getString(
-											SdkUtil.getContext().getString(
-													R.string.jsonKeyword)));
-							params.put(SdkGlobals.EMS_KEYWORDS, newKw);
+							settings.addCustomRequestParameter(
+									SdkGlobals.EMS_KEYWORDS, (params
+											.get(SdkGlobals.EMS_KEYWORDS)
+											.concat("|")).concat(kw));
 						} else {
-							params.put(
-									SdkGlobals.EMS_KEYWORDS,
-									getJSON().getString(
-											SdkUtil.getContext().getString(
-													R.string.jsonKeyword)));
+							settings.addCustomRequestParameter(
+									SdkGlobals.EMS_KEYWORDS, kw);
 						}
+
 					}
 					// query extensions
-					if (getJSON().getString(
+					String append = getJSON().getString(
 							SdkUtil.getContext().getString(
-									R.string.jsonUrlAppend)) != null) {
-						settings.setQueryAppendix(SdkUtil.getContext()
-								.getString(R.string.jsonUrlAppend));
+									R.string.jsonUrlAppend));
+					if (append != null) {
+						settings.addQueryAppendix(append);
 					}
 
 				} catch (JSONException e) {
@@ -148,7 +115,51 @@ public enum SdkConfig {
 			return settings;
 		}
 
+		private void setBaseUrl(IAdServerSettingsAdapter settings)
+				throws Exception {
+			if (apn < 0) {
+				checkApn();
+				switch (apn) {
+				case VODAFONE_APN:
+					SdkLog.i(TAG, "Found Vodafone APN.");
+					break;
+				case TELEFONICA_APN:
+					SdkLog.i(TAG, "Found Telefonica APN.");
+					break;
+				default:
+					SdkLog.i(TAG, "Found unknown APN.");
+				}
+			}
+			String vfUrl = getJSON().getString(
+					SdkUtil.getContext()
+							.getString(R.string.jsonBaseUrlVodafone));
+			String o2Url = getJSON().getString(
+					SdkUtil.getContext().getString(
+							R.string.jsonBaseUrlTelefonica));
+			String defUrl = getJSON()
+					.getString(
+							SdkUtil.getContext().getString(
+									R.string.jsonBaseUrlDefault));
+
+			if (vfUrl != null && apn == VODAFONE_APN) {
+				settings.setBaseUrlString(vfUrl);
+			} else if (o2Url != null && apn == TELEFONICA_APN) {
+				settings.setBaseUrlString(o2Url);
+			} else if (defUrl != null) {
+				settings.setBaseUrlString(defUrl);
+			}
+		}
 	}
+
+	private static final int VODAFONE_APN = 0;
+
+	private static final int TELEFONICA_APN = 1;
+
+	private static final int UNKNOWN_APN = 2;
+
+	private int varsRefreshCapMin = 0;
+
+	private int apn = -1;
 
 	private final static String TAG = "SdkConfig";
 
@@ -158,8 +169,22 @@ public enum SdkConfig {
 		this.jsonConfig = new JSONConfig();
 	}
 
+	/**
+	 * Returns the complete fetched json object
+	 * 
+	 * @return json config
+	 */
 	public JSONConfig getJsonConfig() {
 		return this.jsonConfig;
+	}
+
+	/**
+	 * Returns the refresh cap value for variables in fetching in minutes
+	 * 
+	 * @return refresh cap in minutes
+	 */
+	public int getVarsRefreshCap() {
+		return varsRefreshCapMin;
 	}
 
 }

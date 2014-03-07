@@ -92,7 +92,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		}
 		if (getAttrsToParams().get(SdkGlobals.EMS_GEO) != null) {
 			if (tVals.getBoolean(AdViewConfiguration.getConfig(viewClass).getGeoId(), false)) {
-				double[] loc = getLocation();
+				double[] loc = SdkUtil.getLocation();
 				if (loc != null && 0.0 != loc[0]) {
 					putAttrToParam(SdkGlobals.EMS_LAT, SdkUtil
 							.getContext().getString(R.string.amobeeLatitude));
@@ -102,6 +102,18 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 							.getContext().getString(R.string.amobeeLongitude));
 					putAttrValue(SdkGlobals.EMS_LON,
 							String.valueOf(loc[1]));
+					putAttrToParam(SdkUtil
+							.getContext().getString(R.string.pGpsVelocity),SdkUtil
+							.getContext().getString(R.string.pGpsVelocity));
+					putAttrValue(SdkUtil
+							.getContext().getString(R.string.pGpsVelocity),
+							String.valueOf((int)loc[2]));
+					putAttrToParam(SdkUtil
+							.getContext().getString(R.string.pGpsAltitude),SdkUtil
+							.getContext().getString(R.string.pGpsAltitude));
+					putAttrValue(SdkUtil
+							.getContext().getString(R.string.pGpsAltitude),
+							String.valueOf((int)loc[3]));						
 				} else {
 					SdkLog.i(TAG, "Location too old or not fetchable.");
 				}
@@ -276,7 +288,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 			if (savedInstance.getBoolean(
 					SdkGlobals.EMS_ATTRIBUTE_PREFIX
 							+ SdkGlobals.EMS_GEO, false)) {
-				double[] loc = getLocation();
+				double[] loc = SdkUtil.getLocation();
 				if (loc != null && 0.0 != loc[0]) {
 					putAttrToParam(SdkGlobals.EMS_LAT, SdkUtil
 							.getContext().getString(R.string.amobeeLatitude));
@@ -286,6 +298,18 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 							.getContext().getString(R.string.amobeeLongitude));
 					putAttrValue(SdkGlobals.EMS_LON,
 							String.valueOf(loc[1]));
+					putAttrToParam(SdkUtil
+							.getContext().getString(R.string.pGpsVelocity),SdkUtil
+							.getContext().getString(R.string.pGpsVelocity));
+					putAttrValue(SdkUtil
+							.getContext().getString(R.string.pGpsVelocity),
+							String.valueOf((int)loc[2]));
+					putAttrToParam(SdkUtil
+							.getContext().getString(R.string.pGpsAltitude),SdkUtil
+							.getContext().getString(R.string.pGpsAltitude));
+					putAttrValue(SdkUtil
+							.getContext().getString(R.string.pGpsAltitude),
+							String.valueOf((int)loc[3]));					
 					SdkLog.i(TAG, "Using " + loc[0] + "x" + loc[1]
 							+ " as location.");
 				} else {
@@ -333,7 +357,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	private String getBatteryStatus() {
 		return "&"
 				+ SdkUtil.getContext().getResources()
-						.getString(R.string.bLevelParam) + "="
+						.getString(R.string.pBatteryLevel) + "="
 				+ SdkUtil.getBatteryLevel();
 	}
 

@@ -17,7 +17,7 @@ import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdView;
 
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
@@ -334,7 +334,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		if (settings != null && !this.testMode) {
 
 			// Construct request URL
-			final String url = this.settings.getRequestUrl();
+
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
@@ -475,7 +475,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				ViewGroup p = (ViewGroup)getParent();
 				int index = p.indexOfChild(this);
 				View o = p.getChildAt(index + 1);
-				if (o != null && (com.MASTAdView.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass()))) {					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
+				if (o != null && (com.moceanmobile.mast.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass()))) {					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
 					p.removeViewAt(index + 1);
 				}
 			}

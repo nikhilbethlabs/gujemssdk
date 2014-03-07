@@ -35,6 +35,8 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	private long localAge;
 
 	private JSONObject localJson;
+	
+	private String logExt;
 
 	private final static String TAG = "JSONFetcher";
 
@@ -65,6 +67,8 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	public JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir) {
 		this.jsonContent = listener;
+		this.logExt = jsonContent.getClass().getSimpleName();
+		SdkLog.d(TAG, "Instance for " + logExt);		
 		this.remote = remote;
 		this.local = local;
 		this.localDir = localDir;
@@ -89,14 +93,15 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	public JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir, long maxAge) {
 		this.jsonContent = listener;
+		this.logExt = jsonContent.getClass().getSimpleName();
+		SdkLog.d(TAG, "Instance for " + logExt);		
 		this.remote = remote;
 		this.local = local;
 		this.localDir = localDir;
 		this.localAge = checkLocal();
 		this.doFetch = localAge <= 0 || localAge > maxAge;
+		SdkLog.d(TAG, logExt + " refetch ? " + doFetch + ", [" + localAge + ">" + maxAge + "]");
 	}
-
-	// TODO constructor with optional params for fetching request
 
 	private void storeLocal() {
 		// locally store current config
@@ -105,9 +110,9 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 		try {
 			fo = new FileOutputStream(f);
 			fo.write(localJson.toString().getBytes());
-			SdkLog.d(TAG, "Local json: " + this.localJson);
+			SdkLog.d(TAG, logExt + " stored locally: " + this.localJson);
 		} catch (Exception e) {
-			SdkLog.e(TAG, "Error storing json locally", e);
+			SdkLog.e(TAG, logExt + " could not be stored locally.", e);
 		} finally {
 			if (fo != null) {
 				try {
@@ -135,9 +140,9 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 					buffer = EMPTY_BUFFER;
 				}
 			} catch (FileNotFoundException e0) {
-				SdkLog.w(TAG, "File not found: " + this.local);
+				SdkLog.w(TAG, logExt + " not found: " + this.local);
 			} catch (IOException e1) {
-				SdkLog.e(TAG, "Could not read json file.", e1);
+				SdkLog.e(TAG, logExt + " could not be read.", e1);
 			} finally {
 				try {
 					if (in != null) {
@@ -147,12 +152,12 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 				}
 			}
 			try {
-				SdkLog.d(TAG, "Parsing local json...");
-				SdkLog.d(TAG, rBuilder.toString());
+				SdkLog.d(TAG, logExt + " will be parsed...");
+				SdkLog.d(TAG, logExt + " " + rBuilder.toString());
 				// parse local file
 				this.localJson = new JSONObject(rBuilder.toString());
 			} catch (JSONException e3) {
-				SdkLog.e(TAG, "Error parsing json", e3);
+				SdkLog.e(TAG, logExt + " could not be parsed.", e3);
 			}
 		}
 		f = null;
@@ -164,7 +169,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	protected JSONObject doInBackground(Void... params) {
 		if (doFetch) {
 			StringBuilder rBuilder = new StringBuilder();
-			SdkLog.d(TAG, "Trying to fetch " + this.remote);
+			SdkLog.d(TAG, logExt + " will be fetched from " + this.remote);
 			HttpURLConnection con = null;
 			try {
 				URL uUrl = new URL(this.remote);
@@ -174,16 +179,12 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 						ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(2500);
 				con.setConnectTimeout(750);
-				SdkLog.d(TAG, "Local last json change: "
+				SdkLog.d(TAG, logExt + " local age: "
 						+ new Date(this.localAge));
 				con.setIfModifiedSince(this.localAge);
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
 				if (con.getResponseCode() == 200) {
-					SdkLog.d(
-							TAG,
-							"Remote Last-Modified response: "
-									+ con.getHeaderField("Last-Modified"));
 					byte[] buffer = new byte[1024];
 					int l = 0;
 					while ((l = in.read(buffer)) > 0) {
@@ -192,20 +193,20 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 					}
 				} else if (con.getResponseCode() == 304) {
 					SdkLog.i(TAG,
-							"Local json is up to date - ignoring remote file.");
+							logExt + " (local) is up to date - ignoring remote file.");
 				} else if (con.getResponseCode() != 200) {
 
-					throw new Exception("JSNOFetcher remote returned HTTP "
+					throw new Exception(logExt + " resulted in HTTP "
 							+ con.getResponseCode());
 				}
 				in.close();
 			} catch (Exception e) {
-				SdkLog.e(TAG, "Error fetching json.", e);
+				SdkLog.e(TAG, logExt + " could not be fetched.", e);
 			} finally {
 				if (con != null) {
 					con.disconnect();
 					SdkLog.d(TAG,
-							"Json request finished. [" + rBuilder.length()
+							logExt + " request finished. [" + rBuilder.length()
 									+ "]");
 				}
 			}
@@ -215,10 +216,10 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 					return new JSONObject(rBuilder.toString());
 				}
 			} catch (Exception e) {
-				SdkLog.e(TAG, "Error reading json", e);
+				SdkLog.e(TAG, logExt + " could not be parsed.", e);
 			}
 		} else {
-			SdkLog.d(TAG, "Not fetching remote json due to file age control");
+			SdkLog.d(TAG, logExt + " not refetched due to file age control.");
 		}
 
 		return null;
@@ -228,7 +229,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	protected void onPostExecute(JSONObject response) {
 		if (response != null) {
 			if (response.length() > 1) {
-				SdkLog.i(TAG, "Received new json from remote server.");
+				SdkLog.i(TAG, logExt + " received new json from remote server.");
 			}
 			if (localJson == null
 					|| (localJson != null && response.length() > 1)) {
@@ -237,13 +238,23 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 			}
 		} else if (localJson == null) {
 			SdkLog.e(TAG,
-					"Missing json file! Please contact mobile.tech@ems.guj.de");
+					logExt + " json file missing! Please contact mobile.tech@ems.guj.de");
 		} else {
-			SdkLog.d(TAG, "Remote json is not younger than local");
+			SdkLog.d(TAG, logExt + " remote json is not younger than local");
 		}
 		jsonContent.feed(this.localJson);
 	}
 
+	/**
+	 * Add an optional query string to the json request url
+	 * @param query additional params string, starting with a "?" 
+	 */
+	public void addQueryString(String query) {
+		if (remote != null && query != null) {
+			remote = remote.concat("?" + query);
+		}
+	}
+	
 	JSONObject getJson() {
 		return localJson;
 	}

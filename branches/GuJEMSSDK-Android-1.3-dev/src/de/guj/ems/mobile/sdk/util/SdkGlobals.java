@@ -48,6 +48,7 @@ public class SdkGlobals {
 	public final static String EMS_KEYWORDS = SdkUtil.getContext().getString(
 			R.string.keyword);
 
+
 	/**
 	 * Global attribute name for the geographical latitude
 	 */

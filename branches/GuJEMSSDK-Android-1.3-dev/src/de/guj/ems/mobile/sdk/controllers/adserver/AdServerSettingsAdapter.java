@@ -4,15 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.R;
@@ -268,6 +265,7 @@ public abstract class AdServerSettingsAdapter implements
 	 * 
 	 * @return the location
 	 */
+/*
 	protected double[] getLocation() {
 		LocationManager lm = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -310,7 +308,7 @@ public abstract class AdServerSettingsAdapter implements
 
 		return null;
 	}
-
+*/
 	@Override
 	public IOnAdEmptyListener getOnAdEmptyListener() {
 		return this.onAdEmptyListener;
@@ -363,7 +361,8 @@ public abstract class AdServerSettingsAdapter implements
 
 	@Override
 	public String getRequestUrl() {
-		return getBaseUrlString() + getBaseQueryString() + getQueryString() + getQueryAppendix();
+		String app = getQueryAppendix();
+		return getBaseUrlString() + getBaseQueryString() + getQueryString() + (app != null ? app : "");
 	}
 
 	protected final Map<String, String> init(AttributeSet attrs) {
@@ -556,8 +555,13 @@ public abstract class AdServerSettingsAdapter implements
 	}
 	
 	@Override
-	public void setQueryAppendix(String str) {
-		this.queryAppendix = str;
+	public void addQueryAppendix(String str) {
+		if (this.queryAppendix != null) {
+			this.queryAppendix = this.queryAppendix.concat(str);
+		}
+		else {
+			this.queryAppendix = str;
+		}
 	}
 	
 }
