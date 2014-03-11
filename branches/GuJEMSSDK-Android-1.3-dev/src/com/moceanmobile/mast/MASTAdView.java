@@ -67,6 +67,8 @@ import com.moceanmobile.mast.mraid.OrientationProperties;
 import com.moceanmobile.mast.mraid.ResizeProperties;
 import com.moceanmobile.mast.mraid.WebView;
 
+import de.guj.ems.mobile.sdk.util.SdkUtil;
+
 /**
  * Main class used for rendering ad content.
  * <p>
@@ -917,11 +919,11 @@ public class MASTAdView extends ViewGroup
 		Map<String, String> args = new HashMap<String, String>();
 		
 		// Default size_x/y used.
-		int size_x = getWidth();
-		int size_y = getHeight();
+		DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+		int size_x = displayMetrics.widthPixels;   //getWidth();
+		int size_y = displayMetrics.heightPixels; //getHeight();
 		if (isInterstitial())
 		{
-			DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
 			size_x = displayMetrics.widthPixels;
 			size_y = displayMetrics.heightPixels;
 		}
@@ -1293,16 +1295,21 @@ public class MASTAdView extends ViewGroup
 		getImageView();
 		
 		LayoutParams layoutParams = 
-				new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+				new LayoutParams(LayoutParams.MATCH_PARENT, 
+						imageObject instanceof Bitmap ? (int)((float)((Bitmap)imageObject).getHeight() * SdkUtil.getDensity()) :
+						(int)((float)((GifDecoder)imageObject).ih * SdkUtil.getDensity()));
 		
+		getLayoutParams().height = layoutParams.height;
 		addContentView(imageView, layoutParams);
 		
 		if (imageObject instanceof Bitmap)
 		{
+			logEvent("Image height is " + ((Bitmap)imageObject).getHeight(), LogLevel.Debug);
 			imageView.setImageBitmap((Bitmap) imageObject);
 		}
 		else if (imageObject instanceof GifDecoder)
 		{
+			logEvent("Image height is " + ((GifDecoder)imageObject).ih, LogLevel.Debug);
 			imageView.setImageGifDecoder((GifDecoder) imageObject);
 		}
 
@@ -1315,6 +1322,7 @@ public class MASTAdView extends ViewGroup
 		{
 			requestListener.onReceivedAd(MASTAdView.this);
 		}
+		
 	}
 	
 	private void resetImageAd()
