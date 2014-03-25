@@ -10,9 +10,9 @@ iOS SDK change history and downloads.
 == Downloads ==
 [https://drive.google.com/file/d/0B5R-ThsBtb-3WUQ0c3FQYm1tc28/edit?usp=sharing iOS SDK Starter Kit (v2.0.2)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3ak1MQjhyMk16aGs/edit?usp=sharing iOS SDK Developer Guide (Deutsch)]
+[https://docs.google.com/file/d/0B5R-ThsBtb-3OHF2SVZwR05ZYzA/edit?usp=sharing iOS SDK Developer Guide (Deutsch)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3QzZMTkhjYk1vR2s/edit?usp=sharing iOS SDK Developer Guide (English)]
+[https://docs.google.com/file/d/0B5R-ThsBtb-3RHlLQUNzTmV2SVE/edit?usp=sharing iOS SDK Developer Guide (English)]
 ----
 == Changelog ==
 
