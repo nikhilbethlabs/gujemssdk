@@ -3,7 +3,8 @@
     xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_margin="10dip" >
 
     <ImageView
         android:id="@+id/imageView1"
@@ -38,7 +39,7 @@
             ems:ems_kw="false"
             ems:ems_nkw="false"
             ems:ems_uid="true"
-            ems:ems_zoneId="17944"
+            ems:ems_zoneId="15312"
             ems:ems_bfSiteId="44496"
             ems:ems_bfZoneId="174882"
             ems:ems_onAdError="onAdError"
