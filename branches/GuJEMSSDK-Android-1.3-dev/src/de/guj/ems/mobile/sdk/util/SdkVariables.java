@@ -85,7 +85,9 @@ public enum SdkVariables {
 						+ settings.getRequestUrl());
 			}
 			
-			timeCheck();
+			if (lastFetched > 0) {
+				timeCheck();
+			}
 			
 			return settings;
 		}
@@ -158,8 +160,8 @@ public enum SdkVariables {
 	
 	private void timeCheck() {
 		long t = System.currentTimeMillis() - lastFetched;
-		if (t > SdkConfig.SINGLETON.getVarsRefreshCap() * 60000) {
-			SdkLog.d(TAG,  "Reinitializing variables after " + (t / 60000) + " minutes.");
+		if (t > SdkConfig.SINGLETON.getVarsRefreshCap() * 60000l) {
+			SdkLog.d(TAG,  "Reinitializing variables after " + (t / 60000l) + " minutes.");
 			jsonVariables.init();
 		}
 	}

@@ -28,7 +28,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
  * @author stein16
  * 
  */
-public class OptimobileDelegator {
+public final class OptimobileDelegator {
 
 	private final static String TAG = "OptimobileDelegator";
 
@@ -49,8 +49,8 @@ public class OptimobileDelegator {
 	 * 
 	 * Initially creates an optimobile adview which an be added to the layout.
 	 * The optimobile view uses callbacks for error handling etc. and also for a
-	 * possible backfill. If a 3rd party network is active, the optimobile ad
-	 * view will actually be removed and replaced by the network's view.
+	 * possible backfill (OptimobileListener). If a 3rd party network is active, the optimobile ad
+	 * view will actually be removed and replaced by the network's view (AdmobView).
 	 * 
 	 * @param context
 	 *            App/Activity context
@@ -75,9 +75,6 @@ public class OptimobileDelegator {
 							&& !GuJEMSListAdView.class.equals(adView.getClass())) {
 						ViewGroup parent = (ViewGroup) adView.getParent();
 						int index = parent.indexOfChild(adView);
-						//optimobileView.setLayoutParams(adView.getLayoutParams()); // lp
-						//SdkLog.d(TAG, "Original view's layout params " + adView.getLayoutParams());
-						//SdkLog.d(TAG, "Original view's layout params height " + adView.getLayoutParams().height);
 						parent.addView(optimobileView, index + 1);
 					} else {
 						SdkLog.d(TAG, "Primary view initialized off UI.");
@@ -131,7 +128,7 @@ public class OptimobileDelegator {
 			final IAdServerSettingsAdapter settings, int color) {
 
 		final MASTAdView view = new MASTAdView(context);
-		view.setLogLevel(LogLevel.Debug);
+		view.setLogLevel(SdkLog.isTestLogLevel() ? LogLevel.Debug : LogLevel.Error);
 		view.setZone(Integer.valueOf(settings.getDirectBackfill().getZoneId()));
 		view.setId(emsMobileView != null ? emsMobileView.getId()
 				: emsNativeMobileView.getId());

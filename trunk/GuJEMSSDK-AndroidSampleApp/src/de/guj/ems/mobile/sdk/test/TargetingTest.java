@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
+import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -56,17 +57,16 @@ public class TargetingTest extends Activity {
 		customParams.put("tm", Integer.valueOf(-11));
 
 		// Adding a keyword to the request
-		String [] kws = {"ems"};
+		String [] kws = {"ems","is","super"};
 
 		// create one adview with deferred loading
-		GuJEMSAdView adView = new GuJEMSAdView(
-				TargetingTest.this,
-				customParams,
-				kws,
-				null,
-				R.layout.targeting_adview_top,
-				false
-		);
+        String[] matchingKeywords = {"ems"};
+        final GuJEMSListAdView adView = new GuJEMSListAdView(
+        		this,
+        		matchingKeywords,
+        		null,
+                R.layout.targeting_adview_top,
+                false);
 		
 		// Programmatically add listeners
 		adView.setOnAdSuccessListener(new IOnAdSuccessListener() {

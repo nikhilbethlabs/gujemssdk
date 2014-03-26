@@ -662,6 +662,7 @@ public class SdkUtil {
 			loc[3] = lastKnown.getAltitude();
 			if (getContext().getResources()
 					.getBoolean(R.bool.ems_shorten_location)) {
+				SdkLog.d(TAG, "Shortening " + loc[0] + "," + loc[1]);
 				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
 				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
 				SdkLog.d(TAG, "Geo location shortened to two digits.");

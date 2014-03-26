@@ -33,8 +33,8 @@
     <string name="pGpsAltitude">pga</string>
     <string name="securityHeaderName">Amobee-Account-ID</string>
     <string name="jsonRemoteConfigFileName">config_tar.json</string>
-    <string name="jsonLocalConfigFileName">cfg.json</string>
-    <string name="jsonLocalVariablesFileName">var.json</string>
+    <string name="jsonLocalConfigFileName">gujemscfg.json</string>
+    <string name="jsonLocalVariablesFileName">gujemsvar.json</string>
     <string name="jsonUrlReplace">urlReplace</string>
     <string name="jsonUrlAppend">urlAppend</string>
     <string name="jsonKeyword">additionalKeyword</string>

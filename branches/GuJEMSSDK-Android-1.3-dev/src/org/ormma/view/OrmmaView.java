@@ -1262,7 +1262,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mViewHeight = getHeight();
 			mViewWidth = getWidth();
 			mUtilityController.init(mDensity);
-			
+			//TODO 7"/10" Tablet scaling
+			/*
 			// scaling for 7" superbanner
 			boolean scale = getMeasuredWidth() / SdkUtil.getDensity() < 728.0f && (getHeight() / SdkUtil.getDensity() < 150.0f);
 			// scaling for 7" interstitial in landscape mode
@@ -1274,9 +1275,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 			    setScrollbarFadingEnabled(false);
 			    getSettings().setUseWideViewPort(true);
-				//getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
+			    SdkUtil.evaluateJavascript(this, "document.getElementById('viewport').setAttribute('content', 'width=device-width,initial-scale=" + mDensity + ",minimum-scale=" + mDensity + ",maximum-scale=" + mDensity + ",user-scalable=no‘);");
+				getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
 			}
-			
+			*/
 			setVisibility(View.VISIBLE);			
 		}
 

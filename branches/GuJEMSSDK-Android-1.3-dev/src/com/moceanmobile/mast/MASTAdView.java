@@ -16,6 +16,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
+import org.ormma.view.Browser;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -147,9 +148,6 @@ public class MASTAdView extends ViewGroup
 	
 	// Tracking
 	private boolean invokeTracking = false;
-	
-	// Internal browser
-	private BrowserDialog browserDialog = null;
 	
 	// Location support
 	private LocationManager locationManager = null;
@@ -622,10 +620,10 @@ public class MASTAdView extends ViewGroup
 	 */
 	public boolean isInternalBrowserOpen()
 	{
-		if ((browserDialog != null) && browserDialog.isShowing())
+		/* if ((browserDialog != null) && browserDialog.isShowing())
 		{
 			return true;
-		}
+		} */
 		
 		return false;
 	}
@@ -794,8 +792,6 @@ public class MASTAdView extends ViewGroup
 		
 	    if (force)
 	    {
-	    	closeInternalBrowser();
-
 	    	if (placementType == PlacementType.Inline)
 	    	{
 	    		if ((mraidBridge != null) && (mraidBridgeHandler != null))
@@ -843,9 +839,6 @@ public class MASTAdView extends ViewGroup
 			interstitialDelayFuture.cancel(true);
 			interstitialDelayFuture = null;
 		}
-		
-		closeInternalBrowser();
-		browserDialog = null;
 		
 		setLocationDetectionEnabled(false);
 	}
@@ -920,8 +913,8 @@ public class MASTAdView extends ViewGroup
 		
 		// Default size_x/y used.
 		DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-		int size_x = displayMetrics.widthPixels;   //getWidth();
-		int size_y = displayMetrics.heightPixels; //getHeight();
+		int size_x = displayMetrics.widthPixels;  
+		int size_y = displayMetrics.heightPixels; 
 		if (isInterstitial())
 		{
 			size_x = displayMetrics.widthPixels;
@@ -1609,57 +1602,16 @@ public class MASTAdView extends ViewGroup
 	// main thread
 	private void openInternalBrowser(String url)
 	{
-		if (browserDialog == null)
-		{
-			browserDialog = new BrowserDialog(getContext(), url, new BrowserDialog.Handler()
-			{
-				@Override
-				public void browserDialogDismissed(BrowserDialog browserDialog)
-				{
-					if (internalBrowserListener != null)
-					{
-						internalBrowserListener.onInternalBrowserDismissed(MASTAdView.this);
-					}
-				}
+		Intent i = new Intent(getContext(),
+				Browser.class);
+		logEvent("open: " + url, LogLevel.Debug);
+		i.putExtra(Browser.URL_EXTRA, url);
+		i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+		i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+		i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-				@Override
-				public void browserDialogOpenUrl(BrowserDialog browserDialog, String url, boolean dismiss)
-				{
-					openUrl(url, true);
-					
-					if (dismiss)
-					{
-						browserDialog.dismiss();
-					}
-				}
-			});
-		}
-		else
-		{
-			browserDialog.loadUrl(url);
-		}
-		
-		if (browserDialog.isShowing() == false)
-		{
-			browserDialog.show();
-		}
-		
-		if (internalBrowserListener != null)
-		{
-			internalBrowserListener.onInternalBrowserPresented(this);
-		}
-	}
-	
-	// main thread
-	private void closeInternalBrowser()
-	{
-		if (browserDialog != null)
-		{
-			if (browserDialog.isShowing())
-			{
-				browserDialog.dismiss();
-			}
-		}
+		getContext().startActivity(i);
 	}
 	
 	private void initMRAIDBridge(Bridge bridge)

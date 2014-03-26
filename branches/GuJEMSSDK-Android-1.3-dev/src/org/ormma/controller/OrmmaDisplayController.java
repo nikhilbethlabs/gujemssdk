@@ -191,6 +191,9 @@ public class OrmmaDisplayController extends OrmmaController {
 			d.height = position[3];
 			d = getDeviceDimensions(d);
 		}
+		else {
+			SdkLog.d(SdkLog_TAG, "playVideo: position is " + position[0] + "x" + position[1]);
+		}
 		if (!URLUtil.isValidUrl(url)) {
 			mOrmmaView.raiseError("Invalid url", "playVideo");
 		} else {

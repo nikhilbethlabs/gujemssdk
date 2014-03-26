@@ -16,9 +16,7 @@ public abstract class JSONContent {
 	private JSONObject json;
 
 	JSONContent() {
-		if (json == null) {
-			init();
-		}
+		init();
 	}
 
 	String getRemotePath() {

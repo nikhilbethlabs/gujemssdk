@@ -44,17 +44,21 @@ public class ListViewTest extends Activity {
 		setContentView(R.layout.list);
         // create custom params for both views, setting the
 		// "as" (adspace) parameter manually
+/*
 		Map<String, Object> customParams = new HashMap<String, Object>();
-        customParams.put("as", Integer.valueOf(15224));
+        customParams.put("tst", Integer.valueOf(15224));
         Map<String, Object> customParams2 = new HashMap<String, Object>();
         customParams2.put("as", Integer.valueOf(16542));
+*/        
         // obtain the list view
         final ListView l = (ListView)findViewById(R.id.testList);
         // create one adview with deferred loading
-        final GuJEMSListAdView av1 = new GuJEMSListAdView(this,
-                customParams,
-                R.layout.generic_adview,
-                false);
+        String[] matchingKeywords = {"ems"};
+        final GuJEMSListAdView av1 = new GuJEMSListAdView(
+        		this,
+        		matchingKeywords,
+        		null,
+                R.layout.generic_adview);
         // set unique id
         av1.setId(12615);
         // ad listener callbacks
@@ -82,7 +86,7 @@ public class ListViewTest extends Activity {
 		});
         // create second adview in a similiar way
         final GuJEMSListAdView av2 = new GuJEMSListAdView(this,
-                customParams2,
+                //customParams2,
                 R.layout.generic_adview,
                 false);
         av2.setId(12616);

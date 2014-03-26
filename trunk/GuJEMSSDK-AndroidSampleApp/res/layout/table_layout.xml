@@ -24,7 +24,7 @@
         android:layout_height="wrap_content" >
 
         <de.guj.ems.mobile.sdk.views.GuJEMSAdView
-            android:id="@+id/ad15306"
+            android:id="@+id/ad15215"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#0086d5"
@@ -32,7 +32,7 @@
             ems:ems_kw="false"
             ems:ems_nkw="false"
             ems:ems_uid="false"
-            ems:ems_zoneId="15306" />
+            ems:ems_zoneId="15215" />
     </TableRow>
 
     <TableRow

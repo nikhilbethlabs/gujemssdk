@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:background="#0086d5"
+    ems:ems_zoneId="15306"
     ems:ems_bfSiteId="44496"
     ems:ems_bfZoneId="174882"
     ems:ems_geo="false"

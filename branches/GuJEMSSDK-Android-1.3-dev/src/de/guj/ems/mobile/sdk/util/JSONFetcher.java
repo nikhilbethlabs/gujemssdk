@@ -38,6 +38,8 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	
 	private String logExt;
 
+	private int lastError;
+	
 	private final static String TAG = "JSONFetcher";
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
@@ -173,6 +175,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 			HttpURLConnection con = null;
 			try {
 				URL uUrl = new URL(this.remote);
+				lastError = 0;
 				con = (HttpURLConnection) uUrl.openConnection();
 				con.setRequestProperty(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
 				con.setRequestProperty(ACCEPT_CHARSET_HEADER_NAME,
@@ -195,7 +198,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 					SdkLog.i(TAG,
 							logExt + " (local) is up to date - ignoring remote file.");
 				} else if (con.getResponseCode() != 200) {
-
+					lastError = con.getResponseCode();
 					throw new Exception(logExt + " resulted in HTTP "
 							+ con.getResponseCode());
 				}
@@ -257,6 +260,14 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	
 	JSONObject getJson() {
 		return localJson;
+	}
+	
+	/**
+	 * Returns the last value of http response code
+	 * @return 0 if http response was 200, value of response code otherwise
+	 */
+	public int getLastError() {
+		return lastError;
 	}
 
 }
