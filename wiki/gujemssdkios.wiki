@@ -8,7 +8,7 @@ iOS SDK change history and downloads.
 = Details =
 
 == Downloads ==
-[https://drive.google.com/file/d/0B5R-ThsBtb-3UGJqSmxHYUZwU00/edit?usp=sharing iOS SDK Starter Kit (v2.0.2)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3UGJqSmxHYUZwU00/edit?usp=sharing iOS SDK Starter Kit (v2.0.4)]
 ----
 [https://docs.google.com/file/d/0B5R-ThsBtb-3OHF2SVZwR05ZYzA/edit?usp=sharing iOS SDK Developer Guide (Deutsch)]
 ----
@@ -17,7 +17,7 @@ iOS SDK change history and downloads.
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
-||v 2.0.2        || Completely revamped version ||
+||v 2.0.4        || Completely revamped version ||
 || || No more singletones ||
 || || Using GCD (blocks) ||
 || || Update to iOS 5.0+ standards ||
