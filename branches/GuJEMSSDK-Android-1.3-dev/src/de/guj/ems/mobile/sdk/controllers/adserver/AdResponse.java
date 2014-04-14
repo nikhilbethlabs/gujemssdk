@@ -64,13 +64,12 @@ public abstract class AdResponse implements IAdResponse {
 	@Override
 	public String getResponseAsHTML() {
 		if (htmlResponse == null) {
+			String cUrl = getParser().getClickUrl();
 			htmlResponse = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\">"
-					+ "<a href=\""
-					+ getParser().getClickUrl()
-					+ "\">"
+					+ (cUrl != null ? "<a href=\"" + getParser().getClickUrl() + "\">" : "")
 					+ "<img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\""
 					+ getParser().getImageUrl()
-					+ "\"></a>"
+					+ "\">" + (cUrl != null ? "</a>" : "")
 					+ (getParser().getTrackingImageUrl() != null ? "<img src=\""
 							+ getParser().getTrackingImageUrl()
 							+ "\" style=\"width: 0px; height: 0px; display: none;\">"

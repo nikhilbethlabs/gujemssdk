@@ -170,22 +170,27 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 						view.setImageBitmap(bitmap);
 					}
 
-					view.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							if (parser != null && parser.getClickUrl() != null) {
-								Intent i = new Intent(getContext(),
-										Browser.class);
-								SdkLog.d(TAG, "open:" + parser.getClickUrl());
-								i.putExtra(Browser.URL_EXTRA,
-										parser.getClickUrl());
-								i.putExtra(Browser.SHOW_BACK_EXTRA, true);
-								i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
-								i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
-								getContext().startActivity(i);
+					if (parser.getClickUrl() != null) {
+						view.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								if (parser != null && parser.getClickUrl() != null) {
+									Intent i = new Intent(getContext(),
+											Browser.class);
+									SdkLog.d(TAG, "open:" + parser.getClickUrl());
+									i.putExtra(Browser.URL_EXTRA,
+											parser.getClickUrl());
+									i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+									i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+									i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+									getContext().startActivity(i);
+								}
 							}
-						}
-					});
+						});
+					}
+					else {
+						SdkLog.d(TAG, "Not setting click listener, no click url provided.");
+					}
 					
 					LayoutParams lp = view.getLayoutParams();
 					int w = movie != null ? movie.width() : bitmap.getWidth();
@@ -730,7 +735,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 						.duration());
 				animatedGif.setTime(relTime);
 			}
-			//TODO retina animated gif / smaller banners positioning ?!
+
 			animatedGif.draw(canvas, o, 0.0f);
 			this.invalidate();
 		}
