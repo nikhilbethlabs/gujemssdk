@@ -222,5 +222,11 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 */
 	public void addQueryAppendix(String str);
 	
+	/**
+	 * Get adview metrics for ad request
+	 * @return An array of three integers - view width, height and dpi
+	 */
+	public int[] getAdViewMetrics();
+	
 
 }

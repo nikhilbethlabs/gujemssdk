@@ -35,13 +35,13 @@ public abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
 
 	private String requestQueryString;
-	
+
 	private static final long serialVersionUID = 314048983271226769L;
 
 	private final static String TAG = "AdServerSettingsAdapter";
 
 	private String queryAppendix;
-	
+
 	private final Map<String, String> attrsToParams;
 
 	private BackfillDelegator.BackfillData directBackfill;
@@ -53,12 +53,14 @@ public abstract class AdServerSettingsAdapter implements
 	private IOnAdErrorListener onAdErrorListener = null;
 
 	private final Map<String, String> paramValues;
-	
+
 	private JSONArray regExps;
-	
+
 	private Context context;
-	
+
 	protected Class<?> viewClass;
+
+	private int[] viewMetrics = { -1, -1, -1 };
 
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
@@ -77,7 +79,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param set
 	 *            inflated layout parameters
 	 */
-	public AdServerSettingsAdapter(Context context, AttributeSet set, Class<?> viewClass) {
+	public AdServerSettingsAdapter(Context context, AttributeSet set,
+			Class<?> viewClass) {
 		this.context = context;
 		this.viewClass = viewClass;
 		this.requestQueryString = null;
@@ -93,7 +96,8 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param savedInstance
 	 *            saved instance state
 	 */
-	public AdServerSettingsAdapter(Context context, Bundle savedInstance, Class<?> viewClass) {
+	public AdServerSettingsAdapter(Context context, Bundle savedInstance,
+			Class<?> viewClass) {
 		this.context = context;
 		this.viewClass = viewClass;
 		this.requestQueryString = null;
@@ -127,8 +131,8 @@ public abstract class AdServerSettingsAdapter implements
 				try {
 					Class<?>[] noParams = null;
 					Object[] noArgs = null;
-					Method lMethod = context.getClass()
-							.getMethod(lMethodName, noParams);
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							noParams);
 					lMethod.invoke(context, noArgs);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdEmptyListener " + lMethodName
@@ -181,8 +185,8 @@ public abstract class AdServerSettingsAdapter implements
 				try {
 					Class<?>[] noParams = null;
 					Object[] noArgs = null;
-					Method lMethod = context.getClass()
-							.getMethod(lMethodName, noParams);
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							noParams);
 					lMethod.invoke(context, noArgs);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName
@@ -209,10 +213,8 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdError(String msg, Throwable t) {
 				try {
-					Method lMethod = context
-							.getClass()
-							.getMethod(lMethodName, String.class,
-									Throwable.class);
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							String.class, Throwable.class);
 					lMethod.invoke(context, msg, t);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
@@ -231,8 +233,8 @@ public abstract class AdServerSettingsAdapter implements
 			@Override
 			public void onAdError(String msg) {
 				try {
-					Method lMethod = context.getClass()
-							.getMethod(lMethodName, String.class);
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							String.class);
 					lMethod.invoke(context, msg);
 				} catch (NoSuchMethodException nsme) {
 					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
@@ -265,50 +267,34 @@ public abstract class AdServerSettingsAdapter implements
 	 * 
 	 * @return the location
 	 */
-/*
-	protected double[] getLocation() {
-		LocationManager lm = (LocationManager) context
-				.getSystemService(Context.LOCATION_SERVICE);
-		List<String> providers = lm.getProviders(false);
-		Iterator<String> provider = providers.iterator();
-		Location lastKnown = null;
-		double[] loc = new double[2];
-		long age = 0;
-		int maxage = context.getResources().getInteger(R.integer.ems_location_maxage_ms);
-		while (provider.hasNext()) {
-			lastKnown = lm.getLastKnownLocation(provider.next());
-			if (lastKnown != null) {
-				
-				age = System.currentTimeMillis() - lastKnown.getTime();
-				if (age <= maxage) {
-					break;
-				} else {
-					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
-							+ "] is " + (age / 60000) + " min old. [max = "
-							+ (maxage / 60000) + "]");
-				}
-			}
-		}
-
-		if (lastKnown != null && age <= maxage) {
-			loc[0] = lastKnown.getLatitude();
-			loc[1] = lastKnown.getLongitude();
-
-			if (context.getResources()
-					.getBoolean(R.bool.ems_shorten_location)) {
-				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
-				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
-				SdkLog.d(TAG, "Geo location shortened to two digits.");
-			}
-
-			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is "
-					+ loc[0] + "x" + loc[1]);
-			return loc;
-		}
-
-		return null;
-	}
-*/
+	/*
+	 * protected double[] getLocation() { LocationManager lm = (LocationManager)
+	 * context .getSystemService(Context.LOCATION_SERVICE); List<String>
+	 * providers = lm.getProviders(false); Iterator<String> provider =
+	 * providers.iterator(); Location lastKnown = null; double[] loc = new
+	 * double[2]; long age = 0; int maxage =
+	 * context.getResources().getInteger(R.integer.ems_location_maxage_ms);
+	 * while (provider.hasNext()) { lastKnown =
+	 * lm.getLastKnownLocation(provider.next()); if (lastKnown != null) {
+	 * 
+	 * age = System.currentTimeMillis() - lastKnown.getTime(); if (age <=
+	 * maxage) { break; } else { SdkLog.d(TAG, "Location [" +
+	 * lastKnown.getProvider() + "] is " + (age / 60000) + " min old. [max = " +
+	 * (maxage / 60000) + "]"); } } }
+	 * 
+	 * if (lastKnown != null && age <= maxage) { loc[0] =
+	 * lastKnown.getLatitude(); loc[1] = lastKnown.getLongitude();
+	 * 
+	 * if (context.getResources() .getBoolean(R.bool.ems_shorten_location)) {
+	 * loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
+	 * loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
+	 * SdkLog.d(TAG, "Geo location shortened to two digits."); }
+	 * 
+	 * SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is " + loc[0] +
+	 * "x" + loc[1]); return loc; }
+	 * 
+	 * return null; }
+	 */
 	@Override
 	public IOnAdEmptyListener getOnAdEmptyListener() {
 		return this.onAdEmptyListener;
@@ -326,7 +312,8 @@ public abstract class AdServerSettingsAdapter implements
 
 	@Override
 	public String getQueryString() {
-		if (this.requestQueryString == null || this.requestQueryString.length() <= 1) { 
+		if (this.requestQueryString == null
+				|| this.requestQueryString.length() <= 1) {
 			this.requestQueryString = "";
 			Iterator<String> keys = getAttrsToParams().keySet().iterator();
 			while (keys.hasNext()) {
@@ -339,30 +326,39 @@ public abstract class AdServerSettingsAdapter implements
 					this.requestQueryString += "&" + param + "=" + val;
 				}
 			}
-				if (regExps != null) {
-					String backup = this.requestQueryString;
-					try {
-						for (int i = 0; i < regExps.length(); i++) {
-							JSONArray regexpn = regExps.getJSONArray(i);
-							this.requestQueryString = this.requestQueryString.replaceAll(regexpn.getString(0),
-									regexpn.getString(1));
-						}		
+			if (viewMetrics[2] > 0) {
+				this.requestQueryString += "&w=" + viewMetrics[0];
+				this.requestQueryString += "&h=" + viewMetrics[1];
+				this.requestQueryString += "&d=" + viewMetrics[2];
+			}
+			if (regExps != null) {
+				String backup = this.requestQueryString;
+				try {
+					for (int i = 0; i < regExps.length(); i++) {
+						JSONArray regexpn = regExps.getJSONArray(i);
+						this.requestQueryString = this.requestQueryString
+								.replaceAll(regexpn.getString(0),
+										regexpn.getString(1));
 					}
-					catch (Exception e) {
-						SdkLog.e(TAG, "Error applying regular expressions to query string.", e);
-						return backup;
-					}						
-				}			
+				} catch (Exception e) {
+					SdkLog.e(
+							TAG,
+							"Error applying regular expressions to query string.",
+							e);
+					return backup;
+				}
+			}
 
 		}
-		
+
 		return this.requestQueryString;
 	}
 
 	@Override
 	public String getRequestUrl() {
 		String app = getQueryAppendix();
-		return getBaseUrlString() + getBaseQueryString() + getQueryString() + (app != null ? app : "");
+		return getBaseUrlString() + getBaseQueryString() + getQueryString()
+				+ (app != null ? app : "");
 	}
 
 	protected final Map<String, String> init(AttributeSet attrs) {
@@ -377,20 +373,20 @@ public abstract class AdServerSettingsAdapter implements
 						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? context
 								.obtainStyledAttributes(attrs,
 										R.styleable.GuJEMSAdView) : context
-										.obtainStyledAttributes(attrs,
-												R.styleable.GuJEMSNativeAdView);
-						if (lName
-								.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
+								.obtainStyledAttributes(attrs,
+										R.styleable.GuJEMSNativeAdView);
+						if (lName.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
 							createSuccessListener(tVals
-									.getString(AdViewConfiguration.getConfig(viewClass).getSuccessListenerId()));
-						} else if (lName
-								.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
+									.getString(AdViewConfiguration.getConfig(
+											viewClass).getSuccessListenerId()));
+						} else if (lName.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
 							createEmptyListener(tVals
-									.getString(AdViewConfiguration.getConfig(viewClass).getEmptyListenerId()));
-						} else if (lName
-								.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
+									.getString(AdViewConfiguration.getConfig(
+											viewClass).getEmptyListenerId()));
+						} else if (lName.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
 							createErrorListener(tVals
-									.getString(AdViewConfiguration.getConfig(viewClass).getErrorListenerId()));
+									.getString(AdViewConfiguration.getConfig(
+											viewClass).getErrorListenerId()));
 						}
 
 						else {
@@ -421,8 +417,7 @@ public abstract class AdServerSettingsAdapter implements
 				if (key.startsWith(SdkGlobals.EMS_ATTRIBUTE_PREFIX)) {
 					if (key.startsWith(SdkGlobals.EMS_LISTENER_PREFIX)) {
 						String lName = key.substring(4);
-						if (lName
-								.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
+						if (lName.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
 							Object l = savedInstance
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_SUCCESS_LISTENER);
@@ -431,8 +426,7 @@ public abstract class AdServerSettingsAdapter implements
 							} else {
 								createSuccessListener(l);
 							}
-						} else if (lName
-								.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
+						} else if (lName.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
 							Object l = savedInstance
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_EMPTY_LISTENER);
@@ -441,8 +435,7 @@ public abstract class AdServerSettingsAdapter implements
 							} else {
 								createEmptyListener(l);
 							}
-						} else if (lName
-								.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
+						} else if (lName.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
 							Object l = savedInstance
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_ERROR_LISTENER);
@@ -517,8 +510,7 @@ public abstract class AdServerSettingsAdapter implements
 				String param = mi.next();
 				Object value = params.get(param);
 				if (value.getClass().equals(String.class)) {
-					addCustomRequestParameter(param,
-							(String) value);
+					addCustomRequestParameter(param, (String) value);
 				} else if (value.getClass().equals(Double.class)) {
 					addCustomRequestParameter(param,
 							((Double) value).doubleValue());
@@ -532,36 +524,98 @@ public abstract class AdServerSettingsAdapter implements
 			}
 		} else {
 			SdkLog.w(TAG, "Custom params constructor used with null-array.");
-		}		
+		}
 	}
 
 	public String toString() {
 		return getQueryString();
 	}
-	
+
 	@Override
 	public void addRegexp(JSONArray regexp) {
 		this.regExps = regexp;
 	}
-	
+
 	@Override
-	public Map<String,String> getParams() {
+	public Map<String, String> getParams() {
 		return this.paramValues;
 	}
-	
+
 	@Override
 	public String getQueryAppendix() {
 		return this.queryAppendix;
 	}
-	
+
 	@Override
 	public void addQueryAppendix(String str) {
 		if (this.queryAppendix != null) {
 			this.queryAppendix = this.queryAppendix.concat(str);
-		}
-		else {
+		} else {
 			this.queryAppendix = str;
 		}
 	}
-	
+
+	@Override
+	public int[] getAdViewMetrics() {
+		return viewMetrics;
+	}
+
+	/**
+	 * Define adview width in pixels
+	 * 
+	 * @param w
+	 *            width in pixels
+	 */
+	public void setAdViewWidth(int w) {
+		viewMetrics[0] = w;
+	}
+
+	/**
+	 * Define adview height in pixels
+	 * 
+	 * @param h
+	 *            height in pixels
+	 */
+	public void setAdViewHeight(int h) {
+		viewMetrics[1] = h;
+	}
+
+	/**
+	 * Define adview resolution dots per inch
+	 * 
+	 * @param d
+	 *            resolution in dots per inch
+	 */
+	public void setAdViewDpi(int d) {
+		viewMetrics[2] = d;
+	}
+
+	/**
+	 * Set adview metrics
+	 * 
+	 * @param w
+	 *            width in pixels
+	 * @param h
+	 *            height in pixels
+	 * @param d
+	 *            resolution in dots per inch
+	 */
+	public void setAdViewMetrics(int w, int h, int d) {
+		viewMetrics[0] = w;
+		viewMetrics[1] = h;
+		viewMetrics[2] = d;
+	}
+
+	/**
+	 * Set adview metrics
+	 * 
+	 * @param m
+	 *            array of width, height and resolution
+	 */
+	public void setAdViewMetrics(int[] m) {
+		viewMetrics[0] = m[0];
+		viewMetrics[1] = m[1];
+		viewMetrics[2] = m[2];
+	}
+
 }

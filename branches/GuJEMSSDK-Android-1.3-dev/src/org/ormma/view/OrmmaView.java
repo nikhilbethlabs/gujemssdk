@@ -1261,6 +1261,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 					+ getHeight());
 			mViewHeight = getHeight();
 			mViewWidth = getWidth();
+
+			// adjust image scaling
+			SdkUtil.evaluateJavascript(this, "var ix = document.images, pw = document.body.clientWidth; for (var n = 0; n < ix.length; n++) {if (ix[n].width > pw) {var s = (ix[n].width / pw);	var r = ix[n].width / ix[n].height;	ix[n].width = (ix[n].width / s); ix[n].height = ix[n].width / r;}}");
+			
 			mUtilityController.init(mDensity);
 			//TODO 7"/10" Tablet scaling
 			/*
@@ -1279,6 +1283,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
 			}
 			*/
+			
 			setVisibility(View.VISIBLE);			
 		}
 

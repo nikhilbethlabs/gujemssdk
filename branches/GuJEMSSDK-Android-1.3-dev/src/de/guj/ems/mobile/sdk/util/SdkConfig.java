@@ -140,14 +140,16 @@ public enum SdkConfig {
 					.getString(
 							SdkUtil.getContext().getString(
 									R.string.jsonBaseUrlDefault));
-
+			//TODO Removing this temporarily sfor debugging purposes
+			/*
 			if (vfUrl != null && apn == VODAFONE_APN) {
 				settings.setBaseUrlString(vfUrl);
 			} else if (o2Url != null && apn == TELEFONICA_APN) {
 				settings.setBaseUrlString(o2Url);
 			} else if (defUrl != null) {
 				settings.setBaseUrlString(defUrl);
-			}
+			}*/
+			settings.setBaseUrlString(defUrl);
 		}
 	}
 

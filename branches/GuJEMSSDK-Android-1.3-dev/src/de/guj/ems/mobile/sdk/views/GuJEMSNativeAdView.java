@@ -61,7 +61,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * 
  * It is intended for performance improvements in table or listviews.
  * 
- * !Not indented for production use!
+ * !Not intended for production use!
  * 
  * @author stein16
  * 
@@ -186,15 +186,19 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 							}
 						}
 					});
-
+					
 					LayoutParams lp = view.getLayoutParams();
-					if (movie != null) {
-						lp.height = (int) (movie.height() * SdkUtil
-								.getDensity());
-					} else {
-						lp.height = (int) (bitmap.getHeight() * SdkUtil
-								.getDensity());
+					int w = movie != null ? movie.width() : bitmap.getWidth();
+					int h = movie != null ? movie.height() : bitmap.getHeight();
+					// Retina or XXL
+					if (w > (getMeasuredWidth() / SdkUtil.getDensity())) {
+						lp.height = (int)(((getMeasuredWidth() / SdkUtil.getDensity()) / w) * h * SdkUtil.getDensity());
 					}
+					// 300 or 320
+					else {
+						lp.height = (int)(h * SdkUtil.getDensity());
+					}
+
 					view.setLayoutParams(lp);
 					view.setVisibility(VISIBLE);
 
@@ -709,11 +713,14 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			this.invalidate();
 		} else if (animatedGif != null && play) {
 			long now = android.os.SystemClock.uptimeMillis();
-			float dens = SdkUtil.getDensity();
-
 			canvas.drawColor(Color.TRANSPARENT);
-			canvas.scale(dens, dens);
 
+			SdkLog.d(TAG, "iw: " + animatedGif.width() + ", mw: " + getMeasuredWidth() + ", d: " + SdkUtil.getDensity());
+			float s = animatedGif.width() > 320 ?  (float)getMeasuredWidth() / (float)animatedGif.width() : SdkUtil.getDensity();
+			float o = animatedGif.width() > 320 ? 0.0f : 0.5f * (float)((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
+
+			canvas.scale(s,s);
+			
 			if (movieStart == 0) {
 				movieStart = now;
 			}
@@ -723,8 +730,8 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 						.duration());
 				animatedGif.setTime(relTime);
 			}
-			animatedGif.draw(canvas,
-					(getWidth() / dens - animatedGif.width()) / 2.0f, 0.0f);
+			//TODO retina animated gif / smaller banners positioning ?!
+			animatedGif.draw(canvas, o, 0.0f);
 			this.invalidate();
 		}
 	}

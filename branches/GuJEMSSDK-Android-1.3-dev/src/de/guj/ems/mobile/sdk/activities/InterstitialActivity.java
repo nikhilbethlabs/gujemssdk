@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -35,7 +36,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * @author stein16
  * 
  */
-public final class InterstitialActivity extends Activity {
+public final class InterstitialActivity extends Activity implements OnClickListener {
 
 	static class InterstitialThread extends Thread {
 
@@ -332,6 +333,16 @@ public final class InterstitialActivity extends Activity {
 			}
 		}
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		if (arg0 == adView) {
+			SdkLog.d(TAG, "Interstitial Click.");
+		}
+		else {
+			SdkLog.d(TAG, "Click into void intercepted.");
+		}
 	}
 
 }
