@@ -674,6 +674,10 @@ public class SdkUtil {
 		}
 
 		return null;
-	}	
+	}
+	
+	public static boolean isLargerThanPhone() {
+		return getContext().getResources().getBoolean(R.bool.isTablet);		
+	}
 
 }

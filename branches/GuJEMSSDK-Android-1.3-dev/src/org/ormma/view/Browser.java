@@ -202,10 +202,11 @@ public class Browser extends Activity {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				Uri uri = Uri.parse(url);
 				try {
-		            if (url.startsWith("market")) {
+		            /*
+					if (url.startsWith("market")) {
 						return false;
 		            }
-						
+					*/
 					if (url.startsWith("tel:")) {
 						Intent intent = new Intent(Intent.ACTION_DIAL, uri);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

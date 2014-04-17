@@ -49,7 +49,6 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
- * WARNING: BETA
  * 
  * The native adview class implements an imageview to display JPEG,PNG or GIF
  * files.
@@ -61,7 +60,6 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * 
  * It is intended for performance improvements in table or listviews.
  * 
- * !Not intended for production use!
  * 
  * @author stein16
  * 
@@ -472,7 +470,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					as = Xml.asAttributeSet(parser);
 					break;
 				} else {
-					SdkLog.d(TAG, parser.getName());
+					SdkLog.w(TAG, "Mismatch in layout for native adView - you are using "+ parser.getName());
 				}
 			}
 		} while (state != XmlPullParser.END_DOCUMENT);
@@ -719,11 +717,9 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		} else if (animatedGif != null && play) {
 			long now = android.os.SystemClock.uptimeMillis();
 			canvas.drawColor(Color.TRANSPARENT);
-
-			SdkLog.d(TAG, "iw: " + animatedGif.width() + ", mw: " + getMeasuredWidth() + ", d: " + SdkUtil.getDensity());
-			float s = animatedGif.width() > 320 ?  (float)getMeasuredWidth() / (float)animatedGif.width() : SdkUtil.getDensity();
-			float o = animatedGif.width() > 320 ? 0.0f : 0.5f * (float)((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
-
+			// canvas scaling and offset
+			float s = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ?  (float)getMeasuredWidth() / (float)animatedGif.width() : SdkUtil.getDensity();
+			float o = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ? 0.0f : 0.5f * (float)((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
 			canvas.scale(s,s);
 			
 			if (movieStart == 0) {

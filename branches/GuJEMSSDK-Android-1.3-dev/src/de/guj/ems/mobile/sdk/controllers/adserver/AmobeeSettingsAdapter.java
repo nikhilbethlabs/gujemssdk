@@ -52,13 +52,10 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	private final static char STATUS_LANDSCAPE_MODE = 'l';
 
-	private String baseUrl = SdkUtil.getContext().getString(
-			R.string.baseUrl);
+	private String baseUrl;
 
-	private final static String BASE_PARAMS = "?"
-			+ SdkUtil.getContext().getString(R.string.baseParams)
-					.replaceAll("#version#", SdkUtil.VERSION_STR);
-
+	private String baseParams;
+	
 	private final static String TAG = "AmobeeSettingsAdapter";
 
 	/**
@@ -71,7 +68,11 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 */
 	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set) {
 		super(context, set, viewClass);
-
+		this.baseParams = "?"
+				+ context.getString(R.string.baseParams)
+				.replaceAll("#version#", SdkUtil.VERSION_STR);
+		this.baseUrl = context.getString(
+				R.string.baseUrl);
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
 		if (getAttrsToParams().get(SdkGlobals.EMS_UUID) != null) {
@@ -262,6 +263,11 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 */
 	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance) {
 		super(context, savedInstance, viewClass);
+		this.baseParams = "?"
+				+ context.getString(R.string.baseParams)
+				.replaceAll("#version#", SdkUtil.VERSION_STR);
+		this.baseUrl = context.getString(
+				R.string.baseUrl);
 		if (getAttrsToParams().get(SdkGlobals.EMS_UUID) != null) {
 			if (savedInstance.getBoolean(
 					SdkGlobals.EMS_ATTRIBUTE_PREFIX
@@ -346,7 +352,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	@Override
 	public String getBaseQueryString() {
-		return BASE_PARAMS;
+		return baseParams;
 	}
 
 	@Override

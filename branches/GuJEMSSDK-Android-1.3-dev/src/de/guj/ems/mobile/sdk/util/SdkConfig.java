@@ -37,6 +37,7 @@ public enum SdkConfig {
 
 		@Override
 		void init() {
+			SdkLog.i(TAG, (SdkUtil.isLargerThanPhone() ? "" : "Not ") + "assuming tablet or larger device.");
 			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
 					+ getRemotePath()
@@ -140,7 +141,7 @@ public enum SdkConfig {
 					.getString(
 							SdkUtil.getContext().getString(
 									R.string.jsonBaseUrlDefault));
-			//TODO Removing this temporarily sfor debugging purposes
+			//TODO Removing this temporarily for debugging purposes
 			/*
 			if (vfUrl != null && apn == VODAFONE_APN) {
 				settings.setBaseUrlString(vfUrl);

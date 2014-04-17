@@ -64,6 +64,9 @@ public abstract class AdServerSettingsAdapter implements
 
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(context);
+		}
 		this.context = null;
 		this.viewClass = null;
 		this.requestQueryString = null;
@@ -81,6 +84,9 @@ public abstract class AdServerSettingsAdapter implements
 	 */
 	public AdServerSettingsAdapter(Context context, AttributeSet set,
 			Class<?> viewClass) {
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(context);
+		}
 		this.context = context;
 		this.viewClass = viewClass;
 		this.requestQueryString = null;
@@ -98,6 +104,9 @@ public abstract class AdServerSettingsAdapter implements
 	 */
 	public AdServerSettingsAdapter(Context context, Bundle savedInstance,
 			Class<?> viewClass) {
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(context);
+		}
 		this.context = context;
 		this.viewClass = viewClass;
 		this.requestQueryString = null;

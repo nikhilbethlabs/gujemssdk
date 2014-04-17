@@ -47,6 +47,10 @@
         <attr name="ems_geo" />
         <attr name="ems_lat"/>
         <attr name="ems_lon"/>
-    </declare-styleable>    
+    </declare-styleable>
+    
+	<!--  Standard layout is for phones -->
+    <bool name="isTablet">false</bool>
+
 
 </resources>
