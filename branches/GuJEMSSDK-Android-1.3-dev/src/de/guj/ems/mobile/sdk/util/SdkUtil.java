@@ -30,6 +30,12 @@ import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.TrackingRequest;
@@ -72,6 +78,10 @@ public class SdkUtil {
 	private static Context CONTEXT;
 
 	private static String USER_AGENT = null;
+
+	private static String IDFA = null;
+
+	private static boolean FETCH_IDFA = true;
 
 	private final static boolean DEBUG = false;
 
@@ -227,6 +237,7 @@ public class SdkUtil {
 				USER_AGENT = WebSettings.getDefaultUserAgent(CONTEXT);
 			}
 			SdkLog.i(TAG, "G+J EMS SDK UserAgent: " + USER_AGENT);
+			getIdfaThread();
 		}
 		return DEBUG ? DEBUG_USER_AGENT : USER_AGENT;
 	}
@@ -520,9 +531,12 @@ public class SdkUtil {
 	 * @return true if a headset is connected
 	 */
 	public static boolean isHeadsetConnected() {
-		HEADSET_INTENT = getContext().registerReceiver(null, //HEADSET_RECEIVER,
-				new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-		SdkLog.d(TAG, "Sticky intent for headset status was " + HEADSET_INTENT);
+		try {
+			HEADSET_INTENT = getContext().registerReceiver(null,
+					new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error getting headset status.", e);
+		}
 		return HEADSET_INTENT != null ? HEADSET_INTENT.getIntExtra("state", 0) != 0
 				: false;
 	}
@@ -622,6 +636,11 @@ public class SdkUtil {
 			}
 	}
 
+	/**
+	 * Get local storage path for files
+	 * 
+	 * @return fodler where local files may be stored
+	 */
 	public static File getConfigFileDir() {
 		return getContext().getFilesDir();
 	}
@@ -679,8 +698,61 @@ public class SdkUtil {
 		return null;
 	}
 
+	/**
+	 * Detect phablets and tablets
+	 * 
+	 * @return true if we are on device larger than a phone
+	 */
 	public static boolean isLargerThanPhone() {
 		return getContext().getResources().getBoolean(R.bool.largeDisplay);
+	}
+
+	private static void getIdfaThread() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Info adInfo = null;
+				FETCH_IDFA = false;
+				try {
+					adInfo = AdvertisingIdClient
+							.getAdvertisingIdInfo(getContext());
+				} catch (GooglePlayServicesRepairableException e) {
+					SdkLog.e(
+							TAG,
+							"Google Play ID service problem, trying again later",
+							e);
+					FETCH_IDFA = true;
+				} catch (IOException e) {
+					// Unrecoverable error connecting to Google Play services
+					// (e.g.,
+					// the old version of the service doesn't support getting
+					// AdvertisingId).
+					SdkLog.e(TAG, "Google Play services connection problem", e);
+
+				} catch (GooglePlayServicesNotAvailableException e) {
+					// Google Play services is not available entirely.
+					SdkLog.e(TAG, "Google Play services not available", e);
+				}
+
+				IDFA = adInfo != null && !adInfo.isLimitAdTrackingEnabled() ? adInfo
+						.getId() : null;
+			}
+		}).start();
+
+	}
+
+	/**
+	 * Access Google Advertising Identifier
+	 * 
+	 * @return null if user chose to opt-out or id is not available, id
+	 *         otherwise
+	 */
+	public static String getIdForAdvertiser() {
+		if (FETCH_IDFA) {
+			getIdfaThread();
+		}
+		return IDFA;
 	}
 
 }

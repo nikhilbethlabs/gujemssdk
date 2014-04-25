@@ -68,6 +68,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 */
 	public JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir) {
+		this.lastError = -1;
 		this.jsonContent = listener;
 		this.logExt = jsonContent.getClass().getSimpleName();
 		SdkLog.d(TAG, "Instance for " + logExt);		
@@ -94,6 +95,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 */
 	public JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir, long maxAge) {
+		this.lastError = -1;
 		this.jsonContent = listener;
 		this.logExt = jsonContent.getClass().getSimpleName();
 		SdkLog.d(TAG, "Instance for " + logExt);		

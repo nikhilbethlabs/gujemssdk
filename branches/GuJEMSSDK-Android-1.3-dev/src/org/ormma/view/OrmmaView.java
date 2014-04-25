@@ -946,12 +946,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private void initialize() {
 		SdkUtil.setContext(getContext());
 		if (!isInEditMode()) {
-			if (Build.VERSION.SDK_INT < 18) {
-				//TODO fix deprecation
-				getSettings().setPluginState(WebSettings.PluginState.OFF);
-				getSettings().setAppCacheMaxSize(WEBVIEW_CACHE_SIZE);
-			}
-
 			getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 			getSettings().setAppCacheEnabled(true);
 			getSettings().setUseWideViewPort(false);
@@ -1224,6 +1218,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		super.onDetachedFromWindow();
 		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
 			mUtilityController.deleteOldAds(mLocalFilePath);
+			setVisibility(View.GONE);
 		}
 		mUtilityController.stopAllListeners();
 		stopLoading();
@@ -1588,6 +1583,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		invalidate();
 		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
 			mUtilityController.deleteOldAds(mLocalFilePath);
+			setVisibility(View.GONE);
 		}
 		mUtilityController.stopAllListeners();
 		resetLayout();
@@ -1757,6 +1753,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		if (v == View.GONE) {
 			if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
 				mUtilityController.deleteOldAds(mLocalFilePath);
+				setVisibility(View.GONE);
 			}
 			mUtilityController.stopAllListeners();
 		}

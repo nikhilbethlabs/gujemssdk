@@ -362,10 +362,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
-
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
-
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
 		}
@@ -379,7 +377,6 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
-
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 

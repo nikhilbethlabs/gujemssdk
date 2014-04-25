@@ -367,6 +367,16 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 				+ SdkUtil.getBatteryLevel();
 	}
 
+	private String getIdfa() {
+		String idfa = SdkUtil.getIdForAdvertiser();
+		if (idfa != null) {
+			return "&" + SdkUtil.getContext().getResources()
+					.getString(R.string.pIdForAdvertiser) + "="
+			+ idfa;
+		}
+		return "";
+	}
+	
 	private String getPhoneStatus() {
 		String pStr = "&"
 				+ SdkUtil.getContext().getResources()
@@ -402,6 +412,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		String qStr = super.getQueryString();
 		qStr = qStr.concat(getPhoneStatus());
 		qStr = qStr.concat(getBatteryStatus());
+		qStr = qStr.concat(getIdfa());
 		return qStr;
 	}
 

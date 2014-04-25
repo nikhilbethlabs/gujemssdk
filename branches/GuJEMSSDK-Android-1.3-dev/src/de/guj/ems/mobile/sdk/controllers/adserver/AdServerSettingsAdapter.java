@@ -194,6 +194,7 @@ public abstract class AdServerSettingsAdapter implements
 				try {
 					Class<?>[] noParams = null;
 					Object[] noArgs = null;
+					
 					Method lMethod = context.getClass().getMethod(lMethodName,
 							noParams);
 					lMethod.invoke(context, noArgs);

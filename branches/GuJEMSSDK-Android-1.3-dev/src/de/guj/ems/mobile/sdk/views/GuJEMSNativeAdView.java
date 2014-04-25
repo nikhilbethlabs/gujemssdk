@@ -422,6 +422,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+		//TODO crashes in LinearLayout?
 		return new ViewGroup.LayoutParams(w, h);
 	}
 
@@ -442,6 +443,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				setLayoutParams(getNewLayoutParams(w, h));
 			}
 		}
+
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
@@ -503,9 +505,17 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 			if (!isInEditMode()) {
 				SdkLog.w(TAG, "AdView is in test mode");
-				setLayoutParams(getNewLayoutParams(
-						(int) (300.0 * SdkUtil.getDensity()),
-						(int) (50.0 * SdkUtil.getDensity())));
+				if (getLayoutParams() == null) {
+					setLayoutParams(getNewLayoutParams(
+							(int) (300.0 * SdkUtil.getDensity()),
+							(int) (50.0 * SdkUtil.getDensity())));
+				}
+				else {
+					LayoutParams lp = getLayoutParams();
+					lp.height = (int) (50.0 * SdkUtil.getDensity());
+					lp.width = (int) (300.0 * SdkUtil.getDensity());
+					setLayoutParams(lp);
+				}
 			}
 			setVisibility(VISIBLE);
 			if (this.settings != null
@@ -578,8 +588,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					this.settings.getOnAdSuccessListener().onAdSuccess();
 				}
 			} else {
-				// TODO setVisibility here?
-				// setVisibility(GONE);
 				if (this.settings.getDirectBackfill() != null
 						&& response != null
 						&& !OptimobileAdResponse.class.equals(response
@@ -697,6 +705,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			} catch (Exception e) {
 				; // editor mode
 			}
+
 			if (settings != null) {
 				String txt = settings.toString();
 				if (txt.indexOf("uid") >= 0) {

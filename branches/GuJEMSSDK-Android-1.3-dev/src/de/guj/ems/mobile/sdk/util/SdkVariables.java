@@ -21,11 +21,13 @@ public enum SdkVariables {
 	
 	private long lastFetched;
 	
+	private JSONFetcher fetcher;
+	
 	public class JSONVariables extends JSONContent {
 		
 		@Override
 		void init() {
-			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
+			fetcher = new JSONFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
 					+ SdkUtil.getContext().getResources()
 							.getString(R.string.jsonVariablesScript), SdkUtil
@@ -99,6 +101,7 @@ public enum SdkVariables {
 	private JSONVariables jsonVariables;
 
 	SdkVariables() {
+		SdkLog.d(TAG, "SDK VARIABLES NEW INSTANCE **");
 		this.jsonVariables = new JSONVariables();
 	}
 
