@@ -50,7 +50,7 @@
     </declare-styleable>
     
 	<!--  Standard layout is for phones -->
-    <bool name="isTablet">false</bool>
+    <bool name="largeDisplay">false</bool>
 
 
 </resources>

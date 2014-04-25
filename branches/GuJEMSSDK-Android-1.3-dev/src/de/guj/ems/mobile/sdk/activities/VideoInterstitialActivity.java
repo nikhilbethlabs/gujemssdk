@@ -573,6 +573,8 @@ public final class VideoInterstitialActivity extends Activity implements
 
 				private void updateView(final boolean canClose,
 						final String bottomText) {
+
+					
 					if (root != null && root.getHandler() != null) {
 						root.getHandler().post(new Runnable() {
 
@@ -668,14 +670,13 @@ public final class VideoInterstitialActivity extends Activity implements
 						}
 					}
 					SdkLog.d(TAG, "Terminating control thread.");
-
-					if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
-						try {
+					try {
+						if (mediaPlayer != null && (mediaPlayer.isPlaying())) {
 							mediaPlayer.pause();
-						} catch (IllegalStateException e) {
-							SdkLog.w(TAG, "MediaPlayer already released.");
 						}
 						SdkLog.d(TAG, "MediaPlayer paused.");
+					} catch (IllegalStateException e) {
+						SdkLog.w(TAG, "MediaPlayer already released.");
 					}
 					if (target != null) {
 						startActivity(target);
@@ -715,8 +716,8 @@ public final class VideoInterstitialActivity extends Activity implements
 	@Override
 	public void onVASTWrapperFound(final String url) {
 		SdkLog.d(TAG, "Wrapped VAST xml response [" + url + "].");
-		//TODO VASTWrapper with new url?!
-		//SdkUtil.adRequest(this).execute(url);
+		// TODO VASTWrapper with new url?!
+		// SdkUtil.adRequest(this).execute(url);
 	}
 
 	@Override

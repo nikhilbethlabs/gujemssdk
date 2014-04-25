@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--  Android Manifest for G+J EMS Android SDK library v1.3.2 (Mar 2014) -->
+<!--  Android Manifest for G+J EMS Android SDK library v1.3.2 (Apr 2014) -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.guj.ems.mobile.sdk"
     android:versionCode="10"
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	
+    
     <!-- *** Recommended permissions *** -->
 
     <!-- Enables location based targeted ads -->
@@ -45,19 +45,18 @@
     <!--  Enables camera access from ads -->
     <uses-permission android:name="android.permission.CAMERA"/>
     
-    
     <application>
         
         <!--  *** G+J EMS SDK specific declarations *** -->
         
         <!-- Displaying interstitials -->
         <activity
-            android:name="de.guj.ems.mobile.sdk.activities.InterstitialActivity"
+            android:name=".activities.InterstitialActivity"
             android:configChanges="screenSize|orientation" />
         
         <!-- Displaying video interstitials -->
         <activity
-            android:name="de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity"
+            android:name=".activities.VideoInterstitialActivity"
             android:configChanges="screenSize|orientation" />
         
         <!-- In-App browser -->
@@ -67,9 +66,8 @@
         <activity android:name="org.ormma.view.OrmmaActionHandler" />
 		
 		<!-- Receiver to check whether an interstitial can be displayed  -->
-        <receiver android:name="de.guj.ems.mobile.sdk.controllers.InterstitialSwitchReceiver" >
-            <action android:name="de.guj.android.gala.broadcasts.interstitialBroadcast" />
-        </receiver>
+        <receiver android:name=".controllers.InterstitialSwitchReceiver" >
+		</receiver>
 
         <!-- *** Smartstream Video Interstitial SDK (3rd party video interstitials) *** -->
         <activity
@@ -77,7 +75,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
 		<activity
-            android:name="de.guj.ems.mobile.sdk.activities.VideoAdSDKWrapperActivity"
+            android:name=".activities.VideoAdSDKWrapperActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
 

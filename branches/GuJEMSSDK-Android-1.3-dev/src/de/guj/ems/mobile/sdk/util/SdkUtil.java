@@ -18,7 +18,6 @@ import android.content.ReceiverCallNotAllowedException;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
@@ -55,6 +54,8 @@ public class SdkUtil {
 	private static Method KITKAT_JS_METHOD = null;
 
 	private static Intent BATTERY_INTENT = null;
+
+	private static Intent HEADSET_INTENT = null;
 
 	private static TelephonyManager TELEPHONY_MANAGER;
 
@@ -154,9 +155,8 @@ public class SdkUtil {
 			if (TELEPHONY_MANAGER == null) {
 				try {
 					TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
-						.getSystemService(Context.TELEPHONY_SERVICE);
-				}
-				catch (Exception e) {
+							.getSystemService(Context.TELEPHONY_SERVICE);
+				} catch (Exception e) {
 					DEVICE_ID = Secure.ANDROID_ID;
 					return DEVICE_ID;
 				}
@@ -207,7 +207,7 @@ public class SdkUtil {
 	 */
 	@SuppressLint("NewApi")
 	public static String getUserAgent() {
-		
+
 		if (DEBUG) {
 			SdkLog.w(TAG,
 					"UserAgentHelper is in DEBUG mode. Do not deploy to production like this.");
@@ -220,8 +220,7 @@ public class SdkUtil {
 					USER_AGENT = w.getSettings().getUserAgentString();
 					w.destroy();
 					w = null;
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					USER_AGENT = DEBUG_USER_AGENT;
 				}
 			} else {
@@ -411,7 +410,7 @@ public class SdkUtil {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check the network subtype, i.e. carrier name
 	 * 
@@ -438,7 +437,6 @@ public class SdkUtil {
 			return "Unknown";
 		}
 	}
-
 
 	private static String readUUID(File fuuid) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(fuuid, "r");
@@ -521,10 +519,12 @@ public class SdkUtil {
 	 * 
 	 * @return true if a headset is connected
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean isHeadsetConnected() {
-		return ((AudioManager) getContext().getSystemService(
-				Context.AUDIO_SERVICE)).isWiredHeadsetOn();
+		HEADSET_INTENT = getContext().registerReceiver(null, //HEADSET_RECEIVER,
+				new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+		SdkLog.d(TAG, "Sticky intent for headset status was " + HEADSET_INTENT);
+		return HEADSET_INTENT != null ? HEADSET_INTENT.getIntExtra("state", 0) != 0
+				: false;
 	}
 
 	/**
@@ -625,25 +625,26 @@ public class SdkUtil {
 	public static File getConfigFileDir() {
 		return getContext().getFilesDir();
 	}
-	
+
 	/**
 	 * Gets the location.
 	 * 
 	 * @return the location
 	 */
 	public static double[] getLocation() {
-		LocationManager lm = (LocationManager) getContext()
-				.getSystemService(Context.LOCATION_SERVICE);
+		LocationManager lm = (LocationManager) getContext().getSystemService(
+				Context.LOCATION_SERVICE);
 		List<String> providers = lm.getProviders(false);
 		Iterator<String> provider = providers.iterator();
 		Location lastKnown = null;
 		double[] loc = new double[4];
 		long age = 0;
-		int maxage = getContext().getResources().getInteger(R.integer.ems_location_maxage_ms);
+		int maxage = getContext().getResources().getInteger(
+				R.integer.ems_location_maxage_ms);
 		while (provider.hasNext()) {
 			lastKnown = lm.getLastKnownLocation(provider.next());
 			if (lastKnown != null) {
-				
+
 				age = System.currentTimeMillis() - lastKnown.getTime();
 				if (age <= maxage) {
 					break;
@@ -660,11 +661,13 @@ public class SdkUtil {
 			loc[1] = lastKnown.getLongitude();
 			loc[2] = lastKnown.getSpeed() * 3.6;
 			loc[3] = lastKnown.getAltitude();
-			if (getContext().getResources()
-					.getBoolean(R.bool.ems_shorten_location)) {
+			if (getContext().getResources().getBoolean(
+					R.bool.ems_shorten_location)) {
 				SdkLog.d(TAG, "Shortening " + loc[0] + "," + loc[1]);
-				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
-				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
+				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
+						.format(loc[0]));
+				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
+						.format(loc[1]));
 				SdkLog.d(TAG, "Geo location shortened to two digits.");
 			}
 
@@ -675,9 +678,9 @@ public class SdkUtil {
 
 		return null;
 	}
-	
+
 	public static boolean isLargerThanPhone() {
-		return getContext().getResources().getBoolean(R.bool.isTablet);		
+		return getContext().getResources().getBoolean(R.bool.largeDisplay);
 	}
 
 }

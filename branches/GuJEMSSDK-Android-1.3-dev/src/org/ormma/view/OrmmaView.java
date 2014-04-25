@@ -1266,23 +1266,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			SdkUtil.evaluateJavascript(this, "var ix = document.images, pw = document.body.clientWidth; for (var n = 0; n < ix.length; n++) {if (ix[n].width > pw) {var s = (ix[n].width / pw);	var r = ix[n].width / ix[n].height;	ix[n].width = (ix[n].width / s); ix[n].height = ix[n].width / r;}}");
 			
 			mUtilityController.init(mDensity);
-			//TODO 7"/10" Tablet scaling
-			/*
-			// scaling for 7" superbanner
-			boolean scale = getMeasuredWidth() / SdkUtil.getDensity() < 728.0f && (getHeight() / SdkUtil.getDensity() < 150.0f);
-			// scaling for 7" interstitial in landscape mode
-			scale = scale || getMeasuredWidth() / SdkUtil.getDensity() < 1024.0f && (getHeight() / SdkUtil.getDensity() > 500.0f);
-			// scaling for 7" interstitial in portrait mode
-			scale = scale || getMeasuredWidth() / SdkUtil.getDensity() < 704.0f && (getHeight() / SdkUtil.getDensity() > 500.0f);
-			
-			if (scale) {
-				setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-			    setScrollbarFadingEnabled(false);
-			    getSettings().setUseWideViewPort(true);
-			    SdkUtil.evaluateJavascript(this, "document.getElementById('viewport').setAttribute('content', 'width=device-width,initial-scale=" + mDensity + ",minimum-scale=" + mDensity + ",maximum-scale=" + mDensity + ",user-scalable=no‘);");
-				getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
-			}
-			*/
 			
 			setVisibility(View.VISIBLE);			
 		}

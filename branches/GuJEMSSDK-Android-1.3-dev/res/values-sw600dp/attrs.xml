@@ -2,6 +2,6 @@
 <resources>
     
 	<!--  Standard layout is for phones -->
-    <bool name="isTablet">true</bool>
+    <bool name="largeDisplay">true</bool>
 
 </resources>
