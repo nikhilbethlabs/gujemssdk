@@ -7,9 +7,11 @@ import java.util.Formatter;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,6 +105,7 @@ public class WebView extends android.webkit.WebView
 			Activity activity = (Activity) ctx;
 			activity.runOnUiThread(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					loadUrl(url);					
@@ -217,6 +220,7 @@ public class WebView extends android.webkit.WebView
 		}
 	}
 	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private class ViewClientAPI11 extends ViewClientAPI8
 	{
 		public ViewClientAPI11()

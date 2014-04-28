@@ -57,13 +57,13 @@ public class SdkUtil {
 	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[] {
 			String.class, ValueCallback.class };
 
-	private static Method KITKAT_JS_METHOD = null;
+	private volatile static Method KITKAT_JS_METHOD = null;
 
-	private static Intent BATTERY_INTENT = null;
+	private volatile static Intent BATTERY_INTENT = null;
 
-	private static Intent HEADSET_INTENT = null;
+	private volatile static Intent HEADSET_INTENT = null;
 
-	private static TelephonyManager TELEPHONY_MANAGER;
+	private volatile static TelephonyManager TELEPHONY_MANAGER;
 
 	private static DisplayMetrics METRICS = new DisplayMetrics();
 
@@ -160,7 +160,7 @@ public class SdkUtil {
 	 * 
 	 * @return device identifier as string
 	 */
-	public static String getDeviceId() {
+	public static synchronized String getDeviceId() {
 		if (DEVICE_ID == null) {
 			if (TELEPHONY_MANAGER == null) {
 				try {
@@ -249,6 +249,12 @@ public class SdkUtil {
 		}
 		return WINDOW_MANAGER;
 	}
+	
+	private synchronized static TelephonyManager getTelephonyManager() {
+		TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		return TELEPHONY_MANAGER;
+	}
 
 	/**
 	 * Check whether phone has mobile 3G connection
@@ -258,8 +264,7 @@ public class SdkUtil {
 	public static boolean is3G() {
 		if (!isWifi()) {
 			if (TELEPHONY_MANAGER == null) {
-				TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
-						.getSystemService(Context.TELEPHONY_SERVICE);
+				TELEPHONY_MANAGER = getTelephonyManager();
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				if (TELEPHONY_MANAGER.getNetworkType() == TelephonyManager.NETWORK_TYPE_LTE) {
@@ -473,6 +478,14 @@ public class SdkUtil {
 		out.write(id.getBytes());
 		out.close();
 	}
+	
+	private synchronized static Intent getBatteryIntent() {
+		IntentFilter ifilter = new IntentFilter(
+				Intent.ACTION_BATTERY_CHANGED);
+		BATTERY_INTENT = getContext().getApplicationContext()
+				.registerReceiver(null, ifilter);
+		return BATTERY_INTENT;
+	}
 
 	/**
 	 * Check whether a charger is connected to the device
@@ -482,10 +495,7 @@ public class SdkUtil {
 	public static boolean isChargerConnected() {
 		if (BATTERY_INTENT == null) {
 			try {
-				IntentFilter ifilter = new IntentFilter(
-						Intent.ACTION_BATTERY_CHANGED);
-				BATTERY_INTENT = getContext().getApplicationContext()
-						.registerReceiver(null, ifilter);
+				BATTERY_INTENT = getBatteryIntent();
 			} catch (ReceiverCallNotAllowedException e) {
 				SdkLog.w(TAG,
 						"Skipping start of phone status receivers from start interstitial.");
@@ -507,22 +517,27 @@ public class SdkUtil {
 	 */
 	public static int getBatteryLevel() {
 		if (BATTERY_INTENT == null) {
-			try {
-				IntentFilter ifilter = new IntentFilter(
-						Intent.ACTION_BATTERY_CHANGED);
-				BATTERY_INTENT = getContext().getApplicationContext()
-						.registerReceiver(null, ifilter);
-			} catch (ReceiverCallNotAllowedException e) {
-				SdkLog.w(TAG,
-						"Skipping start of phone status receivers from start interstitial.");
-				BATTERY_INTENT = null;
-				return 100;
+			synchronized (BATTERY_INTENT) {
+				try {
+					BATTERY_INTENT = getBatteryIntent();
+				} catch (ReceiverCallNotAllowedException e) {
+					SdkLog.w(TAG,
+							"Skipping start of phone status receivers from start interstitial.");
+					BATTERY_INTENT = null;
+					return 100;
+				}
 			}
 		}
 		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
 		return (int) (100.0f * (level / (float) scale));
+	}
+	
+	private synchronized static Intent getHeadsetIntent() {
+		HEADSET_INTENT = getContext().registerReceiver(null,
+				new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+		return HEADSET_INTENT;
 	}
 
 	/**
@@ -532,8 +547,7 @@ public class SdkUtil {
 	 */
 	public static boolean isHeadsetConnected() {
 		try {
-			HEADSET_INTENT = getContext().registerReceiver(null,
-					new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+			HEADSET_INTENT = getHeadsetIntent();
 		} catch (Exception e) {
 			SdkLog.e(TAG, "Error getting headset status.", e);
 		}
@@ -552,24 +566,6 @@ public class SdkUtil {
 	 */
 	public static AdRequest adRequest(IAdResponseHandler handler) {
 		return new AmobeeAdRequest(handler);
-	}
-
-	/**
-	 * Create an ad request object url, response handler and security mechanism
-	 * 
-	 * @param url
-	 *            Ad request url
-	 * @param handler
-	 *            response handler
-	 * @param secHeaderName
-	 *            name of security header
-	 * @param secHeaderVal
-	 *            security hash value
-	 * @return initialized ad request
-	 */
-	public static AdRequest adRequest(IAdResponseHandler handler,
-			String secHeaderName, int secHeaderVal) {
-		return new AmobeeAdRequest(secHeaderName, secHeaderVal, handler);
 	}
 
 	/**
@@ -595,6 +591,21 @@ public class SdkUtil {
 		}
 	}
 
+	private synchronized static Method getKitKatJsMethod() {
+		try {
+			KITKAT_JS_METHOD = Class.forName("android.webkit.WebView")
+					.getDeclaredMethod("evaluateJavascript",
+							KITKAT_JS_PARAMTYPES);
+			KITKAT_JS_METHOD.setAccessible(true);
+		} catch (Exception e0) {
+			SdkLog.e(
+					TAG,
+					"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
+					e0);
+		}
+		return KITKAT_JS_METHOD;
+	}
+
 	/**
 	 * Helper method to determine the correct way to execute javascript in a
 	 * webview. Starting from Android 4.4, the Android webview is a chrome
@@ -608,19 +619,10 @@ public class SdkUtil {
 	 */
 	public static void evaluateJavascript(WebView webView, String javascript) {
 		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
-			try {
-				KITKAT_JS_METHOD = Class.forName("android.webkit.WebView")
-						.getDeclaredMethod("evaluateJavascript",
-								KITKAT_JS_PARAMTYPES);
-				KITKAT_JS_METHOD.setAccessible(true);
-				SdkLog.i(TAG,
-						"G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
-			} catch (Exception e0) {
-				SdkLog.e(
-						TAG,
-						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
-						e0);
-			}
+			KITKAT_JS_METHOD = getKitKatJsMethod();
+			SdkLog.i(TAG,
+					"G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
+
 		}
 
 		if (Build.VERSION.SDK_INT < 19) {

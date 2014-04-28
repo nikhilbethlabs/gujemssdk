@@ -48,7 +48,6 @@ import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -901,9 +900,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			return -1;
 	}
 
-	OrmmaPlayer getPlayer() {
+	synchronized OrmmaPlayer getPlayer() {
 
-		if (player != null)
+		if (player != null) 
 			player.releasePlayer();
 		player = new OrmmaPlayer(getContext());
 		return player;
@@ -1251,7 +1250,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mContentViewHeight = getContentViewHeight();
 		}
 		if (bPageFinished && bGotLayoutParams && mViewHeight <= 0
-				& getHeight() > 0) {
+				&& getHeight() > 0) {
 			SdkLog.d(SdkLog_TAG, "onGlobalLayout :: " + getWidth() + "x"
 					+ getHeight());
 			mViewHeight = getHeight();

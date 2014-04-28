@@ -34,8 +34,6 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	private static final long serialVersionUID = -4637791449705402591L;
 
-	private final static int SECURITY_HEADER_VALUE = 1958013300;
-
 	private final static char STATUS_3G_ON = '3';
 
 	private final static char STATUS_4G_ON = '4';
@@ -414,11 +412,6 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		qStr = qStr.concat(getBatteryStatus());
 		qStr = qStr.concat(getIdfa());
 		return qStr;
-	}
-
-	@Override
-	public int getSecurityHeaderValueHash() {
-		return SECURITY_HEADER_VALUE;
 	}
 
 }

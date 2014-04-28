@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+import de.guj.ems.mobile.sdk.util.SdkLog;
+
 
 public abstract class AdResponse implements IAdResponse {
 
@@ -14,9 +16,19 @@ public abstract class AdResponse implements IAdResponse {
 	private String htmlResponse;
 
 	private AdResponseParser parser;
+	
+	private final static String TAG = "AdResponse";
 
-	public AdResponse(String response) {
-		this.response = response;
+	public AdResponse(String resp) {
+		SdkLog.d(TAG, "Ad response " + resp);
+		if (resp != null && resp.startsWith("<?xml")) {
+			SdkLog.d(TAG, "Removing xml doc declaration from response");
+			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "").trim();
+			SdkLog.d(TAG, "Ad response " + this.response);
+		}
+		else {
+			this.response = resp;
+		}
 	}
 
 	@Override

@@ -130,7 +130,7 @@ public enum SdkVariables {
 			for (int l0 = 3; l0 > l0d.length(); l0--)
 				str += encTable[0];
 			for (int i = off; i < l0d.length(); i++) {
-				str += encTable[(int) l0d.charAt(i) - 48];
+				str += encTable[l0d.charAt(i) - 48];
 			}
 			if ((int) ((loc[0] - (int) loc[0]) * 100.0) < 0) {
 				l0f = l0f.substring(1);
@@ -138,14 +138,14 @@ public enum SdkVariables {
 			if ((int) ((loc[0] - (int) loc[0]) * 100.0) < 10) {
 				l0f = "0" + l0f;
 			}
-			str += encTable[(int) l0f.charAt(0) - 48];
-			str += encTable[(int) l0f.charAt(1) - 48];
+			str += encTable[l0f.charAt(0) - 48];
+			str += encTable[l0f.charAt(1) - 48];
 			str += loc[1] < 0.0 ? "1" : "0";
 			off = loc[1] < 0.0 ? 1 : 0;
 			for (int l1 = 3; l1 > l1d.length(); l1--)
 				str += encTable[0];
 			for (int j = off; j < l1d.length(); j++) {
-				str += encTable[(int) l1d.charAt(j) - 48];
+				str += encTable[l1d.charAt(j) - 48];
 			}
 			if ((int) ((loc[1] - (int) loc[1]) * 100.0) < 0) {
 				l1f = l1f.substring(1);
@@ -153,8 +153,8 @@ public enum SdkVariables {
 			if ((int) ((loc[1] - (int) loc[1]) * 100.0) < 10) {
 				l1f = "0" + l1f;
 			}
-			str += encTable[(int) l1f.charAt(0) - 48];
-			str += encTable[(int) l1f.charAt(1) - 48];
+			str += encTable[l1f.charAt(0) - 48];
+			str += encTable[l1f.charAt(1) - 48];
 			return str;
 		}
 

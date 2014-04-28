@@ -728,7 +728,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			canvas.drawColor(Color.TRANSPARENT);
 			// canvas scaling and offset
 			float s = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ?  (float)getMeasuredWidth() / (float)animatedGif.width() : SdkUtil.getDensity();
-			float o = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ? 0.0f : 0.5f * (float)((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
+			float o = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ? 0.0f : 0.5f * ((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
 			canvas.scale(s,s);
 			
 			if (movieStart == 0) {

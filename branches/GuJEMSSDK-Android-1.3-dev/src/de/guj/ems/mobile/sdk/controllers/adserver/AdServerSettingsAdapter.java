@@ -64,9 +64,6 @@ public abstract class AdServerSettingsAdapter implements
 
 	@SuppressWarnings("unused")
 	private AdServerSettingsAdapter() {
-		if (SdkUtil.getContext() == null) {
-			SdkUtil.setContext(context);
-		}
 		this.context = null;
 		this.viewClass = null;
 		this.requestQueryString = null;
@@ -508,11 +505,6 @@ public abstract class AdServerSettingsAdapter implements
 	}
 
 	@Override
-	public String getSecurityHeaderName() {
-		return SdkGlobals.EMS_SECURITY_HEADER_NAME;
-	}
-
-	@Override
 	public void addCustomParams(Map<String, ?> params) {
 		if (params != null) {
 			Iterator<String> mi = params.keySet().iterator();
@@ -537,6 +529,7 @@ public abstract class AdServerSettingsAdapter implements
 		}
 	}
 
+	@Override
 	public String toString() {
 		return getQueryString();
 	}

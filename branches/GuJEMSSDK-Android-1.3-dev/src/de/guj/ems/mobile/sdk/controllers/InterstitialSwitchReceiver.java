@@ -82,6 +82,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		SdkLog.i(TAG, "FINISH AdServer request");
 		BackfillDelegator.BackfillData bfD;
 		this.data = response;
+
 		if (data != null
 				&& !data.isEmpty()
 				&& (bfD = BackfillDelegator.isBackfill(

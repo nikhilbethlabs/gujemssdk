@@ -1105,7 +1105,8 @@ public class MASTAdView extends ViewGroup
             
         	runOnUiThread(new Runnable()
         	{
-            	public void run()
+            	@Override
+				public void run()
             	{
         			renderText(adDescriptor, txt);
             	}
@@ -1138,7 +1139,8 @@ public class MASTAdView extends ViewGroup
                 	{
 	                	runOnUiThread(new Runnable()
 	                	{
-	                    	public void run()
+	                    	@Override
+							public void run()
 	                    	{
 	                			renderText(adDescriptor, txt);
 	                    	}
@@ -1188,7 +1190,8 @@ public class MASTAdView extends ViewGroup
         
         runOnUiThread(new Runnable()
         {
-        	public void run()
+        	@Override
+			public void run()
         	{
         		renderRichMedia(adDescriptor);
         	}
@@ -1270,7 +1273,8 @@ public class MASTAdView extends ViewGroup
 				
 		        runOnUiThread(new Runnable()
 		        {
-		        	public void run()
+		        	@Override
+					public void run()
 		        	{
 						renderImage(adDescriptor, finalImaegObject);
 		        	}
@@ -1289,8 +1293,8 @@ public class MASTAdView extends ViewGroup
 		
 		LayoutParams layoutParams = 
 				new LayoutParams(LayoutParams.MATCH_PARENT, 
-						imageObject instanceof Bitmap ? (int)((float)((Bitmap)imageObject).getHeight() * SdkUtil.getDensity()) :
-						(int)((float)((GifDecoder)imageObject).ih * SdkUtil.getDensity()));
+						imageObject instanceof Bitmap ? (int)(((Bitmap)imageObject).getHeight() * SdkUtil.getDensity()) :
+						(int)(((GifDecoder)imageObject).ih * SdkUtil.getDensity()));
 		
 		getLayoutParams().height = layoutParams.height;
 		addContentView(imageView, layoutParams);
@@ -1560,6 +1564,7 @@ public class MASTAdView extends ViewGroup
 		
 		runOnUiThread(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				if ((bypassInternalBrowser == false) && useInternalBrowser)
@@ -2119,6 +2124,7 @@ public class MASTAdView extends ViewGroup
 			case Resized:
 				runOnUiThread(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						if (mraidResizeLayout == null)
@@ -2164,6 +2170,7 @@ public class MASTAdView extends ViewGroup
 				mraidExpandDialog.dismiss();
 				runOnUiThread(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						// TODO: Race condition... if the creative calls close 
@@ -2293,6 +2300,7 @@ public class MASTAdView extends ViewGroup
 				// Normal expand.
 				runOnUiThread(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						removeView(webView);
@@ -2329,6 +2337,7 @@ public class MASTAdView extends ViewGroup
 
 			runOnUiThread(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					setMRAIDOrientation();
@@ -2504,6 +2513,7 @@ public class MASTAdView extends ViewGroup
 			
 			runOnUiThread(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					Activity activity = getActivity();
@@ -2873,6 +2883,7 @@ public class MASTAdView extends ViewGroup
 			});
 		}
 
+		@Override
 		protected void onStart()
 		{
 			super.onStart();
@@ -2909,6 +2920,7 @@ public class MASTAdView extends ViewGroup
 			prepareCloseButton();
 		}
 		
+		@Override
 		public void onBackPressed()
 		{
 			if (this == interstitialDialog)
@@ -3082,6 +3094,7 @@ public class MASTAdView extends ViewGroup
 		
 		Runnable uiRunnable = new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				try

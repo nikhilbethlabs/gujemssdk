@@ -100,6 +100,7 @@ public final class OptimobileListener implements RequestListener {
 			adView.removeAllViews();
 
 			delegator.getHandler().post(new Runnable() {
+				@Override
 				public void run() {
 					emsMobileView.processResponse(new OptimobileAdResponse(
 							response.indexOf("richmedia") >= 0
@@ -116,6 +117,7 @@ public final class OptimobileListener implements RequestListener {
 
 			if (delegator.getHandler() != null) {
 				delegator.getHandler().post(new Runnable() {
+					@Override
 					public void run() {
 						emsNativeMobileView.processResponse(new OptimobileAdResponse(
 								response.indexOf("richmedia") >= 0

@@ -28,7 +28,7 @@ public enum SdkConfig {
 			String nName = SdkUtil.getNetworkName();
 			if (nName.indexOf("vodafone") >= 0) {
 				apn = VODAFONE_APN;
-			} else if ("internet".equals(nName)) {
+			} else if (nName.indexOf("o2") >= 0) {
 				apn = TELEFONICA_APN;
 			} else {
 				apn = UNKNOWN_APN;
@@ -141,15 +141,14 @@ public enum SdkConfig {
 					.getString(
 							SdkUtil.getContext().getString(
 									R.string.jsonBaseUrlDefault));
-			//TODO Removing this temporarily for debugging purposes
-			/*
+			//TODO o2 APN NAME?!
 			if (vfUrl != null && apn == VODAFONE_APN) {
 				settings.setBaseUrlString(vfUrl);
 			} else if (o2Url != null && apn == TELEFONICA_APN) {
 				settings.setBaseUrlString(o2Url);
 			} else if (defUrl != null) {
 				settings.setBaseUrlString(defUrl);
-			}*/
+			}
 			settings.setBaseUrlString(defUrl);
 		}
 	}

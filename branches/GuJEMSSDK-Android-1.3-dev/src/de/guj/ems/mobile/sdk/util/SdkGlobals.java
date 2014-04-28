@@ -102,11 +102,5 @@ public class SdkGlobals {
 	public final static String EMS_BACKFILL_ZONEID = SdkUtil.getContext()
 			.getString(R.string.backfillZoneId);
 
-	/**
-	 * name of http security header
-	 */
-	public final static String EMS_SECURITY_HEADER_NAME = SdkUtil.getContext()
-			.getString(R.string.securityHeaderName);
-
 
 }

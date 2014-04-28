@@ -168,22 +168,6 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 *            backfill data
 	 */
 	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill);
-
-	/**
-	 * Name of a header the HTTP response must contain. This is to prevent
-	 * manipulated host files which present a security hole.
-	 * 
-	 * @return Name of the security header name
-	 */
-	public String getSecurityHeaderName();
-
-	/**
-	 * Hash of value the security header name must contain. This is to prevent
-	 * manipulated host files which present a security hole.
-	 * 
-	 * @return Hashed value of the security header
-	 */
-	public int getSecurityHeaderValueHash();
 	
 	/**
 	 * Add a map of custom params to the request. Only String, Integer, Double allowed.

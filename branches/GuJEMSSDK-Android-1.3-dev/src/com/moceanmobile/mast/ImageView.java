@@ -85,6 +85,7 @@ public class ImageView extends android.widget.ImageView
 	
 	private class Worker extends Thread
 	{
+		@Override
 		public void run()
 		{
 			try
@@ -110,6 +111,7 @@ public class ImageView extends android.widget.ImageView
 						
 						((Activity) getContext()).runOnUiThread(new Runnable()
 						{
+							@Override
 							public void run()
 							{
 								setGifBitmap(bitmap);

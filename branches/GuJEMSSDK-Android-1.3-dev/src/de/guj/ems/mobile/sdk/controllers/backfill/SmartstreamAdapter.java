@@ -27,13 +27,10 @@ public class SmartstreamAdapter implements BackfillAdapter {
 
 	private static String lastData = null;
 
-	private static BackfillDelegator.BackfillCallback callback;
-
 	@Override
 	public void execute(final Context context,
 			final BackfillDelegator.BackfillCallback callback,
 			final BackfillDelegator.BackfillData bfData) {
-		SmartstreamAdapter.callback = callback;
 		if (!bfData.getData().equals(lastData)) {
 			VideoAdSDK.registerWithPublisherID(context, bfData.getData(),
 					new VideoAdSDKListener() {
@@ -123,7 +120,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 									TAG,
 									"Smartstream Backfill failed. Starting original intent.",
 									arg0);
-							SmartstreamAdapter.callback.adFailedCallback(arg0);
+							callback.adFailedCallback(arg0);
 						}
 
 						@Override
@@ -131,7 +128,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							// poor connectivity or no video advertising
 							SdkLog.e(TAG,
 									"Smartstream Backfill unavailable. Starting original intent.");
-							SmartstreamAdapter.callback.noAdCallback();
+							callback.noAdCallback();
 						}
 
 						@Override
@@ -150,7 +147,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 						public void onAdvertisingWillShow() {
 							// the advertising appears in fullscreen mode
 							SdkLog.d(TAG, "Smartstream advertising will show");
-							SmartstreamAdapter.callback.receivedAdCallback();
+							callback.receivedAdCallback();
 						}
 
 						@Override
@@ -158,7 +155,7 @@ public class SmartstreamAdapter implements BackfillAdapter {
 							// the advertising activity is released
 							SdkLog.d(TAG,
 									"Smartstream Ad finished. Starting original intent.");
-							SmartstreamAdapter.callback.finishedCallback();
+							callback.finishedCallback();
 						}
 					});
 			SmartstreamAdapter.lastData = bfData.getData();

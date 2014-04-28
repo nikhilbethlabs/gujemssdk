@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -15,7 +14,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.os.Build;
-
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -25,10 +23,6 @@ public class AmobeeAdRequest extends AdRequest {
 	private final static String TAG = "AmobeeAdRequest";
 
 	private final static String NEW_LINE = System.getProperty("line.separator");
-
-	private String securityHeaderName;
-
-	private int securityHeaderValueHash;
 
 	private final static boolean USE_HTTPURLCONNECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
 
@@ -45,13 +39,6 @@ public class AmobeeAdRequest extends AdRequest {
 	private final static String ENCODING_STR = "utf-8";
 
 	private final static byte[] EMPTY_BUFFER = new byte[1024];
-
-	public AmobeeAdRequest(String securityHeader, int securityHash,
-			IAdResponseHandler handler) {
-		super(handler);
-		this.securityHeaderName = securityHeader;
-		this.securityHeaderValueHash = securityHash;
-	}
 
 	public AmobeeAdRequest(IAdResponseHandler handler) {
 		super(handler);
@@ -79,10 +66,6 @@ public class AmobeeAdRequest extends AdRequest {
 				con.setConnectTimeout(750);
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
-				if (this.securityHeaderName != null) {
-					ok = (con.getHeaderField(this.securityHeaderName) != null && con
-							.getHeaderField(this.securityHeaderName).hashCode() == this.securityHeaderValueHash);
-				}
 				richAd = con.getHeaderField("Richmedia") != null;
 				if (ok && con.getResponseCode() == 200
 						&& this.getResponseHandler() != null) {
@@ -124,21 +107,9 @@ public class AmobeeAdRequest extends AdRequest {
 			httpGet.setHeader(ACCEPT_CHARSET_HEADER_NAME,
 					ACCEPT_CHARSET_HEADER_VALUE);
 			try {
-				boolean ok = true;
 				HttpResponse execute = client.execute(httpGet);
-				if (this.securityHeaderName != null) {
-					Header secHd = execute
-							.getLastHeader(this.securityHeaderName);
-					if (secHd == null) {
-						ok = false;
-					} else {
-						ok = secHd != null
-								&& secHd.getValue() != null
-								&& secHd.getValue().hashCode() == this.securityHeaderValueHash;
-					}
-				}
 				richAd = execute.getLastHeader("Richmedia") != null;
-				if (ok && execute.getStatusLine().getStatusCode() == 200
+				if (execute.getStatusLine().getStatusCode() == 200
 						&& getResponseHandler() != null) {
 					BufferedReader buffer = new BufferedReader(
 							new InputStreamReader(execute.getEntity()
@@ -152,9 +123,6 @@ public class AmobeeAdRequest extends AdRequest {
 
 					throw new Exception("AdServer returned HTTP "
 							+ execute.getStatusLine().getStatusCode());
-				} else if (!ok) {
-					throw new Exception(
-							"WARNING: AdServer response is missing required header. This is most likely a security breach! Response code is not being executed.");
 				}
 
 			} catch (Exception e) {

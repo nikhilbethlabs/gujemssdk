@@ -23,11 +23,6 @@ public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 	}
 
 	@Override
-	public int getSecurityHeaderValueHash() {
-		return 0;
-	}
-
-	@Override
 	public void setBaseUrlString(String baseUrl) {
 		this.url = baseUrl;
 	}

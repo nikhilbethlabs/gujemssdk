@@ -2,7 +2,6 @@ package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import java.util.Map;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.view.ViewGroup;
@@ -46,14 +45,15 @@ public final class AdmobDelegator {
 
 		this.mkAdmobRequest(parameters);
 
-		admobView = new AdView((Activity) delegator.getContext());
+		admobView = new AdView(delegator.getContext());
 		admobView.setAdSize(AdSize.BANNER);
 		admobView.setAdUnitId(pubId);
 		admobView.setId(andId);
 
 		admobView.setLayoutParams(lp);
+		// setBackground requires API level 16
 		admobView.setBackgroundDrawable(bk);
-
+		
 		final MASTAdView adView = delegator.getOptimobileView();
 		final ViewGroup parent = (ViewGroup) adView.getParent();
 		final int index = parent.indexOfChild(adView);

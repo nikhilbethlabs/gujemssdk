@@ -21,7 +21,7 @@ public abstract class JSONContent {
 
 	String getRemotePath() {
 		return SdkUtil.getContext().getPackageName().replaceAll("\\.", "/")
-				+ "/";
+				+ (SdkUtil.isLargerThanPhone() ? "/xl/" : "/");
 	}
 
 	abstract void init();
