@@ -413,5 +413,10 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		qStr = qStr.concat(getIdfa());
 		return qStr;
 	}
+	
+	@Override
+	public boolean doProcess() {
+		return true;
+	}
 
 }

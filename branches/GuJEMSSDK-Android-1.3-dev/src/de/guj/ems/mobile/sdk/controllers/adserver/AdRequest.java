@@ -49,9 +49,14 @@ public abstract class AdRequest extends AsyncTask<IAdServerSettingsAdapter, Void
 	protected IAdResponse doInBackground(IAdServerSettingsAdapter... settings) {
 		IAdResponse response = null;
 		for (IAdServerSettingsAdapter set : settings) {
-			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON.getJsonVariables().process(
-					SdkConfig.SINGLETON.getJsonConfig().process(set));
-			response = httpGet(nSet.getRequestUrl());
+			if (set.doProcess()) {
+				IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON.getJsonVariables().process(
+						SdkConfig.SINGLETON.getJsonConfig().process(set));
+				response = httpGet(nSet.getRequestUrl());
+			}
+			else {
+				response = httpGet(set.getRequestUrl());
+			}
 		}
 		return response;
 	}

@@ -20,11 +20,9 @@ public abstract class AdResponse implements IAdResponse {
 	private final static String TAG = "AdResponse";
 
 	public AdResponse(String resp) {
-		SdkLog.d(TAG, "Ad response " + resp);
 		if (resp != null && resp.startsWith("<?xml")) {
 			SdkLog.d(TAG, "Removing xml doc declaration from response");
 			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "").trim();
-			SdkLog.d(TAG, "Ad response " + this.response);
 		}
 		else {
 			this.response = resp;

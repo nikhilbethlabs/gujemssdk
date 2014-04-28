@@ -212,5 +212,11 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 */
 	public int[] getAdViewMetrics();
 	
+	/**
+	 * Determine whether the settings may be overridden by local json config
+	 * @return
+	 */
+	public boolean doProcess();
+	
 
 }

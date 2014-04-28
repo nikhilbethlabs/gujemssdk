@@ -269,39 +269,6 @@ public abstract class AdServerSettingsAdapter implements
 		return SdkUtil.getCookieReplStr();
 	}
 
-	/**
-	 * Gets the location.
-	 * 
-	 * @return the location
-	 */
-	/*
-	 * protected double[] getLocation() { LocationManager lm = (LocationManager)
-	 * context .getSystemService(Context.LOCATION_SERVICE); List<String>
-	 * providers = lm.getProviders(false); Iterator<String> provider =
-	 * providers.iterator(); Location lastKnown = null; double[] loc = new
-	 * double[2]; long age = 0; int maxage =
-	 * context.getResources().getInteger(R.integer.ems_location_maxage_ms);
-	 * while (provider.hasNext()) { lastKnown =
-	 * lm.getLastKnownLocation(provider.next()); if (lastKnown != null) {
-	 * 
-	 * age = System.currentTimeMillis() - lastKnown.getTime(); if (age <=
-	 * maxage) { break; } else { SdkLog.d(TAG, "Location [" +
-	 * lastKnown.getProvider() + "] is " + (age / 60000) + " min old. [max = " +
-	 * (maxage / 60000) + "]"); } } }
-	 * 
-	 * if (lastKnown != null && age <= maxage) { loc[0] =
-	 * lastKnown.getLatitude(); loc[1] = lastKnown.getLongitude();
-	 * 
-	 * if (context.getResources() .getBoolean(R.bool.ems_shorten_location)) {
-	 * loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[0]));
-	 * loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL.format(loc[1]));
-	 * SdkLog.d(TAG, "Geo location shortened to two digits."); }
-	 * 
-	 * SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is " + loc[0] +
-	 * "x" + loc[1]); return loc; }
-	 * 
-	 * return null; }
-	 */
 	@Override
 	public IOnAdEmptyListener getOnAdEmptyListener() {
 		return this.onAdEmptyListener;
@@ -363,8 +330,9 @@ public abstract class AdServerSettingsAdapter implements
 
 	@Override
 	public String getRequestUrl() {
+		String query = getBaseQueryString();
 		String app = getQueryAppendix();
-		return getBaseUrlString() + getBaseQueryString() + getQueryString()
+		return getBaseUrlString() + (query != null ? query : "") + getQueryString()
 				+ (app != null ? app : "");
 	}
 
