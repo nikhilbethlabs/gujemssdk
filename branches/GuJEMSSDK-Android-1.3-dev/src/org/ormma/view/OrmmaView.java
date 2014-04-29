@@ -1738,15 +1738,4 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		return mWebViewClient;
 	}
 
-	@Override
-	public void dispatchWindowVisibilityChanged(int v) {
-		super.dispatchWindowVisibilityChanged(v);
-		if (v == View.GONE) {
-			if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
-				mUtilityController.deleteOldAds(mLocalFilePath);
-				setVisibility(View.GONE);
-			}
-			mUtilityController.stopAllListeners();
-		}
-	}
 }

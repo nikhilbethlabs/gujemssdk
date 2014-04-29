@@ -422,7 +422,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	}
 
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		//TODO crashes in LinearLayout?
 		return new ViewGroup.LayoutParams(w, h);
 	}
 
@@ -441,6 +440,19 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				getLayoutParams().height = h;
 			} else {
 				setLayoutParams(getNewLayoutParams(w, h));
+			}
+		}
+		else {
+			if (getLayoutParams() == null) {
+				setLayoutParams(getNewLayoutParams(
+						(int) (320.0f * SdkUtil.getDensity()),
+						(int) (50.0f * SdkUtil.getDensity())));
+			}
+			else {
+				LayoutParams lp = getLayoutParams();
+				lp.height = (int) (50.0f * SdkUtil.getDensity());
+				lp.width = (int) (320.0f * SdkUtil.getDensity());
+				setLayoutParams(lp);
 			}
 		}
 
@@ -503,20 +515,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			}
 		} else if (testMode || isInEditMode()) {
 
-			if (!isInEditMode()) {
-				SdkLog.w(TAG, "AdView is in test mode");
-				if (getLayoutParams() == null) {
-					setLayoutParams(getNewLayoutParams(
-							(int) (320.0f * SdkUtil.getDensity()),
-							(int) (50.0f * SdkUtil.getDensity())));
-				}
-				else {
-					LayoutParams lp = getLayoutParams();
-					lp.height = (int) (50.0f * SdkUtil.getDensity());
-					lp.width = (int) (320.0f * SdkUtil.getDensity());
-					setLayoutParams(lp);
-				}
-			}
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -532,7 +530,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 					getContext().startActivity(i);
 				}
 			});
-			setVisibility(VISIBLE);
+		
 			if (this.settings != null
 					&& this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
@@ -694,7 +692,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 *            Implemented listener
 	 */
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
-		SdkLog.d(TAG, "Added onSuccessListener " + l);
 		this.settings.setOnAdSuccessListener(l);
 	}
 
@@ -704,11 +701,30 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		setImageBitmap(null);
 		play = false;
 	}
+	
+	@Override
+	protected void onAttachedToWindow() {
+		if (testMode) {
+			if (getLayoutParams() == null) {
+				setLayoutParams(getNewLayoutParams(
+						(int) (320.0f * SdkUtil.getDensity()),
+						(int) (50.0f * SdkUtil.getDensity())));
+			}
+			else {
+				LayoutParams lp = getLayoutParams();
+				lp.height = (int) (50.0f * SdkUtil.getDensity());
+				lp.width = (int) (320.0f * SdkUtil.getDensity());
+				setLayoutParams(lp);
+			}
+			setVisibility(VISIBLE);			
+		}
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if (testMode) {
+
 			if (testPaint == null) {
 				testPaint = new Paint();
 				testPaint.setColor(Color.WHITE);
@@ -720,7 +736,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 			} catch (Exception e) {
 				; // editor mode
 			}
-
 			if (settings != null) {
 				String txt = settings.toString();
 				if (txt.indexOf("uid") >= 0) {
@@ -767,5 +782,14 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		SdkLog.d(TAG,
 				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}
+
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
+		SdkLog.d(TAG, "onLayout ("  + changed + "): " + left + "," + top + "," + right + "," + bottom);
+		super.onLayout(changed, left, top, right, bottom);
+	}
+	
+	
 
 }

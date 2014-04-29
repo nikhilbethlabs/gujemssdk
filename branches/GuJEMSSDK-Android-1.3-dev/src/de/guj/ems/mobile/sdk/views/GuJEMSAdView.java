@@ -35,9 +35,9 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * The webview uses as container to display an ad. Derived from the ORMMA
- * reference implementaton of an ad view container.
+ * reference implementation of an ad view container.
  * 
- * This class adds folowing capabilites to the reference implementation: -
+ * This class adds following capabilities to the reference implementation: -
  * loading data with an asynchronous HTTP request - initializing the view from
  * XML by passing a resource ID - adding custom view-specific parameters to a
  * placement's ad request (runtime) - adding matching or non-matching keywords
@@ -482,7 +482,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 				}
 			}
 			setVisibility(View.GONE);
-			loadUrl("about:blank");
+			clearView();
 			load();
 
 		} else {
@@ -490,6 +490,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 					TAG,
 					"AdView has no settings or is in test mode. ["
 							+ this.getId() + "]");
+			setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -522,5 +523,18 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		SdkLog.d(TAG, ":: ONPAUSE ::");		
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		SdkLog.d(TAG, ":: ONRESUME ::");
+	}
+	
 
 }
