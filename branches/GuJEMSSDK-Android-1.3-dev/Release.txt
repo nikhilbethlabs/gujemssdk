@@ -1,0 +1,39 @@
+G+J Android SDK v1.3.2
+
+Tested with
+	Android SDK Tools 22.6.2
+	Android SDK Platform-tools 19.0.1
+	Android SDK 4.4.2 (API19) and lower (>=API8)
+
+Updated mOcean SDK to 3.1.2
+Removed AdMob SDK
+
+Added Google play services dependency
+	There are now two library versions, one with and one without google play library dependency
+Added ability to configure SDK remotely via JSON service
+	Adding additional keywords
+	Correcting ad spaces
+	Using different ad servers
+	Changing ad requests
+Added ad square service
+Added weather targeting
+Added support for operator audience targeting (Vodafone, Telefonica)
+Added support for retina ads
+Added ability to distinguish between large devices (i.e. tablets) and normal
+Added velocity to GPS data
+	This allows targeting on movement speed (if location is available)
+Added altitude to GPS data
+	This allows targeting on position altitude (if location is available)
+Added Google Advertising Identifier
+	Not used for frequency capping!
+	Not transferred if user chose to opt-out
+
+Fixed a bug where an ORMMA error would display when returning to an activity
+Fixed a bug where isHeadsetConnected would always return false
+Fixed a bug where VAST XML starting with XML doc declaration was incorrectly parsed	
+Fixed a bug where optimobile ads where displayed too large
+Fixed a bug where ads would not scale to the ad view size (if ad was larger)
+Fixed some static references that were prone to not being thread safe
+Fixed clicking on test ads to open our website 
+
+Updated the sample location (fragments, drawer, ...)

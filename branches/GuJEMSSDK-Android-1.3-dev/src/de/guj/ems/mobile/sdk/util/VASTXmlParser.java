@@ -284,7 +284,7 @@ public class VASTXmlParser {
 			String name = p.getName();
 			if (name != null && name.equals(VAST_MEDIAFILE_TAG)) {
 				p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILE_TAG);
-				this.mediaFileUrl = readText(p);
+				this.mediaFileUrl = readText(p).replaceAll("&amp;","&").replaceAll("&lt;","<").replaceAll("&gt;",">");
 				p.require(XmlPullParser.END_TAG, null, VAST_MEDIAFILE_TAG);
 				SdkLog.i(TAG, "Mediafile url: " + this.mediaFileUrl);
 			} else {

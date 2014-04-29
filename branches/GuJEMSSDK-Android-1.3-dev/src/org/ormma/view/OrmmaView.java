@@ -344,8 +344,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private static int[] attrs = { android.R.attr.maxWidth,
 			android.R.attr.maxHeight };
 
-	// 1 MB Cache for webview
-	private final static long WEBVIEW_CACHE_SIZE = 1048576;
 	// Messaging constants
 	private static final int MESSAGE_RESIZE = 1000;
 	private static final int MESSAGE_CLOSE = 1001;
@@ -377,12 +375,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	protected static final int BACKGROUND_ID = 101;
 	protected static final int PLACEHOLDER_ID = 100;
 
-	// private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_0 = new
-	// AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,0);
-	//
-	// private static final AbsoluteLayout.LayoutParams LAYOUT_PARAMS_1 = new
-	// AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT,
-	// AbsoluteLayout.LayoutParams.WRAP_CONTENT);
 
 	public static final int ORMMA_ID = 102;
 	// private constants

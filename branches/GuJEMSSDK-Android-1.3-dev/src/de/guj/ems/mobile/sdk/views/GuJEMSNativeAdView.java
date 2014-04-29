@@ -507,16 +507,31 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				SdkLog.w(TAG, "AdView is in test mode");
 				if (getLayoutParams() == null) {
 					setLayoutParams(getNewLayoutParams(
-							(int) (300.0 * SdkUtil.getDensity()),
-							(int) (50.0 * SdkUtil.getDensity())));
+							(int) (320.0f * SdkUtil.getDensity()),
+							(int) (50.0f * SdkUtil.getDensity())));
 				}
 				else {
 					LayoutParams lp = getLayoutParams();
-					lp.height = (int) (50.0 * SdkUtil.getDensity());
-					lp.width = (int) (300.0 * SdkUtil.getDensity());
+					lp.height = (int) (50.0f * SdkUtil.getDensity());
+					lp.width = (int) (320.0f * SdkUtil.getDensity());
 					setLayoutParams(lp);
 				}
 			}
+			setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getContext(),
+							Browser.class);
+					SdkLog.d(TAG, "open: http://m.ems.guj.de");
+					i.putExtra(Browser.URL_EXTRA,
+							"http://m.ems.guj.de");
+					i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+					i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+					i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					getContext().startActivity(i);
+				}
+			});
 			setVisibility(VISIBLE);
 			if (this.settings != null
 					&& this.settings.getOnAdSuccessListener() != null) {

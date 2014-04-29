@@ -339,8 +339,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this).execute(
-						this.settings);
+				SdkUtil.adRequest(this).execute(this.settings);
 			}
 			// Do nothing if offline
 			else {
@@ -369,8 +368,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>", "text/html", "utf-8");
+					"<a href=\"http://m.ems.guj.de\"><div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">" + settings + "</div></a>",
+					"text/html", "utf-8");
 		}
 
 	}
@@ -386,8 +385,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>", "text/html", "utf-8");
+					"<a href=\"http://m.ems.guj.de\"><div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">" + settings + "</div></a>",
+					"text/html", "utf-8");
 		}
 
 	}
@@ -469,10 +468,16 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public void reload() {
 		if (settings != null && !this.testMode) {
 			if (getParent() != null) {
-				ViewGroup p = (ViewGroup)getParent();
+				ViewGroup p = (ViewGroup) getParent();
 				int index = p.indexOfChild(this);
 				View o = p.getChildAt(index + 1);
-				if (o != null && (com.moceanmobile.mast.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass()))) {					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
+				if (o != null
+						&& (com.moceanmobile.mast.MASTAdView.class.equals(o
+								.getClass()) || AdView.class.equals(o
+								.getClass()))) {
+					SdkLog.d(TAG,
+							"Removing implicity created additional adview ["
+									+ o.getClass() + "]");
 					p.removeViewAt(index + 1);
 				}
 			}

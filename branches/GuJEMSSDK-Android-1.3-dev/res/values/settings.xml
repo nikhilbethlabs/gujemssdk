@@ -4,7 +4,7 @@
     <bool name="ems_shorten_location">false</bool>
 
     <!--  Set this to true if you want test ads in all adviews -->
-	<bool name="ems_test_mode">false</bool>
+	<bool name="ems_test_mode">true</bool>
 	
 	<!-- the maximum age of a location available to the app for advertising (only applies if ems_geo is true)-->
 	<item format="integer" name="ems_location_maxage_ms" type="integer">7200000</item>
