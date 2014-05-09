@@ -23,7 +23,7 @@
 [https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing GuJEMSSDK-Android-Sample-v1.3.1]
 ----
 = G+J EMS iOS SDK v2.0.4
- [http://ems.avault.net/img/apple_logo_ico.jpg]=
+ [http://ems.avault.net/img/apple_logo_ico.jpg] =
 === Library Source Code ===
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3UGJqSmxHYUZwU00/edit?usp=sharing GuJEMSSDK-iOS-v2.0.4]
