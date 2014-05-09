@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/MASTAdView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/MASTAdView</TokenIdentifier>
+			<Abstract>Use the MASTAdView class to embed advertisement content in your application.  To do so, you simply create an instance of the MASTAdView object
+and add it to a UIView.  An instance of MASTAdView is the means for displaying advertisements from an ad publisher's site.  To choose an ad
+publisher site, set parameters in the initWithFrame:site:zone method or use properties site and zone. Use the adServerUrl property to choose
+an alternative ad publisher server.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/MASTAdView/setLocationDetectionEnabledWithPupose:significantUpdating:headingUpdates:distanceFilter:desiredAccuracy:headingfilter:</TokenIdentifier>
+			<Abstract>Configures and enables the SDK's location detection feature.  Refer to CLLocation iOS SDK documentation for specifics.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>+ (void)setLocationDetectionEnabledWithPupose:(NSString *)purpose significantUpdating:(BOOL)significantUpdating headingUpdates:(BOOL)headingUpdates distanceFilter:(CLLocationDistance)distanceFilter desiredAccuracy:(CLLocationAccuracy)desiredAccuracy headingfilter:(CLLocationDegrees)headingfilter</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>purpose</Name>
+					<Abstract>Message supplied to the device user if iOS prompts for location usage authorization, defaults nil</Abstract>
+				</Parameter><Parameter>
+					<Name>significantUpdating</Name>
+					<Abstract>Use significant location changes if available (better on battery and recommended), default YES</Abstract>
+				</Parameter><Parameter>
+					<Name>headingUpdates</Name>
+					<Abstract>Supply heading updates if available, default NO</Abstract>
+				</Parameter><Parameter>
+					<Name>distanceFilter</Name>
+					<Abstract>If not using significantUpdating, distance delta that triggers update, defaults 1000m</Abstract>
+				</Parameter><Parameter>
+					<Name>desiredAccuracy</Name>
+					<Abstract>If not using significantUpdating, location accuracy in meters, defaults kCLLocationAccuracyThreeKilometers</Abstract>
+				</Parameter><Parameter>
+					<Name>headingFilter</Name>
+					<Abstract>If using headingUpdates, degrees delta that triggers update, defaults 45</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/setLocationDetectionEnabledWithPupose:significantUpdating:headingUpdates:distanceFilter:desiredAccuracy:headingfilter:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/MASTAdView/setLocationDetectionEnabled:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>+ (void)setLocationDetectionEnabled:(BOOL)enabled</Declaration>
+			
+			
+			<Anchor>//api/name/setLocationDetectionEnabled:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/MASTAdView/isLocationDetectionEnabled</TokenIdentifier>
+			<Abstract>Returns the enablement status of location detection.  May return NO even if either setLocationDetectionEnabled methods
+were called to enable location detection if iOS locaton services are unavailable or unauthorized.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)isLocationDetectionEnabled</Declaration>
+			
+			
+			<Anchor>//api/name/isLocationDetectionEnabled</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/MASTAdView/initWithFrame:site:zone:</TokenIdentifier>
+			<Abstract>Initializes and returns an instance of MASTAdView having the given frame, site and zone.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame site:(NSInteger)site zone:(NSInteger)zone</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>frame</Name>
+					<Abstract>A rectangle that specifies the initial location and size of the ad view in its superview’s coordinates.</Abstract>
+				</Parameter><Parameter>
+					<Name>site</Name>
+					<Abstract>A value that specifies the id of ad publisher site.</Abstract>
+				</Parameter><Parameter>
+					<Name>zone</Name>
+					<Abstract>A value that specifies the id of ad publisher zone.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Initialized MASTAdView object or nil if the object could not be successfully initialized.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithFrame:site:zone:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/MASTAdView/initWithFrame:</TokenIdentifier>
+			<Abstract>Initializes and returns an instance of MASTAdView with the given frame.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>frame</Name>
+					<Abstract>A rectangle that specifies the initial location and size of the ad view in its superview's coordinates.
+
+@note The site and zone properties MUST be set before calling update.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/isLoading</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (readonly) BOOL isLoading</Declaration>
+			
+			
+			<Anchor>//api/name/isLoading</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/MASTAdView/update</TokenIdentifier>
+			<Abstract>Starts to update the ad content immediately.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>- (void)update</Declaration>
+			
+			
+			<Anchor>//api/name/update</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/MASTAdView/stopEverythingAndNotfiyDelegateOnCleanup</TokenIdentifier>
+			<Abstract>Use this method, if you want to close the ad quickly and clear all resource.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>- (void)stopEverythingAndNotfiyDelegateOnCleanup</Declaration>
+			
+			
+			<Anchor>//api/name/stopEverythingAndNotfiyDelegateOnCleanup</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/site</TokenIdentifier>
+			<Abstract>Id of the publisher site.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) NSInteger site</Declaration>
+			
+			
+			<Anchor>//api/name/site</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/zone</TokenIdentifier>
+			<Abstract>Id of the publisher zone.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) NSInteger zone</Declaration>
+			
+			
+			<Anchor>//api/name/zone</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/defaultImage</TokenIdentifier>
+			<Abstract>Image to be displayed if there is no ad content available, error downloading content or failure to connect to the ad server.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) UIImage *defaultImage</Declaration>
+			
+			
+			<Anchor>//api/name/defaultImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/autoCollapse</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether to hide ad on error depending on other properties.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL autoCollapse</Declaration>
+			
+			
+			<Anchor>//api/name/autoCollapse</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/showPreviousAdOnError</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether to show a previous ad on error depending on other properties.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL showPreviousAdOnError</Declaration>
+			
+			
+			<Anchor>//api/name/showPreviousAdOnError</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/closeButton</TokenIdentifier>
+			<Abstract>Set this value to customize the close button appearance and behavior.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) UIButton *closeButton</Declaration>
+			
+			
+			<Anchor>//api/name/closeButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/showCloseButtonTime</TokenIdentifier>
+			<Abstract>Show close button delay time interval, in seconds.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property NSTimeInterval showCloseButtonTime</Declaration>
+			
+			
+			<Anchor>//api/name/showCloseButtonTime</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/autocloseInterstitialTime</TokenIdentifier>
+			<Abstract>Auto close interstitial time interval, in seconds.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property NSTimeInterval autocloseInterstitialTime</Declaration>
+			
+			
+			<Anchor>//api/name/autocloseInterstitialTime</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/isAdChangeAnimated</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether ad transition animate mode is enabled.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL isAdChangeAnimated</Declaration>
+			
+			
+			<Anchor>//api/name/isAdChangeAnimated</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/updateTimeInterval</TokenIdentifier>
+			<Abstract>Update time interval, in seconds.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property NSTimeInterval updateTimeInterval</Declaration>
+			
+			
+			<Anchor>//api/name/updateTimeInterval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/adServerUrl</TokenIdentifier>
+			<Abstract>Publisher server URL.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *adServerUrl</Declaration>
+			
+			
+			<Anchor>//api/name/adServerUrl</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/adCallTimeout</TokenIdentifier>
+			<Abstract>Maximum server response time.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) NSInteger adCallTimeout</Declaration>
+			
+			
+			<Anchor>//api/name/adCallTimeout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/injectionHeaderCode</TokenIdentifier>
+			<Abstract>Customize the HTML (or javascript) code to be inserted into the HTML HEAD when creating webview for ad content.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *injectionHeaderCode</Declaration>
+			
+			
+			<Anchor>//api/name/injectionHeaderCode</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/minSize</TokenIdentifier>
+			<Abstract>Minimal size of the ad content can be shown.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property CGSize minSize</Declaration>
+			
+			
+			<Anchor>//api/name/minSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/maxSize</TokenIdentifier>
+			<Abstract>Maximum size of the ad content can be shown.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property CGSize maxSize</Declaration>
+			
+			
+			<Anchor>//api/name/maxSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/track</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether ad tracking is enabled.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL track</Declaration>
+			
+			
+			<Anchor>//api/name/track</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/udid</TokenIdentifier>
+			<Abstract>A NSString value that supplies the application/device tracking identifier.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *udid</Declaration>
+			
+			
+			<Anchor>//api/name/udid</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/internalOpenMode</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether the internal browser is enabled.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL internalOpenMode</Declaration>
+			
+			
+			<Anchor>//api/name/internalOpenMode</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/textColor</TokenIdentifier>
+			<Abstract>Color of ad text links.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) UIColor *textColor</Declaration>
+			
+			
+			<Anchor>//api/name/textColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/premium</TokenIdentifier>
+			<Abstract>Ad premium filter.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property AdPremium premium</Declaration>
+			
+			
+			<Anchor>//api/name/premium</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/type</TokenIdentifier>
+			<Abstract>Ad type filter.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property AdType type</Declaration>
+			
+			
+			<Anchor>//api/name/type</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/keywords</TokenIdentifier>
+			<Abstract>Keywords for search ads.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *keywords</Declaration>
+			
+			
+			<Anchor>//api/name/keywords</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/additionalParameters</TokenIdentifier>
+			<Abstract>Custom request parameters.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSDictionary *additionalParameters</Declaration>
+			
+			
+			<Anchor>//api/name/additionalParameters</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/country</TokenIdentifier>
+			<Abstract>The country of visitor. It overrides the country detected by IP. Use ISO 3166 for country codes.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *country</Declaration>
+			
+			
+			<Anchor>//api/name/country</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/region</TokenIdentifier>
+			<Abstract>Region of visitor.  Use ISO 3166-2 for United States and Canada and FIBS 10-4 ffor other countries.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *region</Declaration>
+			
+			
+			<Anchor>//api/name/region</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/city</TokenIdentifier>
+			<Abstract>City of the device user (with state). For US only.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *city</Declaration>
+			
+			
+			<Anchor>//api/name/city</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/area</TokenIdentifier>
+			<Abstract>Area code of a user. For US only.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *area</Declaration>
+			
+			
+			<Anchor>//api/name/area</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/metro</TokenIdentifier>
+			<Abstract>Metro code of a user. For US only.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *metro</Declaration>
+			
+			
+			<Anchor>//api/name/metro</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/dma</TokenIdentifier>
+			<Abstract>DMA code of a user.  For US only.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *dma</Declaration>
+			
+			
+			<Anchor>//api/name/dma</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/latitude</TokenIdentifier>
+			<Abstract>User location latitude value.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *latitude</Declaration>
+			
+			
+			<Anchor>//api/name/latitude</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/longitude</TokenIdentifier>
+			<Abstract>User location longitude value.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *longitude</Declaration>
+			
+			
+			<Anchor>//api/name/longitude</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/zip</TokenIdentifier>
+			<Abstract>Zip/Postal code of user.  For US only.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *zip</Declaration>
+			
+			
+			<Anchor>//api/name/zip</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/carrier</TokenIdentifier>
+			<Abstract>User carrier.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain) NSString *carrier</Declaration>
+			
+			
+			<Anchor>//api/name/carrier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/testMode</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether ad test mode is enabled.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property BOOL testMode</Declaration>
+			
+			
+			<Anchor>//api/name/testMode</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/logMode</TokenIdentifier>
+			<Abstract>AdLogMode value that determines log level.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+			<Declaration>@property AdLogMode logMode</Declaration>
+			
+			
+			<Anchor>//api/name/logMode</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/delegate</TokenIdentifier>
+			<Abstract>The receiver's delegate.</Abstract>
+			<DeclaredIn>MASTAdView.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/instp/MASTAdView/delegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (assign) id&lt;MASTAdViewDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
