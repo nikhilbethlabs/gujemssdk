@@ -14,6 +14,7 @@ Added ability to distinguish between large devices (i.e. tablets) and normal
 Added velocity to GPS data
 Added altitude to GPS data
 Added Google Advertising Identifier
+Fixed a bug where native tests ads would not be displayed
 Fixed a bug where an ORMMA error would display when returning to an activity/a fragment
 Fixed a bug where isHeadsetConnected would always return false
 Fixed a bug where VAST XML starting with XML doc declaration was incorrectly parsed	

@@ -63,6 +63,7 @@ public abstract class AdRequest extends AsyncTask<IAdServerSettingsAdapter, Void
 
 	@Override
 	protected void onPostExecute(IAdResponse response) {
+		SdkLog.d(TAG, "onPostExecute(" + response + ")");
 		if (this.responseHandler != null && lastError == null) {
 			SdkLog.d(TAG, "Passing to handler " + responseHandler);
 			this.responseHandler.processResponse(response);

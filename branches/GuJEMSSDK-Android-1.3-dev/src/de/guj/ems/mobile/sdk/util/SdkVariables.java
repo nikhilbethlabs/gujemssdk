@@ -101,7 +101,6 @@ public enum SdkVariables {
 	private JSONVariables jsonVariables;
 
 	SdkVariables() {
-		SdkLog.d(TAG, "SDK VARIABLES NEW INSTANCE **");
 		this.jsonVariables = new JSONVariables();
 	}
 

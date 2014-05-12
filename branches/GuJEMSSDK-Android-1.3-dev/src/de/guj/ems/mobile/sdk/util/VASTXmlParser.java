@@ -28,7 +28,9 @@ public class VASTXmlParser {
 
 	private Context context;
 
-	private VASTWrapperListener wrapperListener;
+	private VASTXmlListener vastListener;
+
+	public final static int PARCEL_DESCRIPTION = 12345;
 
 	private final static String TAG = "VASTXmlParser";
 
@@ -87,7 +89,7 @@ public class VASTXmlParser {
 	private List<Tracking> trackings;
 
 	/**
-	 * Simple bean to hold trackign URLs for various VAST events
+	 * Simple bean to hold tracking URLs for various VAST events
 	 * 
 	 * @author stein16
 	 * 
@@ -220,11 +222,12 @@ public class VASTXmlParser {
 	 * @param data
 	 *            data of the initial VAST response/file
 	 */
-	public VASTXmlParser(Context c, VASTWrapperListener listener, String data) {
+
+	public VASTXmlParser(Context c, VASTXmlListener listener, String data) {
 		this.trackings = new ArrayList<Tracking>();
 		this.ready = false;
 		this.context = c;
-		this.wrapperListener = listener;
+		this.vastListener = listener;
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
@@ -234,6 +237,9 @@ public class VASTXmlParser {
 			SdkLog.e(TAG, "Error parsing VAST XML", e);
 		}
 		this.ready = true;
+		if (listener != null) {
+			listener.onVASTReady(this);
+		}
 	}
 
 	private void readVAST(String data) throws XmlPullParserException,
@@ -283,8 +289,22 @@ public class VASTXmlParser {
 			}
 			String name = p.getName();
 			if (name != null && name.equals(VAST_MEDIAFILE_TAG)) {
+				
 				p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILE_TAG);
-				this.mediaFileUrl = readText(p).replaceAll("&amp;","&").replaceAll("&lt;","<").replaceAll("&gt;",">");
+
+				String mimeType = p.getAttributeValue(null, "type");
+				String bitrate = p.getAttributeValue(null, "bitrate");
+				if (mimeType != null) {
+					SdkLog.d(TAG, "Media file of type " + mimeType);
+				}
+
+				if (bitrate != null) {
+					SdkLog.d(TAG, "Media file with bitrate " + bitrate);
+					// Integer iBitrate = Integer.valueOf(bitrate);
+				}
+				//TODO check mimeType and bitrate, if multiple choose best for connection
+				this.mediaFileUrl = readText(p).replaceAll("&amp;", "&")
+						.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 				p.require(XmlPullParser.END_TAG, null, VAST_MEDIAFILE_TAG);
 				SdkLog.i(TAG, "Mediafile url: " + this.mediaFileUrl);
 			} else {
@@ -412,12 +432,12 @@ public class VASTXmlParser {
 		p.require(XmlPullParser.START_TAG, null, VAST_ADTAGURI_TAG);
 		String url = readText(p);
 		p.require(XmlPullParser.END_TAG, null, VAST_ADTAGURI_TAG);
-		if (wrapperListener != null) {
-			wrapperListener.onVASTWrapperFound(url);
+
+		if (vastListener != null) {
+			vastListener.onVASTWrapperFound(url);
 		} else {
 			SdkLog.e(TAG, "No listener set for wrapped VAST xml.");
 		}
-		// this.wrappedVASTXml = new VASTXmlParser(context, new URL(url));
 
 	}
 
@@ -649,6 +669,7 @@ public class VASTXmlParser {
 		if (!hasWrapper) {
 			return;
 		}
+		//TODO define maximum time to wait
 		while (true) {
 			if (hasWrapper
 					&& (wrappedVASTXml == null || !wrappedVASTXml.isReady())) {
@@ -671,17 +692,19 @@ public class VASTXmlParser {
 	 *            the parser for wrapped VAST xml
 	 */
 	public void setWrapper(VASTXmlParser vastXml) {
+		hasWrapper = true;
 		this.wrappedVASTXml = vastXml;
+		SdkLog.d(TAG, "Setting wrapper for " + this + " to " + vastXml);
 	}
 
 	/**
 	 * Interface providing method to be executed when a wrapper was found within
-	 * VAST xml
+	 * VAST xml and XML was completely parsed
 	 * 
 	 * @author stein16
 	 * 
 	 */
-	public interface VASTWrapperListener {
+	public interface VASTXmlListener {
 
 		/**
 		 * Listener method for wrapped VAST xml
@@ -690,6 +713,12 @@ public class VASTXmlParser {
 		 *            URL of the wrapped VAST xml
 		 */
 		public void onVASTWrapperFound(String url);
+
+		/**
+		 * Listener method for vast parsing to be complete 
+		 * @param vast initialized vast object
+		 */
+		public void onVASTReady(VASTXmlParser vast);
 	}
 
 	/**

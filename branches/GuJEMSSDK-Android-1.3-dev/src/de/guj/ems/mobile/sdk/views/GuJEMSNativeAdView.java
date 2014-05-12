@@ -783,13 +783,4 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}
 
-	@Override
-	protected void onLayout(boolean changed, int left, int top, int right,
-			int bottom) {
-		SdkLog.d(TAG, "onLayout ("  + changed + "): " + left + "," + top + "," + right + "," + bottom);
-		super.onLayout(changed, left, top, right, bottom);
-	}
-	
-	
-
 }

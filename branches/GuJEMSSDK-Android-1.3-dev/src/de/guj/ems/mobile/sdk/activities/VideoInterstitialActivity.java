@@ -23,10 +23,12 @@ import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser.Tracking;
+import de.guj.ems.mobile.sdk.util.VASTXmlParser.VASTXmlListener;
 
 /**
  * This activity is executed when a VAST for video interstitial was delivered
@@ -49,8 +51,7 @@ import de.guj.ems.mobile.sdk.util.VASTXmlParser.Tracking;
  * @author stein16
  * 
  */
-public final class VideoInterstitialActivity extends Activity implements
-		VASTXmlParser.VASTWrapperListener, IAdResponseHandler {
+public final class VideoInterstitialActivity extends Activity implements IAdResponseHandler, VASTXmlListener {
 
 	static class InterstitialThread extends Thread {
 
@@ -80,6 +81,8 @@ public final class VideoInterstitialActivity extends Activity implements
 		}
 	}
 
+	// private int vastLevel = 0;
+	
 	private TextView videoText;
 
 	private MediaPlayer mediaPlayer;
@@ -99,7 +102,7 @@ public final class VideoInterstitialActivity extends Activity implements
 	private VASTXmlParser vastXml;
 
 	private volatile boolean videoReady = false;
-
+	
 	private final static int CLOSED = 1;
 
 	private final static int FINISHED = 3;
@@ -210,24 +213,7 @@ public final class VideoInterstitialActivity extends Activity implements
 
 		try {
 			// parse VAST xml
-			this.vastXml = new VASTXmlParser(this, this, getIntent()
-					.getExtras().getString("data"));
-
-			if (!this.vastXml.hasWrapper()) {
-
-				SdkLog.i(TAG, "Direct VAST xml response.");
-
-				this.videoView.setVideoURI(Uri.parse(this.vastXml
-						.getMediaFileUrl()));
-				List<String> im = this.vastXml.getImpressionTrackerUrl();
-				SdkLog.i(TAG, "Triggering " + im.size()
-						+ " impression tracking requests");
-				if (im != null && im.size() > 0) {
-					String[] imS = new String[im.size()];
-					SdkUtil.httpRequests(im.toArray(imS));
-				}
-
-			}
+			this.vastXml = new VASTXmlParser(getApplicationContext(), this, (String)getIntent().getExtras().get("data")); 
 
 		} catch (Exception e) {
 			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
@@ -636,7 +622,7 @@ public final class VideoInterstitialActivity extends Activity implements
 				public void run() {
 					boolean loaded = false;
 					while (InterstitialThread.SHOW) {
-						if (!loaded && videoReady) {
+						if (!loaded && videoReady && vastXml.isReady()) {
 							videoInit();
 							loaded = true;
 						} else if (loaded && !InterstitialThread.PAUSED) {
@@ -714,21 +700,16 @@ public final class VideoInterstitialActivity extends Activity implements
 	}
 
 	@Override
-	public void onVASTWrapperFound(final String url) {
-		SdkLog.d(TAG, "Wrapped VAST xml response [" + url + "].");
-		// TODO VASTWrapper with new url?!
-		// SdkUtil.adRequest(this).execute(url);
-	}
-
-	@Override
 	public void processResponse(IAdResponse response) {
 		try {
+			SdkLog.d(TAG, "Processing " + response);
 			VASTXmlParser vast = vastXml;
 			while (vast.getWrappedVASTXml() != null) {
 				vast = vast.getWrappedVASTXml();
 			}
-			vast.setWrapper(new VASTXmlParser(getApplicationContext(), null,
+			vast.setWrapper(new VASTXmlParser(getApplicationContext(), this,
 					response.getResponse()));
+			SdkLog.d(TAG, "Setting video URI to " + this.vastXml.getMediaFileUrl());
 			this.videoView
 					.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
 			List<String> im = this.vastXml.getImpressionTrackerUrl();
@@ -782,6 +763,36 @@ public final class VideoInterstitialActivity extends Activity implements
 				SdkLog.w(TAG, "Problem resuming media player.");
 			}
 		}
+	}
+
+	@Override
+	public void onVASTWrapperFound(String url) {
+		SdkLog.d(TAG, "Should fetch wrapped VAST xml");
+		SdkUtil.adRequest(this).execute(new TrackingSettingsAdapter(url));
+	}
+
+	@Override
+	public void onVASTReady(VASTXmlParser vast) {
+		if (!vast.hasWrapper()) {
+
+			SdkLog.i(TAG, "Direct VAST xml response.");
+
+			this.videoView.setVideoURI(Uri.parse(vast
+					.getMediaFileUrl()));
+			List<String> im = vast.getImpressionTrackerUrl();
+			SdkLog.i(TAG, "Triggering " + im.size()
+					+ " impression tracking requests");
+			if (im != null && im.size() > 0) {
+				String[] imS = new String[im.size()];
+				SdkUtil.httpRequests(im.toArray(imS));
+			}
+
+		}
+		/*else {
+			SdkLog.d(TAG, "VASTXmlParser ready? " + vast.isReady());
+		}*/
+
+		
 	}
 
 }

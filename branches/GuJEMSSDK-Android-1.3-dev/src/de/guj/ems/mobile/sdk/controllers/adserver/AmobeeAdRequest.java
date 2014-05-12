@@ -54,7 +54,6 @@ public class AmobeeAdRequest extends AdRequest {
 			SdkLog.d(TAG, "Younger than Froyo - using HttpUrlConnection.");
 			HttpURLConnection con = null;
 			try {
-				boolean ok = true;
 				URL uUrl = new URL(url);
 				con = (HttpURLConnection) uUrl.openConnection();
 				con.setRequestProperty(USER_AGENT_HEADER_NAME,
@@ -67,7 +66,7 @@ public class AmobeeAdRequest extends AdRequest {
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
 				richAd = con.getHeaderField("Richmedia") != null;
-				if (ok && con.getResponseCode() == 200
+				if (con.getResponseCode() == 200
 						&& this.getResponseHandler() != null) {
 					byte[] buffer = new byte[1024];
 					int l = 0;
@@ -79,17 +78,15 @@ public class AmobeeAdRequest extends AdRequest {
 
 					throw new Exception("AdServer returned HTTP "
 							+ con.getResponseCode());
-				} else if (!ok) {
-					throw new Exception(
-							"WARNING: AdServer response is missing required header. This is most likely a security breach! Response code is not being executed.");
-				}
+				} 
 				in.close();
 			} catch (Exception e) {
+				SdkLog.e(TAG, "Error requesting ad", e);
 				setLastError(e);
 			} finally {
 				if (con != null) {
 					con.disconnect();
-					SdkLog.d(TAG, "Request finished. [" + rBuilder.length()
+					SdkLog.d(TAG, "Request finished. [" + url + ", " + rBuilder.length()
 							+ "]");
 				}
 			}
@@ -131,6 +128,16 @@ public class AmobeeAdRequest extends AdRequest {
 			SdkLog.d(TAG, "Request finished. [" + rBuilder.length() + "]");
 		}
 		return new AmobeeAdResponse(rBuilder.toString(), richAd);
+	}
+	
+	@Override
+	protected void onCancelled() {
+		SdkLog.w(TAG, this + " cancelled.");
+	}
+	
+	@Override
+	protected void onCancelled(IAdResponse response) {
+		SdkLog.w(TAG, this + " cancelled. [" + response + "]");
 	}
 
 }

@@ -201,6 +201,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 							logExt + " (local) is up to date - ignoring remote file.");
 				} else if (con.getResponseCode() != 200) {
 					lastError = con.getResponseCode();
+					localAge = System.currentTimeMillis();
 					throw new Exception(logExt + " resulted in HTTP "
 							+ con.getResponseCode());
 				}

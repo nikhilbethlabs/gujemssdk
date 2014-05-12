@@ -558,8 +558,6 @@ public class SdkUtil {
 	/**
 	 * Create an ad request object with url and response handler
 	 * 
-	 * @param url
-	 *            Ad request url
 	 * @param handler
 	 *            response handler
 	 * @return initialized ad request
