@@ -30,9 +30,9 @@
 === Documentation ===
 * German *
 ----
-[https://docs.google.com/file/d/0B5R-ThsBtb-3OHF2SVZwR05ZYzA/edit?usp=sharing GuJEMSSDK-iOS-v2.0.5-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3eXRZRU52QjhuNXM/edit?usp=sharing GuJEMSSDK-iOS-v2.0.5-DE]
 ----
 * English *
 ----
-[https://docs.google.com/file/d/0B5R-ThsBtb-3RHlLQUNzTmV2SVE/edit?usp=sharing GuJEMSSDK-iOS-v2.0.5-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3WjVieVA2bDd2ZlU/edit?usp=sharing GuJEMSSDK-iOS-v2.0.5-EN]
 ----
