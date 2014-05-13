@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- All styles for this layout are defined in R.values.integrated_ad_style. Edit
+the styles file and this layout at free will. Please note that the four elements in
+this layout, hint, thumb, headline and kicker are mandatory for the SDK to fill the
+ad with content.
+
+** DO NOT REMOVE/RENAME ANY OF THE NODES. FEEL FREE TO REPOSITION THEM **
+
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/GuJEMSIntegrativeAd" >
 

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- All styles in this values file affect the layout R.layout.integrated_ad
+which is used for native advertising (integrated ads). Integrated Ads consist of
+an advertising hint ("sponsored"), a thumbnail, a headline and a kicker text.
+Also check R.layout.integrated_ad for futher customization. Note that the four
+elements hint, thumb, headline and kicker are mandatory for the SDK to fill the 
+ad with content.
+
+** DO NOT REMOVE/RENAME ANY OF THE NODES. FEEL FREE TO EDIT THEM **
+
+ -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- parent style for integrated ad -->
     <style name="GuJEMSIntegrativeAd">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -7,6 +18,7 @@
         <item name="android:typeface">sans</item>
         <item name="android:background">#FFFFFF</item>
     </style>
+    <!-- style for "sponsored" hint text -->
     <style name="GuJEMSIntegrativeAd.Hint">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -15,11 +27,13 @@
         <item name="android:textSize">7sp</item>
         <item name="android:padding">1sp</item>
     </style>
+    <!-- style for ad image/thumb -->
     <style name="GuJEMSIntegrativeAd.Thumb">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>r
     </style>    
+    <!-- style for headline -->
     <style name="GuJEMSIntegrativeAd.Header">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -30,6 +44,7 @@
         <item name="android:padding">4sp</item>
         <item name="android:lines">1</item>
     </style>    
+    <!-- style for kicker text -->
     <style name="GuJEMSIntegrativeAd.Kicker">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
