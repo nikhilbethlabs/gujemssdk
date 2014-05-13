@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/GuJEMSIntegrativeAd" >
+
+    <EditText
+        android:id="@+id/adhint"
+        android:text="@string/advert"
+        android:inputType="none"
+        style="@style/GuJEMSIntegrativeAd.Hint" >
+    </EditText>
+    
+    <ImageView
+        android:id="@+id/adthumb"
+        style="@style/GuJEMSIntegrativeAd.Thumb"
+        android:layout_below="@+id/adhint"
+        android:contentDescription="@string/advert"
+        android:src="@drawable/thumb" />
+
+    <EditText
+        android:id="@+id/adheader"
+        android:layout_toRightOf="@+id/adthumb"
+        android:layout_alignTop="@+id/adthumb"
+        android:text="@string/sampleHeader"
+        android:inputType="none"
+        style="@style/GuJEMSIntegrativeAd.Header" >
+	</EditText>
+    
+    <EditText
+        android:id="@+id/adkicker"
+        android:layout_below="@+id/adheader"
+        android:layout_toRightOf="@+id/adthumb"
+        android:text="@string/sampleKicker"
+        android:inputType="none"
+        style="@style/GuJEMSIntegrativeAd.Kicker" >
+    </EditText>
+
+</RelativeLayout>

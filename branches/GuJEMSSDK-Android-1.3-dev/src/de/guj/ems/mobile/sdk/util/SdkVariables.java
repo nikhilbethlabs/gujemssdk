@@ -154,7 +154,14 @@ public enum SdkVariables {
 			}
 			str += encTable[l1f.charAt(0) - 48];
 			str += encTable[l1f.charAt(1) - 48];
+
+			String idfa = SdkUtil.getIdForAdvertiser();
+			if (idfa != null) {
+				str+="&" + R.string.pIdForAdvertiser + "=" + idfa;
+			}
+			
 			return str;
+			
 		}
 
 		return null;

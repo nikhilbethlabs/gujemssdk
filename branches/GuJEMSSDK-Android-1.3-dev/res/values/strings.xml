@@ -42,4 +42,7 @@
     <string name="jsonBaseUrlTelefonica">baseUrlAdTEF</string>
     <string name="jsonRefreshCapVariables">refreshCap</string>
     <string name="jsonVariablesScript">json_web.php</string>
+    <string name="advert">Anzeige</string>
+    <string name="sampleHeader">Header</string>
+    <string name="sampleKicker">Kicker</string>
 </resources>

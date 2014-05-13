@@ -211,6 +211,22 @@ public class VASTXmlParser {
 		}
 
 	}
+	
+	///TODO Implement mediafile decision engine
+	public class MediaFileDecisionEngine {
+		
+		// EDGE <= 400
+		// 3G/4G <= 800
+		// WIFI > 800
+		public void addMediaFile(String url, int bit, int w, int h) {
+			
+		}
+		
+		public String decide() {
+			return "";
+		}
+		
+	}
 
 	/**
 	 * Constructor for simple VAST parser
@@ -283,6 +299,7 @@ public class VASTXmlParser {
 	private void readMediaFiles(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILES_TAG);
+		int fBitrate = 0;
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -294,15 +311,21 @@ public class VASTXmlParser {
 
 				String mimeType = p.getAttributeValue(null, "type");
 				String bitrate = p.getAttributeValue(null, "bitrate");
-				if (mimeType != null) {
-					SdkLog.d(TAG, "Media file of type " + mimeType);
+				if (mimeType != null && "video/mp4".equals(mimeType)) {
+					
 				}
 
 				if (bitrate != null) {
 					SdkLog.d(TAG, "Media file with bitrate " + bitrate);
-					// Integer iBitrate = Integer.valueOf(bitrate);
+					try {
+						Integer iBitrate = Integer.valueOf(bitrate);
+						fBitrate = iBitrate;
+					}
+					catch (Exception e) {
+						;
+					}
 				}
-				//TODO check mimeType and bitrate, if multiple choose best for connection
+				//TODO check mimeType, dimensions and bitrate, if multiple choose best for connection
 				this.mediaFileUrl = readText(p).replaceAll("&amp;", "&")
 						.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 				p.require(XmlPullParser.END_TAG, null, VAST_MEDIAFILE_TAG);
