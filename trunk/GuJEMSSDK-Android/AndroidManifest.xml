@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--  Android Manifest for G+J EMS Android SDK library v1.3.1 (Nov 2013) -->
+<!--  Android Manifest for G+J EMS Android SDK library v1.3.1.1 (May 2014) -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.guj.ems.mobile.sdk"
-    android:versionCode="9"
-    android:versionName="1.3.1" >
+    android:versionCode="10"
+    android:versionName="1.3.1.1" >
 
     <!-- The G+J EMS Android SDK requires Android 2.2 (FROYO) or later -->
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
@@ -18,7 +18,7 @@
 
     <!-- Enables location based targeted ads -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<!-- USE FINE_LOCATION FOR GPS ENABLED APS -->
+	<!-- USE FINE_LOCATION FOR GPS ENABLED APPS -->
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
@@ -77,10 +77,11 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
 
-        <!-- *** Google AdMob SDK (3rd party performance ads) *** -->
+		<!-- *** Google AdMob SDK (3rd party performance ads) *** -->
         <activity
-            android:name="com.google.ads.AdActivity"
+            android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        
     </application>
 
 </manifest>

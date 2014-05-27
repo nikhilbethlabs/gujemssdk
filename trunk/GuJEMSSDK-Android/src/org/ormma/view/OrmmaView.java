@@ -1226,6 +1226,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		}
 		mUtilityController.stopAllListeners();
 		stopLoading();
+		setVisibility(View.GONE);
 	}
 
 	// trap keyboard state and view height/width
@@ -1580,6 +1581,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		}
 		invalidate();
 		if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
+			setVisibility(View.GONE);
 			mUtilityController.deleteOldAds(mLocalFilePath);
 		}
 		mUtilityController.stopAllListeners();
@@ -1749,6 +1751,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		super.dispatchWindowVisibilityChanged(v);
 		if (v == View.GONE) {
 			if (mLocalFilePath != null && mLocalFilePath.length() > 1) {
+				setVisibility(View.GONE);
 				mUtilityController.deleteOldAds(mLocalFilePath);
 			}
 			mUtilityController.stopAllListeners();
