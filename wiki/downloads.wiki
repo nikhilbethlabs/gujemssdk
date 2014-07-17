@@ -1,22 +1,18 @@
 #labels Featured
-= G+J EMS Android SDK v1.3.1 [http://ems.avault.net/img/android_logo_ico.png] =
+= G+J EMS Android SDK v1.3.1.1 [http://ems.avault.net/img/android_logo_ico.png] =
 == Library Source Code ==
 * Eclipse Library Project *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3a3VsSVRrMmJlSlk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1]
-----
-* Gradle Library Project *
-----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3Tl9YZDBqMWhXQ1E/edit?usp=sharing GuJEMSSDK-Android-v1.3.1]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3dFlaSEhlWkh3MDg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1]
 ----
 == Documentation ==
 * German *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3YnVBc3UxUmVCSlk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1-DE]
 ----
 * English *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3YU05V1UxdEtqOVk/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3VjZrangxRnFEOTg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1-EN]
 ----
 === Sample Application ===
 ----
