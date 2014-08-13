@@ -43,56 +43,53 @@ public final class GoogleDelegator {
 			Map<String, String> parameters, ViewGroup.LayoutParams lp,
 			Drawable bk, int andId) {
 
-		this.mkGoogleRequest(parameters);
-
-		admobView = new AdView(delegator.getContext());
-		admobView.setAdSize(AdSize.BANNER);
-		admobView.setAdUnitId(pubId);
-		admobView.setId(andId);
-
-		admobView.setLayoutParams(lp);
-		// setBackground requires API level 16
-		admobView.setBackgroundDrawable(bk);
-		
 		final MASTAdView adView = delegator.getOptimobileView();
 		final ViewGroup parent = (ViewGroup) adView.getParent();
 		
 		if (adView == null || parent == null) {
-			//TODO dismiss request.
 			if (delegator.getSettings().getOnAdErrorListener() != null) {
 				delegator.getSettings().getOnAdErrorListener().onAdError("AdView is no longer attached / has no parent. Google request dismissed.");
-				this.admobView.destroy();
-				this.admobView = null;
-				this.admobRequest = null;
 			}
 		}
-		
-		final int index = parent.indexOfChild(adView);
+		else {
+			this.mkGoogleRequest(parameters);
 
-		parent.removeView(adView);
-		adView.removeAllViews();
+			admobView = new AdView(delegator.getContext());
+			admobView.setAdSize(AdSize.BANNER);
+			admobView.setAdUnitId(pubId);
+			admobView.setId(andId);
 
-		admobView.setAdListener(new AdListener() {
-
-			@Override
-			public void onAdFailedToLoad(int errorCode) {
-				SdkLog.d(TAG, "No Google ad available.");
-				if (delegator.getSettings().getOnAdEmptyListener() != null) {
-					delegator.getSettings().getOnAdEmptyListener().onAdEmpty();
+			admobView.setLayoutParams(lp);
+			// setBackground requires API level 16
+			admobView.setBackgroundDrawable(bk);
+			
+			
+			final int index = parent.indexOfChild(adView);
+	
+			parent.removeView(adView);
+			adView.removeAllViews();
+	
+			admobView.setAdListener(new AdListener() {
+	
+				@Override
+				public void onAdFailedToLoad(int errorCode) {
+					SdkLog.d(TAG, "No Google ad available.");
+					if (delegator.getSettings().getOnAdEmptyListener() != null) {
+						delegator.getSettings().getOnAdEmptyListener().onAdEmpty();
+					}
 				}
-			}
-
-			@Override
-			public void onAdLoaded() {
-				SdkLog.d(TAG, "Google Ad viewable.");
-				parent.addView(admobView, index);
-				if (delegator.getSettings().getOnAdSuccessListener() != null) {
-					delegator.getSettings().getOnAdSuccessListener()
-							.onAdSuccess();
+	
+				@Override
+				public void onAdLoaded() {
+					SdkLog.d(TAG, "Google Ad viewable.");
+					parent.addView(admobView, index);
+					if (delegator.getSettings().getOnAdSuccessListener() != null) {
+						delegator.getSettings().getOnAdSuccessListener()
+								.onAdSuccess();
+					}
 				}
-			}
-		});
-
+			});
+		}
 	}
 
 	private void mkGoogleRequest(Map<String, String> parameters) {
