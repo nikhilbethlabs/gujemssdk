@@ -44,7 +44,7 @@ public final class GoogleDelegator {
 			Drawable bk, int andId) {
 
 		final MASTAdView adView = delegator.getOptimobileView();
-		final ViewGroup parent = (ViewGroup) adView.getParent();
+		final ViewGroup parent = adView != null ? (ViewGroup) adView.getParent() : null;
 		
 		if (adView == null || parent == null) {
 			if (delegator.getSettings().getOnAdErrorListener() != null) {
