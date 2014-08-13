@@ -15,14 +15,14 @@ import com.moceanmobile.mast.MASTAdView;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
- * Simple wrapper class to handle Google admob
+ * Simple wrapper class to handle Google ads
  * 
  * @author stein16
  *
  */
-public final class AdmobDelegator {
+public final class GoogleDelegator {
 
-	private final static String TAG = "AdmobView";
+	private final static String TAG = "GoogleDelegator";
 
 	AdView admobView;
 
@@ -39,11 +39,11 @@ public final class AdmobDelegator {
 	 * @param bk view background
 	 * @param andId view android id
 	 */
-	public AdmobDelegator(final OptimobileDelegator delegator,
+	public GoogleDelegator(final OptimobileDelegator delegator,
 			Map<String, String> parameters, ViewGroup.LayoutParams lp,
 			Drawable bk, int andId) {
 
-		this.mkAdmobRequest(parameters);
+		this.mkGoogleRequest(parameters);
 
 		admobView = new AdView(delegator.getContext());
 		admobView.setAdSize(AdSize.BANNER);
@@ -56,6 +56,17 @@ public final class AdmobDelegator {
 		
 		final MASTAdView adView = delegator.getOptimobileView();
 		final ViewGroup parent = (ViewGroup) adView.getParent();
+		
+		if (adView == null || parent == null) {
+			//TODO dismiss request.
+			if (delegator.getSettings().getOnAdErrorListener() != null) {
+				delegator.getSettings().getOnAdErrorListener().onAdError("AdView is no longer attached / has no parent. Google request dismissed.");
+				this.admobView.destroy();
+				this.admobView = null;
+				this.admobRequest = null;
+			}
+		}
+		
 		final int index = parent.indexOfChild(adView);
 
 		parent.removeView(adView);
@@ -65,7 +76,7 @@ public final class AdmobDelegator {
 
 			@Override
 			public void onAdFailedToLoad(int errorCode) {
-				SdkLog.d(TAG, "No Admob ad available.");
+				SdkLog.d(TAG, "No Google ad available.");
 				if (delegator.getSettings().getOnAdEmptyListener() != null) {
 					delegator.getSettings().getOnAdEmptyListener().onAdEmpty();
 				}
@@ -73,7 +84,7 @@ public final class AdmobDelegator {
 
 			@Override
 			public void onAdLoaded() {
-				SdkLog.d(TAG, "Admob Ad viewable.");
+				SdkLog.d(TAG, "Google Ad viewable.");
 				parent.addView(admobView, index);
 				if (delegator.getSettings().getOnAdSuccessListener() != null) {
 					delegator.getSettings().getOnAdSuccessListener()
@@ -84,7 +95,7 @@ public final class AdmobDelegator {
 
 	}
 
-	private void mkAdmobRequest(Map<String, String> parameters) {
+	private void mkGoogleRequest(Map<String, String> parameters) {
 
 		String zip = parameters.get("zip");
 		String lon = parameters.get("long");
@@ -117,8 +128,15 @@ public final class AdmobDelegator {
 	 * Perform the actual admob request
 	 */
 	public void load() {
-		SdkLog.i(TAG, "Performing google admob request...");
-		admobView.loadAd(admobRequest);
+		
+		if (admobView != null && admobRequest != null) {
+			SdkLog.i(TAG, "Performing google ad request...");
+			admobView.loadAd(admobRequest);
+		}
+		else {
+			SdkLog.w(TAG, "Google ad request cancelled.");
+		}
+		
 	}
 
 }

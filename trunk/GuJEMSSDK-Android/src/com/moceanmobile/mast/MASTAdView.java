@@ -1,4 +1,5 @@
 //
+
 // Copyright (C) 2013 Mocean Mobile. All Rights Reserved. 
 //
 package com.moceanmobile.mast;
@@ -1290,23 +1291,23 @@ public class MASTAdView extends ViewGroup
 		resetRichMediaAd();
 		
 		getImageView();
-		
+
 		LayoutParams layoutParams = 
 				new LayoutParams(LayoutParams.MATCH_PARENT, 
 						imageObject instanceof Bitmap ? (int)(((Bitmap)imageObject).getHeight() * SdkUtil.getDensity()) :
-						(int)(((GifDecoder)imageObject).ih * SdkUtil.getDensity()));
+						(int)(((GifDecoder)imageObject).getHeight() * SdkUtil.getDensity()));
 		
 		getLayoutParams().height = layoutParams.height;
 		addContentView(imageView, layoutParams);
-		
+				
 		if (imageObject instanceof Bitmap)
 		{
-			logEvent("Image height is " + ((Bitmap)imageObject).getHeight(), LogLevel.Debug);
+			logEvent("(2) Image height is " + ((Bitmap)imageObject).getHeight(), LogLevel.Debug);
 			imageView.setImageBitmap((Bitmap) imageObject);
 		}
 		else if (imageObject instanceof GifDecoder)
 		{
-			logEvent("Image height is " + ((GifDecoder)imageObject).ih, LogLevel.Debug);
+			logEvent("(2) Image height is " + ((GifDecoder)imageObject).getHeight(), LogLevel.Debug);
 			imageView.setImageGifDecoder((GifDecoder) imageObject);
 		}
 
