@@ -24,9 +24,9 @@ public final class GoogleDelegator {
 
 	private final static String TAG = "GoogleDelegator";
 
-	AdView admobView;
+	AdView googleAdView;
 
-	AdRequest admobRequest;
+	AdRequest googleAdRequest;
 
 	private String pubId;
 
@@ -54,14 +54,14 @@ public final class GoogleDelegator {
 		else {
 			this.mkGoogleRequest(parameters);
 
-			admobView = new AdView(delegator.getContext());
-			admobView.setAdSize(AdSize.BANNER);
-			admobView.setAdUnitId(pubId);
-			admobView.setId(andId);
+			googleAdView = new AdView(delegator.getContext());
+			googleAdView.setAdSize(AdSize.BANNER);
+			googleAdView.setAdUnitId(pubId);
+			googleAdView.setId(andId);
 
-			admobView.setLayoutParams(lp);
+			googleAdView.setLayoutParams(lp);
 			// setBackground requires API level 16
-			admobView.setBackgroundDrawable(bk);
+			googleAdView.setBackgroundDrawable(bk);
 			
 			
 			final int index = parent.indexOfChild(adView);
@@ -69,7 +69,7 @@ public final class GoogleDelegator {
 			parent.removeView(adView);
 			adView.removeAllViews();
 	
-			admobView.setAdListener(new AdListener() {
+			googleAdView.setAdListener(new AdListener() {
 	
 				@Override
 				public void onAdFailedToLoad(int errorCode) {
@@ -82,7 +82,7 @@ public final class GoogleDelegator {
 				@Override
 				public void onAdLoaded() {
 					SdkLog.d(TAG, "Google Ad viewable.");
-					parent.addView(admobView, index);
+					parent.addView(googleAdView, index);
 					if (delegator.getSettings().getOnAdSuccessListener() != null) {
 						delegator.getSettings().getOnAdSuccessListener()
 								.onAdSuccess();
@@ -109,11 +109,11 @@ public final class GoogleDelegator {
 		}
 
 		if (location != null) {
-			this.admobRequest = new AdRequest.Builder()
+			this.googleAdRequest = new AdRequest.Builder()
 					.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 					.setLocation(location).build();
 		} else {
-			this.admobRequest = new AdRequest.Builder().addTestDevice(
+			this.googleAdRequest = new AdRequest.Builder().addTestDevice(
 					AdRequest.DEVICE_ID_EMULATOR).build();
 		}
 
@@ -122,13 +122,13 @@ public final class GoogleDelegator {
 	}
 
 	/**
-	 * Perform the actual admob request
+	 * Perform the actual google request
 	 */
 	public void load() {
 		
-		if (admobView != null && admobRequest != null) {
+		if (googleAdView != null && googleAdRequest != null) {
 			SdkLog.i(TAG, "Performing google ad request...");
-			admobView.loadAd(admobRequest);
+			googleAdView.loadAd(googleAdRequest);
 		}
 		else {
 			SdkLog.w(TAG, "Google ad request cancelled.");

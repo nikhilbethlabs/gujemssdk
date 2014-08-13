@@ -10,7 +10,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 /**
  * The BackfillDelegator handles adserver responses which contain a backfill ad.
  * A backfill ad contains information on how to delegate the request to an
- * additional SDK such as Smartstream or AdMob.
+ * additional SDK such as Smartstream or Google.
  * 
  * The response consists of an opening tag naming the backfill partner, any data
  * which will be parsed by an adapter for the backfill partner and a closing

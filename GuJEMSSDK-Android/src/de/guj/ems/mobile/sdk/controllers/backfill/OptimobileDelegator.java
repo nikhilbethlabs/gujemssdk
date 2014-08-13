@@ -21,9 +21,9 @@ import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
  * Backfill is initially configured with GuJEMSAdView by adding an additional
  * optimobile site and zone ID to the view
  * 
- * If 3rd party network backfill like admob is configured in optimobile, the
+ * If 3rd party network backfill like google is configured in optimobile, the
  * request is also handled here by passing the metadata returned from optimobile
- * to the admob sdk.
+ * to the google ad sdk.
  * 
  * @author stein16
  * 
