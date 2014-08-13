@@ -50,7 +50,7 @@ public final class OptimobileDelegator {
 	 * Initially creates an optimobile adview which an be added to the layout.
 	 * The optimobile view uses callbacks for error handling etc. and also for a
 	 * possible backfill (OptimobileListener). If a 3rd party network is active, the optimobile ad
-	 * view will actually be removed and replaced by the network's view (AdmobView).
+	 * view will actually be removed and replaced by the network's view (Google Ads).
 	 * 
 	 * @param context
 	 *            App/Activity context

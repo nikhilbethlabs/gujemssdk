@@ -16,7 +16,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
 
 /**
  * G+J specific implementation of an mOcean request listener.
- * The listener handles view management and possible backfill via Google Admob.
+ * The listener handles view management and possible backfill via Google Ads.
  * 
  * @author stein16
  *
@@ -52,15 +52,15 @@ public final class OptimobileListener implements RequestListener {
 					if (emsMobileView != null
 							&& !GuJEMSListAdView.class.equals(emsMobileView
 									.getClass())) {
-						//TODO check admob availability via reflection? 
-						(new AdmobDelegator(delegator, parameters, emsMobileView
+
+						(new GoogleDelegator(delegator, parameters, emsMobileView
 								.getLayoutParams(), emsMobileView
 								.getBackground(), emsMobileView.getId()))
 								.load();
 
 					} else {
 						SdkLog.w(TAG,
-								"AdMob cannot be loaded in native or list ad views.");
+								"Google Ads cannot be loaded in native or list ad views.");
 					}
 				}
 			});
