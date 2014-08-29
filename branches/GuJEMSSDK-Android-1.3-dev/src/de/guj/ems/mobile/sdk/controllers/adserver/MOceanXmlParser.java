@@ -2,15 +2,15 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
-public class OptimobileXmlParser extends AdResponseParser {
+public class MOceanXmlParser extends AdResponseParser {
 
-	private final static String TAG = "OptimobileXmlParser";
+	private final static String TAG = "MOceanXmlParser";
 
-	public OptimobileXmlParser(String response) {
+	public MOceanXmlParser(String response) {
 		super(response, true);
 	}
 
-	private OptimobileXmlParser(String response, boolean xml) {
+	private MOceanXmlParser(String response, boolean xml) {
 		super(response, xml);
 	}
 
@@ -38,7 +38,7 @@ public class OptimobileXmlParser extends AdResponseParser {
 				SdkLog.d(TAG, "Ad Tracking URL = " + getTrackingImageUrl());
 			}
 		} else {
-			SdkLog.d(TAG, "No tracking image in optimobile XML");
+			SdkLog.d(TAG, "No tracking image in mOcean XML");
 		}
 	}
 
@@ -50,7 +50,7 @@ public class OptimobileXmlParser extends AdResponseParser {
 			parseImageUrl();
 			parseTrackingUrl();
 		} catch (Exception e) {
-			SdkLog.e(TAG, "Error parsing optimoble XML.", e);
+			SdkLog.e(TAG, "Error parsing mOcean XML.", e);
 			setInvalid();
 		}
 

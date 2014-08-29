@@ -10,29 +10,30 @@ import com.moceanmobile.mast.MASTAdView.LogLevel;
 
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
 
 /**
- * Delegates requests to optimobile and possibly other networks if a premium
+ * Delegates requests to mOcean and possibly other networks if a premium
  * campaign is not available for the current adview/slot.
  * 
  * Backfill is initially configured with GuJEMSAdView by adding an additional
- * optimobile site and zone ID to the view
+ * mOcean site and zone ID to the view
  * 
- * If 3rd party network backfill like admob is configured in optimobile, the
- * request is also handled here by passing the metadata returned from optimobile
- * to the admob sdk.
+ * If 3rd party network backfill like Google is configured in mOcean, the
+ * request is also handled here by passing the metadata returned from mOcean
+ * to the Google SDK.
  * 
  * @author stein16
  * 
  */
-public final class OptimobileDelegator {
+public final class MOceanDelegator {
 
-	private final static String TAG = "OptimobileDelegator";
+	private final static String TAG = "MOceanDelegator";
 
-	private MASTAdView optimobileView;
+	private MASTAdView mastAdView;
 
 	private GuJEMSAdView emsMobileView;
 
@@ -47,10 +48,10 @@ public final class OptimobileDelegator {
 	/**
 	 * Default constructor
 	 * 
-	 * Initially creates an optimobile adview which an be added to the layout.
-	 * The optimobile view uses callbacks for error handling etc. and also for a
-	 * possible backfill (OptimobileListener). If a 3rd party network is active, the optimobile ad
-	 * view will actually be removed and replaced by the network's view (AdmobView).
+	 * Initially creates an mOcean adview which an be added to the layout.
+	 * The mOcean view uses callbacks for error handling etc. and also for a
+	 * possible backfill (MOceanListener). If a 3rd party network is active, the mOcean ad
+	 * view will actually be removed and replaced by the network's view.
 	 * 
 	 * @param context
 	 *            App/Activity context
@@ -59,7 +60,7 @@ public final class OptimobileDelegator {
 	 * @param settings
 	 *            settings of original adview
 	 */
-	public OptimobileDelegator(final Context context,
+	public MOceanDelegator(final Context context,
 			final GuJEMSAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsMobileView = adView;
@@ -69,31 +70,31 @@ public final class OptimobileDelegator {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					optimobileView = initOptimobileView(context, settings, 0);
+					mastAdView = initMastAdView(context, settings, 0);
 
 					if (adView.getParent() != null
 							&& !GuJEMSListAdView.class.equals(adView.getClass())) {
 						ViewGroup parent = (ViewGroup) adView.getParent();
 						int index = parent.indexOfChild(adView);
-						parent.addView(optimobileView, index + 1);
+						parent.addView(mastAdView, index + 1);
 					} else {
 						SdkLog.d(TAG, "Primary view initialized off UI.");
 					}
 
-					optimobileView.update();
+					mastAdView.update();
 				}
 			});
 		} else {
-			optimobileView = initOptimobileView(context, settings, 0);
-			optimobileView.update();
+			mastAdView = initMastAdView(context, settings, 0);
+			mastAdView.update();
 		}
 	}
 
 	/**
 	 * Constructor for native views
 	 * 
-	 * Initially creates an optimobile adview which an be added to the layout.
-	 * The optimobile view uses callbacks for error handling etc.
+	 * Initially creates an mOcean adview which an be added to the layout.
+	 * The mOcean view uses callbacks for error handling etc.
 	 * 
 	 * @param context
 	 *            App/Activity context
@@ -102,7 +103,7 @@ public final class OptimobileDelegator {
 	 * @param settings
 	 *            settings of original adview
 	 */
-	public OptimobileDelegator(final Context context,
+	public MOceanDelegator(final Context context,
 			GuJEMSNativeAdView adView, final IAdServerSettingsAdapter settings) {
 		this.context = context;
 		this.emsNativeMobileView = adView;
@@ -112,19 +113,19 @@ public final class OptimobileDelegator {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					optimobileView = initOptimobileView(context, settings, 0);
-					optimobileView.update();
+					mastAdView = initMastAdView(context, settings, 0);
+					mastAdView.update();
 				}
 			});
 		} else {
-			optimobileView = initOptimobileView(context, settings, 0);
-			optimobileView.update();
+			mastAdView = initMastAdView(context, settings, 0);
+			mastAdView.update();
 		}
 
 	}
 
 	@SuppressWarnings("deprecation")
-	private MASTAdView initOptimobileView(final Context context,
+	private MASTAdView initMastAdView(final Context context,
 			final IAdServerSettingsAdapter settings, int color) {
 
 		final MASTAdView view = new MASTAdView(context);
@@ -138,14 +139,19 @@ public final class OptimobileDelegator {
 		view.setVisibility(View.GONE);
 		view.setUseInternalBrowser(true);
 		view.setUpdateInterval(0);
+		//TODO adseen
 		
-
+		view.getAdRequestParameters().put("udid", SdkUtil.getDeviceId());
+		if (SdkUtil.getIdForAdvertiser() != null) {
+			view.getAdRequestParameters().put("androidaid", SdkUtil.getDeviceId());	
+		}
+		
 		if (emsMobileView != null
 				&& !GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
-			view.setRequestListener(new OptimobileListener(this));
+			view.setRequestListener(new MOceanListener(this));
 		} else {
 			SdkLog.d(TAG,
-					"3rd party requests disabled for native optimobile view");
+					"3rd party requests disabled for native mOcean view");
 		}
 		
 
@@ -153,13 +159,13 @@ public final class OptimobileDelegator {
 	}
 
 	/**
-	 * Get an instance of the initially created optimobile adview for
+	 * Get an instance of the initially created mOcean adview for
 	 * backfilling
 	 * 
-	 * @return mOcean/optimobile adview
+	 * @return mOcean adview
 	 */
-	protected MASTAdView getOptimobileView() {
-		return this.optimobileView;
+	protected MASTAdView getMastAdView() {
+		return this.mastAdView;
 	}
 
 	/**

@@ -52,5 +52,4 @@
 	<!--  Standard layout is for phones -->
     <bool name="largeDisplay">false</bool>
 
-
 </resources>

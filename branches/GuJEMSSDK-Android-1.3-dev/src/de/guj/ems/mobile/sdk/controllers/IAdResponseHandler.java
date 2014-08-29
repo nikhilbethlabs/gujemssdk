@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers;
 
+import java.io.Serializable;
+
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 
 /**
@@ -12,12 +14,11 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
  * @author stein16
  * 
  */
-public interface IAdResponseHandler {
+public interface IAdResponseHandler extends Serializable {
 
-	public void processResponse(IAdResponse response);
+	public abstract void processResponse(IAdResponse response);
 
-	public void processError(String msg);
+	public abstract void processError(String msg);
 
-	public void processError(String msg, Throwable t);
-
+	public abstract void processError(String msg, Throwable t);
 }

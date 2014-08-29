@@ -1426,7 +1426,7 @@ public class MASTAdView extends ViewGroup
 		
 		if (webView != null)
 		{
-			webView.clearView();
+			webView.loadUrl("about:blank");
 			webView.clearHistory();
 		}
 		

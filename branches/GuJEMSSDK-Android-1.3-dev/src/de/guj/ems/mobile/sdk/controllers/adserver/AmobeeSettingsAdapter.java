@@ -32,8 +32,6 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
-	private static final long serialVersionUID = -4637791449705402591L;
-
 	private final static char STATUS_3G_ON = '3';
 
 	private final static char STATUS_4G_ON = '4';
@@ -64,8 +62,8 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param set
 	 *            attribute set with configuration
 	 */
-	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set) {
-		super(context, set, viewClass);
+	public void setup(Context context, Class<?> viewClass, AttributeSet set) {
+		super.setup(context, set, viewClass);
 		this.baseParams = "?"
 				+ context.getString(R.string.baseParams)
 				.replaceAll("#version#", SdkUtil.VERSION_STR);
@@ -170,9 +168,9 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param nkws
 	 *            non-matching keywords
 	 */
-	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, AttributeSet set,
+	public void setup(Context context, Class<?> viewClass, AttributeSet set,
 			String[] kws, String[] nkws) {
-		this(context, viewClass, set);
+		setup(context, viewClass, set);
 		TypedArray tVals = context.obtainStyledAttributes(set,
 				R.styleable.GuJEMSAdView);
 		if (kws != null
@@ -219,9 +217,9 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param nkws
 	 *            non-matching keywords
 	 */
-	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance,
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance,
 			String[] kws, String[] nkws) {
-		this(context, viewClass, savedInstance);
+		setup(context, viewClass, savedInstance);
 		if (kws != null
 				&& kws.length > 0
 				&& getAttrsToParams().get(SdkGlobals.EMS_KEYWORDS) != null) {
@@ -259,8 +257,8 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param savedInstance
 	 *            bundle with configuration
 	 */
-	public AmobeeSettingsAdapter(Context context, Class<?> viewClass, Bundle savedInstance) {
-		super(context, savedInstance, viewClass);
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance) {
+		super.setup(context, savedInstance, viewClass);
 		this.baseParams = "?"
 				+ context.getString(R.string.baseParams)
 				.replaceAll("#version#", SdkUtil.VERSION_STR);

@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+import java.io.Serializable;
+
 /**
  * Interface for objects holding ad server responses
  * 
@@ -13,7 +15,7 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
  * @author stein16
  * 
  */
-public interface IAdResponse {
+public interface IAdResponse extends Serializable {
 
 	/**
 	 * Get the actual adserver response

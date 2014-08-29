@@ -36,18 +36,9 @@ public class TrackingRequest extends AdRequest {
 	private final static boolean USE_HTTPURLCONNECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
 
 	private final static String USER_AGENT_HEADER_NAME = "User-Agent";
-
-	private TrackingRequest(String securityHeader, int securityHash,
-			IAdResponseHandler handler) {
-		super(handler);
-	}
-
-	private TrackingRequest(IAdResponseHandler handler) {
-		super(handler);
-	}
-
-	public TrackingRequest() {
-		super(null);
+	
+	public TrackingRequest(String name) {
+		super(name);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.moceanmobile.mast.MASTAdView;
 import com.moceanmobile.mast.MASTAdViewDelegate.RequestListener;
 
-import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.MOceanAdResponse;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
@@ -16,24 +16,24 @@ import de.guj.ems.mobile.sdk.views.GuJEMSNativeAdView;
 
 /**
  * G+J specific implementation of an mOcean request listener.
- * The listener handles view management and possible backfill via Google Admob.
+ * The listener handles view management and possible backfill via Google.
  * 
  * @author stein16
  *
  */
-public final class OptimobileListener implements RequestListener {
+public final class MOceanListener implements RequestListener {
 
 	private boolean display = false;
 
-	private OptimobileDelegator delegator;
+	private MOceanDelegator delegator;
 
-	private final static String TAG = "OptimobileListener";
+	private final static String TAG = "MOceanListener";
 
 	/**
 	 * Constructor
-	 * @param delegator optimobile delegator which uses this listener
+	 * @param delegator mOcean delegator which uses this listener
 	 */
-	public OptimobileListener(OptimobileDelegator delegator) {
+	public MOceanListener(MOceanDelegator delegator) {
 		this.delegator = delegator;
 	}
 
@@ -52,15 +52,15 @@ public final class OptimobileListener implements RequestListener {
 					if (emsMobileView != null
 							&& !GuJEMSListAdView.class.equals(emsMobileView
 									.getClass())) {
-						//TODO check admob availability via reflection? 
-						(new AdmobDelegator(delegator, parameters, emsMobileView
+						 
+						(new GoogleDelegator(delegator, parameters, emsMobileView
 								.getLayoutParams(), emsMobileView
 								.getBackground(), emsMobileView.getId()))
 								.load();
 
 					} else {
 						SdkLog.w(TAG,
-								"AdMob cannot be loaded in native or list ad views.");
+								"Google Ads cannot be loaded in native or list ad views.");
 					}
 				}
 			});
@@ -75,7 +75,7 @@ public final class OptimobileListener implements RequestListener {
 	@Override
 	public void onReceivedAd(final MASTAdView adView) {
 
-		SdkLog.d(TAG, "optimobile Ad loaded.");
+		SdkLog.d(TAG, "mOcean Ad loaded.");
 
 		final String response = adView.getAdDescriptor().getContent();
 		final GuJEMSAdView emsMobileView = delegator.getEmsMobileView();
@@ -89,20 +89,20 @@ public final class OptimobileListener implements RequestListener {
 					|| (emsMobileView != null && GuJEMSListAdView.class
 							.equals(emsMobileView.getClass()))) {
 				SdkLog.w(TAG,
-						"Received third party response for non compatible optimobile view (list).");
+						"Received third party response for non compatible mOcean view (list).");
 			}
 		}
 		if (emsMobileView != null
 				&& GuJEMSListAdView.class.equals(emsMobileView.getClass())) {
 			SdkLog.d(TAG,
 					"Primary adView is list view, replacing content with secondary adview's.");
-			SdkLog.i(TAG, "optimobile view unused, will be destroyed.");
+			SdkLog.i(TAG, "mOcean view unused, will be destroyed.");
 			adView.removeAllViews();
 
 			delegator.getHandler().post(new Runnable() {
 				@Override
 				public void run() {
-					emsMobileView.processResponse(new OptimobileAdResponse(
+					emsMobileView.processResponse(new MOceanAdResponse(
 							response.indexOf("richmedia") >= 0
 									|| response.indexOf("thirdparty") >= 0 ? null
 									: response));
@@ -112,14 +112,14 @@ public final class OptimobileListener implements RequestListener {
 		} else if (emsNativeMobileView != null) {
 			SdkLog.d(TAG,
 					"Primary adView is native view, replacing content with secondary adview's.");
-			SdkLog.i(TAG, "optimobile view unused, will be destroyed.");
+			SdkLog.i(TAG, "mOcean view unused, will be destroyed.");
 			adView.removeAllViews();
 
 			if (delegator.getHandler() != null) {
 				delegator.getHandler().post(new Runnable() {
 					@Override
 					public void run() {
-						emsNativeMobileView.processResponse(new OptimobileAdResponse(
+						emsNativeMobileView.processResponse(new MOceanAdResponse(
 								response.indexOf("richmedia") >= 0
 										|| response.indexOf("thirdparty") >= 0 ? null
 										: response));
@@ -127,7 +127,7 @@ public final class OptimobileListener implements RequestListener {
 				});
 			} else {
 				// TODO off ui thread without handler?
-				emsNativeMobileView.processResponse(new OptimobileAdResponse(
+				emsNativeMobileView.processResponse(new MOceanAdResponse(
 						response.indexOf("thirdparty") >= 0 ? null : response));
 			}
 
@@ -140,7 +140,7 @@ public final class OptimobileListener implements RequestListener {
 				if (display) {
 					adView.setVisibility(View.VISIBLE);
 				}
-				SdkLog.d(TAG, "optimobile Ad viewable.");
+				SdkLog.d(TAG, "mOcean Ad viewable.");
 				if (delegator.getSettings().getOnAdSuccessListener() != null) {
 					delegator.getSettings().getOnAdSuccessListener()
 							.onAdSuccess();
@@ -158,7 +158,7 @@ public final class OptimobileListener implements RequestListener {
 				public void run() {
 					ViewGroup parent = (ViewGroup) adView.getParent();
 					if (parent != null) {
-						SdkLog.d(TAG, "Removing optimobile view.");
+						SdkLog.d(TAG, "Removing mOcean view.");
 						parent.removeView(adView);
 					}
 					if (s != null && s.startsWith("No ads")) {
@@ -166,14 +166,14 @@ public final class OptimobileListener implements RequestListener {
 							delegator.getSettings().getOnAdEmptyListener()
 									.onAdEmpty();
 						} else {
-							SdkLog.i(TAG, "optimobile: " + s);
+							SdkLog.i(TAG, "mOcean: " + s);
 						}
 					} else {
 						if (delegator.getSettings().getOnAdErrorListener() != null) {
 							delegator.getSettings().getOnAdErrorListener()
-									.onAdError("optimobile: " + s, ex);
+									.onAdError("mOcean: " + s, ex);
 						} else {
-							SdkLog.e(TAG, "optimobile: " + s, ex);
+							SdkLog.e(TAG, "mOcean: " + s, ex);
 						}
 					}
 					adView.setVisibility(View.GONE);

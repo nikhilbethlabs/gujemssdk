@@ -1,10 +1,8 @@
-v 1.3.2 May 2014 =========================================================
+v 1.3.2 July 2014 =========================================================
 Compatibility with Android SDK Tools 22.6.2
 Compatibility with Android SDK Platform-tools 19.0.1
-Compatibility with Android SDK 4.4.2 (API19) and lower (>=API8)
-Updated mOcean SDK to 3.1.2
-Removed AdMob SDK
-Added Google play services
+Compatibility with Android SDK 4.4.4W (API20) and lower (>=API8)
+Tested with preview version of Android L
 Added ability to configure SDK remotely via JSON service
 Added adsquare service
 Added weather targeting
@@ -14,6 +12,8 @@ Added ability to distinguish between large devices (i.e. tablets) and normal
 Added velocity to GPS data
 Added altitude to GPS data
 Added Google Advertising Identifier
+Added Native Ads (as in "Native Advertising")
+Changed Ad Requests from using AsyncTask to using IntentService 
 Fixed a bug where native tests ads would not be displayed
 Fixed a bug where an ORMMA error would display when returning to an activity/a fragment
 Fixed a bug where isHeadsetConnected would always return false
@@ -23,6 +23,11 @@ Fixed a bug where ads would not scale to the ad view size (if ad was larger)
 Fixed some static references that were prone to not being thread safe
 Fixed clicking on test ads to open our web site 
 Updated the sample location (fragments, drawer, ...)
+
+v 1.3.1.1 May 2014 =========================================================
+Updated mOcean SDK to 3.1.2
+Removed AdMob SDK
+Added Google play services
 
 v 1.3.1 Dec 2013 =========================================================
 Added English localization

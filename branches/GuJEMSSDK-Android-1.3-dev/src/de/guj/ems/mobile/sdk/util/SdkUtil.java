@@ -37,11 +37,10 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import de.guj.ems.mobile.sdk.R;
-import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
-import de.guj.ems.mobile.sdk.controllers.TrackingRequest;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
 import de.guj.ems.mobile.sdk.controllers.adserver.AdRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdRequest;
-import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
+import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 
 /**
  * Various global static methods for initialization, configuration of sdk plus
@@ -562,8 +561,19 @@ public class SdkUtil {
 	 *            response handler
 	 * @return initialized ad request
 	 */
-	public static AdRequest adRequest(IAdResponseHandler handler) {
-		return new AmobeeAdRequest(handler);
+	public static Intent adRequest(AdResponseReceiver handler, IAdServerSettingsAdapter settings) {
+		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+		if (settings.doProcess()) {
+			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON.getJsonVariables().process(
+					SdkConfig.SINGLETON.getJsonConfig().process(settings));
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, nSet.getRequestUrl());
+		}
+		else {
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, settings.getRequestUrl());
+		}
+		
+		i.putExtra("handler", handler);
+		return i;
 	}
 
 	/**
@@ -585,7 +595,9 @@ public class SdkUtil {
 	 */
 	public static void httpRequests(final String[] urls) {
 		for (String url : urls) {
-			new TrackingRequest().execute(new TrackingSettingsAdapter(url));
+			Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
+			getContext().startService(i);
 		}
 	}
 

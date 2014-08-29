@@ -31,7 +31,7 @@ ad with content.
     <style name="GuJEMSIntegrativeAd.Thumb">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>r
+        <item name="android:gravity">center</item>
     </style>    
     <!-- style for headline -->
     <style name="GuJEMSIntegrativeAd.Header">

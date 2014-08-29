@@ -27,6 +27,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
@@ -34,6 +36,8 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
@@ -42,9 +46,8 @@ import de.guj.ems.mobile.sdk.controllers.adserver.AdResponseParser;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
-import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
-import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
-import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
+import de.guj.ems.mobile.sdk.controllers.adserver.MOceanAdResponse;
+import de.guj.ems.mobile.sdk.controllers.backfill.MOceanDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -64,7 +67,9 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler {
+public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandler {
+
+	private static final long serialVersionUID = 419984287637564123L;
 
 	private boolean testMode = false;
 
@@ -77,7 +82,9 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	private boolean play = false;
 
 	private Paint testPaint;
-
+	
+	private AdResponseReceiver responseHandler = new AdResponseReceiver(new Handler());
+	
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
 		private final WeakReference<ImageView> viewRef;
 
@@ -247,6 +254,8 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 	 */
 	public GuJEMSNativeAdView(Context context, AttributeSet attrs, boolean load) {
 		super(context, attrs);
+		responseHandler = new AdResponseReceiver(new Handler());
+		responseHandler.setReceiver(this);
 		this.preLoadInitialize(context, attrs);
 		if (load) {
 			this.load();
@@ -505,7 +514,7 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this).execute(this.settings);
+				getContext().startService(SdkUtil.adRequest(responseHandler, settings));
 			}
 			// Do nothing if offline
 			else {
@@ -544,7 +553,8 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		setImageDrawable(null);
 		testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
+			this.settings = new AmobeeSettingsAdapter();
+			this.settings.setup(context, getClass(), set);
 		} else {
 			SdkLog.w(TAG,
 					"No attribute set found from resource id (ok with interstitials).");
@@ -557,7 +567,8 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		setImageDrawable(null);
 		testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, getClass(), set,
+			this.settings = new AmobeeSettingsAdapter();
+			this.settings.setup(context, getClass(), set,
 					kws, nkws);
 		} else {
 			SdkLog.w(TAG,
@@ -566,87 +577,6 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 
 	}
 
-	@Override
-	public void processError(String msg) {
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg);
-		} else {
-			SdkLog.e(TAG, msg);
-		}
-	}
-
-	@Override
-	public void processError(String msg, Throwable t) {
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg, t);
-		} else {
-			SdkLog.e(TAG, msg, t);
-		}
-	}
-
-	@Override
-	public final void processResponse(IAdResponse response) {
-		try {
-			if (response != null && !response.isEmpty()) {
-				SdkLog.d(TAG, "Native view handling response of type "
-						+ response.getClass());
-				parser = response.getParser();
-				new DownloadImageTask(this).execute(parser.getImageUrl());
-				if (parser.getTrackingImageUrl() != null) {
-					SdkUtil.adRequest(null).execute(
-							new TrackingSettingsAdapter(parser.getTrackingImageUrl()));
-				}
-				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
-				}
-			} else {
-				if (this.settings.getDirectBackfill() != null
-						&& response != null
-						&& !OptimobileAdResponse.class.equals(response
-								.getClass())) {
-					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator. ["
-								+ this.getId() + "]");
-						new OptimobileDelegator(getContext(), this, settings);
-					} catch (final Exception e) {
-						if (this.settings.getOnAdErrorListener() != null) {
-							getHandler().post(new Runnable() {
-
-								@Override
-								public void run() {
-									settings.getOnAdErrorListener()
-											.onAdError(
-													"Error delegating to optimobile",
-													e);
-								}
-							});
-						} else {
-							SdkLog.e(TAG, "Error delegating to optimobile", e);
-						}
-					}
-				} else if (response == null || response.isEmpty()) {
-					if (this.settings.getOnAdEmptyListener() != null) {
-						getHandler().post(new Runnable() {
-
-							@Override
-							public void run() {
-								settings.getOnAdEmptyListener().onAdEmpty();
-							}
-						});
-
-					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
-								+ "]");
-					}
-				}
-			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
-					+ "]");
-		} catch (Exception e) {
-			processError("Error loading ad [" + this.getId() + "]", e);
-		}
-	}
 
 	/**
 	 * Repopulate the adview after a new adserver request 
@@ -782,5 +712,110 @@ public class GuJEMSNativeAdView extends ImageView implements IAdResponseHandler 
 		SdkLog.d(TAG,
 				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}
+	
+	private void mOceanDelegate() {
+		new MOceanDelegator(getContext(), this, settings);		
+	}
+	
+	private void downloadImage() {
+		new DownloadImageTask(this).execute(parser.getImageUrl());		
+	}
+	
+	public AdResponseReceiver getResponseHandler() {
+		return responseHandler;
+	}
+	
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
+	}
+	
+	@Override
+	public void processError(String msg) {
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg);
+		} else {
+			SdkLog.e(TAG, msg);
+		}
+	}
+
+	@Override
+	public void processError(String msg, Throwable t) {
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg, t);
+		} else {
+			SdkLog.e(TAG, msg, t);
+		}
+	}
+
+	@Override
+	public final void processResponse(IAdResponse response) {
+		try {
+			if (response != null && !response.isEmpty()) {
+				SdkLog.d(TAG, "Native view handling response of type "
+						+ response.getClass());
+				parser = response.getParser();
+				downloadImage();
+				if (parser.getTrackingImageUrl() != null) {
+					SdkUtil.httpRequest(parser.getTrackingImageUrl());
+				}
+				SdkLog.i(TAG, "Ad found and loading... [" + getId() + "]");
+				if (settings.getOnAdSuccessListener() != null) {
+					settings.getOnAdSuccessListener().onAdSuccess();
+				}
+			} else {
+				if (settings.getDirectBackfill() != null
+						&& response != null
+						&& !MOceanAdResponse.class.equals(response
+								.getClass())) {
+					try {
+						SdkLog.i(TAG, "Passing to optimobile delegator. ["
+								+ getId() + "]");
+						mOceanDelegate();
+						
+					} catch (final Exception e) {
+						if (settings.getOnAdErrorListener() != null) {
+							getHandler().post(new Runnable() {
+
+								@Override
+								public void run() {
+									settings.getOnAdErrorListener()
+											.onAdError(
+													"Error delegating to optimobile",
+													e);
+								}
+							});
+						} else {
+							SdkLog.e(TAG, "Error delegating to optimobile", e);
+						}
+					}
+				} else if (response == null || response.isEmpty()) {
+					if (settings.getOnAdEmptyListener() != null) {
+						getHandler().post(new Runnable() {
+
+							@Override
+							public void run() {
+								settings.getOnAdEmptyListener().onAdEmpty();
+							}
+						});
+
+					} else {
+						SdkLog.i(TAG, "No valid ad found. [" + getId()
+								+ "]");
+					}
+				}
+			}
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + getId()
+					+ "]");
+		} catch (Exception e) {
+			processError("Error loading ad [" + getId() + "]", e);
+		}
+	}	
+	
 
 }

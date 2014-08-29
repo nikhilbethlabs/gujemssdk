@@ -14,7 +14,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.os.Build;
-import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
@@ -28,11 +27,11 @@ public class AmobeeAdRequest extends AdRequest {
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
 
-	private final static String ACCEPT_HEADER_VALUE = "text/plain,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	private final static String ACCEPT_HEADER_VALUE = "text/plain,text/html,application/xhtml+xml,application/xml";
 
 	private final static String ACCEPT_CHARSET_HEADER_NAME = "Accept-Charset";
 
-	private final static String ACCEPT_CHARSET_HEADER_VALUE = "utf-8;q=0.7,*;q=0.3";
+	private final static String ACCEPT_CHARSET_HEADER_VALUE = "utf-8;";
 
 	private final static String USER_AGENT_HEADER_NAME = "User-Agent";
 
@@ -40,8 +39,8 @@ public class AmobeeAdRequest extends AdRequest {
 
 	private final static byte[] EMPTY_BUFFER = new byte[1024];
 
-	public AmobeeAdRequest(IAdResponseHandler handler) {
-		super(handler);
+	public AmobeeAdRequest() {
+		super(AmobeeAdRequest.class.getName());
 	}
 
 	@Override
@@ -66,8 +65,7 @@ public class AmobeeAdRequest extends AdRequest {
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
 				richAd = con.getHeaderField("Richmedia") != null;
-				if (con.getResponseCode() == 200
-						&& this.getResponseHandler() != null) {
+				if (con.getResponseCode() == 200) {
 					byte[] buffer = new byte[1024];
 					int l = 0;
 					while ((l = in.read(buffer)) > 0) {
@@ -78,7 +76,7 @@ public class AmobeeAdRequest extends AdRequest {
 
 					throw new Exception("AdServer returned HTTP "
 							+ con.getResponseCode());
-				} 
+				}
 				in.close();
 			} catch (Exception e) {
 				SdkLog.e(TAG, "Error requesting ad", e);
@@ -86,8 +84,10 @@ public class AmobeeAdRequest extends AdRequest {
 			} finally {
 				if (con != null) {
 					con.disconnect();
-					SdkLog.d(TAG, "Request finished. [" + url + ", " + rBuilder.length()
-							+ "]");
+					SdkLog.d(
+							TAG,
+							"Request finished. [" + url + ", "
+									+ rBuilder.length() + "]");
 				}
 			}
 		}
@@ -106,8 +106,7 @@ public class AmobeeAdRequest extends AdRequest {
 			try {
 				HttpResponse execute = client.execute(httpGet);
 				richAd = execute.getLastHeader("Richmedia") != null;
-				if (execute.getStatusLine().getStatusCode() == 200
-						&& getResponseHandler() != null) {
+				if (execute.getStatusLine().getStatusCode() == 200) {
 					BufferedReader buffer = new BufferedReader(
 							new InputStreamReader(execute.getEntity()
 									.getContent(), ENCODING_STR));
@@ -128,16 +127,6 @@ public class AmobeeAdRequest extends AdRequest {
 			SdkLog.d(TAG, "Request finished. [" + rBuilder.length() + "]");
 		}
 		return new AmobeeAdResponse(rBuilder.toString(), richAd);
-	}
-	
-	@Override
-	protected void onCancelled() {
-		SdkLog.w(TAG, this + " cancelled.");
-	}
-	
-	@Override
-	protected void onCancelled(IAdResponse response) {
-		SdkLog.w(TAG, this + " cancelled. [" + response + "]");
 	}
 
 }

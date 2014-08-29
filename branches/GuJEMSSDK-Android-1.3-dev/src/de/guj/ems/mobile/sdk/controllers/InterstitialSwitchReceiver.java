@@ -3,9 +3,12 @@ package de.guj.ems.mobile.sdk.controllers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
@@ -23,7 +26,9 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * 
  */
 public class InterstitialSwitchReceiver extends BroadcastReceiver implements
-		IAdResponseHandler {
+		IAdResponseHandler, Receiver {
+
+	private static final long serialVersionUID = 8383707581661736714L;
 
 	private IAdServerSettingsAdapter settings;
 
@@ -36,11 +41,15 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 	private Context context;
 	
 	private boolean testMode = false;
+	
+	private AdResponseReceiver responseReceiver = new AdResponseReceiver(new Handler());	
 
 	private final static String TAG = "InterstitialSwitchReceiver";
 
 	public InterstitialSwitchReceiver() {
 		super();
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);		
 	}
 
 	@Override
@@ -60,13 +69,14 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		this.context = arg0;
 
 		// ad space settings
-		this.settings = new AmobeeSettingsAdapter(SdkUtil.getContext(),
+		this.settings = new AmobeeSettingsAdapter();
+		this.settings.setup(SdkUtil.getContext(),
 				GuJEMSAdView.class, arg1.getExtras());
 
 		// adserver request
 		if (SdkUtil.isOnline() && !testMode) {
 			SdkLog.i(TAG, "START AdServer request");
-			SdkUtil.adRequest(this).execute(settings);
+			context.startService(SdkUtil.adRequest(responseReceiver, settings));
 		} else if (!testMode) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
@@ -229,6 +239,16 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		} else {
 			SdkLog.i(TAG, "No target. Back to previous view.");
 		}
+	}
+
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
 	}
 
 }

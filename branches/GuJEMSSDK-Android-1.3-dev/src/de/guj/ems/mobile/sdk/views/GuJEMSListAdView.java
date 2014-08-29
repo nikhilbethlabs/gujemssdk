@@ -18,6 +18,8 @@ import android.widget.AbsListView;
  */
 public class GuJEMSListAdView extends GuJEMSAdView {
 
+	private static final long serialVersionUID = -4516597400574035993L;
+
 	public GuJEMSListAdView(Context context) {
 		super(context);
 	}

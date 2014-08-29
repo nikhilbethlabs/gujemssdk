@@ -30,8 +30,6 @@ public class VASTXmlParser {
 
 	private VASTXmlListener vastListener;
 
-	public final static int PARCEL_DESCRIPTION = 12345;
-
 	private final static String TAG = "VASTXmlParser";
 
 	private final static String VAST_ADTAGURI_TAG = "VASTAdTagURI";
@@ -212,20 +210,22 @@ public class VASTXmlParser {
 
 	}
 	
-	///TODO Implement mediafile decision engine
-	public class MediaFileDecisionEngine {
+	private class MediaFile {
 		
-		// EDGE <= 400
-		// 3G/4G <= 800
-		// WIFI > 800
-		public void addMediaFile(String url, int bit, int w, int h) {
-			
+		public int w;
+		
+		public int h;
+		
+		public int bitrate;
+		
+		public String url;
+		
+		public MediaFile(String url, int b, int w, int h) {
+			this.w = w;
+			this.h = h;
+			this.bitrate = b;
+			this.url = url;
 		}
-		
-		public String decide() {
-			return "";
-		}
-		
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class VASTXmlParser {
 				readInLine(p);
 			}
 			if (name.equals(VAST_WRAPPER_TAG)) {
-				SdkLog.i(TAG, "VAST file contains wrapped ad information.");
+				SdkLog.i(TAG, "VAST file contains wrapped ad information. [" + this + "]");
 				hasWrapper = true;
 				readWrapper(p);
 			}
@@ -299,7 +299,7 @@ public class VASTXmlParser {
 	private void readMediaFiles(XmlPullParser p) throws IOException,
 			XmlPullParserException {
 		p.require(XmlPullParser.START_TAG, null, VAST_MEDIAFILES_TAG);
-		int fBitrate = 0;
+		List<MediaFile> files = new ArrayList<MediaFile>();
 		while (p.next() != XmlPullParser.END_TAG) {
 			if (p.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -311,29 +311,47 @@ public class VASTXmlParser {
 
 				String mimeType = p.getAttributeValue(null, "type");
 				String bitrate = p.getAttributeValue(null, "bitrate");
-				if (mimeType != null && "video/mp4".equals(mimeType)) {
-					
-				}
-
-				if (bitrate != null) {
-					SdkLog.d(TAG, "Media file with bitrate " + bitrate);
-					try {
-						Integer iBitrate = Integer.valueOf(bitrate);
-						fBitrate = iBitrate;
-					}
-					catch (Exception e) {
-						;
-					}
-				}
-				//TODO check mimeType, dimensions and bitrate, if multiple choose best for connection
-				this.mediaFileUrl = readText(p).replaceAll("&amp;", "&")
+				String width = p.getAttributeValue(null, "width");
+				String height = p.getAttributeValue(null, "height");
+				String url = readText(p).replaceAll("&amp;", "&")
 						.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+				if (mimeType != null && "video/mp4".equals(mimeType)) {
+					files.add(new MediaFile(url, bitrate != null ? Integer.valueOf(bitrate) : 0, width != null ? Integer.valueOf(width) : 0, height != null ? Integer.valueOf(height) : 0));
+				}
+			
 				p.require(XmlPullParser.END_TAG, null, VAST_MEDIAFILE_TAG);
-				SdkLog.i(TAG, "Mediafile url: " + this.mediaFileUrl);
 			} else {
 				skip(p);
 			}
 		}
+		if (files.size() == 1) {
+			SdkLog.d(TAG, "Found 1 mediafile: " + files.get(0).url + " " + files.get(0).w + "x" + files.get(0).h + "@" + files.get(0).bitrate);
+			this.mediaFileUrl = files.get(0).url;
+		}
+		else if (files.size() > 1) {
+			int limit = SdkUtil.isWifi() ? 1000 : (SdkUtil.is3G() || SdkUtil.is4G() ? 600 : 0);
+			int select = -1;
+			for (int i = 0; i < files.size(); i++) {
+				SdkLog.d(TAG, "Found " + files.get(i).url + " " + files.get(i).w + "x" + files.get(i).h + "@" + files.get(i).bitrate);
+				if (files.get(i).bitrate != 0 && files.get(i).bitrate <= limit) {
+					if (select >= 0 && files.get(select).bitrate >= files.get(i).bitrate) {
+						SdkLog.d(TAG, "Keeping " + files.get(select).bitrate + " as chosen bitrate");
+					}
+					else {
+						select = i;
+					}
+				}
+				else {
+					select = i;
+				}
+			}
+			SdkLog.d(TAG, "Selected " + files.get(select).url + " " + files.get(select).w + "x" + files.get(select).h + "@" + files.get(select).bitrate);
+			this.mediaFileUrl = files.get(select).url;	
+		}
+		else {
+			SdkLog.w(TAG, "No compatible mediafile found.");
+		}
+		
 	}
 
 	private void readTrackingEvents(XmlPullParser p) throws IOException,

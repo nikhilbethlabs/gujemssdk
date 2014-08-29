@@ -2,8 +2,9 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
-
 public abstract class AdResponse implements IAdResponse {
+
+	private static final long serialVersionUID = -2217817771087072480L;
 
 	private String response;
 
@@ -16,15 +17,15 @@ public abstract class AdResponse implements IAdResponse {
 	private String htmlResponse;
 
 	private AdResponseParser parser;
-	
+
 	private final static String TAG = "AdResponse";
 
 	public AdResponse(String resp) {
 		if (resp != null && resp.startsWith("<?xml")) {
 			SdkLog.d(TAG, "Removing xml doc declaration from response");
-			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "").trim();
-		}
-		else {
+			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "")
+					.trim();
+		} else {
 			this.response = resp;
 		}
 	}
@@ -76,10 +77,12 @@ public abstract class AdResponse implements IAdResponse {
 		if (htmlResponse == null) {
 			String cUrl = getParser().getClickUrl();
 			htmlResponse = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\">"
-					+ (cUrl != null ? "<a href=\"" + getParser().getClickUrl() + "\">" : "")
+					+ (cUrl != null ? "<a href=\"" + getParser().getClickUrl()
+							+ "\">" : "")
 					+ "<img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\""
 					+ getParser().getImageUrl()
-					+ "\">" + (cUrl != null ? "</a>" : "")
+					+ "\">"
+					+ (cUrl != null ? "</a>" : "")
 					+ (getParser().getTrackingImageUrl() != null ? "<img src=\""
 							+ getParser().getTrackingImageUrl()
 							+ "\" style=\"width: 0px; height: 0px; display: none;\">"

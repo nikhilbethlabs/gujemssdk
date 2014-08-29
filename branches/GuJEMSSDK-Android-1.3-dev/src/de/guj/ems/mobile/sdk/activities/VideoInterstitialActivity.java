@@ -23,7 +23,6 @@ import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
-import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
@@ -52,6 +51,11 @@ import de.guj.ems.mobile.sdk.util.VASTXmlParser.VASTXmlListener;
  * 
  */
 public final class VideoInterstitialActivity extends Activity implements IAdResponseHandler, VASTXmlListener {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1677516954860960606L;
 
 	static class InterstitialThread extends Thread {
 
@@ -211,18 +215,7 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 			}
 		});
 
-		try {
-			// parse VAST xml
-			this.vastXml = new VASTXmlParser(getApplicationContext(), this, (String)getIntent().getExtras().get("data")); 
 
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
-			if (this.target != null) {
-				startActivity(target);
-			}
-			finish();
-
-		}
 
 	}
 
@@ -482,7 +475,19 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 	@Override
 	protected void onStart() {
 		super.onStart();
+		try {
+			// parse VAST xml
+			//TODO vast wrapper fetching produces problem when activity is started
+			this.vastXml = new VASTXmlParser(getApplicationContext(), this, (String)getIntent().getExtras().get("data")); 
 
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error parsing VAST xml from adserver", e);
+			if (this.target != null) {
+				startActivity(target);
+			}
+			finish();
+
+		}
 		if (status < 0) {
 			SdkLog.d(TAG, "Create and start new control thread.");
 			this.updateThread = new InterstitialThread(new Runnable() {
@@ -766,13 +771,22 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 	}
 
 	@Override
-	public void onVASTWrapperFound(String url) {
+	public void onVASTWrapperFound(final String url) {
 		SdkLog.d(TAG, "Should fetch wrapped VAST xml");
-		SdkUtil.adRequest(this).execute(new TrackingSettingsAdapter(url));
+		//TODO does not work for second redirect
+		/*
+		final IAdResponseHandler ref = this;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				SdkUtil.adRequest(ref).execute(new TrackingSettingsAdapter(url));
+			}
+		}); */
 	}
 
 	@Override
 	public void onVASTReady(VASTXmlParser vast) {
+		SdkLog.d(TAG, "onVastReady " + vast);
 		if (!vast.hasWrapper()) {
 
 			SdkLog.i(TAG, "Direct VAST xml response.");
@@ -788,11 +802,9 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 			}
 
 		}
-		/*else {
-			SdkLog.d(TAG, "VASTXmlParser ready? " + vast.isReady());
-		}*/
-
-		
+		else {
+			SdkLog.d(TAG, vast + " has wrapper.");
+		}
 	}
 
 }

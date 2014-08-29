@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 
 /**
@@ -15,14 +17,13 @@ public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 
 	private String url;
 	
-	private static final long serialVersionUID = 5306862767558725868L;
-
 	/**
 	 * Constructed directly with full URL
 	 * @param url tracking request url
 	 */
 	public TrackingSettingsAdapter(String url) {
-		super(null, (AttributeSet)null, null);
+		super();
+		setup(null, (AttributeSet)null, null);
 		setBaseUrlString(url);
 	}
 
@@ -45,6 +46,24 @@ public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 	public boolean doProcess() {
 		// tracking requests should no be manipulated (contrary to ad requests)
 		return false;
+	}
+
+	@Override
+	public void setup(Context context, Class<?> viewClass, AttributeSet set) {
+	}
+
+	@Override
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance) {
+	}
+
+	@Override
+	public void setup(Context context, Class<?> viewClass,
+			Bundle savedInstance, String[] kws, String[] nkws) {
+	}
+
+	@Override
+	public void setup(Context context, Class<?> viewClass, AttributeSet set,
+			String[] kws, String[] nkws) {
 	}
 
 }

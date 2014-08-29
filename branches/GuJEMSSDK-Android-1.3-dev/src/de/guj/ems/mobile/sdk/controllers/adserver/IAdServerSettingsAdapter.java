@@ -1,10 +1,12 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import org.json.JSONArray;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
@@ -17,7 +19,7 @@ import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
  * @author stein16
  * 
  */
-public interface IAdServerSettingsAdapter extends Serializable {
+public interface IAdServerSettingsAdapter {
 
 	/**
 	 * 
@@ -218,5 +220,15 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	 */
 	public boolean doProcess();
 	
-
+	public void setup(Context context, Class<?> viewClass, AttributeSet set);
+	
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance);
+	
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance,
+			String[] kws, String[] nkws);	
+	
+	public void setup(Context context, Class<?> viewClass, AttributeSet set,
+			String[] kws, String[] nkws);
+	
+	 
 }

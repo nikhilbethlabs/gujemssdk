@@ -34,15 +34,13 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 public abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
 
-	private String requestQueryString;
-
-	private static final long serialVersionUID = 314048983271226769L;
+	private transient String requestQueryString;
 
 	private final static String TAG = "AdServerSettingsAdapter";
 
 	private String queryAppendix;
 
-	private final Map<String, String> attrsToParams;
+	private Map<String, String> attrsToParams;
 
 	private BackfillDelegator.BackfillData directBackfill;
 
@@ -52,23 +50,19 @@ public abstract class AdServerSettingsAdapter implements
 
 	private IOnAdErrorListener onAdErrorListener = null;
 
-	private final Map<String, String> paramValues;
+	private Map<String, String> paramValues;
 
 	private JSONArray regExps;
 
-	private Context context;
+	protected transient Class<?> viewClass;
 
-	protected Class<?> viewClass;
+	private transient int[] viewMetrics = { -1, -1, -1 };
 
-	private int[] viewMetrics = { -1, -1, -1 };
-
-	@SuppressWarnings("unused")
-	private AdServerSettingsAdapter() {
-		this.context = null;
+	public AdServerSettingsAdapter() {
 		this.viewClass = null;
 		this.requestQueryString = null;
-		this.paramValues = new HashMap<String, String>();
-		this.attrsToParams = new HashMap<String, String>();
+		this.paramValues = null;
+		this.attrsToParams = null;
 	}
 
 	/**
@@ -79,16 +73,41 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param set
 	 *            inflated layout parameters
 	 */
-	public AdServerSettingsAdapter(Context context, AttributeSet set,
-			Class<?> viewClass) {
-		if (SdkUtil.getContext() == null) {
-			SdkUtil.setContext(context);
+	// public AdServerSettingsAdapter(Context context, AttributeSet set,
+	// Class<?> viewClass) {
+	// if (SdkUtil.getContext() == null) {
+	// SdkUtil.setContext(context);
+	// }
+	// //this.context = context;
+	// this.viewClass = viewClass;
+	// this.requestQueryString = null;
+	// this.paramValues = new HashMap<String, String>();
+	// this.attrsToParams = this.init(set);
+	// }
+
+	@Override
+	public void addCustomParams(Map<String, ?> params) {
+		if (params != null) {
+			Iterator<String> mi = params.keySet().iterator();
+			while (mi.hasNext()) {
+				String param = mi.next();
+				Object value = params.get(param);
+				if (value.getClass().equals(String.class)) {
+					addCustomRequestParameter(param, (String) value);
+				} else if (value.getClass().equals(Double.class)) {
+					addCustomRequestParameter(param,
+							((Double) value).doubleValue());
+				} else if (value.getClass().equals(Integer.class)) {
+					addCustomRequestParameter(param,
+							((Integer) value).intValue());
+				} else {
+					SdkLog.e(TAG,
+							"Unknown object in custom params. Only String, Integer, Double allowed.");
+				}
+			}
+		} else {
+			SdkLog.w(TAG, "Custom params constructor used with null-array.");
 		}
-		this.context = context;
-		this.viewClass = viewClass;
-		this.requestQueryString = null;
-		this.paramValues = new HashMap<String, String>();
-		this.attrsToParams = this.init(set);
 	}
 
 	/**
@@ -99,17 +118,17 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param savedInstance
 	 *            saved instance state
 	 */
-	public AdServerSettingsAdapter(Context context, Bundle savedInstance,
-			Class<?> viewClass) {
-		if (SdkUtil.getContext() == null) {
-			SdkUtil.setContext(context);
-		}
-		this.context = context;
-		this.viewClass = viewClass;
-		this.requestQueryString = null;
-		this.paramValues = new HashMap<String, String>();
-		this.attrsToParams = this.init(savedInstance);
-	}
+	// public AdServerSettingsAdapter(Context context, Bundle savedInstance,
+	// Class<?> viewClass) {
+	// if (SdkUtil.getContext() == null) {
+	// SdkUtil.setContext(context);
+	// }
+	// //this.context = context;
+	// this.viewClass = viewClass;
+	// this.requestQueryString = null;
+	// this.paramValues = new HashMap<String, String>();
+	// this.attrsToParams = this.init(savedInstance);
+	// }
 
 	@Override
 	public void addCustomRequestParameter(String param, double value) {
@@ -127,7 +146,22 @@ public abstract class AdServerSettingsAdapter implements
 		putAttrValue(param, value);
 	}
 
-	private final void createEmptyListener(final String lMethodName) {
+	@Override
+	public void addQueryAppendix(String str) {
+		if (this.queryAppendix != null) {
+			this.queryAppendix = this.queryAppendix.concat(str);
+		} else {
+			this.queryAppendix = str;
+		}
+	}
+
+	@Override
+	public void addRegexp(JSONArray regexp) {
+		this.regExps = regexp;
+	}
+
+	private final void createEmptyListener(final Context context,
+			final String lMethodName) {
 		this.onAdEmptyListener = new IOnAdEmptyListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -165,77 +199,11 @@ public abstract class AdServerSettingsAdapter implements
 		}
 	}
 
-	private final void createErrorListener(final Object listener) {
-		try {
-			this.onAdErrorListener = (IOnAdErrorListener) listener;
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error setting onAdErrorListener", e);
-		}
-	}
-
-	private final void createSuccessListener(final Object listener) {
-		try {
-			this.onAdSuccessListener = (IOnAdSuccessListener) listener;
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error setting onAdSuccessListener", e);
-		}
-	}
-
-	private final void createSuccessListener(final String lMethodName) {
-		this.onAdSuccessListener = new IOnAdSuccessListener() {
-
-			private static final long serialVersionUID = 2L;
-
-			@Override
-			public void onAdSuccess() {
-				try {
-					Class<?>[] noParams = null;
-					Object[] noArgs = null;
-					
-					Method lMethod = context.getClass().getMethod(lMethodName,
-							noParams);
-					lMethod.invoke(context, noArgs);
-				} catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName
-							+ " not found. Check your xml.", nsme);
-
-				} catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdSuccessListener could not be invoked",
-							ivte);
-				} catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdSuccessListener could not be accessed",
-							iae);
-				}
-
-			}
-		};
-		SdkLog.d(TAG, "Created onSuccessListener \"" + lMethodName + "\"");
-	}
-
-	private final void createErrorListener(final String lMethodName) {
+	private final void createErrorListener(final Context context,
+			final String lMethodName) {
 		this.onAdErrorListener = new IOnAdErrorListener() {
 
 			private static final long serialVersionUID = 3L;
-
-			@Override
-			public void onAdError(String msg, Throwable t) {
-				try {
-					Method lMethod = context.getClass().getMethod(lMethodName,
-							String.class, Throwable.class);
-					lMethod.invoke(context, msg, t);
-				} catch (NoSuchMethodException nsme) {
-					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
-							+ " not found. Check your xml.", nsme);
-
-				} catch (InvocationTargetException ivte) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be invoked",
-							ivte);
-				} catch (IllegalAccessException iae) {
-					SdkLog.e(TAG, "OnAdErrorListener could not be accessed",
-							iae);
-				}
-
-			}
 
 			@Override
 			public void onAdError(String msg) {
@@ -256,8 +224,81 @@ public abstract class AdServerSettingsAdapter implements
 				}
 
 			}
+
+			@Override
+			public void onAdError(String msg, Throwable t) {
+				try {
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							String.class, Throwable.class);
+					lMethod.invoke(context, msg, t);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdErrorListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdErrorListener could not be accessed",
+							iae);
+				}
+
+			}
 		};
 		SdkLog.d(TAG, "Created onErrorListener \"" + lMethodName + "\"");
+	}
+
+	private final void createErrorListener(final Object listener) {
+		try {
+			this.onAdErrorListener = (IOnAdErrorListener) listener;
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error setting onAdErrorListener", e);
+		}
+	}
+
+	private final void createSuccessListener(final Context context,
+			final String lMethodName) {
+		this.onAdSuccessListener = new IOnAdSuccessListener() {
+
+			private static final long serialVersionUID = 2L;
+
+			@Override
+			public void onAdSuccess() {
+				try {
+					Class<?>[] noParams = null;
+					Object[] noArgs = null;
+
+					Method lMethod = context.getClass().getMethod(lMethodName,
+							noParams);
+					lMethod.invoke(context, noArgs);
+				} catch (NoSuchMethodException nsme) {
+					SdkLog.e(TAG, "OnAdSuccessListener " + lMethodName
+							+ " not found. Check your xml.", nsme);
+
+				} catch (InvocationTargetException ivte) {
+					SdkLog.e(TAG, "OnAdSuccessListener could not be invoked",
+							ivte);
+				} catch (IllegalAccessException iae) {
+					SdkLog.e(TAG, "OnAdSuccessListener could not be accessed",
+							iae);
+				}
+
+			}
+		};
+		SdkLog.d(TAG, "Created onSuccessListener \"" + lMethodName + "\"");
+	}
+
+	private final void createSuccessListener(final Object listener) {
+		try {
+			this.onAdSuccessListener = (IOnAdSuccessListener) listener;
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error setting onAdSuccessListener", e);
+		}
+	};
+
+	@Override
+	public int[] getAdViewMetrics() {
+		return viewMetrics;
 	}
 
 	protected Map<String, String> getAttrsToParams() {
@@ -270,9 +311,19 @@ public abstract class AdServerSettingsAdapter implements
 	}
 
 	@Override
+	public BackfillDelegator.BackfillData getDirectBackfill() {
+		return directBackfill;
+	}
+
+	@Override
 	public IOnAdEmptyListener getOnAdEmptyListener() {
 		return this.onAdEmptyListener;
-	};
+	}
+
+	@Override
+	public IOnAdErrorListener getOnAdErrorListener() {
+		return this.onAdErrorListener;
+	}
 
 	@Override
 	public IOnAdSuccessListener getOnAdSuccessListener() {
@@ -280,8 +331,13 @@ public abstract class AdServerSettingsAdapter implements
 	}
 
 	@Override
-	public IOnAdErrorListener getOnAdErrorListener() {
-		return this.onAdErrorListener;
+	public Map<String, String> getParams() {
+		return this.paramValues;
+	}
+
+	@Override
+	public String getQueryAppendix() {
+		return this.queryAppendix;
 	}
 
 	@Override
@@ -332,54 +388,8 @@ public abstract class AdServerSettingsAdapter implements
 	public String getRequestUrl() {
 		String query = getBaseQueryString();
 		String app = getQueryAppendix();
-		return getBaseUrlString() + (query != null ? query : "") + getQueryString()
-				+ (app != null ? app : "");
-	}
-
-	protected final Map<String, String> init(AttributeSet attrs) {
-		Map<String, String> map = new HashMap<String, String>();
-		if (attrs != null) {
-			for (int i = 0; i < attrs.getAttributeCount(); i++) {
-				String attr = attrs.getAttributeName(i);
-				if (attr != null
-						&& attr.startsWith(SdkGlobals.EMS_ATTRIBUTE_PREFIX)) {
-					if (attr.startsWith(SdkGlobals.EMS_LISTENER_PREFIX)) {
-						String lName = attr.substring(4);
-						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? context
-								.obtainStyledAttributes(attrs,
-										R.styleable.GuJEMSAdView) : context
-								.obtainStyledAttributes(attrs,
-										R.styleable.GuJEMSNativeAdView);
-						if (lName.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
-							createSuccessListener(tVals
-									.getString(AdViewConfiguration.getConfig(
-											viewClass).getSuccessListenerId()));
-						} else if (lName.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
-							createEmptyListener(tVals
-									.getString(AdViewConfiguration.getConfig(
-											viewClass).getEmptyListenerId()));
-						} else if (lName.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
-							createErrorListener(tVals
-									.getString(AdViewConfiguration.getConfig(
-											viewClass).getErrorListenerId()));
-						}
-
-						else {
-							SdkLog.w(TAG, "Unknown listener type name: "
-									+ lName);
-						}
-						tVals.recycle();
-
-					} else {
-						map.put(attr.substring(4), attr.substring(4));
-						SdkLog.d(TAG,
-								"Found AdView attribute " + attr.substring(4));
-					}
-
-				}
-			}
-		}
-		return map;
+		return getBaseUrlString() + (query != null ? query : "")
+				+ getQueryString() + (app != null ? app : "");
 	}
 
 	protected final Map<String, String> init(Bundle savedInstance) {
@@ -435,6 +445,55 @@ public abstract class AdServerSettingsAdapter implements
 		return map;
 	}
 
+	protected final Map<String, String> init(Context context, AttributeSet attrs) {
+		Map<String, String> map = new HashMap<String, String>();
+		if (attrs != null) {
+			for (int i = 0; i < attrs.getAttributeCount(); i++) {
+				String attr = attrs.getAttributeName(i);
+				if (attr != null
+						&& attr.startsWith(SdkGlobals.EMS_ATTRIBUTE_PREFIX)) {
+					if (attr.startsWith(SdkGlobals.EMS_LISTENER_PREFIX)) {
+						String lName = attr.substring(4);
+						TypedArray tVals = viewClass.equals(GuJEMSAdView.class) ? context
+								.obtainStyledAttributes(attrs,
+										R.styleable.GuJEMSAdView) : context
+								.obtainStyledAttributes(attrs,
+										R.styleable.GuJEMSNativeAdView);
+						if (lName.equals(SdkGlobals.EMS_SUCCESS_LISTENER)) {
+							createSuccessListener(context,
+									tVals.getString(AdViewConfiguration
+											.getConfig(viewClass)
+											.getSuccessListenerId()));
+						} else if (lName.equals(SdkGlobals.EMS_EMPTY_LISTENER)) {
+							createEmptyListener(context,
+									tVals.getString(AdViewConfiguration
+											.getConfig(viewClass)
+											.getEmptyListenerId()));
+						} else if (lName.equals(SdkGlobals.EMS_ERROR_LISTENER)) {
+							createErrorListener(context,
+									tVals.getString(AdViewConfiguration
+											.getConfig(viewClass)
+											.getErrorListenerId()));
+						}
+
+						else {
+							SdkLog.w(TAG, "Unknown listener type name: "
+									+ lName);
+						}
+						tVals.recycle();
+
+					} else {
+						map.put(attr.substring(4), attr.substring(4));
+						SdkLog.d(TAG,
+								"Found AdView attribute " + attr.substring(4));
+					}
+
+				}
+			}
+		}
+		return map;
+	}
+
 	@Override
 	public void putAttrToParam(String attr, String param) {
 		this.attrsToParams.put(attr, param);
@@ -445,100 +504,14 @@ public abstract class AdServerSettingsAdapter implements
 		this.paramValues.put(attr, value);
 	}
 
-	@Override
-	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
-		this.onAdEmptyListener = l;
-	}
-
-	@Override
-	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
-		this.onAdSuccessListener = l;
-
-	}
-
-	@Override
-	public void setOnAdErrorListener(IOnAdErrorListener l) {
-		this.onAdErrorListener = l;
-
-	}
-
-	@Override
-	public BackfillDelegator.BackfillData getDirectBackfill() {
-		return directBackfill;
-	}
-
-	@Override
-	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill) {
-		this.directBackfill = directBackfill;
-	}
-
-	@Override
-	public void addCustomParams(Map<String, ?> params) {
-		if (params != null) {
-			Iterator<String> mi = params.keySet().iterator();
-			while (mi.hasNext()) {
-				String param = mi.next();
-				Object value = params.get(param);
-				if (value.getClass().equals(String.class)) {
-					addCustomRequestParameter(param, (String) value);
-				} else if (value.getClass().equals(Double.class)) {
-					addCustomRequestParameter(param,
-							((Double) value).doubleValue());
-				} else if (value.getClass().equals(Integer.class)) {
-					addCustomRequestParameter(param,
-							((Integer) value).intValue());
-				} else {
-					SdkLog.e(TAG,
-							"Unknown object in custom params. Only String, Integer, Double allowed.");
-				}
-			}
-		} else {
-			SdkLog.w(TAG, "Custom params constructor used with null-array.");
-		}
-	}
-
-	@Override
-	public String toString() {
-		return getQueryString();
-	}
-
-	@Override
-	public void addRegexp(JSONArray regexp) {
-		this.regExps = regexp;
-	}
-
-	@Override
-	public Map<String, String> getParams() {
-		return this.paramValues;
-	}
-
-	@Override
-	public String getQueryAppendix() {
-		return this.queryAppendix;
-	}
-
-	@Override
-	public void addQueryAppendix(String str) {
-		if (this.queryAppendix != null) {
-			this.queryAppendix = this.queryAppendix.concat(str);
-		} else {
-			this.queryAppendix = str;
-		}
-	}
-
-	@Override
-	public int[] getAdViewMetrics() {
-		return viewMetrics;
-	}
-
 	/**
-	 * Define adview width in pixels
+	 * Define adview resolution dots per inch
 	 * 
-	 * @param w
-	 *            width in pixels
+	 * @param d
+	 *            resolution in dots per inch
 	 */
-	public void setAdViewWidth(int w) {
-		viewMetrics[0] = w;
+	public void setAdViewDpi(int d) {
+		viewMetrics[2] = d;
 	}
 
 	/**
@@ -549,16 +522,6 @@ public abstract class AdServerSettingsAdapter implements
 	 */
 	public void setAdViewHeight(int h) {
 		viewMetrics[1] = h;
-	}
-
-	/**
-	 * Define adview resolution dots per inch
-	 * 
-	 * @param d
-	 *            resolution in dots per inch
-	 */
-	public void setAdViewDpi(int d) {
-		viewMetrics[2] = d;
 	}
 
 	/**
@@ -588,5 +551,80 @@ public abstract class AdServerSettingsAdapter implements
 		viewMetrics[1] = m[1];
 		viewMetrics[2] = m[2];
 	}
+
+	/**
+	 * Define adview width in pixels
+	 * 
+	 * @param w
+	 *            width in pixels
+	 */
+	public void setAdViewWidth(int w) {
+		viewMetrics[0] = w;
+	}
+
+	@Override
+	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill) {
+		this.directBackfill = directBackfill;
+	}
+
+	@Override
+	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
+		this.onAdEmptyListener = l;
+	}
+
+	@Override
+	public void setOnAdErrorListener(IOnAdErrorListener l) {
+		this.onAdErrorListener = l;
+
+	}
+
+	@Override
+	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
+		this.onAdSuccessListener = l;
+
+	}
+
+	/**
+	 * Constructor when creating the settings in an Android View
+	 * 
+	 * @param context
+	 *            application context
+	 * @param set
+	 *            inflated layout parameters
+	 */
+	public void setup(Context context, AttributeSet set, Class<?> viewClass) {
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(context);
+		}
+
+		this.viewClass = viewClass;
+		this.requestQueryString = null;
+		this.paramValues = new HashMap<String, String>();
+		this.attrsToParams = this.init(context, set);
+	}
+
+	/**
+	 * Constructor when creating the settings from an Android Activity
+	 * 
+	 * @param context
+	 *            application context
+	 * @param savedInstance
+	 *            saved instance state
+	 */
+	public void setup(Context context, Bundle savedInstance, Class<?> viewClass) {
+		if (SdkUtil.getContext() == null) {
+			SdkUtil.setContext(context);
+		}
+		this.viewClass = viewClass;
+		this.requestQueryString = null;
+		this.paramValues = new HashMap<String, String>();
+		this.attrsToParams = this.init(savedInstance);
+	}
+
+	@Override
+	public String toString() {
+		return getQueryString();
+	}
+
 
 }

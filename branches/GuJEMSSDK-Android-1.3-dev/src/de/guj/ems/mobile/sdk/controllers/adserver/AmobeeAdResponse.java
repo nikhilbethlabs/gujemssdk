@@ -2,6 +2,8 @@
 
 public class AmobeeAdResponse extends AdResponse {
 
+	private static final long serialVersionUID = -4429297832056469915L;
+
 	public AmobeeAdResponse(String response, boolean richMedia) {
 		super(response);
 		setIsRich(richMedia);

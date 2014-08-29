@@ -13,6 +13,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public final class SmartstreamEvents {
 
+	//TODO dangerous
 	private final static String SMARTSTREAM_EVENT_URL = SdkUtil.getContext()
 			.getString(R.string.baseUrl)
 			+ "?"
@@ -73,7 +74,8 @@ public final class SmartstreamEvents {
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event
 					+ "&plmid=" + placement;
 			try {
-				SdkUtil.adRequest(null).execute(new TrackingSettingsAdapter(url));
+				SdkUtil.getContext().startService(SdkUtil.adRequest(null,new TrackingSettingsAdapter(url)));
+				//SdkUtil.adRequest(null).execute(new TrackingSettingsAdapter(url));
 			} catch (Exception e) {
 				SdkLog.e(TAG, "Error sending tracking event to AdServer", e);
 			}
