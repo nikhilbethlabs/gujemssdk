@@ -8,11 +8,11 @@ iOS SDK change history and downloads.
 = Details =
 
 == Downloads ==
-[https://drive.google.com/file/d/0B5R-ThsBtb-3ejA2VEFrd0VjSDg/edit?usp=sharing iOS SDK Starter Kit (v2.0.5)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3bHJvd21MV1pBWDA/edit?usp=sharing iOS SDK Starter Kit (v2.0.5)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3eXRZRU52QjhuNXM/edit?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.5-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3eXRZRU52QjhuNXM/edit?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.6-DE]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3WjVieVA2bDd2ZlU/edit?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.5-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3WjVieVA2bDd2ZlU/edit?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.6-EN]
 ----
 == Changelog ==
 
