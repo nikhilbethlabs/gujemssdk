@@ -3,16 +3,16 @@
 == Library Source Code ==
 * Eclipse Library Project *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3dFlaSEhlWkh3MDg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3dGw1UjBoR2NWb1k/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.2]
 ----
 == Documentation ==
 * German *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-DE]
 ----
 * English *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3VjZrangxRnFEOTg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.1-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3VjZrangxRnFEOTg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-EN]
 ----
 === Sample Application ===
 ----
