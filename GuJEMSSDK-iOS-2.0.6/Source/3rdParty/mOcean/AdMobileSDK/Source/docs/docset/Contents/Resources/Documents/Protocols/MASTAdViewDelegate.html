@@ -1,0 +1,835 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MASTAdViewDelegate Protocol Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">iOS AdMobile SDK v2.11 </a></h1>
+				<a id="developerHome" href="../index.html">AdMobile</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MASTAdViewDelegate Protocol Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/adDidEndFullScreen:">&nbsp;&nbsp;&nbsp;&nbsp;- adDidEndFullScreen:</option>
+	
+	<option value="//api/name/adShouldOpen:withUrl:">&nbsp;&nbsp;&nbsp;&nbsp;- adShouldOpen:withUrl:</option>
+	
+	<option value="//api/name/adWillStartFullScreen:">&nbsp;&nbsp;&nbsp;&nbsp;- adWillStartFullScreen:</option>
+	
+	<option value="//api/name/didClosedAd:usageTimeInterval:">&nbsp;&nbsp;&nbsp;&nbsp;- didClosedAd:usageTimeInterval:</option>
+	
+	<option value="//api/name/didFailToReceiveAd:withError:">&nbsp;&nbsp;&nbsp;&nbsp;- didFailToReceiveAd:withError:</option>
+	
+	<option value="//api/name/didReceiveAd:">&nbsp;&nbsp;&nbsp;&nbsp;- didReceiveAd:</option>
+	
+	<option value="//api/name/didReceiveThirdPartyRequest:content:">&nbsp;&nbsp;&nbsp;&nbsp;- didReceiveThirdPartyRequest:content:</option>
+	
+	<option value="//api/name/ormmaProcess:event:parameters:">&nbsp;&nbsp;&nbsp;&nbsp;- ormmaProcess:event:parameters:</option>
+	
+	<option value="//api/name/willReceiveAd:">&nbsp;&nbsp;&nbsp;&nbsp;- willReceiveAd:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adDidEndFullScreen:">adDidEndFullScreen:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adShouldOpen:withUrl:">adShouldOpen:withUrl:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adWillStartFullScreen:">adWillStartFullScreen:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didClosedAd:usageTimeInterval:">didClosedAd:usageTimeInterval:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didFailToReceiveAd:withError:">didFailToReceiveAd:withError:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didReceiveAd:">didReceiveAd:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didReceiveThirdPartyRequest:content:">didReceiveThirdPartyRequest:content:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/ormmaProcess:event:parameters:">ormmaProcess:event:parameters:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/willReceiveAd:">willReceiveAd:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MASTAdViewDelegate Protocol Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MASTAdViewDelegate Protocol Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MASTAdDelegate.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>The <a href="MASTAdViewDelegate.html">MASTAdViewDelegate</a> protocol defines methods that a delegate of a <a href="../Classes/MASTAdView.html">MASTAdView</a> object can optionally implement to receive notifications
+from the ad view.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/willReceiveAd:">&ndash;&nbsp;willReceiveAd:</a></code>
+		<span class="tooltip"><p>Sent before an ad view will begin loading ad content.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didReceiveAd:">&ndash;&nbsp;didReceiveAd:</a></code>
+		<span class="tooltip"><p>Sent after an ad view finished loading ad content.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didReceiveThirdPartyRequest:content:">&ndash;&nbsp;didReceiveThirdPartyRequest:content:</a></code>
+		<span class="tooltip"><p>Sent if SDK received client side third party campaign.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didFailToReceiveAd:withError:">&ndash;&nbsp;didFailToReceiveAd:withError:</a></code>
+		<span class="tooltip"><p>Sent if an ad view failed to load ad content.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adWillStartFullScreen:">&ndash;&nbsp;adWillStartFullScreen:</a></code>
+		<span class="tooltip"><p>Sent before an ad view will start to display an ad full screen in the internal browser.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adDidEndFullScreen:">&ndash;&nbsp;adDidEndFullScreen:</a></code>
+		<span class="tooltip"><p>Sent after an ad view finished displaying internal browser.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adShouldOpen:withUrl:">&ndash;&nbsp;adShouldOpen:withUrl:</a></code>
+		<span class="tooltip"><p>Sent before an ad view will start to open URL.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didClosedAd:usageTimeInterval:">&ndash;&nbsp;didClosedAd:usageTimeInterval:</a></code>
+		<span class="tooltip"><p>Sent after an ad view is closed and tracks the usage time of ad interstitial view.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/ormmaProcess:event:parameters:">&ndash;&nbsp;ormmaProcess:event:parameters:</a></code>
+		<span class="tooltip"><p>Sent after an ad process ORMMA command.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/adDidEndFullScreen:" title="adDidEndFullScreen:"></a>
+	<h3 class="subsubtitle method-title">adDidEndFullScreen:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent after an ad view finished displaying internal browser.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)adDidEndFullScreen:(id)<em>sender</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view has finished displaying internal browser.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent after an ad view finished displaying internal browser.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/adShouldOpen:withUrl:" title="adShouldOpen:withUrl:"></a>
+	<h3 class="subsubtitle method-title">adShouldOpen:withUrl:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent before an ad view will start to open URL.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)adShouldOpen:(id)<em>sender</em> withUrl:(NSURL *)<em>url</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that is about to open URL.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>url</em></dt>
+			<dd><p>The URL that should be opened in internal or external browser.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Return YES to allow SDK open browser otherwise return NO.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent before an ad view will start to open URL.</p>
+
+<p>Implement this method with return NO value if you want to control opening ads with a custom implementation.</p>
+
+<p>If you do not implement this method the return value of YES is used.</p><div class="warning"><p><strong>Important:</strong> This method may not called if using 3rd party SDKs (Millennial, Greystripe, iVdopia, &hellip;)</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/adWillStartFullScreen:" title="adWillStartFullScreen:"></a>
+	<h3 class="subsubtitle method-title">adWillStartFullScreen:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent before an ad view will start to display an ad full screen in the internal browser.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)adWillStartFullScreen:(id)<em>sender</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that is about to display internal browser.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent before an ad view will start to display an ad full screen in the internal browser.</p><div class="warning"><p><strong>Important:</strong> This method is called after <a href="#//api/name/adShouldOpen:withUrl:">adShouldOpen:withUrl:</a> with a YES returned or if adShouldOpen:withUrl is not implemented.</p></div><div class="warning"><p><strong>Important:</strong> This method is not called when opening ads in Safari (internalOpenMode set to NO). To handle this behavior implement UIApplicationDelegate protocol</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didClosedAd:usageTimeInterval:" title="didClosedAd:usageTimeInterval:"></a>
+	<h3 class="subsubtitle method-title">didClosedAd:usageTimeInterval:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent after an ad view is closed and tracks the usage time of ad interstitial view.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)didClosedAd:(id)<em>sender</em> usageTimeInterval:(NSTimeInterval)<em>usageTimeInterval</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view was closed.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>usageTimeInterval</em></dt>
+			<dd><p>The usage time interval of ad view.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent after an ad view is closed and tracks the usage time of ad interstitial view.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didFailToReceiveAd:withError:" title="didFailToReceiveAd:withError:"></a>
+	<h3 class="subsubtitle method-title">didFailToReceiveAd:withError:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent if an ad view failed to load ad content.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)didFailToReceiveAd:(id)<em>sender</em> withError:(NSError *)<em>error</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that failed to load ad content.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>error</em></dt>
+			<dd><p>The error that occurred during loading.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent if an ad view failed to load ad content.</p>
+
+<p>The same method can be invoked if the server is not currently advertising.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didReceiveAd:" title="didReceiveAd:"></a>
+	<h3 class="subsubtitle method-title">didReceiveAd:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent after an ad view finished loading ad content.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)didReceiveAd:(id)<em>sender</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view has finished loading.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent after an ad view finished loading ad content.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didReceiveThirdPartyRequest:content:" title="didReceiveThirdPartyRequest:content:"></a>
+	<h3 class="subsubtitle method-title">didReceiveThirdPartyRequest:content:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent if SDK received client side third party campaign.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)didReceiveThirdPartyRequest:(id)<em>sender</em> content:(NSDictionary *)<em>content</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that receive 3rd party ad content.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>content</em></dt>
+			<dd><p>The dictionary of strings (key/values) for third party. You can start processing this content from @“type” key for determining ads type.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent if SDK received client side third party campaign.</p>
+
+<p>Generally, this method is called if the SDK can’t display ads due to reliance on a third party. For example: AdMob, Rhythm or SmartAdServer</p><div class="warning"><p><strong>Important:</strong> The SDK will never display ads which trigger this method.  They are used to call the third party SDKs in your app.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/ormmaProcess:event:parameters:" title="ormmaProcess:event:parameters:"></a>
+	<h3 class="subsubtitle method-title">ormmaProcess:event:parameters:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent after an ad process ORMMA command.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)ormmaProcess:(id)<em>sender</em> event:(NSString *)<em>event</em> parameters:(NSDictionary *)<em>parameters</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that is about to process ORMMA event.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>event</em></dt>
+			<dd><p>The string with name of the event.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parameters</em></dt>
+			<dd><p>The Dictionary with parameters from event.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent after an ad process ORMMA command.</p><div class="warning"><p><strong>Important:</strong> Implement this method only if you want add additional logic for event. By default SDK alreadey emplements all
+methods and your code could conflict with SDK</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/willReceiveAd:" title="willReceiveAd:"></a>
+	<h3 class="subsubtitle method-title">willReceiveAd:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sent before an ad view will begin loading ad content.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)willReceiveAd:(id)<em>sender</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sender</em></dt>
+			<dd><p>The ad view that is about to load ad content.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Sent before an ad view will begin loading ad content.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MASTAdDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 AdMobile. All rights reserved. (Last updated: 2012-06-25)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

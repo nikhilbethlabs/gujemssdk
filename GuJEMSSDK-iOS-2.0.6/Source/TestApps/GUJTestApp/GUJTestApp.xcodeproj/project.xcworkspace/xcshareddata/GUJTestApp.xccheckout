@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8005D46D-8102-4690-B905-81AE285E0227</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GUJTestApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DA84AFC8-043C-44AC-BBDF-EEE930C5A858</key>
+		<string>svn+ssh://crm.tro.de/opt/.svn/workspaces/Xcode</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iOSSDK/Source/V2.0/TestApps/GUJTestApp/GUJTestApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>297B1125-90A6-4A58-8997-01B50760FD4F</key>
+		<string>../..</string>
+		<key>DA84AFC8-043C-44AC-BBDF-EEE930C5A858</key>
+		<string>../../../../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>DA84AFC8-043C-44AC-BBDF-EEE930C5A858</key>
+		<string>svn+ssh://crm.tro.de/opt/.svn/workspaces/Xcode</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>svn+ssh://crm.tro.de/opt/.svn/workspaces/Xcode/05.GUJems/iOSSDK/Source/V2.0/TestApps/GUJTestApp/GUJTestApp.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DA84AFC8-043C-44AC-BBDF-EEE930C5A858</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DA84AFC8-043C-44AC-BBDF-EEE930C5A858</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Xcode</string>
+		</dict>
+	</array>
+</dict>
+</plist>
