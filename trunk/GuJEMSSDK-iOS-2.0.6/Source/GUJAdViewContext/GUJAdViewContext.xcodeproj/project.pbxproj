@@ -1,0 +1,718 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		263F6815165CFB550017EF3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26E33F16165BED5D005ADC51 /* Foundation.framework */; };
+		268F165E165D4225005FE385 /* GUJAdViewContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26E88931165CFF210077BF19 /* GUJAdViewContext.h */; };
+		268F1660165D422D005FE385 /* GUJAdViewContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26E88931165CFF210077BF19 /* GUJAdViewContext.h */; };
+		26E33F17165BED5D005ADC51 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26E33F16165BED5D005ADC51 /* Foundation.framework */; };
+		26E88933165CFF210077BF19 /* GUJAdViewContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88931165CFF210077BF19 /* GUJAdViewContext.h */; };
+		26E88934165CFF210077BF19 /* GUJAdViewContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88931165CFF210077BF19 /* GUJAdViewContext.h */; };
+		26E88935165CFF210077BF19 /* GUJAdViewContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E88932165CFF210077BF19 /* GUJAdViewContext.m */; };
+		26E88936165CFF210077BF19 /* GUJAdViewContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E88932165CFF210077BF19 /* GUJAdViewContext.m */; };
+		26E88938165CFF410077BF19 /* GUJAdViewContextConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88937165CFF410077BF19 /* GUJAdViewContextConstants.h */; };
+		26E88939165CFF410077BF19 /* GUJAdViewContextConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88937165CFF410077BF19 /* GUJAdViewContextConstants.h */; };
+		26E8893B165CFF900077BF19 /* GUJAdViewContextVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E8893A165CFF900077BF19 /* GUJAdViewContextVersion.h */; };
+		26E8893C165CFF900077BF19 /* GUJAdViewContextVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E8893A165CFF900077BF19 /* GUJAdViewContextVersion.h */; };
+		26E88955165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88954165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h */; };
+		26E88956165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E88954165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		263F6811165CFB550017EF3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 26727D711649263A00AB0EC6;
+			remoteInfo = GUJXAXISSDKSimulator;
+		};
+		263F681B165CFB970017EF3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 26727D5D164925F300AB0EC6;
+			remoteInfo = GUJXAXISSDK;
+		};
+		2675CE1016678BE500AD34C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26E33F0A165BED5D005ADC51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2653CF87166660FF004BB035;
+			remoteInfo = BuildRelease;
+		};
+		26E33F38165BED76005ADC51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 26727D5E164925F300AB0EC6;
+			remoteInfo = GUJXAXISSDK;
+		};
+		26E33F3A165BED76005ADC51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 26727D791649263A00AB0EC6;
+			remoteInfo = GUJXAXISSDKSimulator;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		268F165D165D421D005FE385 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				268F165E165D4225005FE385 /* GUJAdViewContext.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		268F165F165D4228005FE385 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				268F1660165D422D005FE385 /* GUJAdViewContext.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		263F681A165CFB550017EF3D /* libGUJAdViewContextSimulator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJAdViewContextSimulator.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2653CF73166660D0004BB035 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		2653CF75166660D0004BB035 /* Make_3rdparty.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_3rdparty.mk; sourceTree = "<group>"; };
+		2653CF76166660D0004BB035 /* Make_AdViewContext.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_AdViewContext.mk; sourceTree = "<group>"; };
+		2653CF77166660D0004BB035 /* Make_Base.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_Base.mk; sourceTree = "<group>"; };
+		2653CF78166660D0004BB035 /* Make_GlobalVars.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_GlobalVars.mk; sourceTree = "<group>"; };
+		2653CF79166660D0004BB035 /* Make_Mocean.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_Mocean.mk; sourceTree = "<group>"; };
+		2653CF7A166660D0004BB035 /* Make_Ormma.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_Ormma.mk; sourceTree = "<group>"; };
+		2653CF7B166660D0004BB035 /* Make_Xaxsis.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_Xaxsis.mk; sourceTree = "<group>"; };
+		2653CF7C166660D0004BB035 /* Make_XcodeBuild.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_XcodeBuild.mk; sourceTree = "<group>"; };
+		2653CF7E166660D0004BB035 /* Make_ReleaseAdViewCtx.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseAdViewCtx.mk; sourceTree = "<group>"; };
+		2653CF7F166660D0004BB035 /* Make_ReleaseBaseSDK.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseBaseSDK.mk; sourceTree = "<group>"; };
+		2653CF80166660D0004BB035 /* Make_ReleaseFunctions.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseFunctions.mk; sourceTree = "<group>"; };
+		2653CF81166660D0004BB035 /* Make_ReleaseGlobalVars.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseGlobalVars.mk; sourceTree = "<group>"; };
+		2653CF82166660D0004BB035 /* Make_ReleaseMoceanExtern.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseMoceanExtern.mk; sourceTree = "<group>"; };
+		2653CF83166660D0004BB035 /* Make_ReleaseMoceanSDK.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseMoceanSDK.mk; sourceTree = "<group>"; };
+		2653CF84166660D0004BB035 /* Make_ReleaseOrmmaSDK.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseOrmmaSDK.mk; sourceTree = "<group>"; };
+		2653CF85166660D0004BB035 /* Make_ReleaseXaxsisExtern.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseXaxsisExtern.mk; sourceTree = "<group>"; };
+		2653CF86166660D0004BB035 /* Make_ReleaseXaxsisSDK.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Make_ReleaseXaxsisSDK.mk; sourceTree = "<group>"; };
+		26E33F13165BED5D005ADC51 /* libGUJAdViewContext.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJAdViewContext.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		26E33F16165BED5D005ADC51 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		26E33F1A165BED5D005ADC51 /* GUJAdViewContext-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GUJAdViewContext-Prefix.pch"; sourceTree = "<group>"; };
+		26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GUJXAXISSDK.xcodeproj; path = ../GUJXAXISSDK/GUJXAXISSDK.xcodeproj; sourceTree = "<group>"; };
+		26E88931165CFF210077BF19 /* GUJAdViewContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewContext.h; sourceTree = "<group>"; };
+		26E88932165CFF210077BF19 /* GUJAdViewContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJAdViewContext.m; sourceTree = "<group>"; };
+		26E88937165CFF410077BF19 /* GUJAdViewContextConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewContextConstants.h; sourceTree = "<group>"; };
+		26E8893A165CFF900077BF19 /* GUJAdViewContextVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewContextVersion.h; sourceTree = "<group>"; };
+		26E88954165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJAdViewContextLocalTypeDefinition.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		263F6814165CFB550017EF3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				263F6815165CFB550017EF3D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26E33F10165BED5D005ADC51 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26E33F17165BED5D005ADC51 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2653CF72166660D0004BB035 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				2653CF73166660D0004BB035 /* Makefile */,
+				2653CF74166660D0004BB035 /* mk_build */,
+				2653CF7D166660D0004BB035 /* mk_release */,
+			);
+			name = Makefiles;
+			path = GUJAdViewContext/Makefiles;
+			sourceTree = "<group>";
+		};
+		2653CF74166660D0004BB035 /* mk_build */ = {
+			isa = PBXGroup;
+			children = (
+				2653CF75166660D0004BB035 /* Make_3rdparty.mk */,
+				2653CF76166660D0004BB035 /* Make_AdViewContext.mk */,
+				2653CF77166660D0004BB035 /* Make_Base.mk */,
+				2653CF78166660D0004BB035 /* Make_GlobalVars.mk */,
+				2653CF79166660D0004BB035 /* Make_Mocean.mk */,
+				2653CF7A166660D0004BB035 /* Make_Ormma.mk */,
+				2653CF7B166660D0004BB035 /* Make_Xaxsis.mk */,
+				2653CF7C166660D0004BB035 /* Make_XcodeBuild.mk */,
+			);
+			path = mk_build;
+			sourceTree = "<group>";
+		};
+		2653CF7D166660D0004BB035 /* mk_release */ = {
+			isa = PBXGroup;
+			children = (
+				2653CF7E166660D0004BB035 /* Make_ReleaseAdViewCtx.mk */,
+				2653CF7F166660D0004BB035 /* Make_ReleaseBaseSDK.mk */,
+				2653CF80166660D0004BB035 /* Make_ReleaseFunctions.mk */,
+				2653CF81166660D0004BB035 /* Make_ReleaseGlobalVars.mk */,
+				2653CF82166660D0004BB035 /* Make_ReleaseMoceanExtern.mk */,
+				2653CF83166660D0004BB035 /* Make_ReleaseMoceanSDK.mk */,
+				2653CF84166660D0004BB035 /* Make_ReleaseOrmmaSDK.mk */,
+				2653CF85166660D0004BB035 /* Make_ReleaseXaxsisExtern.mk */,
+				2653CF86166660D0004BB035 /* Make_ReleaseXaxsisSDK.mk */,
+			);
+			path = mk_release;
+			sourceTree = "<group>";
+		};
+		26E33F08165BED5D005ADC51 = {
+			isa = PBXGroup;
+			children = (
+				26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */,
+				26E33F18165BED5D005ADC51 /* GUJAdViewContext */,
+				2653CF72166660D0004BB035 /* Makefiles */,
+				26E33F15165BED5D005ADC51 /* Frameworks */,
+				26E33F14165BED5D005ADC51 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		26E33F14165BED5D005ADC51 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26E33F13165BED5D005ADC51 /* libGUJAdViewContext.a */,
+				263F681A165CFB550017EF3D /* libGUJAdViewContextSimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26E33F15165BED5D005ADC51 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26E33F16165BED5D005ADC51 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		26E33F18165BED5D005ADC51 /* GUJAdViewContext */ = {
+			isa = PBXGroup;
+			children = (
+				26E8892F165CFF210077BF19 /* Classes */,
+				26E33F19165BED5D005ADC51 /* Supporting Files */,
+			);
+			path = GUJAdViewContext;
+			sourceTree = "<group>";
+		};
+		26E33F19165BED5D005ADC51 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				26E33F1A165BED5D005ADC51 /* GUJAdViewContext-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		26E33F24165BED75005ADC51 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26E33F39165BED76005ADC51 /* libGUJXAXISSDK.a */,
+				26E33F3B165BED76005ADC51 /* libGUJORMMASDKSimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26E8892F165CFF210077BF19 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				26E88930165CFF210077BF19 /* Public */,
+				26E88937165CFF410077BF19 /* GUJAdViewContextConstants.h */,
+				26E8893A165CFF900077BF19 /* GUJAdViewContextVersion.h */,
+				26E88954165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		26E88930165CFF210077BF19 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				26E88931165CFF210077BF19 /* GUJAdViewContext.h */,
+				26E88932165CFF210077BF19 /* GUJAdViewContext.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		263F6816165CFB550017EF3D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26E88934165CFF210077BF19 /* GUJAdViewContext.h in Headers */,
+				26E88939165CFF410077BF19 /* GUJAdViewContextConstants.h in Headers */,
+				26E8893C165CFF900077BF19 /* GUJAdViewContextVersion.h in Headers */,
+				26E88956165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26E33F11165BED5D005ADC51 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26E88933165CFF210077BF19 /* GUJAdViewContext.h in Headers */,
+				26E88938165CFF410077BF19 /* GUJAdViewContextConstants.h in Headers */,
+				26E8893B165CFF900077BF19 /* GUJAdViewContextVersion.h in Headers */,
+				26E88955165D12690077BF19 /* GUJAdViewContextLocalTypeDefinition.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		2653CF87166660FF004BB035 /* BuildRelease */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = build_all;
+			buildConfigurationList = 2653CF88166660FF004BB035 /* Build configuration list for PBXLegacyTarget "BuildRelease" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = GUJAdViewContext/Makefiles;
+			dependencies = (
+			);
+			name = BuildRelease;
+			passBuildSettingsInEnvironment = 1;
+			productName = PrepareReleaseBuild;
+		};
+		2653CF8B16666140004BB035 /* CreateReleaseBundle */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = all_sdks;
+			buildConfigurationList = 2653CF8C16666140004BB035 /* Build configuration list for PBXLegacyTarget "CreateReleaseBundle" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = GUJAdViewContext/Makefiles;
+			dependencies = (
+				2675CE1116678BE500AD34C8 /* PBXTargetDependency */,
+			);
+			name = CreateReleaseBundle;
+			passBuildSettingsInEnvironment = 1;
+			productName = BuildReleaseBundle;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		263F680F165CFB550017EF3D /* GUJAdViewContextSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 263F6817165CFB550017EF3D /* Build configuration list for PBXNativeTarget "GUJAdViewContextSimulator" */;
+			buildPhases = (
+				263F6812165CFB550017EF3D /* Sources */,
+				263F6814165CFB550017EF3D /* Frameworks */,
+				263F6816165CFB550017EF3D /* Headers */,
+				268F165F165D4228005FE385 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				263F6810165CFB550017EF3D /* PBXTargetDependency */,
+			);
+			name = GUJAdViewContextSimulator;
+			productName = GUJAdViewContext;
+			productReference = 263F681A165CFB550017EF3D /* libGUJAdViewContextSimulator.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		26E33F12165BED5D005ADC51 /* GUJAdViewContext */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26E33F20165BED5E005ADC51 /* Build configuration list for PBXNativeTarget "GUJAdViewContext" */;
+			buildPhases = (
+				26E33F0F165BED5D005ADC51 /* Sources */,
+				26E33F10165BED5D005ADC51 /* Frameworks */,
+				26E33F11165BED5D005ADC51 /* Headers */,
+				268F165D165D421D005FE385 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				263F681C165CFB970017EF3D /* PBXTargetDependency */,
+			);
+			name = GUJAdViewContext;
+			productName = GUJAdViewContext;
+			productReference = 26E33F13165BED5D005ADC51 /* libGUJAdViewContext.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26E33F0A165BED5D005ADC51 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "guj ems";
+			};
+			buildConfigurationList = 26E33F0D165BED5D005ADC51 /* Build configuration list for PBXProject "GUJAdViewContext" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 26E33F08165BED5D005ADC51;
+			productRefGroup = 26E33F14165BED5D005ADC51 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 26E33F24165BED75005ADC51 /* Products */;
+					ProjectRef = 26E33F23165BED75005ADC51 /* GUJXAXISSDK.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				26E33F12165BED5D005ADC51 /* GUJAdViewContext */,
+				263F680F165CFB550017EF3D /* GUJAdViewContextSimulator */,
+				2653CF87166660FF004BB035 /* BuildRelease */,
+				2653CF8B16666140004BB035 /* CreateReleaseBundle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		26E33F39165BED76005ADC51 /* libGUJXAXISSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGUJXAXISSDK.a;
+			remoteRef = 26E33F38165BED76005ADC51 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		26E33F3B165BED76005ADC51 /* libGUJORMMASDKSimulator.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			name = libGUJORMMASDKSimulator.a;
+			path = libGUJXAXISSDKSimulator.a;
+			remoteRef = 26E33F3A165BED76005ADC51 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		263F6812165CFB550017EF3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26E88936165CFF210077BF19 /* GUJAdViewContext.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26E33F0F165BED5D005ADC51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26E88935165CFF210077BF19 /* GUJAdViewContext.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		263F6810165CFB550017EF3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GUJXAXISSDKSimulator;
+			targetProxy = 263F6811165CFB550017EF3D /* PBXContainerItemProxy */;
+		};
+		263F681C165CFB970017EF3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GUJXAXISSDK;
+			targetProxy = 263F681B165CFB970017EF3D /* PBXContainerItemProxy */;
+		};
+		2675CE1116678BE500AD34C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2653CF87166660FF004BB035 /* BuildRelease */;
+			targetProxy = 2675CE1016678BE500AD34C8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		263F6818165CFB550017EF3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALTERNATE_PERMISSIONS_FILES = i386;
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				DSTROOT = /tmp/GUJAdViewContext.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJAdViewContext/GUJAdViewContext-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+					"$PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJAdViewContextSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/** $PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/** $PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/** $PROJECT_DIR/../GUJXAXISSDK/GUJXAXISSDK/Classes/**";
+				VALID_ARCHS = "i386 x86_64";
+			};
+			name = Debug;
+		};
+		263F6819165CFB550017EF3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALTERNATE_PERMISSIONS_FILES = i386;
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				DSTROOT = /tmp/GUJAdViewContext.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJAdViewContext/GUJAdViewContext-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+					"$PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJAdViewContextSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/** $PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/** $PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/** $PROJECT_DIR/../GUJXAXISSDK/GUJXAXISSDK/Classes/**";
+				VALID_ARCHS = "i386 x86_64";
+			};
+			name = Release;
+		};
+		2653CF89166660FF004BB035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2653CF8A166660FF004BB035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2653CF8D16666140004BB035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2653CF8E16666140004BB035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		26E33F1E165BED5E005ADC51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		26E33F1F165BED5E005ADC51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		26E33F21165BED5E005ADC51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				DSTROOT = /tmp/GUJAdViewContext.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJAdViewContext/GUJAdViewContext-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+					"$PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/** $PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/** $PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/** $PROJECT_DIR/../GUJXAXISSDK/GUJXAXISSDK/Classes/**";
+				VALID_ARCHS = "armv7 armv7s arm64";
+			};
+			name = Debug;
+		};
+		26E33F22165BED5E005ADC51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				DSTROOT = /tmp/GUJAdViewContext.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJAdViewContext/GUJAdViewContext-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+					"$PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/** $PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/** $PROJECT_DIR/../GUJmOceanSDK/GUJmOceanSDK/Classes/** $PROJECT_DIR/../GUJXAXISSDK/GUJXAXISSDK/Classes/**";
+				VALID_ARCHS = "armv7 armv7s arm64";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		263F6817165CFB550017EF3D /* Build configuration list for PBXNativeTarget "GUJAdViewContextSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				263F6818165CFB550017EF3D /* Debug */,
+				263F6819165CFB550017EF3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2653CF88166660FF004BB035 /* Build configuration list for PBXLegacyTarget "BuildRelease" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2653CF89166660FF004BB035 /* Debug */,
+				2653CF8A166660FF004BB035 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2653CF8C16666140004BB035 /* Build configuration list for PBXLegacyTarget "CreateReleaseBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2653CF8D16666140004BB035 /* Debug */,
+				2653CF8E16666140004BB035 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26E33F0D165BED5D005ADC51 /* Build configuration list for PBXProject "GUJAdViewContext" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26E33F1E165BED5E005ADC51 /* Debug */,
+				26E33F1F165BED5E005ADC51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26E33F20165BED5E005ADC51 /* Build configuration list for PBXNativeTarget "GUJAdViewContext" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26E33F21165BED5E005ADC51 /* Debug */,
+				26E33F22165BED5E005ADC51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26E33F0A165BED5D005ADC51 /* Project object */;
+}

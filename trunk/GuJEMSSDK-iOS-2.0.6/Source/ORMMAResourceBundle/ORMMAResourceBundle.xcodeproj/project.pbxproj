@@ -1,0 +1,387 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2602855215F89B700033039E /* addressbar-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854215F89B700033039E /* addressbar-background.png */; };
+		2602855315F89B700033039E /* addressbar-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854315F89B700033039E /* addressbar-background@2x.png */; };
+		2602855415F89B700033039E /* back-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854415F89B700033039E /* back-disabled.png */; };
+		2602855515F89B700033039E /* back-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854515F89B700033039E /* back-disabled@2x.png */; };
+		2602855615F89B700033039E /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854615F89B700033039E /* back.png */; };
+		2602855715F89B700033039E /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854715F89B700033039E /* back@2x.png */; };
+		2602855815F89B700033039E /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854815F89B700033039E /* close.png */; };
+		2602855915F89B700033039E /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854915F89B700033039E /* close@2x.png */; };
+		2602855A15F89B700033039E /* forward-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854A15F89B700033039E /* forward-disabled.png */; };
+		2602855B15F89B700033039E /* forward-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854B15F89B700033039E /* forward-disabled@2x.png */; };
+		2602855C15F89B700033039E /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854C15F89B700033039E /* forward.png */; };
+		2602855D15F89B700033039E /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854D15F89B700033039E /* forward@2x.png */; };
+		2602855E15F89B700033039E /* openbrowser.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854E15F89B700033039E /* openbrowser.png */; };
+		2602855F15F89B700033039E /* openbrowser@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602854F15F89B700033039E /* openbrowser@2x.png */; };
+		2602856015F89B700033039E /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602855015F89B700033039E /* refresh.png */; };
+		2602856115F89B700033039E /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602855115F89B700033039E /* refresh@2x.png */; };
+		261E53FD15F49D4B00C0B19E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 261E53FC15F49D4B00C0B19E /* CoreFoundation.framework */; };
+		261E540315F49D4B00C0B19E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 261E540115F49D4B00C0B19E /* InfoPlist.strings */; };
+		261E541415F49E9E00C0B19E /* ormma_ios_bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 261E541215F49E9800C0B19E /* ormma_ios_bridge.js */; };
+		261E541715F49FAD00C0B19E /* ORMMA_HTML_Stub.html in Resources */ = {isa = PBXBuildFile; fileRef = 261E541615F49FAD00C0B19E /* ORMMA_HTML_Stub.html */; };
+		261E54C415F4B8FE00C0B19E /* ormma.js in Resources */ = {isa = PBXBuildFile; fileRef = 261E54B815F4AD3500C0B19E /* ormma.js */; };
+		26645BD415FB84CB0062F2FC /* closebox.png in Resources */ = {isa = PBXBuildFile; fileRef = 26645BD215FB84CB0062F2FC /* closebox.png */; };
+		26645BD515FB84CB0062F2FC /* closebox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 26645BD315FB84CB0062F2FC /* closebox@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2602854215F89B700033039E /* addressbar-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addressbar-background.png"; sourceTree = "<group>"; };
+		2602854315F89B700033039E /* addressbar-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addressbar-background@2x.png"; sourceTree = "<group>"; };
+		2602854415F89B700033039E /* back-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-disabled.png"; sourceTree = "<group>"; };
+		2602854515F89B700033039E /* back-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-disabled@2x.png"; sourceTree = "<group>"; };
+		2602854615F89B700033039E /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		2602854715F89B700033039E /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
+		2602854815F89B700033039E /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
+		2602854915F89B700033039E /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
+		2602854A15F89B700033039E /* forward-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward-disabled.png"; sourceTree = "<group>"; };
+		2602854B15F89B700033039E /* forward-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward-disabled@2x.png"; sourceTree = "<group>"; };
+		2602854C15F89B700033039E /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
+		2602854D15F89B700033039E /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
+		2602854E15F89B700033039E /* openbrowser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = openbrowser.png; sourceTree = "<group>"; };
+		2602854F15F89B700033039E /* openbrowser@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openbrowser@2x.png"; sourceTree = "<group>"; };
+		2602855015F89B700033039E /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		2602855115F89B700033039E /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
+		261E53F915F49D4B00C0B19E /* ORMMAResourceBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ORMMAResourceBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		261E53FC15F49D4B00C0B19E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		261E540015F49D4B00C0B19E /* ORMMAResourceBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ORMMAResourceBundle-Info.plist"; sourceTree = "<group>"; };
+		261E540215F49D4B00C0B19E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		261E540415F49D4B00C0B19E /* ORMMAResourceBundle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ORMMAResourceBundle-Prefix.pch"; sourceTree = "<group>"; };
+		261E541215F49E9800C0B19E /* ormma_ios_bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ormma_ios_bridge.js; sourceTree = "<group>"; };
+		261E541615F49FAD00C0B19E /* ORMMA_HTML_Stub.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ORMMA_HTML_Stub.html; sourceTree = "<group>"; };
+		261E54B815F4AD3500C0B19E /* ormma.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ormma.js; sourceTree = "<group>"; };
+		26645BD215FB84CB0062F2FC /* closebox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closebox.png; sourceTree = "<group>"; };
+		26645BD315FB84CB0062F2FC /* closebox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closebox@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		261E53F615F49D4B00C0B19E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				261E53FD15F49D4B00C0B19E /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		261E53EE15F49D4B00C0B19E = {
+			isa = PBXGroup;
+			children = (
+				261E53FE15F49D4B00C0B19E /* ORMMAResourceBundle */,
+				261E53FB15F49D4B00C0B19E /* Frameworks */,
+				261E53FA15F49D4B00C0B19E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		261E53FA15F49D4B00C0B19E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				261E53F915F49D4B00C0B19E /* ORMMAResourceBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		261E53FB15F49D4B00C0B19E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				261E53FC15F49D4B00C0B19E /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		261E53FE15F49D4B00C0B19E /* ORMMAResourceBundle */ = {
+			isa = PBXGroup;
+			children = (
+				261E540A15F49DC600C0B19E /* Resources */,
+				261E53FF15F49D4B00C0B19E /* Supporting Files */,
+			);
+			path = ORMMAResourceBundle;
+			sourceTree = "<group>";
+		};
+		261E53FF15F49D4B00C0B19E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				261E540015F49D4B00C0B19E /* ORMMAResourceBundle-Info.plist */,
+				261E540115F49D4B00C0B19E /* InfoPlist.strings */,
+				261E540415F49D4B00C0B19E /* ORMMAResourceBundle-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		261E540A15F49DC600C0B19E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				261E540B15F49DC600C0B19E /* HTML */,
+				261E540C15F49DC600C0B19E /* Images */,
+				261E540D15F49DC600C0B19E /* Javascript */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		261E540B15F49DC600C0B19E /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				261E541615F49FAD00C0B19E /* ORMMA_HTML_Stub.html */,
+			);
+			path = HTML;
+			sourceTree = "<group>";
+		};
+		261E540C15F49DC600C0B19E /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2602854215F89B700033039E /* addressbar-background.png */,
+				2602854315F89B700033039E /* addressbar-background@2x.png */,
+				2602854415F89B700033039E /* back-disabled.png */,
+				2602854515F89B700033039E /* back-disabled@2x.png */,
+				2602854615F89B700033039E /* back.png */,
+				2602854715F89B700033039E /* back@2x.png */,
+				2602854815F89B700033039E /* close.png */,
+				2602854915F89B700033039E /* close@2x.png */,
+				26645BD215FB84CB0062F2FC /* closebox.png */,
+				26645BD315FB84CB0062F2FC /* closebox@2x.png */,
+				2602854A15F89B700033039E /* forward-disabled.png */,
+				2602854B15F89B700033039E /* forward-disabled@2x.png */,
+				2602854C15F89B700033039E /* forward.png */,
+				2602854D15F89B700033039E /* forward@2x.png */,
+				2602854E15F89B700033039E /* openbrowser.png */,
+				2602854F15F89B700033039E /* openbrowser@2x.png */,
+				2602855015F89B700033039E /* refresh.png */,
+				2602855115F89B700033039E /* refresh@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		261E540D15F49DC600C0B19E /* Javascript */ = {
+			isa = PBXGroup;
+			children = (
+				261E54B815F4AD3500C0B19E /* ormma.js */,
+				261E541215F49E9800C0B19E /* ormma_ios_bridge.js */,
+			);
+			path = Javascript;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		261E53F815F49D4B00C0B19E /* ORMMAResourceBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 261E540715F49D4B00C0B19E /* Build configuration list for PBXNativeTarget "ORMMAResourceBundle" */;
+			buildPhases = (
+				261E53F615F49D4B00C0B19E /* Frameworks */,
+				261E53F715F49D4B00C0B19E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ORMMAResourceBundle;
+			productName = ORMMAResourceBundle;
+			productReference = 261E53F915F49D4B00C0B19E /* ORMMAResourceBundle.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		261E53F015F49D4B00C0B19E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "guj ems";
+			};
+			buildConfigurationList = 261E53F315F49D4B00C0B19E /* Build configuration list for PBXProject "ORMMAResourceBundle" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 261E53EE15F49D4B00C0B19E;
+			productRefGroup = 261E53FA15F49D4B00C0B19E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				261E53F815F49D4B00C0B19E /* ORMMAResourceBundle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		261E53F715F49D4B00C0B19E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				261E540315F49D4B00C0B19E /* InfoPlist.strings in Resources */,
+				261E541415F49E9E00C0B19E /* ormma_ios_bridge.js in Resources */,
+				261E541715F49FAD00C0B19E /* ORMMA_HTML_Stub.html in Resources */,
+				261E54C415F4B8FE00C0B19E /* ormma.js in Resources */,
+				2602855215F89B700033039E /* addressbar-background.png in Resources */,
+				2602855315F89B700033039E /* addressbar-background@2x.png in Resources */,
+				2602855415F89B700033039E /* back-disabled.png in Resources */,
+				2602855515F89B700033039E /* back-disabled@2x.png in Resources */,
+				2602855615F89B700033039E /* back.png in Resources */,
+				2602855715F89B700033039E /* back@2x.png in Resources */,
+				2602855815F89B700033039E /* close.png in Resources */,
+				2602855915F89B700033039E /* close@2x.png in Resources */,
+				2602855A15F89B700033039E /* forward-disabled.png in Resources */,
+				2602855B15F89B700033039E /* forward-disabled@2x.png in Resources */,
+				2602855C15F89B700033039E /* forward.png in Resources */,
+				2602855D15F89B700033039E /* forward@2x.png in Resources */,
+				2602855E15F89B700033039E /* openbrowser.png in Resources */,
+				2602855F15F89B700033039E /* openbrowser@2x.png in Resources */,
+				2602856015F89B700033039E /* refresh.png in Resources */,
+				2602856115F89B700033039E /* refresh@2x.png in Resources */,
+				26645BD415FB84CB0062F2FC /* closebox.png in Resources */,
+				26645BD515FB84CB0062F2FC /* closebox@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		261E540115F49D4B00C0B19E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				261E540215F49D4B00C0B19E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		261E540515F49D4B00C0B19E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		261E540615F49D4B00C0B19E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		261E540815F49D4B00C0B19E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLY_RULES_IN_COPY_FILES = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ORMMAResourceBundle/ORMMAResourceBundle-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "ORMMAResourceBundle/ORMMAResourceBundle-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s i386";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		261E540915F49D4B00C0B19E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLY_RULES_IN_COPY_FILES = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ORMMAResourceBundle/ORMMAResourceBundle-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "ORMMAResourceBundle/ORMMAResourceBundle-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s i386";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		261E53F315F49D4B00C0B19E /* Build configuration list for PBXProject "ORMMAResourceBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				261E540515F49D4B00C0B19E /* Debug */,
+				261E540615F49D4B00C0B19E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		261E540715F49D4B00C0B19E /* Build configuration list for PBXNativeTarget "ORMMAResourceBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				261E540815F49D4B00C0B19E /* Debug */,
+				261E540915F49D4B00C0B19E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 261E53F015F49D4B00C0B19E /* Project object */;
+}
