@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/MASTAdViewDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/MASTAdViewDelegate</TokenIdentifier>
+			<Abstract>The MASTAdViewDelegate protocol defines methods that a delegate of a MASTAdView object can optionally implement to receive notifications
+from the ad view.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/willReceiveAd:</TokenIdentifier>
+			<Abstract>Sent before an ad view will begin loading ad content.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)willReceiveAd:(id)sender</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that is about to load ad content.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/willReceiveAd:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/didReceiveAd:</TokenIdentifier>
+			<Abstract>Sent after an ad view finished loading ad content.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)didReceiveAd:(id)sender</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view has finished loading.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/didReceiveAd:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/didReceiveThirdPartyRequest:content:</TokenIdentifier>
+			<Abstract>Sent if SDK received client side third party campaign.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)didReceiveThirdPartyRequest:(id)sender content:(NSDictionary *)content</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that receive 3rd party ad content.</Abstract>
+				</Parameter><Parameter>
+					<Name>content</Name>
+					<Abstract>The dictionary of strings (key/values) for third party. You can start processing this content from @“type” key for determining ads type.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/didReceiveThirdPartyRequest:content:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/didFailToReceiveAd:withError:</TokenIdentifier>
+			<Abstract>Sent if an ad view failed to load ad content.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)didFailToReceiveAd:(id)sender withError:(NSError *)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that failed to load ad content.</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract>The error that occurred during loading.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/didFailToReceiveAd:withError:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/adWillStartFullScreen:</TokenIdentifier>
+			<Abstract>Sent before an ad view will start to display an ad full screen in the internal browser.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)adWillStartFullScreen:(id)sender</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that is about to display internal browser.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/adWillStartFullScreen:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/adDidEndFullScreen:</TokenIdentifier>
+			<Abstract>Sent after an ad view finished displaying internal browser.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)adDidEndFullScreen:(id)sender</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view has finished displaying internal browser.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/adDidEndFullScreen:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/adShouldOpen:withUrl:</TokenIdentifier>
+			<Abstract>Sent before an ad view will start to open URL.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)adShouldOpen:(id)sender withUrl:(NSURL *)url</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that is about to open URL.</Abstract>
+				</Parameter><Parameter>
+					<Name>url</Name>
+					<Abstract>The URL that should be opened in internal or external browser.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Return YES to allow SDK open browser otherwise return NO.</Abstract></ReturnValue>
+			<Anchor>//api/name/adShouldOpen:withUrl:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/didClosedAd:usageTimeInterval:</TokenIdentifier>
+			<Abstract>Sent after an ad view is closed and tracks the usage time of ad interstitial view.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)didClosedAd:(id)sender usageTimeInterval:(NSTimeInterval)usageTimeInterval</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view was closed.</Abstract>
+				</Parameter><Parameter>
+					<Name>usageTimeInterval</Name>
+					<Abstract>The usage time interval of ad view.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/didClosedAd:usageTimeInterval:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/MASTAdViewDelegate/ormmaProcess:event:parameters:</TokenIdentifier>
+			<Abstract>Sent after an ad process ORMMA command.</Abstract>
+			<DeclaredIn>MASTAdDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)ormmaProcess:(id)sender event:(NSString *)event parameters:(NSDictionary *)parameters</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>sender</Name>
+					<Abstract>The ad view that is about to process ORMMA event.</Abstract>
+				</Parameter><Parameter>
+					<Name>event</Name>
+					<Abstract>The string with name of the event.</Abstract>
+				</Parameter><Parameter>
+					<Name>parameters</Name>
+					<Abstract>The Dictionary with parameters from event.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/ormmaProcess:event:parameters:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
