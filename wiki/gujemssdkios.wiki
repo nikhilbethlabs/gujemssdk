@@ -17,6 +17,7 @@ iOS SDK change history and downloads.
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
+||v 2.0.6.1        || Minor bug fix ||
 ||v 2.0.6        || 64 Bit version/iOS 8 ready ||
 ||v 2.0.5        || Completely revamped version ||
 || || No more singletones ||
