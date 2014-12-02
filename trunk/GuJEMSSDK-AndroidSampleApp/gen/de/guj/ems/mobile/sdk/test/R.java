@@ -185,6 +185,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int ems_bfZoneId=0x7f010026;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int ems_gPubId=0x7f010027;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -192,7 +200,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_geo=0x7f01002a;
+        public static final int ems_geo=0x7f01002b;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -200,7 +208,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_kw=0x7f010028;
+        public static final int ems_kw=0x7f010029;
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -208,7 +216,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_lat=0x7f01002b;
+        public static final int ems_lat=0x7f01002c;
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -216,7 +224,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_lon=0x7f01002c;
+        public static final int ems_lon=0x7f01002d;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -224,7 +232,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_nkw=0x7f010029;
+        public static final int ems_nkw=0x7f01002a;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -265,7 +273,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int ems_uid=0x7f010027;
+        public static final int ems_uid=0x7f010028;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -435,12 +443,20 @@ containing a value of this type.
         public static final int zOrderOnTop=0x7f010010;
     }
     public static final class bool {
+        /**  Allow Remote Config 
+         */
+        public static final int ems_remote_config=0x7f090003;
         /**  Set this to true if you want the geolocation truncated to two digits 
          */
-        public static final int ems_shorten_location=0x7f090000;
+        public static final int ems_shorten_location=0x7f090001;
         /**   Set this to true if you want test ads in all adviews 
          */
-        public static final int ems_test_mode=0x7f090001;
+        public static final int ems_test_mode=0x7f090002;
+        /**   Standard layout is for phones 
+  Standard layout is for phones 
+  Standard layout is for phones 
+         */
+        public static final int largeDisplay=0x7f090000;
     }
     public static final class color {
         public static final int common_action_bar_splitter=0x7f060009;
@@ -537,19 +553,23 @@ containing a value of this type.
         public static final int thumb=0x7f020031;
     }
     public static final class id {
-        public static final int ad15215=0x7f070033;
-        public static final int ad15224=0x7f070036;
-        public static final int ad15298=0x7f070029;
-        public static final int ad15298_2=0x7f07002b;
-        public static final int ad15300_2=0x7f07002c;
-        public static final int ad15302=0x7f070030;
-        public static final int ad15304=0x7f070037;
-        public static final int ad15308=0x7f070026;
-        public static final int ad15312=0x7f070024;
-        public static final int ad16542=0x7f070035;
-        public static final int adFormats=0x7f070042;
+        public static final int ad15215=0x7f070037;
+        public static final int ad15224=0x7f07003a;
+        public static final int ad15298=0x7f07002d;
+        public static final int ad15298_2=0x7f07002f;
+        public static final int ad15300_2=0x7f070030;
+        public static final int ad15302=0x7f070034;
+        public static final int ad15304=0x7f07003b;
+        public static final int ad15308=0x7f07002a;
+        public static final int ad15312=0x7f070028;
+        public static final int ad16542=0x7f070039;
+        public static final int adFormats=0x7f070046;
         public static final int ad_banner_top=0x7f070018;
-        public static final int appLayouts=0x7f070049;
+        public static final int adheader=0x7f07001b;
+        public static final int adhint=0x7f070019;
+        public static final int adkicker=0x7f07001c;
+        public static final int adthumb=0x7f07001a;
+        public static final int appLayouts=0x7f07004d;
         public static final int book_now=0x7f070010;
         public static final int buyButton=0x7f07000a;
         public static final int buy_now=0x7f07000f;
@@ -558,63 +578,63 @@ containing a value of this type.
         public static final int content_frame=0x7f070015;
         public static final int drawer_layout=0x7f070014;
         public static final int drawer_layout_tablet=0x7f070017;
-        public static final int emsIntCloseButton=0x7f07001d;
-        public static final int emsIntCloseButton2=0x7f07001a;
-        public static final int emsIntLayout=0x7f070019;
-        public static final int emsIntProgBar=0x7f07001e;
-        public static final int emsIntProgLayout=0x7f07001c;
-        public static final int emsIntSpinner=0x7f07001f;
-        public static final int emsIntSpinner2=0x7f07001b;
-        public static final int emsVidIntButton=0x7f070039;
-        public static final int emsVidIntLayout=0x7f070038;
-        public static final int emsVidIntSndButton=0x7f07003c;
-        public static final int emsVidIntSpinner=0x7f07003b;
-        public static final int emsVideoText=0x7f07002a;
-        public static final int emsVideoView=0x7f07003a;
+        public static final int emsIntCloseButton=0x7f070021;
+        public static final int emsIntCloseButton2=0x7f07001e;
+        public static final int emsIntLayout=0x7f07001d;
+        public static final int emsIntProgBar=0x7f070022;
+        public static final int emsIntProgLayout=0x7f070020;
+        public static final int emsIntSpinner=0x7f070023;
+        public static final int emsIntSpinner2=0x7f07001f;
+        public static final int emsVidIntButton=0x7f07003d;
+        public static final int emsVidIntLayout=0x7f07003c;
+        public static final int emsVidIntSndButton=0x7f070040;
+        public static final int emsVidIntSpinner=0x7f07003f;
+        public static final int emsVideoText=0x7f07002e;
+        public static final int emsVideoView=0x7f07003e;
         public static final int grayscale=0x7f070012;
         public static final int holo_dark=0x7f070005;
         public static final int holo_light=0x7f070006;
         public static final int hybrid=0x7f070004;
-        public static final int imageView1=0x7f070021;
-        public static final int imageView2=0x7f070025;
-        public static final int interstitial=0x7f070043;
+        public static final int imageView1=0x7f070025;
+        public static final int imageView2=0x7f070029;
+        public static final int interstitial=0x7f070047;
         public static final int left_drawer=0x7f070016;
-        public static final int list=0x7f07004a;
-        public static final int list_native=0x7f07004b;
-        public static final int mail=0x7f070041;
-        public static final int main=0x7f070034;
+        public static final int list=0x7f07004e;
+        public static final int list_native=0x7f07004f;
+        public static final int mail=0x7f070045;
+        public static final int main=0x7f070038;
         public static final int match_parent=0x7f07000c;
         public static final int monochrome=0x7f070013;
         public static final int none=0x7f070000;
         public static final int normal=0x7f070001;
-        public static final int ormma=0x7f070047;
-        public static final int preRoll=0x7f070048;
+        public static final int ormma=0x7f07004b;
+        public static final int preRoll=0x7f07004c;
         public static final int production=0x7f070007;
-        public static final int relative=0x7f07004c;
-        public static final int relative_native=0x7f07004d;
-        public static final int reload=0x7f07003e;
-        public static final int retina=0x7f070046;
-        public static final int root0=0x7f070028;
-        public static final int sampleText=0x7f070023;
+        public static final int relative=0x7f070050;
+        public static final int relative_native=0x7f070051;
+        public static final int reload=0x7f070042;
+        public static final int retina=0x7f07004a;
+        public static final int root0=0x7f07002c;
+        public static final int sampleText=0x7f070027;
         public static final int sandbox=0x7f070008;
         public static final int satellite=0x7f070002;
         public static final int selectionDetails=0x7f07000b;
-        public static final int showroom=0x7f07003f;
+        public static final int showroom=0x7f070043;
         public static final int strict_sandbox=0x7f070009;
-        public static final int table=0x7f07004e;
-        public static final int tableLayout=0x7f07002d;
-        public static final int tableRow1=0x7f07002e;
-        public static final int tableRow2=0x7f07002f;
-        public static final int tableRow3=0x7f070031;
-        public static final int tableRow4=0x7f070032;
-        public static final int targeting=0x7f070045;
+        public static final int table=0x7f070052;
+        public static final int tableLayout=0x7f070031;
+        public static final int tableRow1=0x7f070032;
+        public static final int tableRow2=0x7f070033;
+        public static final int tableRow3=0x7f070035;
+        public static final int tableRow4=0x7f070036;
+        public static final int targeting=0x7f070049;
         public static final int terrain=0x7f070003;
-        public static final int testList=0x7f070020;
-        public static final int textView1=0x7f070022;
-        public static final int video=0x7f070044;
-        public static final int videoView=0x7f07003d;
-        public static final int web=0x7f070040;
-        public static final int webView1=0x7f070027;
+        public static final int testList=0x7f070024;
+        public static final int textView1=0x7f070026;
+        public static final int video=0x7f070048;
+        public static final int videoView=0x7f070041;
+        public static final int web=0x7f070044;
+        public static final int webView1=0x7f07002b;
         public static final int wrap_content=0x7f07000d;
     }
     public static final class integer {
@@ -628,20 +648,21 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f030001;
         public static final int generic_adview=0x7f030002;
         public static final int generic_nativeadview=0x7f030003;
-        public static final int interstitial_noprogress=0x7f030004;
-        public static final int interstitial_progress=0x7f030005;
-        public static final int list=0x7f030006;
-        public static final int list_item_default=0x7f030007;
-        public static final int native_relative_layout=0x7f030008;
-        public static final int ormma=0x7f030009;
-        public static final int relative_layout=0x7f03000a;
-        public static final int retina=0x7f03000b;
-        public static final int table_layout=0x7f03000c;
-        public static final int targeting=0x7f03000d;
-        public static final int targeting_adview_bottom=0x7f03000e;
-        public static final int targeting_adview_top=0x7f03000f;
-        public static final int video_interstitial=0x7f030010;
-        public static final int vplayer=0x7f030011;
+        public static final int integrated_ad=0x7f030004;
+        public static final int interstitial_noprogress=0x7f030005;
+        public static final int interstitial_progress=0x7f030006;
+        public static final int list=0x7f030007;
+        public static final int list_item_default=0x7f030008;
+        public static final int native_relative_layout=0x7f030009;
+        public static final int ormma=0x7f03000a;
+        public static final int relative_layout=0x7f03000b;
+        public static final int retina=0x7f03000c;
+        public static final int table_layout=0x7f03000d;
+        public static final int targeting=0x7f03000e;
+        public static final int targeting_adview_bottom=0x7f03000f;
+        public static final int targeting_adview_top=0x7f030010;
+        public static final int video_interstitial=0x7f030011;
+        public static final int vplayer=0x7f030012;
     }
     public static final class menu {
         public static final int extra=0x7f0c0000;
@@ -649,18 +670,18 @@ containing a value of this type.
     }
     public static final class string {
         public static final int accept=0x7f050002;
-        public static final int amobeeAdSpace=0x7f050034;
-        public static final int amobeeLatitude=0x7f050036;
-        public static final int amobeeLongitude=0x7f050037;
-        public static final int amobeeUserId=0x7f050035;
-        public static final int app_name=0x7f050042;
-        public static final int attributePrefix=0x7f050031;
-        public static final int bLevelParam=0x7f05003f;
-        public static final int backfillSiteId=0x7f050028;
-        public static final int backfillZoneId=0x7f050029;
-        public static final int baseParams=0x7f050033;
-        public static final int baseUrl=0x7f050032;
-        public static final int close=0x7f050024;
+        public static final int advert=0x7f050053;
+        public static final int amobeeAdSpace=0x7f050036;
+        public static final int amobeeLatitude=0x7f050038;
+        public static final int amobeeLongitude=0x7f050039;
+        public static final int amobeeUserId=0x7f050037;
+        public static final int app_name=0x7f050056;
+        public static final int attributePrefix=0x7f050033;
+        public static final int backfillSiteId=0x7f05002a;
+        public static final int backfillZoneId=0x7f05002b;
+        public static final int baseParams=0x7f050035;
+        public static final int baseUrl=0x7f050034;
+        public static final int close=0x7f050026;
         /**   Text for notification shown when the Android Wear apps needs to be updated. Only shown on the wearable. [CHAR LIMIT=NONE] 
          */
         public static final int common_android_wear_notification_needs_update_text=0x7f050009;
@@ -760,39 +781,108 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f050020;
-        public static final int connectAd=0x7f05003e;
+        public static final int connectAd=0x7f050040;
         public static final int create_calendar_message=0x7f050005;
         public static final int create_calendar_title=0x7f050004;
         public static final int decline=0x7f050003;
-        public static final int deviceId=0x7f050030;
-        public static final int drawer_close=0x7f050044;
-        public static final int drawer_open=0x7f050043;
-        public static final int formats=0x7f05002a;
-        public static final int geo=0x7f05002d;
-        public static final int keyword=0x7f05002b;
-        public static final int latitude=0x7f05002e;
-        public static final int loading=0x7f050023;
-        public static final int longitude=0x7f05002f;
-        public static final int nkeyword=0x7f05002c;
-        public static final int onAdEmpty=0x7f050039;
-        public static final int onAdError=0x7f05003a;
-        public static final int onAdSuccess=0x7f050038;
-        public static final int pStatusParam=0x7f050040;
-        public static final int securityHeaderName=0x7f050041;
-        public static final int siteId=0x7f050026;
-        public static final int sound=0x7f050025;
+        public static final int deviceId=0x7f050032;
+        public static final int drawer_close=0x7f050058;
+        public static final int drawer_open=0x7f050057;
+        public static final int emsAdMatch=0x7f050041;
+        /**  The root path of the remote json config file for the SDK 
+         */
+        public static final int ems_jws_root=0x7f050023;
+        public static final int geo=0x7f05002f;
+        public static final int googlePublisherId=0x7f05002c;
+        /**  Default Google Publisher ID 
+         */
+        public static final int google_pub_id=0x7f050024;
+        public static final int jsonBaseUrlDefault=0x7f05004e;
+        public static final int jsonBaseUrlTelefonica=0x7f050050;
+        public static final int jsonBaseUrlVodafone=0x7f05004f;
+        public static final int jsonKeyword=0x7f05004d;
+        public static final int jsonLocalConfigFileName=0x7f050049;
+        public static final int jsonLocalVariablesFileName=0x7f05004a;
+        public static final int jsonRefreshCapVariables=0x7f050051;
+        public static final int jsonRemoteConfigFileName=0x7f050048;
+        public static final int jsonUrlAppend=0x7f05004c;
+        public static final int jsonUrlReplace=0x7f05004b;
+        public static final int jsonVariablesScript=0x7f050052;
+        public static final int keyword=0x7f05002d;
+        public static final int latitude=0x7f050030;
+        public static final int loading=0x7f050025;
+        public static final int longitude=0x7f050031;
+        public static final int nkeyword=0x7f05002e;
+        public static final int onAdEmpty=0x7f05003b;
+        public static final int onAdError=0x7f05003c;
+        public static final int onAdSuccess=0x7f05003a;
+        public static final int pBatteryLevel=0x7f050042;
+        public static final int pGpsAltitude=0x7f050045;
+        public static final int pGpsVelocity=0x7f050044;
+        public static final int pGuJIdForAdvertiser=0x7f050047;
+        public static final int pIdForAdvertiser=0x7f050046;
+        public static final int pStatusParam=0x7f050043;
+        public static final int sampleHeader=0x7f050054;
+        public static final int sampleKicker=0x7f050055;
+        public static final int siteId=0x7f050028;
+        public static final int sound=0x7f050027;
         public static final int store_picture_message=0x7f050001;
         public static final int store_picture_title=0x7f050000;
-        public static final int videoPreload=0x7f05003c;
-        public static final int videoRunning=0x7f05003d;
-        public static final int videoSkip=0x7f05003b;
+        public static final int videoPreload=0x7f05003e;
+        public static final int videoRunning=0x7f05003f;
+        public static final int videoSkip=0x7f05003d;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */
         public static final int wallet_buy_button_place_holder=0x7f050022;
-        public static final int zoneId=0x7f050027;
+        public static final int zoneId=0x7f050029;
     }
     public static final class style {
+        /**  parent style for integrated ad 
+ parent style for integrated ad 
+ parent style for integrated ad 
+ parent style for integrated ad 
+ parent style for integrated ad 
+ parent style for integrated ad 
+ parent style for integrated ad 
+         */
+        public static final int GuJEMSIntegrativeAd=0x7f040005;
+        /**  style for headline 
+ style for headline 
+ style for headline 
+ style for headline 
+ style for headline 
+ style for headline 
+ style for headline 
+         */
+        public static final int GuJEMSIntegrativeAd_Header=0x7f040008;
+        /**  style for "sponsored" hint text 
+ style for "sponsored" hint text 
+ style for "sponsored" hint text 
+ style for "sponsored" hint text 
+ style for "sponsored" hint text 
+ style for "sponsored" hint text 
+ style for "sponsored" hint text 
+         */
+        public static final int GuJEMSIntegrativeAd_Hint=0x7f040006;
+        /**  style for kicker text 
+ style for kicker text 
+ style for kicker text 
+ style for kicker text 
+ style for kicker text 
+ style for kicker text 
+ style for kicker text 
+         */
+        public static final int GuJEMSIntegrativeAd_Kicker=0x7f040009;
+        /**  style for ad image/thumb 
+ style for ad image/thumb 
+ style for ad image/thumb 
+ style for ad image/thumb 
+ style for ad image/thumb 
+ style for ad image/thumb 
+ style for ad image/thumb 
+         */
+        public static final int GuJEMSIntegrativeAd_Thumb=0x7f040007;
         public static final int Theme_IAPTheme=0x7f040000;
         public static final int WalletFragmentDefaultButtonTextAppearance=0x7f040003;
         public static final int WalletFragmentDefaultDetailsHeaderTextAppearance=0x7f040002;
@@ -888,6 +978,7 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #GuJEMSAdView_ems_bfSiteId de.guj.ems.mobile.sdk.test:ems_bfSiteId}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSAdView_ems_bfZoneId de.guj.ems.mobile.sdk.test:ems_bfZoneId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSAdView_ems_gPubId de.guj.ems.mobile.sdk.test:ems_gPubId}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSAdView_ems_geo de.guj.ems.mobile.sdk.test:ems_geo}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSAdView_ems_kw de.guj.ems.mobile.sdk.test:ems_kw}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSAdView_ems_lat de.guj.ems.mobile.sdk.test:ems_lat}</code></td><td></td></tr>
@@ -902,6 +993,7 @@ containing a value of this type.
            </table>
            @see #GuJEMSAdView_ems_bfSiteId
            @see #GuJEMSAdView_ems_bfZoneId
+           @see #GuJEMSAdView_ems_gPubId
            @see #GuJEMSAdView_ems_geo
            @see #GuJEMSAdView_ems_kw
            @see #GuJEMSAdView_ems_lat
@@ -918,7 +1010,7 @@ containing a value of this type.
             0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023,
             0x7f010024, 0x7f010025, 0x7f010026, 0x7f010027,
             0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b,
-            0x7f01002c
+            0x7f01002c, 0x7f01002d
         };
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_bfSiteId}
@@ -949,6 +1041,20 @@ containing a value of this type.
         */
         public static final int GuJEMSAdView_ems_bfZoneId = 6;
         /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_gPubId}
+          attribute's value can be found in the {@link #GuJEMSAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk.test:ems_gPubId
+        */
+        public static final int GuJEMSAdView_ems_gPubId = 7;
+        /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_geo}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
 
@@ -961,7 +1067,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_geo
         */
-        public static final int GuJEMSAdView_ems_geo = 10;
+        public static final int GuJEMSAdView_ems_geo = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_kw}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -975,7 +1081,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_kw
         */
-        public static final int GuJEMSAdView_ems_kw = 8;
+        public static final int GuJEMSAdView_ems_kw = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_lat}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -989,7 +1095,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_lat
         */
-        public static final int GuJEMSAdView_ems_lat = 11;
+        public static final int GuJEMSAdView_ems_lat = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_lon}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1003,7 +1109,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_lon
         */
-        public static final int GuJEMSAdView_ems_lon = 12;
+        public static final int GuJEMSAdView_ems_lon = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_nkw}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1017,7 +1123,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_nkw
         */
-        public static final int GuJEMSAdView_ems_nkw = 9;
+        public static final int GuJEMSAdView_ems_nkw = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_onAdEmpty}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1089,7 +1195,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_uid
         */
-        public static final int GuJEMSAdView_ems_uid = 7;
+        public static final int GuJEMSAdView_ems_uid = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_zoneId}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1112,6 +1218,7 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #GuJEMSNativeAdView_ems_bfSiteId de.guj.ems.mobile.sdk.test:ems_bfSiteId}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSNativeAdView_ems_bfZoneId de.guj.ems.mobile.sdk.test:ems_bfZoneId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSNativeAdView_ems_gPubId de.guj.ems.mobile.sdk.test:ems_gPubId}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSNativeAdView_ems_geo de.guj.ems.mobile.sdk.test:ems_geo}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSNativeAdView_ems_kw de.guj.ems.mobile.sdk.test:ems_kw}</code></td><td></td></tr>
            <tr><td><code>{@link #GuJEMSNativeAdView_ems_lat de.guj.ems.mobile.sdk.test:ems_lat}</code></td><td></td></tr>
@@ -1126,6 +1233,7 @@ containing a value of this type.
            </table>
            @see #GuJEMSNativeAdView_ems_bfSiteId
            @see #GuJEMSNativeAdView_ems_bfZoneId
+           @see #GuJEMSNativeAdView_ems_gPubId
            @see #GuJEMSNativeAdView_ems_geo
            @see #GuJEMSNativeAdView_ems_kw
            @see #GuJEMSNativeAdView_ems_lat
@@ -1142,7 +1250,7 @@ containing a value of this type.
             0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023,
             0x7f010024, 0x7f010025, 0x7f010026, 0x7f010027,
             0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b,
-            0x7f01002c
+            0x7f01002c, 0x7f01002d
         };
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_bfSiteId}
@@ -1173,6 +1281,20 @@ containing a value of this type.
         */
         public static final int GuJEMSNativeAdView_ems_bfZoneId = 6;
         /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_gPubId}
+          attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk.test:ems_gPubId
+        */
+        public static final int GuJEMSNativeAdView_ems_gPubId = 7;
+        /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_geo}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
 
@@ -1185,7 +1307,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_geo
         */
-        public static final int GuJEMSNativeAdView_ems_geo = 10;
+        public static final int GuJEMSNativeAdView_ems_geo = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_kw}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1199,7 +1321,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_kw
         */
-        public static final int GuJEMSNativeAdView_ems_kw = 8;
+        public static final int GuJEMSNativeAdView_ems_kw = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_lat}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1213,7 +1335,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_lat
         */
-        public static final int GuJEMSNativeAdView_ems_lat = 11;
+        public static final int GuJEMSNativeAdView_ems_lat = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_lon}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1227,7 +1349,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_lon
         */
-        public static final int GuJEMSNativeAdView_ems_lon = 12;
+        public static final int GuJEMSNativeAdView_ems_lon = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_nkw}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1241,7 +1363,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_nkw
         */
-        public static final int GuJEMSNativeAdView_ems_nkw = 9;
+        public static final int GuJEMSNativeAdView_ems_nkw = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_onAdEmpty}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1313,7 +1435,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk.test:ems_uid
         */
-        public static final int GuJEMSNativeAdView_ems_uid = 7;
+        public static final int GuJEMSNativeAdView_ems_uid = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.test.R.attr#ems_zoneId}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.

@@ -57,32 +57,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		SdkUtil.setContext(getApplicationContext());
-
-		// START content provider test
-		/*
-		ContentValues values = new ContentValues();
-		values.put("adseen", "789456");
-		Uri uri = getContentResolver().insert(DataProvider.CONTENT_URI, values);
-
-		Uri allData = Uri.parse("content://de.guj.ems.mobile.data/info");
-		Cursor c = managedQuery(allData, new String[]{"adseen"}, null, null, null);
-		if (c.moveToFirst()) {
-			do {
-				Toast.makeText(
-						this,
-						c.getString(c.getColumnIndex("name")) + ", "
-								+ c.getString(c.getColumnIndex("value")),
-						Toast.LENGTH_LONG).show();
-			} while (c.moveToNext());
-		}
-		*/
-		// END content provider test
-		
-		/*
-		 * SdkLog.d(TAG, SdkUtil.isLargerThanPhone() ?
-		 * "We are on a phablet or tablet." : "We are on a smartphone.");
-		 */
-
 		setContentView(R.layout.activity_main);
 
 		mTitle = mDrawerTitle = getTitle();
