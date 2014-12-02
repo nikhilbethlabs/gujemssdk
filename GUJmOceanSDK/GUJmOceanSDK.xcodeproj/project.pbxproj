@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		264B9871165BD8A6008CA035 /* GUJmOceanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A56916526F5B00F2965F /* GUJmOceanViewController.m */; };
+		264B9872165BD8A6008CA035 /* GUJmOceanBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A5751652831100F2965F /* GUJmOceanBridge.m */; };
+		264B9873165BD8A6008CA035 /* GUJMASTAdViewRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A5851652A19700F2965F /* GUJMASTAdViewRef.m */; };
+		264B9874165BD8A6008CA035 /* GUJmOceanUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A58A1652AE0F00F2965F /* GUJmOceanUtil.m */; };
+		264B9876165BD8A6008CA035 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2656C18516525658007B33FD /* Foundation.framework */; };
+		264B9878165BD8A6008CA035 /* GUJmOceanViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */; };
+		264B9879165BD8A6008CA035 /* GUJmOceanConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A56E165279BE00F2965F /* GUJmOceanConstants.h */; };
+		264B987A165BD8A6008CA035 /* GUJmOceanBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5741652831100F2965F /* GUJmOceanBridge.h */; };
+		264B987B165BD8A6008CA035 /* GUJMASTAdViewRef.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5841652A19700F2965F /* GUJMASTAdViewRef.h */; };
+		264B987C165BD8A6008CA035 /* GUJmOceanUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5891652AE0F00F2965F /* GUJmOceanUtil.h */; };
+		2656C18616525658007B33FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2656C18516525658007B33FD /* Foundation.framework */; };
+		268F165A165D3042005FE385 /* GUJmOceanViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */; };
+		268F165C165D304B005FE385 /* GUJmOceanViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */; };
+		26B3A56A16526F5B00F2965F /* GUJmOceanViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */; };
+		26B3A56B16526F5B00F2965F /* GUJmOceanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A56916526F5B00F2965F /* GUJmOceanViewController.m */; };
+		26B3A56F165279BE00F2965F /* GUJmOceanConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A56E165279BE00F2965F /* GUJmOceanConstants.h */; };
+		26B3A5761652831100F2965F /* GUJmOceanBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5741652831100F2965F /* GUJmOceanBridge.h */; };
+		26B3A5771652831100F2965F /* GUJmOceanBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A5751652831100F2965F /* GUJmOceanBridge.m */; };
+		26B3A5861652A19700F2965F /* GUJMASTAdViewRef.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5841652A19700F2965F /* GUJMASTAdViewRef.h */; };
+		26B3A5871652A19700F2965F /* GUJMASTAdViewRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A5851652A19700F2965F /* GUJMASTAdViewRef.m */; };
+		26B3A58B1652AE0F00F2965F /* GUJmOceanUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 26B3A5891652AE0F00F2965F /* GUJmOceanUtil.h */; };
+		26B3A58C1652AE0F00F2965F /* GUJmOceanUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B3A58A1652AE0F00F2965F /* GUJmOceanUtil.m */; };
+		26E8894C165D06310077BF19 /* GUJmOceanSDKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E8894B165D06310077BF19 /* GUJmOceanSDKVersion.h */; };
+		26E8894D165D06310077BF19 /* GUJmOceanSDKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 26E8894B165D06310077BF19 /* GUJmOceanSDKVersion.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		264B986F165BD8A6008CA035 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2615212A15F7BAE5004DAFD9;
+			remoteInfo = GUJORMMASDKSimulator;
+		};
+		2656C1EB165268D4007B33FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2625774B15ECC547001169D9;
+			remoteInfo = GUJORMMASDK;
+		};
+		2656C1ED165268D4007B33FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2615215E15F7BAE5004DAFD9;
+			remoteInfo = GUJORMMASDKSimulator;
+		};
+		26793D28165BDB730081A10A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2625774A15ECC547001169D9;
+			remoteInfo = GUJORMMASDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		268F1658165D3033005FE385 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				268F165A165D3042005FE385 /* GUJmOceanViewController.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		268F165B165D3046005FE385 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				268F165C165D304B005FE385 /* GUJmOceanViewController.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		264B9880165BD8A6008CA035 /* libGUJmOceanSDKSimulator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJmOceanSDKSimulator.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2656C18216525658007B33FD /* libGUJmOceanSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGUJmOceanSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2656C18516525658007B33FD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2656C18916525658007B33FD /* GUJmOceanSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GUJmOceanSDK-Prefix.pch"; sourceTree = "<group>"; };
+		2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GUJORMMASDK.xcodeproj; path = ../GUJORMMASDK/GUJORMMASDK.xcodeproj; sourceTree = "<group>"; };
+		26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJmOceanViewController.h; sourceTree = "<group>"; };
+		26B3A56916526F5B00F2965F /* GUJmOceanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJmOceanViewController.m; sourceTree = "<group>"; };
+		26B3A56E165279BE00F2965F /* GUJmOceanConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJmOceanConstants.h; sourceTree = "<group>"; };
+		26B3A5741652831100F2965F /* GUJmOceanBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJmOceanBridge.h; sourceTree = "<group>"; };
+		26B3A5751652831100F2965F /* GUJmOceanBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJmOceanBridge.m; sourceTree = "<group>"; };
+		26B3A5841652A19700F2965F /* GUJMASTAdViewRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJMASTAdViewRef.h; sourceTree = "<group>"; };
+		26B3A5851652A19700F2965F /* GUJMASTAdViewRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJMASTAdViewRef.m; sourceTree = "<group>"; };
+		26B3A5891652AE0F00F2965F /* GUJmOceanUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJmOceanUtil.h; sourceTree = "<group>"; };
+		26B3A58A1652AE0F00F2965F /* GUJmOceanUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GUJmOceanUtil.m; sourceTree = "<group>"; };
+		26E8894B165D06310077BF19 /* GUJmOceanSDKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUJmOceanSDKVersion.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		264B9875165BD8A6008CA035 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				264B9876165BD8A6008CA035 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2656C17F16525658007B33FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2656C18616525658007B33FD /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2656C17716525657007B33FD = {
+			isa = PBXGroup;
+			children = (
+				2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */,
+				2656C18716525658007B33FD /* GUJmOceanSDK */,
+				2656C18416525658007B33FD /* Frameworks */,
+				2656C18316525658007B33FD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2656C18316525658007B33FD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2656C18216525658007B33FD /* libGUJmOceanSDK.a */,
+				264B9880165BD8A6008CA035 /* libGUJmOceanSDKSimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2656C18416525658007B33FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2656C18516525658007B33FD /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2656C18716525658007B33FD /* GUJmOceanSDK */ = {
+			isa = PBXGroup;
+			children = (
+				2656C19216525682007B33FD /* Classes */,
+				2656C18816525658007B33FD /* Supporting Files */,
+			);
+			path = GUJmOceanSDK;
+			sourceTree = "<group>";
+		};
+		2656C18816525658007B33FD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2656C18916525658007B33FD /* GUJmOceanSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2656C19216525682007B33FD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2656C19316525682007B33FD /* Private */,
+				2656C19416525682007B33FD /* Public */,
+				26B3A56E165279BE00F2965F /* GUJmOceanConstants.h */,
+				26E8894B165D06310077BF19 /* GUJmOceanSDKVersion.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		2656C19316525682007B33FD /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A5721652823600F2965F /* IO */,
+				26B3A5831652A17100F2965F /* UI */,
+				26B3A5881652ADFC00F2965F /* Util */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		2656C19416525682007B33FD /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A56816526F5B00F2965F /* GUJmOceanViewController.h */,
+				26B3A56916526F5B00F2965F /* GUJmOceanViewController.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		2656C1DF165268D3007B33FD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2656C1EC165268D4007B33FD /* libGUJORMMASDK.a */,
+				2656C1EE165268D4007B33FD /* libGUJORMMASDKSimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26B3A5721652823600F2965F /* IO */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A5731652823600F2965F /* Bridge */,
+			);
+			path = IO;
+			sourceTree = "<group>";
+		};
+		26B3A5731652823600F2965F /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A5741652831100F2965F /* GUJmOceanBridge.h */,
+				26B3A5751652831100F2965F /* GUJmOceanBridge.m */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
+		26B3A5831652A17100F2965F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A5841652A19700F2965F /* GUJMASTAdViewRef.h */,
+				26B3A5851652A19700F2965F /* GUJMASTAdViewRef.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		26B3A5881652ADFC00F2965F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				26B3A5891652AE0F00F2965F /* GUJmOceanUtil.h */,
+				26B3A58A1652AE0F00F2965F /* GUJmOceanUtil.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		264B9877165BD8A6008CA035 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				264B9878165BD8A6008CA035 /* GUJmOceanViewController.h in Headers */,
+				264B9879165BD8A6008CA035 /* GUJmOceanConstants.h in Headers */,
+				264B987A165BD8A6008CA035 /* GUJmOceanBridge.h in Headers */,
+				264B987B165BD8A6008CA035 /* GUJMASTAdViewRef.h in Headers */,
+				264B987C165BD8A6008CA035 /* GUJmOceanUtil.h in Headers */,
+				26E8894D165D06310077BF19 /* GUJmOceanSDKVersion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2656C18016525658007B33FD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26B3A56A16526F5B00F2965F /* GUJmOceanViewController.h in Headers */,
+				26B3A56F165279BE00F2965F /* GUJmOceanConstants.h in Headers */,
+				26B3A5761652831100F2965F /* GUJmOceanBridge.h in Headers */,
+				26B3A5861652A19700F2965F /* GUJMASTAdViewRef.h in Headers */,
+				26B3A58B1652AE0F00F2965F /* GUJmOceanUtil.h in Headers */,
+				26E8894C165D06310077BF19 /* GUJmOceanSDKVersion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		264B986D165BD8A6008CA035 /* GUJmOceanSDKSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 264B987D165BD8A6008CA035 /* Build configuration list for PBXNativeTarget "GUJmOceanSDKSimulator" */;
+			buildPhases = (
+				264B9870165BD8A6008CA035 /* Sources */,
+				264B9875165BD8A6008CA035 /* Frameworks */,
+				264B9877165BD8A6008CA035 /* Headers */,
+				268F165B165D3046005FE385 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				264B986E165BD8A6008CA035 /* PBXTargetDependency */,
+			);
+			name = GUJmOceanSDKSimulator;
+			productName = GUJmOceanSDK;
+			productReference = 264B9880165BD8A6008CA035 /* libGUJmOceanSDKSimulator.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		2656C18116525658007B33FD /* GUJmOceanSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2656C18F16525658007B33FD /* Build configuration list for PBXNativeTarget "GUJmOceanSDK" */;
+			buildPhases = (
+				2656C17E16525658007B33FD /* Sources */,
+				2656C17F16525658007B33FD /* Frameworks */,
+				2656C18016525658007B33FD /* Headers */,
+				268F1658165D3033005FE385 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26793D29165BDB730081A10A /* PBXTargetDependency */,
+			);
+			name = GUJmOceanSDK;
+			productName = GUJmOceanSDK;
+			productReference = 2656C18216525658007B33FD /* libGUJmOceanSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2656C17916525657007B33FD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "guj ems";
+			};
+			buildConfigurationList = 2656C17C16525657007B33FD /* Build configuration list for PBXProject "GUJmOceanSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2656C17716525657007B33FD;
+			productRefGroup = 2656C18316525658007B33FD /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2656C1DF165268D3007B33FD /* Products */;
+					ProjectRef = 2656C1DE165268D3007B33FD /* GUJORMMASDK.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				2656C18116525658007B33FD /* GUJmOceanSDK */,
+				264B986D165BD8A6008CA035 /* GUJmOceanSDKSimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2656C1EC165268D4007B33FD /* libGUJORMMASDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGUJORMMASDK.a;
+			remoteRef = 2656C1EB165268D4007B33FD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2656C1EE165268D4007B33FD /* libGUJORMMASDKSimulator.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGUJORMMASDKSimulator.a;
+			remoteRef = 2656C1ED165268D4007B33FD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		264B9870165BD8A6008CA035 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				264B9871165BD8A6008CA035 /* GUJmOceanViewController.m in Sources */,
+				264B9872165BD8A6008CA035 /* GUJmOceanBridge.m in Sources */,
+				264B9873165BD8A6008CA035 /* GUJMASTAdViewRef.m in Sources */,
+				264B9874165BD8A6008CA035 /* GUJmOceanUtil.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2656C17E16525658007B33FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26B3A56B16526F5B00F2965F /* GUJmOceanViewController.m in Sources */,
+				26B3A5771652831100F2965F /* GUJmOceanBridge.m in Sources */,
+				26B3A5871652A19700F2965F /* GUJMASTAdViewRef.m in Sources */,
+				26B3A58C1652AE0F00F2965F /* GUJmOceanUtil.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		264B986E165BD8A6008CA035 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GUJORMMASDKSimulator;
+			targetProxy = 264B986F165BD8A6008CA035 /* PBXContainerItemProxy */;
+		};
+		26793D29165BDB730081A10A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GUJORMMASDK;
+			targetProxy = 26793D28165BDB730081A10A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		264B987E165BD8A6008CA035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DSTROOT = /tmp/GUJmOceanSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJmOceanSDK/GUJmOceanSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJmOceanSDKSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = i386;
+			};
+			name = Debug;
+		};
+		264B987F165BD8A6008CA035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DSTROOT = /tmp/GUJmOceanSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJmOceanSDK/GUJmOceanSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = GUJmOceanSDKSimulator;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = i386;
+			};
+			name = Release;
+		};
+		2656C18D16525658007B33FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2656C18E16525658007B33FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2656C19016525658007B33FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = /tmp/GUJmOceanSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJmOceanSDK/GUJmOceanSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Debug;
+		};
+		2656C19116525658007B33FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				DSTROOT = /tmp/GUJmOceanSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GUJmOceanSDK/GUJmOceanSDK-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$PROJECT_DIR/../GUJBaseSDK/GUJBaseSDK/Classes/**",
+					"$PROJECT_DIR/../GUJORMMASDK/GUJORMMASDK/Classes/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		264B987D165BD8A6008CA035 /* Build configuration list for PBXNativeTarget "GUJmOceanSDKSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				264B987E165BD8A6008CA035 /* Debug */,
+				264B987F165BD8A6008CA035 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2656C17C16525657007B33FD /* Build configuration list for PBXProject "GUJmOceanSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2656C18D16525658007B33FD /* Debug */,
+				2656C18E16525658007B33FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2656C18F16525658007B33FD /* Build configuration list for PBXNativeTarget "GUJmOceanSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2656C19016525658007B33FD /* Debug */,
+				2656C19116525658007B33FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2656C17916525657007B33FD /* Project object */;
+}
