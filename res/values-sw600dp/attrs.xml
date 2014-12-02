@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<!--  Standard layout is for phones -->
+    <bool name="largeDisplay">true</bool>
+
+</resources>
