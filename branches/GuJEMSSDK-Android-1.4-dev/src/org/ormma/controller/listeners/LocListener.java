@@ -45,7 +45,7 @@ public class LocListener implements LocationListener {
 	/**
 	 * The m ormma location controller.
 	 */
-	OrmmaLocationController mOrmmaLocationController;
+	private OrmmaLocationController mOrmmaLocationController;
 
 	/**
 	 * The m loc man.

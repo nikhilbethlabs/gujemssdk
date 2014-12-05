@@ -28,12 +28,12 @@ public class OrmmaLocationController extends OrmmaController {
 
 	private LocationManager mLocationManager;
 	private boolean hasPermission = false;
-	final int INTERVAL = 1000;
+	private final int INTERVAL = 1000;
 	private LocListener mGps;
 	private LocListener mNetwork;
 	private int mLocListenerCount;
 	private boolean allowLocationServices = true;
-	protected boolean hasLocation = false;
+	private boolean hasLocation = false;
 
 	/**
 	 * Instantiates a new ormma location controller.
@@ -43,7 +43,7 @@ public class OrmmaLocationController extends OrmmaController {
 	 * @param context
 	 *            the context
 	 */
-	public OrmmaLocationController(OrmmaView adView, Context context) {
+	OrmmaLocationController(OrmmaView adView, Context context) {
 		super(adView, context);
 		try {
 			mLocationManager = (LocationManager) context
@@ -72,8 +72,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * @return - allowLocationServices
 	 */
-	@JavascriptInterface
-	public boolean allowLocationServices() {
+	@JavascriptInterface boolean allowLocationServices() {
 		return allowLocationServices;
 	}
 
@@ -115,8 +114,7 @@ public class OrmmaLocationController extends OrmmaController {
 	/**
 	 * Start location listener.
 	 */
-	@JavascriptInterface
-	public void startLocationListener() {
+	@JavascriptInterface void startLocationListener() {
 		if (mLocListenerCount == 0) {
 
 			if (mNetwork != null)

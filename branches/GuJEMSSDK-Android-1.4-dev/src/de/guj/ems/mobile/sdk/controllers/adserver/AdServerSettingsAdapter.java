@@ -31,7 +31,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * @author stein16
  * 
  */
-public abstract class AdServerSettingsAdapter implements
+abstract class AdServerSettingsAdapter implements
 		IAdServerSettingsAdapter {
 
 	private transient String requestQueryString;
@@ -54,36 +54,17 @@ public abstract class AdServerSettingsAdapter implements
 
 	private JSONArray regExps;
 
-	protected transient Class<?> viewClass;
-
-	private transient int[] viewMetrics = { -1, -1, -1 };
+	private transient Class<?> viewClass;
+	
+	private boolean processed;
 
 	public AdServerSettingsAdapter() {
 		this.viewClass = null;
 		this.requestQueryString = null;
 		this.paramValues = null;
 		this.attrsToParams = null;
+		this.processed = false;
 	}
-
-	/**
-	 * Constructor when creating the settings in an Android View
-	 * 
-	 * @param context
-	 *            application context
-	 * @param set
-	 *            inflated layout parameters
-	 */
-	// public AdServerSettingsAdapter(Context context, AttributeSet set,
-	// Class<?> viewClass) {
-	// if (SdkUtil.getContext() == null) {
-	// SdkUtil.setContext(context);
-	// }
-	// //this.context = context;
-	// this.viewClass = viewClass;
-	// this.requestQueryString = null;
-	// this.paramValues = new HashMap<String, String>();
-	// this.attrsToParams = this.init(set);
-	// }
 
 	@Override
 	public void addCustomParams(Map<String, ?> params) {
@@ -109,26 +90,6 @@ public abstract class AdServerSettingsAdapter implements
 			SdkLog.w(TAG, "Custom params constructor used with null-array.");
 		}
 	}
-
-	/**
-	 * Constructor when creating the settings from an Android Activity
-	 * 
-	 * @param context
-	 *            application context
-	 * @param savedInstance
-	 *            saved instance state
-	 */
-	// public AdServerSettingsAdapter(Context context, Bundle savedInstance,
-	// Class<?> viewClass) {
-	// if (SdkUtil.getContext() == null) {
-	// SdkUtil.setContext(context);
-	// }
-	// //this.context = context;
-	// this.viewClass = viewClass;
-	// this.requestQueryString = null;
-	// this.paramValues = new HashMap<String, String>();
-	// this.attrsToParams = this.init(savedInstance);
-	// }
 
 	@Override
 	public void addCustomRequestParameter(String param, double value) {
@@ -296,11 +257,6 @@ public abstract class AdServerSettingsAdapter implements
 		}
 	};
 
-	@Override
-	public int[] getAdViewMetrics() {
-		return viewMetrics;
-	}
-
 	protected Map<String, String> getAttrsToParams() {
 		return this.attrsToParams;
 	}
@@ -356,19 +312,20 @@ public abstract class AdServerSettingsAdapter implements
 					this.requestQueryString += "&" + param + "=" + val;
 				}
 			}
-			if (viewMetrics[2] > 0) {
-				this.requestQueryString += "&w=" + viewMetrics[0];
-				this.requestQueryString += "&h=" + viewMetrics[1];
-				this.requestQueryString += "&d=" + viewMetrics[2];
-			}
+			
 			if (regExps != null) {
 				String backup = this.requestQueryString;
 				try {
 					for (int i = 0; i < regExps.length(); i++) {
 						JSONArray regexpn = regExps.getJSONArray(i);
-						this.requestQueryString = this.requestQueryString
+						if (regexpn.length() > 1) {
+							this.requestQueryString = this.requestQueryString
 								.replaceAll(regexpn.getString(0),
 										regexpn.getString(1));
+						}
+						else {
+							SdkLog.w(TAG, "No valid regular expression found in " + regExps);
+						}
 					}
 				} catch (Exception e) {
 					SdkLog.e(
@@ -392,7 +349,7 @@ public abstract class AdServerSettingsAdapter implements
 				+ getQueryString() + (app != null ? app : "");
 	}
 
-	protected final Map<String, String> init(Bundle savedInstance) {
+	private final Map<String, String> init(Bundle savedInstance) {
 
 		Map<String, String> map = new HashMap<String, String>();
 		if (savedInstance != null && !savedInstance.isEmpty()) {
@@ -445,7 +402,7 @@ public abstract class AdServerSettingsAdapter implements
 		return map;
 	}
 
-	protected final Map<String, String> init(Context context, AttributeSet attrs) {
+	private final Map<String, String> init(Context context, AttributeSet attrs) {
 		Map<String, String> map = new HashMap<String, String>();
 		if (attrs != null) {
 			for (int i = 0; i < attrs.getAttributeCount(); i++) {
@@ -504,64 +461,6 @@ public abstract class AdServerSettingsAdapter implements
 		this.paramValues.put(attr, value);
 	}
 
-	/**
-	 * Define adview resolution dots per inch
-	 * 
-	 * @param d
-	 *            resolution in dots per inch
-	 */
-	public void setAdViewDpi(int d) {
-		viewMetrics[2] = d;
-	}
-
-	/**
-	 * Define adview height in pixels
-	 * 
-	 * @param h
-	 *            height in pixels
-	 */
-	public void setAdViewHeight(int h) {
-		viewMetrics[1] = h;
-	}
-
-	/**
-	 * Set adview metrics
-	 * 
-	 * @param w
-	 *            width in pixels
-	 * @param h
-	 *            height in pixels
-	 * @param d
-	 *            resolution in dots per inch
-	 */
-	public void setAdViewMetrics(int w, int h, int d) {
-		viewMetrics[0] = w;
-		viewMetrics[1] = h;
-		viewMetrics[2] = d;
-	}
-
-	/**
-	 * Set adview metrics
-	 * 
-	 * @param m
-	 *            array of width, height and resolution
-	 */
-	public void setAdViewMetrics(int[] m) {
-		viewMetrics[0] = m[0];
-		viewMetrics[1] = m[1];
-		viewMetrics[2] = m[2];
-	}
-
-	/**
-	 * Define adview width in pixels
-	 * 
-	 * @param w
-	 *            width in pixels
-	 */
-	public void setAdViewWidth(int w) {
-		viewMetrics[0] = w;
-	}
-
 	@Override
 	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill) {
 		this.directBackfill = directBackfill;
@@ -592,7 +491,7 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param set
 	 *            inflated layout parameters
 	 */
-	public void setup(Context context, AttributeSet set, Class<?> viewClass) {
+	void setup(Context context, AttributeSet set, Class<?> viewClass) {
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
@@ -611,7 +510,7 @@ public abstract class AdServerSettingsAdapter implements
 	 * @param savedInstance
 	 *            saved instance state
 	 */
-	public void setup(Context context, Bundle savedInstance, Class<?> viewClass) {
+	void setup(Context context, Bundle savedInstance, Class<?> viewClass) {
 		if (SdkUtil.getContext() == null) {
 			SdkUtil.setContext(context);
 		}
@@ -627,4 +526,13 @@ public abstract class AdServerSettingsAdapter implements
 	}
 
 
+	@Override
+	public void dontProcess() {
+		this.processed = true;
+	}
+	
+	@Override
+	public boolean doProcess() {
+		return !this.processed;
+	}
 }

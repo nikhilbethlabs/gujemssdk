@@ -47,7 +47,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param c
 	 *            the context
 	 */
-	public OrmmaDisplayController(OrmmaView adView, Context c) {
+	OrmmaDisplayController(OrmmaView adView, Context c) {
 		super(adView, c);
 		DisplayMetrics metrics = new DisplayMetrics();
 		mWindowManager = (WindowManager) c
@@ -392,8 +392,7 @@ public class OrmmaDisplayController extends OrmmaController {
 	 * @param h
 	 *            the h
 	 */
-	@JavascriptInterface
-	public void setMaxSize(int w, int h) {
+	@JavascriptInterface void setMaxSize(int w, int h) {
 		bMaxSizeSet = true;
 		mMaxWidth = w;
 		mMaxHeight = h;
@@ -433,16 +432,14 @@ public class OrmmaDisplayController extends OrmmaController {
 		mBroadCastReceiver = null;
 	}
 
-	@JavascriptInterface
-	public void stopConfigurationListener() {
+	@JavascriptInterface void stopConfigurationListener() {
 		try {
 			mContext.unregisterReceiver(mBroadCastReceiver);
 		} catch (Exception e) {
 		}
 	}
 
-	@JavascriptInterface
-	public void startConfigurationListener() {
+	@JavascriptInterface void startConfigurationListener() {
 		try {
 			if (mBroadCastReceiver == null)
 				mBroadCastReceiver = new OrmmaConfigurationBroadcastReceiver(

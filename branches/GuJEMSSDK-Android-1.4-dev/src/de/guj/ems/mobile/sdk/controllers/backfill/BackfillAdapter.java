@@ -16,7 +16,7 @@ import android.content.Context;
  * @author stein16
  * 
  */
-public interface BackfillAdapter {
+interface BackfillAdapter {
 
 	/**
 	 * The execute method of the adapter is called by the BackfillDelegator

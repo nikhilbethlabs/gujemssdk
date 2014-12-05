@@ -2,7 +2,7 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
-public abstract class AdResponse implements IAdResponse {
+abstract class AdResponse implements IAdResponse {
 
 	private static final long serialVersionUID = -2217817771087072480L;
 
@@ -20,7 +20,7 @@ public abstract class AdResponse implements IAdResponse {
 
 	private final static String TAG = "AdResponse";
 
-	public AdResponse(String resp) {
+	AdResponse(String resp) {
 		if (resp != null && resp.startsWith("<?xml")) {
 			SdkLog.d(TAG, "Removing xml doc declaration from response");
 			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "")

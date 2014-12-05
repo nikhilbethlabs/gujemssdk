@@ -30,7 +30,7 @@ import android.widget.RelativeLayout;
  * @author Roshan
  * 
  */
-public class OrmmaActionHandler extends Activity {
+class OrmmaActionHandler extends Activity {
 
 	private HashMap<ACTION, Object> actionData = new HashMap<ACTION, Object>();
 	private RelativeLayout layout;
@@ -90,7 +90,7 @@ public class OrmmaActionHandler extends Activity {
 	 *            - type of action
 	 * @return
 	 */
-	OrmmaPlayer initPlayer(Bundle playData, ACTION actionType) {
+	private OrmmaPlayer initPlayer(Bundle playData, ACTION actionType) {
 
 		PlayerProperties properties = (PlayerProperties) playData
 				.getParcelable(OrmmaView.PLAYER_PROPERTIES);

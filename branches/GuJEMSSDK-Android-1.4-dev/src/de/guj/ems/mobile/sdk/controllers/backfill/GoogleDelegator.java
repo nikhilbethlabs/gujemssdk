@@ -2,6 +2,7 @@ package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdListener;
@@ -24,9 +25,9 @@ public final class GoogleDelegator {
 
 	private final static String TAG = "GoogleDelegator";
 
-	AdView googleAdView;
+	private AdView googleAdView;
 
-	AdRequest googleAdRequest;
+	private AdRequest googleAdRequest;
 
 	private String pubId;
 
@@ -42,9 +43,9 @@ public final class GoogleDelegator {
 	public GoogleDelegator(final GuJEMSAdView adView, final IAdServerSettingsAdapter settings, ViewGroup.LayoutParams lp,
 			Drawable bk, int andId) {
 
-		final ViewGroup parent = adView != null ? (ViewGroup) adView.getParent() : null;
+		//final ViewGroup parent = adView != null ? (ViewGroup) adView.getParent() : null;
 		
-		if (adView == null || parent == null) {
+		if (adView == null) {
 			if (settings.getOnAdErrorListener() != null) {
 				settings.getOnAdErrorListener().onAdError("Parent adview no longer present, ignoring Google backfill request.");
 			}
@@ -53,9 +54,9 @@ public final class GoogleDelegator {
 			}
 		}
 		else {
-			final int index = parent.indexOfChild(adView);
+			//final int index = parent.indexOfChild(adView);
 			
-			parent.removeView(adView);
+			//parent.removeView(adView);
 			adView.removeAllViews();
 	
 			this.mkGoogleRequest(settings);
@@ -63,7 +64,7 @@ public final class GoogleDelegator {
 			googleAdView = new AdView(adView.getContext());
 			googleAdView.setAdSize(AdSize.BANNER);
 			googleAdView.setAdUnitId(pubId);
-			googleAdView.setId(andId);
+			//googleAdView.setId(andId);
 
 			googleAdView.setLayoutParams(lp);
 			// setBackground requires API level 16
@@ -81,8 +82,10 @@ public final class GoogleDelegator {
 	
 				@Override
 				public void onAdLoaded() {
-					SdkLog.d(TAG, "Google Ad viewable.");
-					parent.addView(googleAdView, index);
+					SdkLog.d(TAG, "Google Ad viewable as child under " + adView.getId());
+					//parent.addView(googleAdView, index);
+					adView.addView(googleAdView);
+					adView.setVisibility(View.VISIBLE);
 					if (settings.getOnAdSuccessListener() != null) {
 						settings.getOnAdSuccessListener()
 								.onAdSuccess();
@@ -129,6 +132,10 @@ public final class GoogleDelegator {
 			SdkLog.w(TAG, "Google ad request cancelled.");
 		}
 		
+	}
+	
+	public AdView getAdView() {
+		return googleAdView;
 	}
 
 }

@@ -2,11 +2,11 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
-public class AmobeeHtmlParser extends AdResponseParser {
+class AmobeeHtmlParser extends AdResponseParser {
 
 	private final static String TAG = "AmobeeHtmlParser";
 
-	public AmobeeHtmlParser(String response) {
+	AmobeeHtmlParser(String response) {
 		super(response);
 	}
 

@@ -84,7 +84,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Show player control
 	 */
-	void displayControl() {
+	private void displayControl() {
 
 		if (playProperties.showControl()) {
 			MediaController ctrl = new MediaController(getContext());
@@ -100,7 +100,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	 * @param url
 	 *            - audio/video url
 	 */
-	void loadContent() {
+	private void loadContent() {
 
 		contentURL = contentURL.trim();
 
@@ -119,7 +119,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Play start
 	 */
-	void startContent() {
+	private void startContent() {
 
 		setOnCompletionListener(this);
 		setOnErrorListener(this);
@@ -153,7 +153,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Unmute audio
 	 */
-	void unMute() {
+	private void unMute() {
 		aManager.setStreamVolume(AudioManager.STREAM_MUSIC, mutedVolume,
 				AudioManager.FLAG_PLAY_SOUND);
 	}
@@ -198,7 +198,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Remove player from parent
 	 */
-	void removeView() {
+	private void removeView() {
 		ViewGroup parent = (ViewGroup) getParent();
 		if (parent != null)
 			parent.removeView(this);
@@ -225,7 +225,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Add transient message
 	 */
-	void addTransientMessage() {
+	private void addTransientMessage() {
 
 		if (playProperties.inline)
 			return;
@@ -250,7 +250,7 @@ public class OrmmaPlayer extends VideoView implements OnCompletionListener,
 	/**
 	 * Clear transient message
 	 */
-	void clearTransientMessage() {
+	private void clearTransientMessage() {
 		if (transientLayout != null) {
 			ViewGroup parent = (ViewGroup) getParent();
 			parent.removeView(transientLayout);

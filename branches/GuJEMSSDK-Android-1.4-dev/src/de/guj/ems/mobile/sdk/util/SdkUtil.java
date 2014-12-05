@@ -89,17 +89,17 @@ public class SdkUtil {
 	/**
 	 * major sdk version integer
 	 */
-	public final static int MAJOR_VERSION = 1;
+	private final static int MAJOR_VERSION = 1;
 
 	/**
 	 * minor sdk version integer
 	 */
-	public final static int MINOR_VERSION = 3;
+	private final static int MINOR_VERSION = 4;
 
 	/**
 	 * revision sdk version integer
 	 */
-	public final static int REV_VERSION = 2;
+	private final static int REV_VERSION = 0;
 
 	/**
 	 * Version string containing major, minor and revision as string divided by
@@ -431,7 +431,7 @@ public class SdkUtil {
 	 * 
 	 * @return carrier name if available, "unknown" otherwise
 	 */
-	public static String getNetworkName() {
+	static String getNetworkName() {
 
 		Context c = SdkUtil.getContext();
 		if (c.getPackageManager().checkPermission(
@@ -653,7 +653,7 @@ public class SdkUtil {
 	 * 
 	 * @return fodler where local files may be stored
 	 */
-	public static File getConfigFileDir() {
+	static File getConfigFileDir() {
 		return getContext().getFilesDir();
 	}
 
@@ -715,7 +715,7 @@ public class SdkUtil {
 	 * 
 	 * @return true if we are on device larger than a phone
 	 */
-	public static boolean isLargerThanPhone() {
+	static boolean isLargerThanPhone() {
 		return getContext().getResources().getBoolean(R.bool.largeDisplay);
 	}
 

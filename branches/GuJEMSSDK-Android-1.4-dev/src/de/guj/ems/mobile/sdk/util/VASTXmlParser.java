@@ -157,7 +157,7 @@ public class VASTXmlParser {
 		/**
 		 * Mapping of event descriptions in VAST xml to internal names
 		 */
-		public final String[] EVENT_MAPPING = new String[] { "finalReturn",
+		private final String[] EVENT_MAPPING = new String[] { "finalReturn",
 				"impression", "start", "firstQuartile", "midpoint",
 				"thirdQuartile", "complete", "mute", "unmute", "pause",
 				"resume", "fullscreen" };
@@ -174,7 +174,7 @@ public class VASTXmlParser {
 		 * @param url
 		 *            Tracking URL
 		 */
-		public Tracking(String e, String url) {
+		private Tracking(String e, String url) {
 			this.event = findEvent(e);
 			this.url = url;
 			SdkLog.d(TAG, "VAST tracking url [" + e + ", " + this.event + "]: "

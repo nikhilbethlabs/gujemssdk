@@ -57,30 +57,30 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 	 */
 	private static final long serialVersionUID = 1677516954860960606L;
 
-	static class InterstitialThread extends Thread {
+	private static class InterstitialThread extends Thread {
 
-		static volatile boolean PAUSED = false;
+		private static volatile boolean PAUSED = false;
 
-		static volatile boolean SHOW = true;
+		private static volatile boolean SHOW = true;
 
-		public InterstitialThread(Runnable r, String name) {
+		private InterstitialThread(Runnable r, String name) {
 			super(r, name);
 		}
 
-		public void beforeStart() {
+		private void beforeStart() {
 			unpause();
 			SHOW = true;
 		}
 
-		public void beforeStop() {
+		private void beforeStop() {
 			SHOW = false;
 		}
 
-		public void pause() {
+		private void pause() {
 			PAUSED = true;
 		}
 
-		public void unpause() {
+		private void unpause() {
 			PAUSED = false;
 		}
 	}

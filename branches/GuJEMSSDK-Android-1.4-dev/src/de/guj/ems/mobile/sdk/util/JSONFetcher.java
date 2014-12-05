@@ -20,7 +20,7 @@ import android.os.AsyncTask;
  * SDK. File is stored locally and only re-fetched upon app start if the remote
  * file is younger than the local.
  */
-public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
+class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 
 	private JSONContent jsonContent;
 
@@ -66,7 +66,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 * @param localDir
 	 *            Local Directory
 	 */
-	public JSONFetcher(JSONContent listener, String remote, String local,
+	JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir) {
 		this.lastError = -1;
 		this.jsonContent = listener;
@@ -93,7 +93,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 * @param maxAge
 	 *            Use this age instead of remote file age
 	 */
-	public JSONFetcher(JSONContent listener, String remote, String local,
+	JSONFetcher(JSONContent listener, String remote, String local,
 			File localDir, long maxAge) {
 		this.lastError = -1;
 		this.jsonContent = listener;
@@ -255,7 +255,7 @@ public class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 * Add an optional query string to the json request url
 	 * @param query additional params string, starting with a "?" 
 	 */
-	public void addQueryString(String query) {
+	void addQueryString(String query) {
 		if (remote != null && query != null) {
 			remote = remote.concat("?" + query);
 		}

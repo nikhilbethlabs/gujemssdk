@@ -32,7 +32,7 @@ public abstract class AdResponseParser {
 	 * @param response
 	 *            plain response from adserver
 	 */
-	public AdResponseParser(String response) {
+	AdResponseParser(String response) {
 		this(response, false);
 	}
 
@@ -44,7 +44,7 @@ public abstract class AdResponseParser {
 	 * @param xml
 	 *            parser expects XML if true, (X)HTML if false
 	 */
-	public AdResponseParser(String response, boolean xml) {
+	AdResponseParser(String response, boolean xml) {
 		this.response = response;
 		this.xml = xml;
 		this.valid = true;

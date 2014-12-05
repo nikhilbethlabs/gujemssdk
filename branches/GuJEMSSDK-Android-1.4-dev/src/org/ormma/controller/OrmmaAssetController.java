@@ -57,7 +57,7 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
 /**
  * The Class OrmmaAssetController. This class handles asset management for orrma
  */
-public class OrmmaAssetController extends OrmmaController {
+class OrmmaAssetController extends OrmmaController {
 
 	private final static String SdkLog_TAG = "OrmmaAssetController";
 
@@ -96,7 +96,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 *            the path
 	 * @return true, if successful
 	 */
-	static public boolean deleteDirectory(File path) {
+	static private boolean deleteDirectory(File path) {
 		if (path.exists()) {
 			File[] files = path.listFiles();
 			for (int i = 0; i < files.length; i++) {
@@ -131,7 +131,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @param c
 	 *            the c
 	 */
-	public OrmmaAssetController(OrmmaView adView, Context c) {
+	OrmmaAssetController(OrmmaView adView, Context c) {
 		super(adView, c);
 		// SdkLog.i(SdkLog_TAG, "WebView viewport scale meta was set to " +
 		// WEBVIEW_VIEWPORT_SCALE);
@@ -145,8 +145,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @param url
 	 *            the url
 	 */
-	@JavascriptInterface
-	public void addAsset(String url, String alias) {
+	@JavascriptInterface void addAsset(String url, String alias) {
 		try {
 			if (url.startsWith("ormma://screenshot")) {
 				Activity parent = (Activity) mContext;
@@ -270,7 +269,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 *            the source
 	 * @return the path to the copied asset
 	 */
-	public String copyTextFromJarIntoAssetDir(String alias, String source) {
+	String copyTextFromJarIntoAssetDir(String alias, String source) {
 		InputStream in = null;
 		JarFile jf = null;
 		try {
@@ -314,13 +313,13 @@ public class OrmmaAssetController extends OrmmaController {
 	/**
 	 * Delete old ads.
 	 */
-	public void deleteOldAds() {
+	void deleteOldAds() {
 		String filesDir = getFilesDir();
 		File adDir = new File(filesDir + java.io.File.separator + "ad");
 		deleteDirectory(adDir);
 	}
 
-	public void deleteOldAds(String localAdDir) {
+	void deleteOldAds(String localAdDir) {
 		File adDir = new File(localAdDir);
 		deleteDirectory(adDir);
 	}
@@ -404,7 +403,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @throws FileNotFoundException
 	 *             the file not found exception
 	 */
-	public FileOutputStream getAssetOutputString(String asset)
+	private FileOutputStream getAssetOutputString(String asset)
 			throws FileNotFoundException {
 		File dir = getAssetDir(getAssetPath(asset));
 		dir.mkdirs();
@@ -511,8 +510,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @param asset
 	 *            the asset
 	 */
-	@JavascriptInterface
-	public void removeAsset(String asset) {
+	@JavascriptInterface void removeAsset(String asset) {
 		File dir = getAssetDir(getAssetPath(asset));
 		dir.mkdirs();
 		File file = new File(dir, getAssetName(asset));
@@ -605,8 +603,7 @@ public class OrmmaAssetController extends OrmmaController {
 	}
 
 	@SuppressLint("NewApi")
-	@JavascriptInterface
-	public void storePicture(String url) {
+	@JavascriptInterface void storePicture(String url) {
 		try {
 			HttpEntity entity = getHttpEntity(url);
 			InputStream in = entity.getContent();
@@ -642,7 +639,7 @@ public class OrmmaAssetController extends OrmmaController {
 		}
 	}
 
-	public void writeAssetToDisk(InputStream in, String file)
+	private void writeAssetToDisk(InputStream in, String file)
 			throws IllegalStateException, IOException {
 
 		byte buff[] = new byte[1024];
@@ -666,7 +663,7 @@ public class OrmmaAssetController extends OrmmaController {
 		out.close();
 	}
 
-	public String writeToDisk(InputStream in, File writeFile)
+	private String writeToDisk(InputStream in, File writeFile)
 			throws IllegalStateException, IOException {
 
 		byte buff[] = new byte[1024];
@@ -700,7 +697,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public String writeToDisk(InputStream in, String file,
+	private String writeToDisk(InputStream in, String file,
 			boolean storeInHashedDirectory) throws IllegalStateException,
 			IOException
 	/**
@@ -769,7 +766,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public String writeToDiskWrap(InputStream in, String file,
+	String writeToDiskWrap(InputStream in, String file,
 			boolean storeInHashedDirectory, String injection,
 			String bridgePath, String ormmaPath) throws IllegalStateException,
 			IOException
@@ -917,7 +914,7 @@ public class OrmmaAssetController extends OrmmaController {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public String writeToDiskWrap(String data, String file,
+	String writeToDiskWrap(String data, String file,
 			boolean storeInHashedDirectory, String injection,
 			String bridgePath, String ormmaPath) throws IllegalStateException,
 			IOException

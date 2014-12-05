@@ -41,7 +41,7 @@ public class AccelListener implements SensorEventListener {
 	private static final int SHAKE_COUNT = 2;
 
 	// parent controller
-	OrmmaSensorController mSensorController;
+	private OrmmaSensorController mSensorController;
 	String mKey;
 
 	// counts of registered listeners
@@ -181,7 +181,7 @@ public class AccelListener implements SensorEventListener {
 	/**
 	 * Stop.
 	 */
-	public void stop() {
+	private void stop() {
 		if ((registeredHeadingListeners == 0)
 				&& (registeredShakeListeners == 0)
 				&& (registeredTiltListeners == 0)) {

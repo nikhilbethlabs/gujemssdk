@@ -16,7 +16,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
  * @author stein16
  * 
  */
-public enum SdkVariables {
+enum SdkVariables {
 	SINGLETON;
 	
 	private long lastFetched;
@@ -53,6 +53,7 @@ public enum SdkVariables {
 					//TODO "additionalParams" applied twice for request?
 					synchronized (settings) {
 						// check additional keywords
+						SdkLog.d(TAG, "Adding keywords and params to " + settings);
 						String kw = getJSON().getString(
 								SdkUtil.getContext()
 										.getString(R.string.jsonKeyword));
@@ -91,6 +92,7 @@ public enum SdkVariables {
 				timeCheck();
 			}
 			
+			settings.dontProcess();
 			return settings;
 		}
 
@@ -171,7 +173,7 @@ public enum SdkVariables {
 	private void timeCheck() {
 		long t = System.currentTimeMillis() - lastFetched;
 		if (t > SdkConfig.SINGLETON.getVarsRefreshCap() * 60000l) {
-			SdkLog.d(TAG,  "Reinitializing variables after " + (t / 60000l) + " minutes.");
+			SdkLog.d(TAG,  "Reinitializing variables after " + (t / 60000l) + " minutes. [t = " + t + "]");
 			jsonVariables.init();
 		}
 	}

@@ -14,7 +14,7 @@ public abstract class AdRequest extends IntentService {
 
 	private Throwable lastError;
 
-	public AdRequest(String name) {
+	AdRequest(String name) {
 		super(name);
 	}
 

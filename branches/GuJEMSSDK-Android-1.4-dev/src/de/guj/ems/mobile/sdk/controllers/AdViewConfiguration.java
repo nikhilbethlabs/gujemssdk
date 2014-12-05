@@ -6,38 +6,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 public class AdViewConfiguration {
 
-	public static interface IViewConfiguration {
-		
-		public int getErrorListenerId();
-
-		public int getEmptyListenerId();
-
-		public int getGeoId();
-
-		public int getKeywordsId();
-
-		public int getLatId();
-
-		public int getLonId();
-
-		public int getNKeywordsId();
-
-		public int getSiteIdId();
-
-		public int getBackfillSiteIdId();
-
-		public int getSuccessListenerId();
-		
-		public int getGooglePublisherIdId();
-
-		public int getUuidId();
-
-		public int getZoneIdId();
-
-		public int getBackfillZoneIdId();
-	};
-
-	private static class WebViewConfiguration implements IViewConfiguration {
+	private static class WebViewConfiguration implements IAdViewConfiguration {
 
 		@Override
 		public int getErrorListenerId() {
@@ -110,7 +79,7 @@ public class AdViewConfiguration {
 		}
 	}
 
-	private static class NativeViewConfiguration implements IViewConfiguration {
+	private static class NativeViewConfiguration implements IAdViewConfiguration {
 
 		@Override
 		public int getErrorListenerId() {
@@ -187,7 +156,7 @@ public class AdViewConfiguration {
 
 	private final static NativeViewConfiguration NATIVEVIEWCONFIG = new NativeViewConfiguration();
 
-	public final static IViewConfiguration getConfig(Class<?> viewClass) {
+	public final static IAdViewConfiguration getConfig(Class<?> viewClass) {
 		if (viewClass.equals(GuJEMSAdView.class)
 				|| viewClass.equals(GuJEMSListAdView.class)) {
 			return WEBVIEWCONFIG;
