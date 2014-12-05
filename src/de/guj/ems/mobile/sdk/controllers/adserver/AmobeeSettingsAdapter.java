@@ -52,7 +52,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	private String baseParams;
 	
 	private String googlePublisherId;
-
+	
 	private final static String TAG = "AmobeeSettingsAdapter";
 
 	/**
@@ -418,11 +418,6 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 		return qStr;
 	}
 
-	@Override
-	public boolean doProcess() {
-		return true;
-	}
-	
 	@Override
 	public String getGooglePublisherId() {
 		return this.googlePublisherId == null ? SdkUtil.getContext()

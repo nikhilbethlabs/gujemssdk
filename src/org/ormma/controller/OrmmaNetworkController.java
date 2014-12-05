@@ -41,7 +41,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	 * @param context
 	 *            the context
 	 */
-	public OrmmaNetworkController(OrmmaView adView, Context context) {
+	OrmmaNetworkController(OrmmaView adView, Context context) {
 		super(adView, context);
 		mConnectivityManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -90,8 +90,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	/**
 	 * Start network listener.
 	 */
-	@JavascriptInterface
-	public void startNetworkListener() {
+	@JavascriptInterface void startNetworkListener() {
 		if (mNetworkListenerCount == 0) {
 			mBroadCastReceiver = new OrmmaNetworkBroadcastReceiver(this);
 			mFilter = new IntentFilter();
@@ -105,8 +104,7 @@ public class OrmmaNetworkController extends OrmmaController {
 	/**
 	 * Stop network listener.
 	 */
-	@JavascriptInterface
-	public void stopNetworkListener() {
+	@JavascriptInterface void stopNetworkListener() {
 		mNetworkListenerCount--;
 		if (mNetworkListenerCount == 0) {
 			mContext.unregisterReceiver(mBroadCastReceiver);

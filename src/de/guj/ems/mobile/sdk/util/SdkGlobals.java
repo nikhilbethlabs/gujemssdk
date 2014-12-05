@@ -9,7 +9,7 @@ public class SdkGlobals {
 	/**
 	 * Format for geo position formatting
 	 */
-	public final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
+	final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
 			"#,##");
 
 	/**

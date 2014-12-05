@@ -11,7 +11,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-public final class SmartstreamEvents {
+final class SmartstreamEvents {
 
 	//TODO dangerous
 	private final static String SMARTSTREAM_EVENT_URL = SdkUtil.getContext()
@@ -20,19 +20,19 @@ public final class SmartstreamEvents {
 			+ SdkUtil.getContext().getString(R.string.baseParams)
 					.replaceAll("#version#", SdkUtil.VERSION_STR);
 
-	public final static int SMARTSTREAM_EVENT_IMPRESSION = 15549;
+	final static int SMARTSTREAM_EVENT_IMPRESSION = 15549;
 
-	public final static int SMARTSTREAM_EVENT_FAIL = 15539;
+	final static int SMARTSTREAM_EVENT_FAIL = 15539;
 
-	public final static int SMARTSTREAM_EVENT_PLAY = 15537;
+	final static int SMARTSTREAM_EVENT_PLAY = 15537;
 
-	public final static int SMARTSTREAM_EVENT_QUARTILE_1 = 15541;
+	final static int SMARTSTREAM_EVENT_QUARTILE_1 = 15541;
 
-	public final static int SMARTSTREAM_EVENT_MID = 15543;
+	final static int SMARTSTREAM_EVENT_MID = 15543;
 
-	public final static int SMARTSTREAM_EVENT_QUARTILE_3 = 15545;
+	final static int SMARTSTREAM_EVENT_QUARTILE_3 = 15545;
 
-	public final static int SMARTSTREAM_EVENT_FINISH = 15547;
+	final static int SMARTSTREAM_EVENT_FINISH = 15547;
 
 	private final static String TAG = "SmartstreamEvents";
 
@@ -50,7 +50,7 @@ public final class SmartstreamEvents {
 	 * @param click
 	 *            true if a click should be tracked
 	 */
-	public static void processEvent(String userAgent, String adSpace,
+	static void processEvent(String userAgent, String adSpace,
 			String placement, int event, boolean click) {
 		String url = SMARTSTREAM_EVENT_URL;
 		boolean ok = false;
@@ -74,6 +74,7 @@ public final class SmartstreamEvents {
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event
 					+ "&plmid=" + placement;
 			try {
+				//TODO this should be changed?
 				SdkUtil.getContext().startService(SdkUtil.adRequest(null,new TrackingSettingsAdapter(url)));
 				//SdkUtil.adRequest(null).execute(new TrackingSettingsAdapter(url));
 			} catch (Exception e) {

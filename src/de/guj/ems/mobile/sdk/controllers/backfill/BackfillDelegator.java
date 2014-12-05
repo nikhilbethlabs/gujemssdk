@@ -46,7 +46,7 @@ public class BackfillDelegator {
 
 		private static final long serialVersionUID = -8483291797322099567L;
 
-		public BackfillException(String msg) {
+		private BackfillException(String msg) {
 			super(msg);
 		}
 
@@ -62,15 +62,15 @@ public class BackfillDelegator {
 
 		private static final long serialVersionUID = 9154813314077555112L;
 
-		String data;
+		private String data;
 
-		String siteId;
+		private String siteId;
 
-		String zoneId;
+		private String zoneId;
 
-		String userAgent;
+		private String userAgent;
 
-		int id;
+		private int id;
 
 		/**
 		 * Default constructor
@@ -82,29 +82,9 @@ public class BackfillDelegator {
 		 * @param id
 		 *            id of the backfill partner (0 = Smartstream)
 		 */
-		public BackfillData(String zone, String data, int id) {
+		private BackfillData(String zone, String data, int id) {
 			this.data = data;
 			this.userAgent = SdkUtil.getUserAgent();
-			this.zoneId = zone;
-			this.id = id;
-		}
-
-		/**
-		 * Custom constructor
-		 * 
-		 * @param site
-		 *            id of the app/site
-		 * @param zone
-		 *            id of the ad placement
-		 * @param data
-		 *            data retrieved from the main adserver
-		 * @param id
-		 *            id of the backfill partner (0 = Smartstream)
-		 */
-		public BackfillData(String site, String zone, String data, int id) {
-			this.data = data;
-			this.userAgent = SdkUtil.getUserAgent();
-			this.siteId = site;
 			this.zoneId = zone;
 			this.id = id;
 		}

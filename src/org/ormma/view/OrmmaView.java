@@ -114,9 +114,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	final static class OrmmaHandler extends Handler {
 
-		OrmmaView ref = null;
+		private OrmmaView ref = null;
 
-		OrmmaHandler(OrmmaView ref) {
+		private OrmmaHandler(OrmmaView ref) {
 			this.ref = ref;
 		}
 
@@ -295,11 +295,11 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public class TimeOutRunnable implements Runnable {
 
-		int mProgress = 0;
-		int mCount = 0;
-		boolean mRun = true;
+		private int mProgress = 0;
+		private int mCount = 0;
+		private boolean mRun = true;
 
-		public void cancel() {
+		private void cancel() {
 			mRun = false;
 		}
 
@@ -357,10 +357,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private static final int MESSAGE_PLAY_AUDIO = 1008;
 	private static final int MESSAGE_RAISE_ERROR = 1009;
 	// Extra constants
-	public static final String DIMENSIONS = "expand_dimensions";
-	public static final String PLAYER_PROPERTIES = "player_properties";
-	public static final String EXPAND_URL = "expand_url";
-	public static final String ACTION_KEY = "action";
+	static final String DIMENSIONS = "expand_dimensions";
+	static final String PLAYER_PROPERTIES = "player_properties";
+	static final String EXPAND_URL = "expand_url";
+	static final String ACTION_KEY = "action";
 
 	private static final String EXPAND_PROPERTIES = "expand_properties";
 
@@ -372,8 +372,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	private static final String ERROR_MESSAGE = "message";
 	private static final String ERROR_ACTION = "action";
 	// layout constants
-	protected static final int BACKGROUND_ID = 101;
-	protected static final int PLACEHOLDER_ID = 100;
+	private static final int BACKGROUND_ID = 101;
+	private static final int PLACEHOLDER_ID = 100;
 
 
 	public static final int ORMMA_ID = 102;
@@ -454,7 +454,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * The webview client used for trapping certain events
 	 */
-	WebViewClient mWebViewClient = new WebViewClient() {
+	private WebViewClient mWebViewClient = new WebViewClient() {
 		@Override
 		public void onLoadResource(WebView view, String url) {
 			SdkLog.d(SdkLog_TAG, "lr:" + url);
@@ -534,7 +534,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * The m web chrome client.
 	 */
-	WebChromeClient mWebChromeClient = new WebChromeClient() {
+	private WebChromeClient mWebChromeClient = new WebChromeClient() {
 		@Override
 		public boolean onJsAlert(WebView view, String url, String message,
 				JsResult result) {
@@ -751,7 +751,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * Close an expanded view.
 	 */
-	protected synchronized void closeExpanded() {
+	private synchronized void closeExpanded() {
 
 		setVisibility(GONE);
 		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
@@ -892,7 +892,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			return -1;
 	}
 
-	synchronized OrmmaPlayer getPlayer() {
+	private synchronized OrmmaPlayer getPlayer() {
 
 		if (player != null) 
 			player.releasePlayer();
@@ -1143,7 +1143,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 * @param dataToInject
 	 *            any additional javascript to inject
 	 */
-	public void loadUrl(String url, boolean dontLoad, String dataToInject) {
+	private void loadUrl(String url, boolean dontLoad, String dataToInject) {
 		// mDataToInject = dataToInject;
 		if (URLUtil.isValidUrl(url)) {
 			if (!dontLoad) {
@@ -1401,7 +1401,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		}
 	}
 
-	public void playAudioImpl(Bundle data) {
+	private void playAudioImpl(Bundle data) {
 
 		PlayerProperties properties = (PlayerProperties) data
 				.getParcelable(PLAYER_PROPERTIES);
@@ -1473,7 +1473,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		}
 	}
 
-	public void playVideoImpl(Bundle data) {
+	private void playVideoImpl(Bundle data) {
 
 		PlayerProperties properties = (PlayerProperties) data
 				.getParcelable(PLAYER_PROPERTIES);
@@ -1583,7 +1583,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	/**
 	 * Revert to earlier ad state
 	 */
-	public void resetContents() {
+	private void resetContents() {
 
 		FrameLayout contentView = (FrameLayout) getRootView().findViewById(
 				android.R.id.content);

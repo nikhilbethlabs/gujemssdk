@@ -33,7 +33,7 @@ public class OrmmaSensorController extends OrmmaController {
 	 * @param context
 	 *            the context
 	 */
-	public OrmmaSensorController(OrmmaView adView, Context context) {
+	OrmmaSensorController(OrmmaView adView, Context context) {
 		super(adView, context);
 		mAccel = new AccelListener(context, this);
 	}
@@ -41,48 +41,42 @@ public class OrmmaSensorController extends OrmmaController {
 	/**
 	 * Start tilt listener.
 	 */
-	@JavascriptInterface
-	public void startTiltListener() {
+	@JavascriptInterface void startTiltListener() {
 		mAccel.startTrackingTilt();
 	}
 
 	/**
 	 * Start shake listener.
 	 */
-	@JavascriptInterface
-	public void startShakeListener() {
+	@JavascriptInterface void startShakeListener() {
 		mAccel.startTrackingShake();
 	}
 
 	/**
 	 * Stop tilt listener.
 	 */
-	@JavascriptInterface
-	public void stopTiltListener() {
+	@JavascriptInterface void stopTiltListener() {
 		mAccel.stopTrackingTilt();
 	}
 
 	/**
 	 * Stop shake listener.
 	 */
-	@JavascriptInterface
-	public void stopShakeListener() {
+	@JavascriptInterface void stopShakeListener() {
 		mAccel.stopTrackingShake();
 	}
 
 	/**
 	 * Start heading listener.
 	 */
-	@JavascriptInterface
-	public void startHeadingListener() {
+	@JavascriptInterface void startHeadingListener() {
 		mAccel.startTrackingHeading();
 	}
 
 	/**
 	 * Stop heading listener.
 	 */
-	@JavascriptInterface
-	public void stopHeadingListener() {
+	@JavascriptInterface void stopHeadingListener() {
 		mAccel.stopTrackingHeading();
 	}
 

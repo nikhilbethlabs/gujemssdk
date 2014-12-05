@@ -11,7 +11,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
  * @author stein16
  * 
  */
-public abstract class JSONContent {
+abstract class JSONContent {
 
 	private JSONObject json;
 

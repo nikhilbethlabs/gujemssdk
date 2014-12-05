@@ -41,9 +41,9 @@ public abstract class OrmmaController {
 	private static final String NAVIGATION_TYPE = "class com.ormma.NavigationStringEnum";
 	private static final String TRANSITION_TYPE = "class com.ormma.TransitionStringEnum";
 
-	public static final String FULL_SCREEN = "fullscreen";
+	private static final String FULL_SCREEN = "fullscreen";
 	public static final String EXIT = "exit";
-	public static final String STYLE_NORMAL = "normal";
+	private static final String STYLE_NORMAL = "normal";
 
 	/**
 	 * 
@@ -74,7 +74,7 @@ public abstract class OrmmaController {
 			}
 		};
 
-		public PlayerProperties(Parcel in) {
+		private PlayerProperties(Parcel in) {
 			super(in);
 		}
 
@@ -170,8 +170,9 @@ public abstract class OrmmaController {
 			return startStyle.equalsIgnoreCase(FULL_SCREEN);
 		}
 
-		public boolean autoPlay, showControl, doLoop, audioMuted, inline;
-		public String stopStyle, startStyle;
+		private boolean autoPlay, showControl, doLoop, audioMuted;
+		public boolean inline;
+		private String stopStyle, startStyle;
 	}
 
 	/**
@@ -210,7 +211,7 @@ public abstract class OrmmaController {
 		 * @param in
 		 *            the in
 		 */
-		protected Dimensions(Parcel in) {
+		private Dimensions(Parcel in) {
 			super(in);
 		}
 
@@ -232,7 +233,7 @@ public abstract class OrmmaController {
 		 * @param in
 		 *            the in
 		 */
-		protected Properties(Parcel in) {
+		private Properties(Parcel in) {
 			super(in);
 		}
 
@@ -274,7 +275,7 @@ public abstract class OrmmaController {
 	 * @param context
 	 *            the context
 	 */
-	public OrmmaController(OrmmaView adView, Context context) {
+	OrmmaController(OrmmaView adView, Context context) {
 		mOrmmaView = adView;
 		mContext = context;
 	}
@@ -383,7 +384,7 @@ public abstract class OrmmaController {
 		 * @param in
 		 *            the in
 		 */
-		protected ReflectedParcelable(Parcel in) {
+		private ReflectedParcelable(Parcel in) {
 			Field[] fields = null;
 			Class<?> c = this.getClass();
 			fields = c.getDeclaredFields();

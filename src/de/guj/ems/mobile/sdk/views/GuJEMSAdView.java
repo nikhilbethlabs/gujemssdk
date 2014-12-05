@@ -17,9 +17,6 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.gms.ads.AdView;
-
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
 import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
@@ -64,6 +61,8 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	private transient IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSAdView";
+	
+	private GoogleDelegator googleDelegator;
 
 	private AdResponseReceiver responseReceiver = new AdResponseReceiver(handler);
 
@@ -418,20 +417,12 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	@Override
 	public void reload() {
 		if (settings != null && !this.testMode) {
-			if (getParent() != null) {
-				ViewGroup p = (ViewGroup) getParent();
-				int index = p.indexOfChild(this);
-				View o = p.getChildAt(index + 1);
-				if (o != null
-						&& AdView.class.equals(o
-								.getClass())) {
-					SdkLog.d(TAG,
-							"Removing implicity created additional adview ["
-									+ o.getClass() + "]");
-					p.removeViewAt(index + 1);
-				}
-			}
 			setVisibility(View.GONE);
+			if (this.googleDelegator != null) {
+				SdkLog.d(TAG, "adReload: " + getChildCount() + " children, nullifying delegator.");
+				removeView(this.googleDelegator.getAdView());
+				this.googleDelegator = null;
+			}
 			clearView();
 			load();
 
@@ -544,13 +535,17 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 				if (settings.getOnAdSuccessListener() != null) {
 					settings.getOnAdSuccessListener().onAdSuccess();
 				}
+				if (getVisibility() == View.GONE) {
+					setVisibility(View.VISIBLE);
+				}
 			} else {
 				setVisibility(GONE);
 				if (settings.getGooglePublisherId() != null) {
 					try {
 						SdkLog.i(TAG, "Passing to Google SDK. ["
 								+ settings.getGooglePublisherId() + "]");
-						new GoogleDelegator(this, settings, getLayoutParams(), getBackground(), getId()).load();
+						this.googleDelegator = new GoogleDelegator(this, settings, getLayoutParams(), getBackground(), getId());
+						this.googleDelegator.load();
 					} catch (Exception e) {
 						if (settings.getOnAdErrorListener() != null) {
 							settings.getOnAdErrorListener().onAdError(

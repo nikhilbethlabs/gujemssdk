@@ -106,5 +106,16 @@ public class EMSInterface {
 		SdkLog.i(TAG, "ems_headset: status requested.");
 		return SdkUtil.isHeadsetConnected();
 	}
+	
+	/**
+	 * Returns advertising identifier if user has opted in
+	 * 
+	 * @return identifier if user has opted in, null otherwise
+	 */
+	@JavascriptInterface
+	public String getIdForAdvertiser() {
+		SdkLog.i(TAG, "ems_ifda: identifier requested.");
+		return SdkUtil.getIdForAdvertiser();
+	}	
 
 }

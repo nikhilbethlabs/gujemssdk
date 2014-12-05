@@ -21,7 +21,7 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
  * @author stein16
  * 
  */
-public class SmartstreamAdapter implements BackfillAdapter {
+class SmartstreamAdapter implements BackfillAdapter {
 
 	private final static String TAG = "SmartstreamAdapter";
 

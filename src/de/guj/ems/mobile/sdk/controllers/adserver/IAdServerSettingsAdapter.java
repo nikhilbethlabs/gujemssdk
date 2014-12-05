@@ -170,65 +170,131 @@ public interface IAdServerSettingsAdapter {
 	 *            backfill data
 	 */
 	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill);
-	
+
 	/**
-	 * Add a map of custom params to the request. Only String, Integer, Double allowed.
-	 * @param params Map of parameter names and values
+	 * Add a map of custom params to the request. Only String, Integer, Double
+	 * allowed.
+	 * 
+	 * @param params
+	 *            Map of parameter names and values
 	 */
 	public void addCustomParams(Map<String, ?> params);
-	
-	
+
 	/**
 	 * Override the initial base url for the request
-	 * @param baseUrl new base url for ad request servlet
+	 * 
+	 * @param baseUrl
+	 *            new base url for ad request servlet
 	 */
 	public void setBaseUrlString(String baseUrl);
-	
-	/** Add an array of regular expressions which should be applied to the
+
+	/**
+	 * Add an array of regular expressions which should be applied to the
 	 * resulting ad request
-	 * @param regexp json array with regular expressions
+	 * 
+	 * @param regexp
+	 *            json array with regular expressions
 	 */
 	public void addRegexp(JSONArray regexp);
-	
+
 	/**
-	 * Retrieve a map of all actual request params defined in the settings 
+	 * Retrieve a map of all actual request params defined in the settings
+	 * 
 	 * @return map with all configured param values
 	 */
 	public Map<String, String> getParams();
-	
+
 	/**
 	 * Returns an appending string to the query string
+	 * 
 	 * @return query string extension
 	 */
 	public String getQueryAppendix();
-	
+
 	/**
-	 * Add a predefined string which is appended to the servlet url 
-	 * @param str query string extension
+	 * Add a predefined string which is appended to the servlet url
+	 * 
+	 * @param str
+	 *            query string extension
 	 */
 	public void addQueryAppendix(String str);
-	
-	/**
-	 * Get adview metrics for ad request
-	 * @return An array of three integers - view width, height and dpi
-	 */
-	public int[] getAdViewMetrics();
-	
+
 	/**
 	 * Determine whether the settings may be overridden by local json config
+	 * 
 	 * @return
 	 */
 	public boolean doProcess();
-	
+
+	/**
+	 * Initialize view type and declaration specific settings
+	 * 
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param set
+	 *            attributes from xml
+	 */
 	public void setup(Context context, Class<?> viewClass, AttributeSet set);
-	
+
+	/**
+	 * Initialize view type and declaration specific settings
+	 * 
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param savedInstance
+	 *            saved attributes
+	 */
 	public void setup(Context context, Class<?> viewClass, Bundle savedInstance);
-	
-	public void setup(Context context, Class<?> viewClass, Bundle savedInstance,
-			String[] kws, String[] nkws);	
-	
+
+	/**
+	 * Initialize view type and declaration specific settings
+	 * 
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param savedInstance
+	 *            saved attributes
+	 * @param kws
+	 *            positive keywords
+	 * @param nkws
+	 *            negative keywords
+	 */
+	public void setup(Context context, Class<?> viewClass,
+			Bundle savedInstance, String[] kws, String[] nkws);
+
+	/**
+	 * Initialize view type and declaration specific settings with additional
+	 * keywords for view
+	 * 
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param set
+	 *            attributes from xml
+	 * @param kws
+	 *            positive keywords
+	 * @param nkws
+	 *            negative keywords
+	 */
 	public void setup(Context context, Class<?> viewClass, AttributeSet set,
 			String[] kws, String[] nkws);
-	
+
+	/**
+	 * From v1.4 on each ad view can have a Google publisher id for backfill
+	 * with admob/ad exchange and the like
+	 * 
+	 * @return Google publisher ID as string
+	 */
 	public String getGooglePublisherId();
+	
+	/**
+	 * Mark settings as processed
+	 */
+	public void dontProcess();
 }

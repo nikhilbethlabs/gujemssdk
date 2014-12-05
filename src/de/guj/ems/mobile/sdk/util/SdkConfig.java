@@ -19,7 +19,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
  * @author stein16
  * 
  */
-public enum SdkConfig {
+enum SdkConfig {
 	SINGLETON;
 
 	public class JSONConfig extends JSONContent {
@@ -72,6 +72,7 @@ public enum SdkConfig {
 					} catch (Exception e) {
 						SdkLog.e(TAG, "Could not set baseUrl!", e);
 					}
+					//TODO process JSON reading only once?
 					// add regular expressions for query string replacements
 					JSONArray reg = getJSON().getJSONArray(
 							SdkUtil.getContext().getString(
@@ -120,47 +121,47 @@ public enum SdkConfig {
 				throws Exception {
 			if (apn < 0) {
 				checkApn();
-				switch (apn) {
-				case VODAFONE_APN:
-					SdkLog.i(TAG, "Found Vodafone APN.");
-					try {
-						String vfUrl = getJSON().getString(
-								SdkUtil.getContext()
-										.getString(R.string.jsonBaseUrlVodafone));
-						if (vfUrl != null) {
-							settings.setBaseUrlString(vfUrl);
-						}						
-					}
-					catch (Exception e) {
-						SdkLog.w(TAG, "Could not set base URL for Vodafone.");
-					}
-					break;
-				case TELEFONICA_APN:
-					try {
-						SdkLog.i(TAG, "Found Telefonica APN.");
-						String o2Url = getJSON().getString(
-								SdkUtil.getContext().getString(
-										R.string.jsonBaseUrlTelefonica));
-						if (o2Url != null) {
-							settings.setBaseUrlString(o2Url);
-						}					
-					}
-					catch (Exception e) {
-						SdkLog.w(TAG, "Could not set base URL for Telefonica.");
-					}
-					break;
-				default:
-					SdkLog.i(TAG, "Found unknown APN.");
-					try {
-						String defUrl = getJSON()
-								.getString(
-										SdkUtil.getContext().getString(
-												R.string.jsonBaseUrlDefault));
-						settings.setBaseUrlString(defUrl);
-					}
-					catch (Exception e) {
-						SdkLog.w(TAG, "Could not set base URL.");
-					}
+			}
+			switch (apn) {
+			case VODAFONE_APN:
+				SdkLog.i(TAG, "Found Vodafone APN.");
+				try {
+					String vfUrl = getJSON().getString(
+							SdkUtil.getContext()
+									.getString(R.string.jsonBaseUrlVodafone));
+					if (vfUrl != null) {
+						settings.setBaseUrlString(vfUrl);
+					}						
+				}
+				catch (Exception e) {
+					SdkLog.w(TAG, "Could not set base URL for Vodafone.");
+				}
+				break;
+			case TELEFONICA_APN:
+				try {
+					SdkLog.i(TAG, "Found Telefonica APN.");
+					String o2Url = getJSON().getString(
+							SdkUtil.getContext().getString(
+									R.string.jsonBaseUrlTelefonica));
+					if (o2Url != null) {
+						settings.setBaseUrlString(o2Url);
+					}					
+				}
+				catch (Exception e) {
+					SdkLog.w(TAG, "Could not set base URL for Telefonica.");
+				}
+				break;
+			default:
+				SdkLog.i(TAG, "Found unknown APN.");
+				try {
+					String defUrl = getJSON()
+							.getString(
+									SdkUtil.getContext().getString(
+											R.string.jsonBaseUrlDefault));
+					settings.setBaseUrlString(defUrl);
+				}
+				catch (Exception e) {
+					SdkLog.w(TAG, "Could not set base URL.");
 				}
 			}
 		}
@@ -199,7 +200,7 @@ public enum SdkConfig {
 	 * @return refresh cap in minutes
 	 */
 	public int getVarsRefreshCap() {
-		return varsRefreshCapMin;
+		return varsRefreshCapMin > 0 ? varsRefreshCapMin : 30;
 	}
 
 }
