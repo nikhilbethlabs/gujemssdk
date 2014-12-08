@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -21,8 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
+import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
@@ -50,7 +54,7 @@ import de.guj.ems.mobile.sdk.util.VASTXmlParser.VASTXmlListener;
  * @author stein16
  * 
  */
-public final class VideoInterstitialActivity extends Activity implements IAdResponseHandler, VASTXmlListener {
+public final class VideoInterstitialActivity extends Activity implements IAdResponseHandler, VASTXmlListener, Receiver {
 
 	/**
 	 * 
@@ -126,6 +130,8 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 	private Intent target;
 
 	private InterstitialThread updateThread;
+	
+	private AdResponseReceiver responseReceiver;
 
 	private void initFromVastXml() {
 
@@ -706,27 +712,38 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 
 	@Override
 	public void processResponse(IAdResponse response) {
-		try {
-			SdkLog.d(TAG, "Processing " + response);
-			VASTXmlParser vast = vastXml;
-			while (vast.getWrappedVASTXml() != null) {
-				vast = vast.getWrappedVASTXml();
+		if (response != null) {
+			try {
+				SdkLog.d(TAG, "Processing " + response);
+				VASTXmlParser vast = vastXml;
+				while (vast.getWrappedVASTXml() != null) {
+					vast = vast.getWrappedVASTXml();
+				}
+				vast.setWrapper(new VASTXmlParser(getApplicationContext(), this,
+						response.getResponse()));
+				SdkLog.d(TAG, "Setting video URI to " + this.vastXml.getMediaFileUrl());
+				this.videoView
+						.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
+				List<String> im = this.vastXml.getImpressionTrackerUrl();
+				SdkLog.i(TAG, "Triggering " + im.size()
+						+ " impression tracking requests");
+				if (im != null && im.size() > 0) {
+					String[] imS = new String[im.size()];
+					SdkUtil.httpRequests(im.toArray(imS));
+				}
+	
+			} catch (Exception e) {
+				SdkLog.e(TAG, "Error forcing VAST xml response", e);
 			}
-			vast.setWrapper(new VASTXmlParser(getApplicationContext(), this,
-					response.getResponse()));
-			SdkLog.d(TAG, "Setting video URI to " + this.vastXml.getMediaFileUrl());
-			this.videoView
-					.setVideoURI(Uri.parse(this.vastXml.getMediaFileUrl()));
-			List<String> im = this.vastXml.getImpressionTrackerUrl();
-			SdkLog.i(TAG, "Triggering " + im.size()
-					+ " impression tracking requests");
-			if (im != null && im.size() > 0) {
-				String[] imS = new String[im.size()];
-				SdkUtil.httpRequests(im.toArray(imS));
+		}
+		else {
+			if (target != null) {
+				startActivity(target);
+			} else {
+				SdkLog.d(TAG,
+						"Video interstitial without target. Returning to previous view.");
 			}
-
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error forcing VAST xml response", e);
+			finish();			
 		}
 	}
 
@@ -773,15 +790,10 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 	@Override
 	public void onVASTWrapperFound(final String url) {
 		SdkLog.d(TAG, "Should fetch wrapped VAST xml");
-		//TODO does not work for second redirect
-		/*
-		final IAdResponseHandler ref = this;
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				SdkUtil.adRequest(ref).execute(new TrackingSettingsAdapter(url));
-			}
-		}); */
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
+		getApplicationContext().startService(
+				SdkUtil.adRequest(responseReceiver, url));
 	}
 
 	@Override
@@ -806,5 +818,15 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 			SdkLog.d(TAG, vast + " has wrapper.");
 		}
 	}
+	
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
+	}	
 
 }

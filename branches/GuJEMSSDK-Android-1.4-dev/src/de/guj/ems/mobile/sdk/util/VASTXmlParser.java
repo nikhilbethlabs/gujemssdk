@@ -475,6 +475,7 @@ public class VASTXmlParser {
 		p.require(XmlPullParser.END_TAG, null, VAST_ADTAGURI_TAG);
 
 		if (vastListener != null) {
+			SdkLog.d(TAG, "Notifying VAST listener of new location " + url);
 			vastListener.onVASTWrapperFound(url);
 		} else {
 			SdkLog.e(TAG, "No listener set for wrapped VAST xml.");

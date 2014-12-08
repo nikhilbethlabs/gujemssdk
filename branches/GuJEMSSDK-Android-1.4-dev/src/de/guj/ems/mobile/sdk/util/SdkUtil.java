@@ -575,6 +575,20 @@ public class SdkUtil {
 		i.putExtra("handler", handler);
 		return i;
 	}
+	
+	/**
+	 * Create an ad request object with url and response handler
+	 * 
+	 * @param handler
+	 *            response handler
+	 * @return initialized ad request
+	 */
+	public static Intent adRequest(AdResponseReceiver handler, String url) {
+		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+		i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
+		i.putExtra("handler", handler);
+		return i;
+	}
 
 	/**
 	 * Perform a quick simple http request without processing the response
