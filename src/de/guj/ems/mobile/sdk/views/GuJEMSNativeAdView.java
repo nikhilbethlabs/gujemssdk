@@ -65,7 +65,7 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandler {
+public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandler {
 
 	private static final long serialVersionUID = 419984287637564123L;
 
@@ -222,7 +222,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 
 	private final String TAG = "GuJEMSNativeAdView";
 
-	GuJEMSNativeAdView(Context context) {
+	public GuJEMSNativeAdView(Context context) {
 		super(context);
 		this.preLoadInitialize(context, null);
 	}
@@ -235,7 +235,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
-	GuJEMSNativeAdView(Context context, AttributeSet attrs) {
+	public GuJEMSNativeAdView(Context context, AttributeSet attrs) {
 		this(context, attrs, true);
 	}
 
@@ -250,7 +250,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 *            if set to true, the adview loads implicitity, if false, call
 	 *            load by yourself
 	 */
-	GuJEMSNativeAdView(Context context, AttributeSet attrs, boolean load) {
+	public GuJEMSNativeAdView(Context context, AttributeSet attrs, boolean load) {
 		super(context, attrs);
 		responseHandler = new AdResponseReceiver(new Handler());
 		responseHandler.setReceiver(this);
@@ -268,7 +268,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
-	GuJEMSNativeAdView(Context context, int resId) {
+	public GuJEMSNativeAdView(Context context, int resId) {
 		this(context, resId, true);
 
 	}
@@ -284,7 +284,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 *            if set to true, the adview loads implicitity, if false, call
 	 *            load by yourself
 	 */
-	GuJEMSNativeAdView(Context context, int resId, boolean load) {
+	public GuJEMSNativeAdView(Context context, int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
@@ -305,7 +305,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
-	GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			int resId) {
 		this(context, customParams, resId, true);
 	}
@@ -323,7 +323,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 *            if set to true, the adview loads implicitity, if false, call
 	 *            load by yourself
 	 */
-	GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
@@ -350,7 +350,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
-	GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId) {
 		this(context, customParams, kws, nkws, resId, true);
 	}
@@ -373,7 +373,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 *            if set to true, the adview loads implicitity, if false, call
 	 *            load by yourself
 	 */
-	GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
+	public GuJEMSNativeAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);
@@ -397,7 +397,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 * @param resId
 	 *            resource ID of the XML layout file to inflate from
 	 */
-	GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
+	public GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
 			int resId) {
 		this(context, kws, nkws, resId, true);
 	}
@@ -417,7 +417,7 @@ class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandl
 	 *            if set to true, the adview loads implicitity, if false, call
 	 *            load by yourself
 	 */
-	GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
+	public GuJEMSNativeAdView(Context context, String[] kws, String nkws[],
 			int resId, boolean load) {
 		super(context);
 		AttributeSet attrs = inflate(resId);

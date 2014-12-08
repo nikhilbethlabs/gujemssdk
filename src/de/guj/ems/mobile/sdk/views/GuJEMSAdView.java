@@ -417,7 +417,6 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	@Override
 	public void reload() {
 		if (settings != null && !this.testMode) {
-			setVisibility(View.GONE);
 			if (this.googleDelegator != null) {
 				SdkLog.d(TAG, "adReload: " + getChildCount() + " children, nullifying delegator.");
 				removeView(this.googleDelegator.getAdView());
