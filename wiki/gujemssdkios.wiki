@@ -12,7 +12,7 @@ iOS SDK change history and downloads.
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3eTFDX3JrQk54S2c/view?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.6-DE]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3WjVieVA2bDd2ZlU/edit?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.6-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3Ql95dmQ0dnVSa1U/view?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.0.6-EN]
 ----
 == Changelog ==
 
