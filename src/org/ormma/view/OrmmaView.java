@@ -464,7 +464,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
 			bPageFinished = true;
-			view.setVisibility(View.INVISIBLE);
+			/*
+			SdkLog.d("OrmmaView", "PAGE FINISHED - SETTING INVISIBLE....?");
+			view.setVisibility(View.INVISIBLE);*/
 		}
 
 		@Override
@@ -737,8 +739,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	@Override
 	public void clearView() {
 		bPageFinished = false;
+		//loadUrl("about:blank");
 		reset();
-		loadUrl("about:blank");
 	}
 
 	/**
@@ -1577,6 +1579,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			setVisibility(View.GONE);
 		}
 		mUtilityController.stopAllListeners();
+		setWillNotDraw(false);
 		resetLayout();
 	}
 

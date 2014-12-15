@@ -30,7 +30,7 @@ import android.widget.RelativeLayout;
  * @author Roshan
  * 
  */
-class OrmmaActionHandler extends Activity {
+public class OrmmaActionHandler extends Activity {
 
 	private HashMap<ACTION, Object> actionData = new HashMap<ACTION, Object>();
 	private RelativeLayout layout;

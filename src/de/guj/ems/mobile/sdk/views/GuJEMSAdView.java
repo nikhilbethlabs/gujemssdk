@@ -61,10 +61,10 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	private transient IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSAdView";
-	
+
 	private GoogleDelegator googleDelegator;
 
-	private AdResponseReceiver responseReceiver = new AdResponseReceiver(handler);
+	private AdResponseReceiver responseReceiver;
 
 	/**
 	 * Initialize view without configuration
@@ -352,8 +352,7 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	public final void load() {
 		if (settings != null && !this.testMode) {
 
-			// Construct request URL
-
+			// Start request if online
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
@@ -366,8 +365,6 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 			else {
 				SdkLog.i(TAG, "No network connection - not requesting ads.");
 				setVisibility(GONE);
-				// TODO handle error
-				// responseReceiver.processError("No network connection.");
 			}
 		} else {
 			SdkLog.w(TAG, "AdView has no settings or is in test mode.");
@@ -418,8 +415,8 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	public void reload() {
 		if (settings != null && !this.testMode) {
 			if (this.googleDelegator != null) {
-				SdkLog.d(TAG, "adReload: " + getChildCount() + " children, nullifying delegator.");
-				removeView(this.googleDelegator.getAdView());
+				SdkLog.d(TAG, "AdReload, removing Google view.");
+				this.googleDelegator.reset();
 				this.googleDelegator = null;
 			}
 			clearView();
@@ -464,18 +461,6 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		this.settings.setOnAdSuccessListener(l);
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		SdkLog.d(TAG, ":: ONPAUSE ::");
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		SdkLog.d(TAG, ":: ONRESUME ::");
-	}
-
 	public AdResponseReceiver getResponseHandler() {
 		return responseReceiver;
 	}
@@ -484,10 +469,10 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 	public void onReceiveResult(int resultCode, Bundle resultData) {
 		Throwable lastError = (Throwable) resultData.get("lastError");
 		IAdResponse response = (IAdResponse) resultData.get("response");
+		processResponse(response);
 		if (lastError != null) {
 			processError("Received error", lastError);
 		}
-		processResponse(response);
 	}
 
 	@Override
@@ -538,12 +523,15 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 					setVisibility(View.VISIBLE);
 				}
 			} else {
-				setVisibility(GONE);
+
 				if (settings.getGooglePublisherId() != null) {
 					try {
-						SdkLog.i(TAG, "Passing to Google SDK. ["
-								+ settings.getGooglePublisherId() + "]");
-						this.googleDelegator = new GoogleDelegator(this, settings, getLayoutParams(), getBackground(), getId());
+						SdkLog.i(
+								TAG,
+								"Passing to Google SDK. ["
+										+ settings.getGooglePublisherId() + "]");
+						this.googleDelegator = new GoogleDelegator(this,
+								settings, getLayoutParams(), getBackground());
 						this.googleDelegator.load();
 					} catch (Exception e) {
 						if (settings.getOnAdErrorListener() != null) {
@@ -554,6 +542,7 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 						}
 					}
 				} else if (response == null || response.isEmpty()) {
+					setVisibility(GONE);
 					if (settings.getOnAdEmptyListener() != null) {
 						settings.getOnAdEmptyListener().onAdEmpty();
 					} else {
@@ -567,4 +556,20 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		}
 
 	}
+	/*
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		if (this.googleDelegator != null) {
+			SdkLog.d(TAG, "Detach, removing Google view.");
+			this.googleDelegator.reset();
+			this.googleDelegator = null;
+		}
+	}
+	*/
+	@Override
+	public void onScreenStateChanged(int state) {
+		SdkLog.d(TAG, "screen state change [" + state + "]");
+	}
+	 
 }

@@ -538,32 +538,33 @@ containing a value of this type.
         public static int thumb=0x7f02002b;
     }
     public static final class id {
-        public static int adheader=0x7f070016;
-        public static int adhint=0x7f070014;
-        public static int adkicker=0x7f070017;
-        public static int adthumb=0x7f070015;
+        public static int adheader=0x7f070017;
+        public static int adhint=0x7f070015;
+        public static int adkicker=0x7f070018;
+        public static int adthumb=0x7f070016;
         public static int book_now=0x7f070010;
         public static int buyButton=0x7f07000a;
         public static int buy_now=0x7f07000f;
         public static int buy_with_google=0x7f07000e;
         public static int classic=0x7f070011;
-        public static int emsIntCloseButton=0x7f07001c;
-        public static int emsIntCloseButton2=0x7f070019;
-        public static int emsIntLayout=0x7f070018;
-        public static int emsIntProgBar=0x7f07001d;
-        public static int emsIntProgLayout=0x7f07001b;
-        public static int emsIntSpinner=0x7f07001e;
-        public static int emsIntSpinner2=0x7f07001a;
-        public static int emsVidIntButton=0x7f070020;
-        public static int emsVidIntLayout=0x7f07001f;
-        public static int emsVidIntSndButton=0x7f070024;
-        public static int emsVidIntSpinner=0x7f070022;
-        public static int emsVideoText=0x7f070023;
-        public static int emsVideoView=0x7f070021;
+        public static int emsIntCloseButton=0x7f07001d;
+        public static int emsIntCloseButton2=0x7f07001a;
+        public static int emsIntLayout=0x7f070019;
+        public static int emsIntProgBar=0x7f07001e;
+        public static int emsIntProgLayout=0x7f07001c;
+        public static int emsIntSpinner=0x7f07001f;
+        public static int emsIntSpinner2=0x7f07001b;
+        public static int emsVidIntButton=0x7f070021;
+        public static int emsVidIntLayout=0x7f070020;
+        public static int emsVidIntSndButton=0x7f070025;
+        public static int emsVidIntSpinner=0x7f070023;
+        public static int emsVideoText=0x7f070024;
+        public static int emsVideoView=0x7f070022;
         public static int grayscale=0x7f070012;
         public static int holo_dark=0x7f070005;
         public static int holo_light=0x7f070006;
         public static int hybrid=0x7f070004;
+        public static int integratedad=0x7f070014;
         public static int match_parent=0x7f07000c;
         public static int monochrome=0x7f070013;
         public static int none=0x7f070000;
@@ -1127,6 +1128,246 @@ containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_zoneId
         */
         public static final int GuJEMSAdView_ems_zoneId = 4;
+        /**  attribute usage for native view 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_bfSiteId de.guj.ems.mobile.sdk:ems_bfSiteId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_bfZoneId de.guj.ems.mobile.sdk:ems_bfZoneId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_gPubId de.guj.ems.mobile.sdk:ems_gPubId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_geo de.guj.ems.mobile.sdk:ems_geo}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_kw de.guj.ems.mobile.sdk:ems_kw}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_lat de.guj.ems.mobile.sdk:ems_lat}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_lon de.guj.ems.mobile.sdk:ems_lon}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_nkw de.guj.ems.mobile.sdk:ems_nkw}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_onAdEmpty de.guj.ems.mobile.sdk:ems_onAdEmpty}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_onAdError de.guj.ems.mobile.sdk:ems_onAdError}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_onAdSuccess de.guj.ems.mobile.sdk:ems_onAdSuccess}</code></td><td> custom attributes for ad views </td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_siteId de.guj.ems.mobile.sdk:ems_siteId}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_uid de.guj.ems.mobile.sdk:ems_uid}</code></td><td></td></tr>
+           <tr><td><code>{@link #GuJEMSIntegratedAdView_ems_zoneId de.guj.ems.mobile.sdk:ems_zoneId}</code></td><td></td></tr>
+           </table>
+           @see #GuJEMSIntegratedAdView_ems_bfSiteId
+           @see #GuJEMSIntegratedAdView_ems_bfZoneId
+           @see #GuJEMSIntegratedAdView_ems_gPubId
+           @see #GuJEMSIntegratedAdView_ems_geo
+           @see #GuJEMSIntegratedAdView_ems_kw
+           @see #GuJEMSIntegratedAdView_ems_lat
+           @see #GuJEMSIntegratedAdView_ems_lon
+           @see #GuJEMSIntegratedAdView_ems_nkw
+           @see #GuJEMSIntegratedAdView_ems_onAdEmpty
+           @see #GuJEMSIntegratedAdView_ems_onAdError
+           @see #GuJEMSIntegratedAdView_ems_onAdSuccess
+           @see #GuJEMSIntegratedAdView_ems_siteId
+           @see #GuJEMSIntegratedAdView_ems_uid
+           @see #GuJEMSIntegratedAdView_ems_zoneId
+         */
+        public static final int[] GuJEMSIntegratedAdView = {
+            0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023,
+            0x7f010024, 0x7f010025, 0x7f010026, 0x7f010027,
+            0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b,
+            0x7f01002c, 0x7f01002d
+        };
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_bfSiteId}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_bfSiteId
+        */
+        public static final int GuJEMSIntegratedAdView_ems_bfSiteId = 5;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_bfZoneId}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_bfZoneId
+        */
+        public static final int GuJEMSIntegratedAdView_ems_bfZoneId = 6;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_gPubId}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_gPubId
+        */
+        public static final int GuJEMSIntegratedAdView_ems_gPubId = 7;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_geo}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_geo
+        */
+        public static final int GuJEMSIntegratedAdView_ems_geo = 11;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_kw}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_kw
+        */
+        public static final int GuJEMSIntegratedAdView_ems_kw = 9;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lat}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_lat
+        */
+        public static final int GuJEMSIntegratedAdView_ems_lat = 12;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lon}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_lon
+        */
+        public static final int GuJEMSIntegratedAdView_ems_lon = 13;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_nkw}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_nkw
+        */
+        public static final int GuJEMSIntegratedAdView_ems_nkw = 10;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdEmpty}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_onAdEmpty
+        */
+        public static final int GuJEMSIntegratedAdView_ems_onAdEmpty = 1;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdError}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_onAdError
+        */
+        public static final int GuJEMSIntegratedAdView_ems_onAdError = 2;
+        /**
+          <p>
+          @attr description
+           custom attributes for ad views 
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name de.guj.ems.mobile.sdk:ems_onAdSuccess
+        */
+        public static final int GuJEMSIntegratedAdView_ems_onAdSuccess = 0;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_siteId}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_siteId
+        */
+        public static final int GuJEMSIntegratedAdView_ems_siteId = 3;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_uid}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_uid
+        */
+        public static final int GuJEMSIntegratedAdView_ems_uid = 8;
+        /**
+          <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_zoneId}
+          attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name de.guj.ems.mobile.sdk:ems_zoneId
+        */
+        public static final int GuJEMSIntegratedAdView_ems_zoneId = 4;
         /**  attribute usage for native view 
            <p>Includes the following attributes:</p>
            <table>

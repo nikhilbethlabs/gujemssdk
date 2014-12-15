@@ -8,7 +8,8 @@ ad with content.
 
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/GuJEMSIntegrativeAd" >
+    style="@style/GuJEMSIntegrativeAd"
+    android:id="@+id/integratedad" >
 
     <EditText
         android:id="@+id/adhint"
@@ -22,15 +23,20 @@ ad with content.
         style="@style/GuJEMSIntegrativeAd.Thumb"
         android:layout_below="@+id/adhint"
         android:contentDescription="@string/advert"
+        android:adjustViewBounds="true"
+        android:maxWidth="120dp"
+        android:paddingRight="10dp"
         android:src="@drawable/thumb" />
 
     <EditText
         android:id="@+id/adheader"
-        android:layout_toRightOf="@+id/adthumb"
+        style="@style/GuJEMSIntegrativeAd.Header"
         android:layout_alignTop="@+id/adthumb"
-        android:text="@string/sampleHeader"
+        android:layout_toRightOf="@+id/adthumb"
         android:inputType="none"
-        style="@style/GuJEMSIntegrativeAd.Header" >
+        android:text="@string/sampleHeader"
+        android:typeface="normal" >
+
 	</EditText>
     
     <EditText
