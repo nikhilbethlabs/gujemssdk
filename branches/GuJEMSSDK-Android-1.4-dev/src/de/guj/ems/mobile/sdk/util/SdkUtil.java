@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -26,6 +27,7 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
@@ -41,6 +43,7 @@ import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
 import de.guj.ems.mobile.sdk.controllers.adserver.AdRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdRequest;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
+import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 /**
  * Various global static methods for initialization, configuration of sdk plus
@@ -779,6 +782,37 @@ public class SdkUtil {
 			getIdfaThread();
 		}
 		return IDFA;
+	}
+	
+	private static void reloadAdsInGroup(ViewGroup vg) {
+		if (vg != null) {
+			for (int i = 0; i < vg.getChildCount(); i++) {
+				if (GuJEMSAdView.class.equals(vg.getChildAt(i).getClass())) {
+					GuJEMSAdView v = (GuJEMSAdView)vg.getChildAt(i); 
+					SdkLog.d(TAG, "Reload adview " + v);
+					v.reload();
+				}
+				else if (vg.getChildAt(i) instanceof ViewGroup){
+					reloadAdsInGroup((ViewGroup)vg.getChildAt(i));
+				}
+				//TODO more view types
+			}
+		}
+	}
+	
+	public static void reloadAds(Activity ac) {
+		if (ac != null) {
+			ViewGroup root = (ViewGroup)ac.findViewById(android.R.id.content);
+			if (root != null) {
+				reloadAdsInGroup((ViewGroup)root);
+			}
+			else {
+				SdkLog.w(TAG, "Could not access root view when reloading ads.");
+			}
+		}
+		else {
+			SdkLog.w(TAG, "Called reloadAds for null Activity.");
+		}
 	}
 
 }

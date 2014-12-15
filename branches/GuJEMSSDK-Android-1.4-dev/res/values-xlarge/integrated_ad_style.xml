@@ -24,7 +24,7 @@ ad with content.
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#AAAAAA</item>
         <item name="android:typeface">sans</item>
-        <item name="android:textSize">7sp</item>
+        <item name="android:textSize">9sp</item>
         <item name="android:padding">1sp</item>
     </style>
     <!-- style for ad image/thumb -->

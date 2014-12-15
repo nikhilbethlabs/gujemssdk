@@ -117,6 +117,7 @@ public final class InterstitialActivity extends Activity implements OnClickListe
 				this.withProgress ? R.id.emsIntCloseButton
 						: R.id.emsIntCloseButton2);
 		adView.setLayoutParams(lp);
+		adView.setVisibility(View.VISIBLE);
 
 		// (4) configure close button
 		ImageButton b = (ImageButton) findViewById(this.withProgress ? R.id.emsIntCloseButton

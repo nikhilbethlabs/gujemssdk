@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -26,10 +27,16 @@ public final class GoogleDelegator {
 	private final static String TAG = "GoogleDelegator";
 
 	private AdView googleAdView;
-
+	
 	private AdRequest googleAdRequest;
 
 	private String pubId;
+	
+	private LinearLayout container;
+	
+	private int viewIndex;
+	
+	private GuJEMSAdView gujEmsAdView;
 
 	/**
 	 * Constructor
@@ -41,57 +48,65 @@ public final class GoogleDelegator {
 	 * @param andId view android id
 	 */
 	public GoogleDelegator(final GuJEMSAdView adView, final IAdServerSettingsAdapter settings, ViewGroup.LayoutParams lp,
-			Drawable bk, int andId) {
+			Drawable bk) {
 
-		//final ViewGroup parent = adView != null ? (ViewGroup) adView.getParent() : null;
-		
-		if (adView == null) {
+		if (adView == null || adView.getParent() == null) {
 			if (settings.getOnAdErrorListener() != null) {
-				settings.getOnAdErrorListener().onAdError("Parent adview no longer present, ignoring Google backfill request.");
+				settings.getOnAdErrorListener().onAdError("Parent or adview no longer present, ignoring Google backfill request.");
 			}
 			else {
-				SdkLog.w(TAG, "Parent adview no longer present, ignoring Google backfill request.");
+				SdkLog.w(TAG, "Parent or adview no longer present, ignoring Google backfill request.");
 			}
 		}
 		else {
-			//final int index = parent.indexOfChild(adView);
-			
-			//parent.removeView(adView);
-			adView.removeAllViews();
-	
+			gujEmsAdView = adView;
+			viewIndex = ((ViewGroup)adView.getParent()).indexOfChild(adView);
 			this.mkGoogleRequest(settings);
-
+			//adView.setVisibility(View.GONE);
 			googleAdView = new AdView(adView.getContext());
-			googleAdView.setAdSize(AdSize.BANNER);
+			//googleAdView.setId(adView.getId());
+			googleAdView.setAdSize(AdSize.SMART_BANNER);
 			googleAdView.setAdUnitId(pubId);
-			//googleAdView.setId(andId);
-
-			googleAdView.setLayoutParams(lp);
 			// setBackground requires API level 16
 			googleAdView.setBackgroundDrawable(bk);
-	
 			googleAdView.setAdListener(new AdListener() {
-	
+				
 				@Override
 				public void onAdFailedToLoad(int errorCode) {
-					SdkLog.d(TAG, "No Google ad available.");
-					if (settings.getOnAdEmptyListener() != null) {
+					container.setVisibility(View.GONE);
+					if (errorCode == AdRequest.ERROR_CODE_NO_FILL && settings.getOnAdEmptyListener() != null) {
+						SdkLog.d(TAG, "No ad received from Google.");
 						settings.getOnAdEmptyListener().onAdEmpty();
+					}
+					else if (errorCode != AdRequest.ERROR_CODE_NO_FILL && settings.getOnAdErrorListener() != null) {
+						settings.getOnAdErrorListener().onAdError("Error loading Google ad [" + errorCode + "]");
+					}
+					else {
+						SdkLog.w(TAG, "No Google ad available. [" + errorCode + "]");	
 					}
 				}
 	
 				@Override
 				public void onAdLoaded() {
-					SdkLog.d(TAG, "Google Ad viewable as child under " + adView.getId());
-					//parent.addView(googleAdView, index);
-					adView.addView(googleAdView);
-					adView.setVisibility(View.VISIBLE);
+					//adView.setVisibility(View.VISIBLE);
 					if (settings.getOnAdSuccessListener() != null) {
 						settings.getOnAdSuccessListener()
 								.onAdSuccess();
 					}
+					SdkLog.d(TAG, "Google ad visible");
 				}
 			});
+			
+			
+			adView.setVisibility(View.GONE);
+			ViewGroup parent = (ViewGroup)adView.getParent();
+			parent.removeView(adView);
+			container = new LinearLayout(adView.getContext());
+			container.setId(adView.getId());
+			container.setLayoutParams(lp);
+			container.addView(adView);
+			container.addView(googleAdView);
+			parent.addView(container, viewIndex);
 		}
 	}
 
@@ -126,6 +141,7 @@ public final class GoogleDelegator {
 		
 		if (googleAdView != null && googleAdRequest != null) {
 			SdkLog.i(TAG, "Performing google ad request...");
+			
 			googleAdView.loadAd(googleAdRequest);
 		}
 		else {
@@ -136,6 +152,19 @@ public final class GoogleDelegator {
 	
 	public AdView getAdView() {
 		return googleAdView;
+	}
+	
+	public void reset() {
+		ViewGroup parent = ((ViewGroup)container.getParent());
+		if (parent != null) {
+			container.removeView(gujEmsAdView);
+			parent.removeView(container);
+			parent.addView(gujEmsAdView, viewIndex);
+		}
+		googleAdView.destroy();
+		container = null;
+		googleAdView = null;
+
 	}
 
 }

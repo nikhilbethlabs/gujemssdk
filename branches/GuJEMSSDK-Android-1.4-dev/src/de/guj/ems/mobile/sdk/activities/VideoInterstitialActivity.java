@@ -26,7 +26,6 @@ import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
 import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
-import de.guj.ems.mobile.sdk.controllers.adserver.TrackingSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.util.VASTXmlParser;
@@ -483,7 +482,6 @@ public final class VideoInterstitialActivity extends Activity implements IAdResp
 		super.onStart();
 		try {
 			// parse VAST xml
-			//TODO vast wrapper fetching produces problem when activity is started
 			this.vastXml = new VASTXmlParser(getApplicationContext(), this, (String)getIntent().getExtras().get("data")); 
 
 		} catch (Exception e) {

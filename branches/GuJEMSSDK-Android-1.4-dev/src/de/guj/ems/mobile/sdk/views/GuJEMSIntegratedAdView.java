@@ -1,23 +1,45 @@
 package de.guj.ems.mobile.sdk.views;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONObject;
+import org.ormma.view.Browser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Movie;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
@@ -28,7 +50,7 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
-public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdResponseHandler {
+public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, IAdResponseHandler {
 
 	private static final long serialVersionUID = -9099438955013226163L;
 
@@ -40,6 +62,147 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 
 	private final String TAG = "GuJEMSIntegratedAdView";
 	
+	private AdResponseReceiver responseReceiver;
+	
+	private Bitmap stillImage;
+
+	private Movie animatedGif;
+	
+	private JSONObject adContent;
+	
+	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
+		private final WeakReference<ImageView> viewRef;
+
+		public DownloadImageTask(ImageView view) {
+			this.viewRef = new WeakReference<ImageView>(view);
+		}
+
+		@Override
+		protected Object doInBackground(String... urls) {
+			String urldisplay = urls[0];
+
+			setTag(urldisplay);
+
+			InputStream in = null;
+			try {
+				in = new java.net.URL(urldisplay).openStream();
+
+				if (urldisplay.toLowerCase(Locale.getDefault()).endsWith("gif")) {
+					byte[] raw = streamToBytes(in);
+					animatedGif = Movie.decodeByteArray(raw, 0, raw.length);
+				} else {
+					stillImage = BitmapFactory.decodeStream(in);
+				}
+
+			} catch (Exception e) {
+				SdkLog.e(TAG, e.getMessage(), e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (Exception e) {
+						SdkLog.e(TAG, "Error closing image input stream.", e);
+					}
+				}
+			}
+			return stillImage != null ? stillImage : animatedGif;
+		}
+
+		private byte[] streamToBytes(InputStream is) {
+			ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
+			byte[] buffer = new byte[1024];
+			int len;
+			try {
+				while ((len = is.read(buffer)) >= 0) {
+					os.write(buffer, 0, len);
+				}
+			} catch (java.io.IOException e) {
+				SdkLog.e(TAG, "Error streaming image to bytes.", e);
+			}
+			return os.toByteArray();
+		}
+		
+		@Override
+		protected void onPostExecute(Object result) {
+			Movie movie = null;
+			Bitmap bitmap = null;
+			String url = null;
+			
+			if (result != null) {
+
+				if (Movie.class.equals(result.getClass())) {
+					movie = (Movie) result;
+					//play = true;
+					SdkLog.d(TAG, "Animation downloaded. [" + movie.width()
+							+ "x" + movie.height() + ", " + movie.duration()
+							+ "s]");
+				} else {
+					bitmap = (Bitmap) result;
+					SdkLog.d(TAG, "Image downloaded. [" + bitmap.getWidth()
+							+ "x" + bitmap.getHeight() + "]");
+				}
+
+				ImageView view = viewRef.get();
+
+				
+				try {
+					url = (String)adContent.get("click");
+				}
+				catch (Exception e) {
+					SdkLog.w(TAG, "Could not get click URL from ad config for integrated ad.");
+				}
+				
+				if (view != null) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+							&& movie != null) {
+						disableHWAcceleration();
+					} else if (bitmap != null) {
+						Drawable d = view.getDrawable();
+						if (d instanceof BitmapDrawable) {
+							BitmapDrawable bd = (BitmapDrawable) d;
+							Bitmap bm = bd.getBitmap();
+							if (bm != null) {
+								bm.recycle();
+							}
+							SdkLog.i(TAG,
+									"Recycled bitmap of view " + view.getId());
+						}
+						
+						view.setImageBitmap(bitmap);
+						//scaleImage(view);
+					}
+					setVisibility(View.VISIBLE);
+					if (url != null) {
+						final String _url = url;
+						view.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								if (adContent != null && _url != null) {
+									Intent i = new Intent(getContext(),
+											Browser.class);
+									SdkLog.d(TAG, "open:" + _url);
+									i.putExtra(Browser.URL_EXTRA,
+											_url);
+									i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+									i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+									i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+									getContext().startActivity(i);
+								}
+							}
+						});
+					}
+					else {
+						SdkLog.d(TAG, "Not setting click listener, no click url provided.");
+					}
+					
+					
+				}
+			}
+
+		}
+	}	
+	
 	/**
 	 * Initialize view without configuration
 	 * 
@@ -48,6 +211,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	 */
 	public GuJEMSIntegratedAdView(Context context) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, null);
 	}
 
@@ -76,6 +241,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	 */
 	public GuJEMSIntegratedAdView(Context context, AttributeSet set, boolean load) {
 		super(context, set);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, set);
 		if (load) {
 			this.load();
@@ -107,6 +274,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	 */
 	public GuJEMSIntegratedAdView(Context context, int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);		
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
@@ -145,6 +314,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	public GuJEMSIntegratedAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);		
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
@@ -195,6 +366,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	public GuJEMSIntegratedAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);		
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
@@ -238,6 +411,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	public GuJEMSIntegratedAdView(Context context, String[] kws, String nkws[],
 			int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);		
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
@@ -292,9 +467,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 			}
 			if (state == XmlPullParser.START_TAG) {
 				if (parser.getName().equals(
-						"de.guj.ems.mobile.sdk.views.GuJEMSAdView")
-						|| parser.getName().equals(
-								"de.guj.ems.mobile.sdk.views.GuJEMSListAdView")) {
+						"de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView")) {
 					as = Xml.asAttributeSet(parser);
 					break;
 				} else {
@@ -319,8 +492,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				//TODO rebuild
-				// getContext().startService(SdkUtil.adRequest(this, settings));
+				getContext().startService(
+						SdkUtil.adRequest(responseReceiver, settings));
 				
 			}
 			// Do nothing if offline
@@ -343,6 +516,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
+		
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -354,11 +528,15 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 		if (isInEditMode() || this.testMode) {
 			// TODO set test content?
 		}
+		else {
+			setVisibility(View.GONE);
+		}		
 
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
+		
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		
 		if (set != null) {
@@ -368,6 +546,9 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 		}
 		if (isInEditMode() || this.testMode) {
 			// TODO set test content?
+		}
+		else {
+			setVisibility(View.GONE);
 		}
 
 	}
@@ -400,13 +581,28 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 
 	@Override
 	public final void processResponse(IAdResponse response) {
+		SdkLog.d(TAG, "" + response);
 		try {
 			if (response != null && !response.isEmpty()) {
-				//TODO process ad server response
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
-				}
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
+				
+				try {
+					adContent = new JSONObject(response.getResponse());
+					if (adContent.get("image") != null) {
+						new DownloadImageTask((ImageView)findViewById(R.id.adthumb)).execute((String)adContent.get("image"));
+					}
+					((TextView)findViewById(R.id.adheader)).setText((String)adContent.get("header"));
+					((TextView)findViewById(R.id.adkicker)).setText((String)adContent.get("kicker"));
+					if (adContent.get("cp") != null) {
+						SdkUtil.httpRequest((String)adContent.get("cp"));
+					}
+					if (this.settings.getOnAdSuccessListener() != null) {
+						this.settings.getOnAdSuccessListener().onAdSuccess();
+					}
+				}
+				catch (Exception e) {
+					SdkLog.e(TAG, "Could not fill integrated ad with content", e);
+				}
 
 			} else {
 				setVisibility(GONE);
@@ -468,6 +664,24 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements IAdRespons
 	 */
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
+	}
+	
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		SdkLog.d(TAG, "onReceive " + response);
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void disableHWAcceleration() {
+		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		SdkLog.d(TAG,
+				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}	
 
 }

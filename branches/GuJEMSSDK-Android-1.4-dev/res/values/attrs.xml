@@ -52,6 +52,24 @@
         <attr name="ems_lon"/>
     </declare-styleable>
     
+    <!-- attribute usage for native view -->
+    <declare-styleable name="GuJEMSIntegratedAdView">
+        <attr name="ems_onAdSuccess"/>
+        <attr name="ems_onAdEmpty"/>
+        <attr name="ems_onAdError"/>
+        <attr name="ems_siteId"/>
+        <attr name="ems_zoneId"/>
+        <attr name="ems_bfSiteId"/>
+        <attr name="ems_bfZoneId"/>
+        <attr name="ems_gPubId"/>
+        <attr name="ems_uid"/>
+        <attr name="ems_kw"/>
+        <attr name="ems_nkw"/>
+        <attr name="ems_geo" />
+        <attr name="ems_lat"/>
+        <attr name="ems_lon"/>
+    </declare-styleable>    
+    
 	<!--  Standard layout is for phones -->
     <bool name="largeDisplay">false</bool>
 
