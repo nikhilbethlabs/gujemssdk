@@ -420,8 +420,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 
 	@Override
 	public String getGooglePublisherId() {
-		return this.googlePublisherId == null ? SdkUtil.getContext()
-				.getResources().getString(R.string.google_pub_id) : this.googlePublisherId;		
+		return this.googlePublisherId;		
 	}
 
 }
