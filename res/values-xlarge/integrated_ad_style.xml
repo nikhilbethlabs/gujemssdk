@@ -12,47 +12,34 @@ ad with content.
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- parent style for integrated ad -->
     <style name="GuJEMSIntegrativeAd">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#000000</item>
         <item name="android:typeface">sans</item>
         <item name="android:background">#FFFFFF</item>
     </style>
     <!-- style for "sponsored" hint text -->
-    <style name="GuJEMSIntegrativeAd.Hint">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="GuJEMSIntegrativeAd.Hint" parent="GuJEMSIntegrativeAd">
         <item name="android:textColor">#AAAAAA</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:textSize">9sp</item>
+        <item name="android:textSize">7sp</item>
         <item name="android:padding">1sp</item>
     </style>
     <!-- style for ad image/thumb -->
-    <style name="GuJEMSIntegrativeAd.Thumb">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="GuJEMSIntegrativeAd.Thumb" parent="GuJEMSIntegrativeAd">
         <item name="android:gravity">center</item>
     </style>    
     <!-- style for headline -->
-    <style name="GuJEMSIntegrativeAd.Header">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="GuJEMSIntegrativeAd.Header" parent="GuJEMSIntegrativeAd">
     	<item name="android:textSize">12sp</item> 
-        <item name="android:textColor">#FF0000</item> 
-        <item name="android:typeface">sans</item>
+        <item name="android:textColor">#dd0000</item> 
         <item name="android:padding">2sp</item>
         <item name="android:lines">1</item>
     </style>    
     <!-- style for kicker text -->
-    <style name="GuJEMSIntegrativeAd.Kicker">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="GuJEMSIntegrativeAd.Kicker" parent="GuJEMSIntegrativeAd">
     	<item name="android:gravity">top</item>
         <item name="android:textStyle">bold</item>    	
     	<item name="android:textSize">16sp</item> 
-        <item name="android:textColor">#000000</item> 
-        <item name="android:typeface">sans</item>
         <item name="android:padding">2sp</item>
         <item name="android:lines">3</item>
+        <item name="android:textColor">#0000ff</item>
     </style>    
 </resources>

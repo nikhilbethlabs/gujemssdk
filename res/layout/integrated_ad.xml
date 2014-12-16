@@ -8,14 +8,19 @@ ad with content.
 
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/integratedad"
     style="@style/GuJEMSIntegrativeAd"
-    android:id="@+id/integratedad" >
+    android:theme="@style/GuJEMSIntegrativeAd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
 
     <EditText
         android:id="@+id/adhint"
         android:text="@string/advert"
-        style="@style/GuJEMSIntegrativeAd.Hint" >
-    </EditText>
+        style="@style/GuJEMSIntegrativeAd.Hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
     
     <ImageView
         android:id="@+id/adthumb"
@@ -24,22 +29,28 @@ ad with content.
         android:contentDescription="@string/advert"
         android:adjustViewBounds="true"
         android:maxWidth="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dp"
         android:src="@drawable/thumb" />
 
     <EditText
         android:id="@+id/adheader"
         style="@style/GuJEMSIntegrativeAd.Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/adthumb"
         android:layout_toRightOf="@+id/adthumb"
         android:selectAllOnFocus="false"
-        android:text="@string/sampleHeader" >
+        android:text="@string/sampleHeader">
 
 	</EditText>
     
     <EditText
         android:id="@+id/adkicker"
         style="@style/GuJEMSIntegrativeAd.Kicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/adheader"
         android:layout_toRightOf="@+id/adthumb"
         android:selectAllOnFocus="false"

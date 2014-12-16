@@ -440,9 +440,6 @@ containing a value of this type.
         public static int zOrderOnTop=0x7f010010;
     }
     public static final class bool {
-        /**  Allow Remote Config 
-         */
-        public static int ems_remote_config=0x7f090003;
         /**  Set this to true if you want the geolocation truncated to two digits 
          */
         public static int ems_shorten_location=0x7f090001;
@@ -591,17 +588,17 @@ containing a value of this type.
     }
     public static final class string {
         public static int accept=0x7f050002;
-        public static int advert=0x7f050053;
-        public static int amobeeAdSpace=0x7f050036;
-        public static int amobeeLatitude=0x7f050038;
-        public static int amobeeLongitude=0x7f050039;
-        public static int amobeeUserId=0x7f050037;
-        public static int attributePrefix=0x7f050033;
-        public static int backfillSiteId=0x7f05002a;
-        public static int backfillZoneId=0x7f05002b;
-        public static int baseParams=0x7f050035;
-        public static int baseUrl=0x7f050034;
-        public static int close=0x7f050026;
+        public static int advert=0x7f050052;
+        public static int amobeeAdSpace=0x7f050035;
+        public static int amobeeLatitude=0x7f050037;
+        public static int amobeeLongitude=0x7f050038;
+        public static int amobeeUserId=0x7f050036;
+        public static int attributePrefix=0x7f050032;
+        public static int backfillSiteId=0x7f050029;
+        public static int backfillZoneId=0x7f05002a;
+        public static int baseParams=0x7f050034;
+        public static int baseUrl=0x7f050033;
+        public static int close=0x7f050025;
         /**   Text for notification shown when the Android Wear apps needs to be updated. Only shown on the wearable. [CHAR LIMIT=NONE] 
          */
         public static int common_android_wear_notification_needs_update_text=0x7f050009;
@@ -701,59 +698,56 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static int common_signin_button_text_long=0x7f050020;
-        public static int connectAd=0x7f050040;
+        public static int connectAd=0x7f05003f;
         public static int create_calendar_message=0x7f050005;
         public static int create_calendar_title=0x7f050004;
         public static int decline=0x7f050003;
-        public static int deviceId=0x7f050032;
-        public static int emsAdMatch=0x7f050041;
+        public static int deviceId=0x7f050031;
+        public static int emsAdMatch=0x7f050040;
         /**  The root path of the remote json config file for the SDK 
          */
         public static int ems_jws_root=0x7f050023;
-        public static int geo=0x7f05002f;
-        public static int googlePublisherId=0x7f05002c;
-        /**  Default Google Publisher ID 
-         */
-        public static int google_pub_id=0x7f050024;
-        public static int jsonBaseUrlDefault=0x7f05004e;
-        public static int jsonBaseUrlTelefonica=0x7f050050;
-        public static int jsonBaseUrlVodafone=0x7f05004f;
-        public static int jsonKeyword=0x7f05004d;
-        public static int jsonLocalConfigFileName=0x7f050049;
-        public static int jsonLocalVariablesFileName=0x7f05004a;
-        public static int jsonRefreshCapVariables=0x7f050051;
-        public static int jsonRemoteConfigFileName=0x7f050048;
-        public static int jsonUrlAppend=0x7f05004c;
-        public static int jsonUrlReplace=0x7f05004b;
-        public static int jsonVariablesScript=0x7f050052;
-        public static int keyword=0x7f05002d;
-        public static int latitude=0x7f050030;
-        public static int loading=0x7f050025;
-        public static int longitude=0x7f050031;
-        public static int nkeyword=0x7f05002e;
-        public static int onAdEmpty=0x7f05003b;
-        public static int onAdError=0x7f05003c;
-        public static int onAdSuccess=0x7f05003a;
-        public static int pBatteryLevel=0x7f050042;
-        public static int pGpsAltitude=0x7f050045;
-        public static int pGpsVelocity=0x7f050044;
-        public static int pGuJIdForAdvertiser=0x7f050047;
-        public static int pIdForAdvertiser=0x7f050046;
-        public static int pStatusParam=0x7f050043;
-        public static int sampleHeader=0x7f050054;
-        public static int sampleKicker=0x7f050055;
-        public static int siteId=0x7f050028;
-        public static int sound=0x7f050027;
+        public static int geo=0x7f05002e;
+        public static int googlePublisherId=0x7f05002b;
+        public static int jsonBaseUrlDefault=0x7f05004d;
+        public static int jsonBaseUrlTelefonica=0x7f05004f;
+        public static int jsonBaseUrlVodafone=0x7f05004e;
+        public static int jsonKeyword=0x7f05004c;
+        public static int jsonLocalConfigFileName=0x7f050048;
+        public static int jsonLocalVariablesFileName=0x7f050049;
+        public static int jsonRefreshCapVariables=0x7f050050;
+        public static int jsonRemoteConfigFileName=0x7f050047;
+        public static int jsonUrlAppend=0x7f05004b;
+        public static int jsonUrlReplace=0x7f05004a;
+        public static int jsonVariablesScript=0x7f050051;
+        public static int keyword=0x7f05002c;
+        public static int latitude=0x7f05002f;
+        public static int loading=0x7f050024;
+        public static int longitude=0x7f050030;
+        public static int nkeyword=0x7f05002d;
+        public static int onAdEmpty=0x7f05003a;
+        public static int onAdError=0x7f05003b;
+        public static int onAdSuccess=0x7f050039;
+        public static int pBatteryLevel=0x7f050041;
+        public static int pGpsAltitude=0x7f050044;
+        public static int pGpsVelocity=0x7f050043;
+        public static int pGuJIdForAdvertiser=0x7f050046;
+        public static int pIdForAdvertiser=0x7f050045;
+        public static int pStatusParam=0x7f050042;
+        public static int sampleHeader=0x7f050053;
+        public static int sampleKicker=0x7f050054;
+        public static int siteId=0x7f050027;
+        public static int sound=0x7f050026;
         public static int store_picture_message=0x7f050001;
         public static int store_picture_title=0x7f050000;
-        public static int videoPreload=0x7f05003e;
-        public static int videoRunning=0x7f05003f;
-        public static int videoSkip=0x7f05003d;
+        public static int videoPreload=0x7f05003d;
+        public static int videoRunning=0x7f05003e;
+        public static int videoSkip=0x7f05003c;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */
         public static int wallet_buy_button_place_holder=0x7f050022;
-        public static int zoneId=0x7f050029;
+        public static int zoneId=0x7f050028;
     }
     public static final class style {
         /**  parent style for integrated ad 
