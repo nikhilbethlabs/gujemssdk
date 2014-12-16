@@ -14,7 +14,6 @@ ad with content.
     <EditText
         android:id="@+id/adhint"
         android:text="@string/advert"
-        android:inputType="none"
         style="@style/GuJEMSIntegrativeAd.Hint" >
     </EditText>
     
@@ -33,19 +32,19 @@ ad with content.
         style="@style/GuJEMSIntegrativeAd.Header"
         android:layout_alignTop="@+id/adthumb"
         android:layout_toRightOf="@+id/adthumb"
-        android:inputType="none"
-        android:text="@string/sampleHeader"
-        android:typeface="normal" >
+        android:selectAllOnFocus="false"
+        android:text="@string/sampleHeader" >
 
 	</EditText>
     
     <EditText
         android:id="@+id/adkicker"
+        style="@style/GuJEMSIntegrativeAd.Kicker"
         android:layout_below="@+id/adheader"
         android:layout_toRightOf="@+id/adthumb"
-        android:text="@string/sampleKicker"
-        android:inputType="none"
-        style="@style/GuJEMSIntegrativeAd.Kicker" >
+        android:selectAllOnFocus="false"
+        android:text="@string/sampleKicker" >
+
     </EditText>
 
 </RelativeLayout>

@@ -73,7 +73,6 @@ public final class GoogleDelegator {
 				
 				@Override
 				public void onAdFailedToLoad(int errorCode) {
-					container.setVisibility(View.GONE);
 					if (errorCode == AdRequest.ERROR_CODE_NO_FILL && settings.getOnAdEmptyListener() != null) {
 						SdkLog.d(TAG, "No ad received from Google.");
 						settings.getOnAdEmptyListener().onAdEmpty();
@@ -88,7 +87,7 @@ public final class GoogleDelegator {
 	
 				@Override
 				public void onAdLoaded() {
-					//adView.setVisibility(View.VISIBLE);
+					container.setVisibility(View.VISIBLE);
 					if (settings.getOnAdSuccessListener() != null) {
 						settings.getOnAdSuccessListener()
 								.onAdSuccess();
@@ -102,6 +101,7 @@ public final class GoogleDelegator {
 			ViewGroup parent = (ViewGroup)adView.getParent();
 			parent.removeView(adView);
 			container = new LinearLayout(adView.getContext());
+			container.setVisibility(View.GONE);
 			container.setId(adView.getId());
 			container.setLayoutParams(lp);
 			container.addView(adView);
