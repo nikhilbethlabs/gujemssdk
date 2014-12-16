@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.ormma.view.Browser;
 import org.xmlpull.v1.XmlPullParser;
@@ -20,7 +21,6 @@ import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Movie;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,10 +31,11 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.guj.ems.mobile.sdk.R;
@@ -50,8 +51,16 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
-public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, IAdResponseHandler {
+/**
+ * An adview with a layout defined by the developer.
+ * 
+ * @author stein16
+ *
+ */
+public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, IAdResponseHandler, OnTouchListener {
 
+	private boolean startClick;
+	
 	private static final long serialVersionUID = -9099438955013226163L;
 
 	private transient Handler handler = new Handler();
@@ -126,7 +135,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		protected void onPostExecute(Object result) {
 			Movie movie = null;
 			Bitmap bitmap = null;
-			String url = null;
 			
 			if (result != null) {
 
@@ -143,14 +151,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 				}
 
 				ImageView view = viewRef.get();
-
-				
-				try {
-					url = (String)adContent.get("click");
-				}
-				catch (Exception e) {
-					SdkLog.w(TAG, "Could not get click URL from ad config for integrated ad.");
-				}
 				
 				if (view != null) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
@@ -169,34 +169,9 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 						}
 						
 						view.setImageBitmap(bitmap);
-						//scaleImage(view);
+
 					}
 					setVisibility(View.VISIBLE);
-					if (url != null) {
-						final String _url = url;
-						view.setOnClickListener(new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								if (adContent != null && _url != null) {
-									Intent i = new Intent(getContext(),
-											Browser.class);
-									SdkLog.d(TAG, "open:" + _url);
-									i.putExtra(Browser.URL_EXTRA,
-											_url);
-									i.putExtra(Browser.SHOW_BACK_EXTRA, true);
-									i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
-									i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
-									getContext().startActivity(i);
-								}
-							}
-						});
-					}
-					else {
-						SdkLog.d(TAG, "Not setting click listener, no click url provided.");
-					}
-					
-					
 				}
 			}
 
@@ -211,9 +186,11 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 	 */
 	public GuJEMSIntegratedAdView(Context context) {
 		super(context);
+
 		responseReceiver = new AdResponseReceiver(new Handler());
 		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, null);
+		setOnTouchListener(this);		
 	}
 
 	/**
@@ -244,6 +221,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		responseReceiver = new AdResponseReceiver(new Handler());
 		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, set);
+		setOnTouchListener(this);
+		
 		if (load) {
 			this.load();
 		}
@@ -279,6 +258,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
+		setOnTouchListener(this);
+		
 		if (load) {
 			this.load();
 		}
@@ -320,6 +301,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
+		setOnTouchListener(this);
 		if (load) {
 			this.load();
 		}
@@ -372,6 +354,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
 		this.handleInflatedLayout(attrs);
+
+		setOnTouchListener(this);
 		if (load) {
 			this.load();
 		}
@@ -416,6 +400,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
+
+		setOnTouchListener(this);	
 		if (load) {
 			this.load();
 		}
@@ -526,7 +512,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 			this.settings.setup(context, getClass(), set);
 		}
 		if (isInEditMode() || this.testMode) {
-			// TODO set test content?
+			setVisibility(View.VISIBLE);
 		}
 		else {
 			setVisibility(View.GONE);
@@ -545,7 +531,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 					kws, nkws);
 		}
 		if (isInEditMode() || this.testMode) {
-			// TODO set test content?
+			setVisibility(View.VISIBLE);
 		}
 		else {
 			setVisibility(View.GONE);
@@ -593,6 +579,9 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 					}
 					((TextView)findViewById(R.id.adheader)).setText((String)adContent.get("header"));
 					((TextView)findViewById(R.id.adkicker)).setText((String)adContent.get("kicker"));
+					findViewById(R.id.adthumb).setOnTouchListener(this);
+					findViewById(R.id.adheader).setOnTouchListener(this);
+					findViewById(R.id.adkicker).setOnTouchListener(this);					
 					if (adContent.get("cp") != null) {
 						SdkUtil.httpRequest((String)adContent.get("cp"));
 					}
@@ -683,5 +672,61 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver, 
 		SdkLog.d(TAG,
 				"HW Acceleration disabled for AdView (younger than Gingerbread).");
 	}	
+	
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			startClick = true;
+			break;
+		case MotionEvent.ACTION_UP:
+			if (startClick) {
+				startClick = false;
+				v.performClick();
+			}
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean performClick() {
+		try {
+			if (adContent != null && adContent.get("click") != null) {
+				Intent i = new Intent(getContext(),
+						Browser.class);
+				SdkLog.d(TAG, "open:" + adContent.get("click"));
+				i.putExtra(Browser.URL_EXTRA,
+						adContent.getString("click"));
+				i.putExtra(Browser.SHOW_BACK_EXTRA, true);
+				i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
+				i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
+				getContext().startActivity(i);
+			}
+			else {
+				SdkLog.w(TAG, "No click in ad json, cannot redirect.");
+			}
+		}
+		catch (JSONException e) {
+			SdkLog.e(TAG, "Error executing ad click!", e);
+		}
+		return super.performClick();
+	}
+	
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (startClick && ev.getAction() == MotionEvent.ACTION_UP) {
+			startClick = false;
+			return performClick();
+		}
+		else {
+			startClick = ev.getAction() == MotionEvent.ACTION_DOWN;
+			return false;
+		}
+	}
+	
 
 }
