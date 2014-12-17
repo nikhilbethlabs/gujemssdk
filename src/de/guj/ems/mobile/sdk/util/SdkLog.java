@@ -13,35 +13,6 @@ import android.util.Log;
  */
 public class SdkLog {
 
-	private final static int LOG_LEVEL_TEST = 1;
-
-	private final static int LOG_LEVEL_PROD = 0;
-
-	private final static int LOG_LEVEL_OFF = 2;
-
-	private static int LOG_LEVEL = LOG_LEVEL_TEST;
-
-	/**
-	 * Sets log level to production (max = info)
-	 */
-	public static void setProductionLogLevel() {
-		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
-	}
-
-	/**
-	 * Sets log level to test (max = verbose)
-	 */
-	public static void setTestLogLevel() {
-		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
-	}
-
-	/**
-	 * Turns all logging off
-	 */
-	public static void setLogLevelOff() {
-		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_OFF;
-	}
-
 	/**
 	 * @see android.util.Log.d(String, String)
 	 * @param tag
@@ -52,32 +23,6 @@ public class SdkLog {
 	public static void d(String tag, String message) {
 		if (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST) {
 			Log.d(tag, message);
-		}
-	}
-
-	/**
-	 * @see android.util.Log.i(String, String)
-	 * @param tag
-	 *            Log tag
-	 * @param message
-	 *            Log message
-	 */
-	public static void i(String tag, String message) {
-		if (SdkLog.LOG_LEVEL != SdkLog.LOG_LEVEL_OFF) {
-			Log.i(tag, message);
-		}
-	}
-
-	/**
-	 * @see android.util.Log.v(String, String)
-	 * @param tag
-	 *            Log tag
-	 * @param message
-	 *            Log message
-	 */
-	public static void v(String tag, String message) {
-		if (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST) {
-			Log.v(tag, message);
 		}
 	}
 
@@ -106,25 +51,16 @@ public class SdkLog {
 	}
 
 	/**
-	 * @see android.util.Log.w(String, String)
+	 * @see android.util.Log.i(String, String)
 	 * @param tag
 	 *            Log tag
 	 * @param message
 	 *            Log message
 	 */
-	public static void w(String tag, String message) {
+	public static void i(String tag, String message) {
 		if (SdkLog.LOG_LEVEL != SdkLog.LOG_LEVEL_OFF) {
-			Log.w(tag, message);
+			Log.i(tag, message);
 		}
-	}
-
-	/**
-	 * Check whether log level is for testing (debug)
-	 * 
-	 * @return true if log level is test
-	 */
-	public static boolean isTestLogLevel() {
-		return LOG_LEVEL == LOG_LEVEL_TEST;
 	}
 
 	/**
@@ -144,5 +80,69 @@ public class SdkLog {
 	public static boolean isProdLogLevel() {
 		return LOG_LEVEL == LOG_LEVEL_PROD;
 	}
+
+	/**
+	 * Check whether log level is for testing (debug)
+	 * 
+	 * @return true if log level is test
+	 */
+	public static boolean isTestLogLevel() {
+		return LOG_LEVEL == LOG_LEVEL_TEST;
+	}
+
+	/**
+	 * Turns all logging off
+	 */
+	public static void setLogLevelOff() {
+		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_OFF;
+	}
+
+	/**
+	 * Sets log level to production (max = info)
+	 */
+	public static void setProductionLogLevel() {
+		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
+	}
+
+	/**
+	 * Sets log level to test (max = verbose)
+	 */
+	public static void setTestLogLevel() {
+		SdkLog.LOG_LEVEL = SdkLog.LOG_LEVEL_TEST;
+	}
+
+	/**
+	 * @see android.util.Log.v(String, String)
+	 * @param tag
+	 *            Log tag
+	 * @param message
+	 *            Log message
+	 */
+	public static void v(String tag, String message) {
+		if (SdkLog.LOG_LEVEL == SdkLog.LOG_LEVEL_TEST) {
+			Log.v(tag, message);
+		}
+	}
+
+	/**
+	 * @see android.util.Log.w(String, String)
+	 * @param tag
+	 *            Log tag
+	 * @param message
+	 *            Log message
+	 */
+	public static void w(String tag, String message) {
+		if (SdkLog.LOG_LEVEL != SdkLog.LOG_LEVEL_OFF) {
+			Log.w(tag, message);
+		}
+	}
+
+	private final static int LOG_LEVEL_TEST = 1;
+
+	private final static int LOG_LEVEL_PROD = 0;
+
+	private final static int LOG_LEVEL_OFF = 2;
+
+	private static int LOG_LEVEL = LOG_LEVEL_TEST;
 
 }

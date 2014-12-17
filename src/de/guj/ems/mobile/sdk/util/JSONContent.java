@@ -19,13 +19,6 @@ abstract class JSONContent {
 		init();
 	}
 
-	String getRemotePath() {
-		return SdkUtil.getContext().getPackageName().replaceAll("\\.", "/")
-				+ (SdkUtil.isLargerThanPhone() ? "/xl/" : "/");
-	}
-
-	abstract void init();
-
 	synchronized protected void feed(JSONObject j) {
 		this.json = j;
 	}
@@ -34,6 +27,14 @@ abstract class JSONContent {
 		return this.json;
 	}
 
-	public abstract IAdServerSettingsAdapter process(IAdServerSettingsAdapter settings);
+	String getRemotePath() {
+		return SdkUtil.getContext().getPackageName().replaceAll("\\.", "/")
+				+ (SdkUtil.isLargerThanPhone() ? "/xl/" : "/");
+	}
+
+	abstract void init();
+
+	public abstract IAdServerSettingsAdapter process(
+			IAdServerSettingsAdapter settings);
 
 }

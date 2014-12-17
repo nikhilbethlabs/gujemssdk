@@ -6,19 +6,15 @@ import android.os.ResultReceiver;
 
 public class AdResponseReceiver extends ResultReceiver {
 
-	private Receiver receiver;
-
-	public AdResponseReceiver(Handler handler) {
-		super(handler);
-	}
-
 	public interface Receiver {
 		public void onReceiveResult(int resultCode, Bundle resultData);
 
 	}
 
-	public void setReceiver(Receiver receiver) {
-		this.receiver = receiver;
+	private Receiver receiver;
+
+	public AdResponseReceiver(Handler handler) {
+		super(handler);
 	}
 
 	@Override
@@ -27,6 +23,10 @@ public class AdResponseReceiver extends ResultReceiver {
 		if (receiver != null) {
 			receiver.onReceiveResult(resultCode, resultData);
 		}
+	}
+
+	public void setReceiver(Receiver receiver) {
+		this.receiver = receiver;
 	}
 
 }

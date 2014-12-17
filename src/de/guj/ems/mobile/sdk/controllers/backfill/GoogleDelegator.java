@@ -27,78 +27,85 @@ public final class GoogleDelegator {
 	private final static String TAG = "GoogleDelegator";
 
 	private AdView googleAdView;
-	
+
 	private AdRequest googleAdRequest;
 
 	private String pubId;
-	
+
 	private LinearLayout container;
-	
+
 	private int viewIndex;
-	
+
 	private GuJEMSAdView gujEmsAdView;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param delegator mOcean delegator
-	 * @param parameters mOcean 3rd party parameters
-	 * @param lp view layout
-	 * @param bk view background
-	 * @param andId view android id
+	 * @param delegator
+	 *            mOcean delegator
+	 * @param parameters
+	 *            mOcean 3rd party parameters
+	 * @param lp
+	 *            view layout
+	 * @param bk
+	 *            view background
+	 * @param andId
+	 *            view android id
 	 */
-	public GoogleDelegator(final GuJEMSAdView adView, final IAdServerSettingsAdapter settings, ViewGroup.LayoutParams lp,
+	public GoogleDelegator(final GuJEMSAdView adView,
+			final IAdServerSettingsAdapter settings, ViewGroup.LayoutParams lp,
 			Drawable bk) {
 
 		if (adView == null || adView.getParent() == null) {
 			if (settings.getOnAdErrorListener() != null) {
-				settings.getOnAdErrorListener().onAdError("Parent or adview no longer present, ignoring Google backfill request.");
+				settings.getOnAdErrorListener()
+						.onAdError(
+								"Parent or adview no longer present, ignoring Google backfill request.");
+			} else {
+				SdkLog.w(TAG,
+						"Parent or adview no longer present, ignoring Google backfill request.");
 			}
-			else {
-				SdkLog.w(TAG, "Parent or adview no longer present, ignoring Google backfill request.");
-			}
-		}
-		else {
+		} else {
 			gujEmsAdView = adView;
-			viewIndex = ((ViewGroup)adView.getParent()).indexOfChild(adView);
+			viewIndex = ((ViewGroup) adView.getParent()).indexOfChild(adView);
 			this.mkGoogleRequest(settings);
-			//adView.setVisibility(View.GONE);
+			// adView.setVisibility(View.GONE);
 			googleAdView = new AdView(adView.getContext());
-			//googleAdView.setId(adView.getId());
+			// googleAdView.setId(adView.getId());
 			googleAdView.setAdSize(AdSize.SMART_BANNER);
 			googleAdView.setAdUnitId(pubId);
 			// setBackground requires API level 16
 			googleAdView.setBackgroundDrawable(bk);
 			googleAdView.setAdListener(new AdListener() {
-				
+
 				@Override
 				public void onAdFailedToLoad(int errorCode) {
-					if (errorCode == AdRequest.ERROR_CODE_NO_FILL && settings.getOnAdEmptyListener() != null) {
+					if (errorCode == AdRequest.ERROR_CODE_NO_FILL
+							&& settings.getOnAdEmptyListener() != null) {
 						SdkLog.d(TAG, "No ad received from Google.");
 						settings.getOnAdEmptyListener().onAdEmpty();
-					}
-					else if (errorCode != AdRequest.ERROR_CODE_NO_FILL && settings.getOnAdErrorListener() != null) {
-						settings.getOnAdErrorListener().onAdError("Error loading Google ad [" + errorCode + "]");
-					}
-					else {
-						SdkLog.w(TAG, "No Google ad available. [" + errorCode + "]");	
+					} else if (errorCode != AdRequest.ERROR_CODE_NO_FILL
+							&& settings.getOnAdErrorListener() != null) {
+						settings.getOnAdErrorListener().onAdError(
+								"Error loading Google ad [" + errorCode + "]");
+					} else {
+						SdkLog.w(TAG, "No Google ad available. [" + errorCode
+								+ "]");
 					}
 				}
-	
+
 				@Override
 				public void onAdLoaded() {
 					container.setVisibility(View.VISIBLE);
 					if (settings.getOnAdSuccessListener() != null) {
-						settings.getOnAdSuccessListener()
-								.onAdSuccess();
+						settings.getOnAdSuccessListener().onAdSuccess();
 					}
 					SdkLog.d(TAG, "Google ad visible");
 				}
 			});
-			
-			
+
 			adView.setVisibility(View.GONE);
-			ViewGroup parent = (ViewGroup)adView.getParent();
+			ViewGroup parent = (ViewGroup) adView.getParent();
 			parent.removeView(adView);
 			container = new LinearLayout(adView.getContext());
 			container.setVisibility(View.GONE);
@@ -110,11 +117,30 @@ public final class GoogleDelegator {
 		}
 	}
 
+	public AdView getAdView() {
+		return googleAdView;
+	}
+
+	/**
+	 * Perform the actual google request
+	 */
+	public void load() {
+
+		if (googleAdView != null && googleAdRequest != null) {
+			SdkLog.i(TAG, "Performing google ad request...");
+
+			googleAdView.loadAd(googleAdRequest);
+		} else {
+			SdkLog.w(TAG, "Google ad request cancelled.");
+		}
+
+	}
+
 	private void mkGoogleRequest(IAdServerSettingsAdapter settings) {
 		this.pubId = settings.getGooglePublisherId();
 		Location location = new Location("gps");
 		try {
-			double [] loc = SdkUtil.getLocation();
+			double[] loc = SdkUtil.getLocation();
 			if (loc != null) {
 				location.setLatitude(loc[0]);
 				location.setLongitude(loc[1]);
@@ -134,28 +160,8 @@ public final class GoogleDelegator {
 
 	}
 
-	/**
-	 * Perform the actual google request
-	 */
-	public void load() {
-		
-		if (googleAdView != null && googleAdRequest != null) {
-			SdkLog.i(TAG, "Performing google ad request...");
-			
-			googleAdView.loadAd(googleAdRequest);
-		}
-		else {
-			SdkLog.w(TAG, "Google ad request cancelled.");
-		}
-		
-	}
-	
-	public AdView getAdView() {
-		return googleAdView;
-	}
-	
 	public void reset() {
-		ViewGroup parent = ((ViewGroup)container.getParent());
+		ViewGroup parent = ((ViewGroup) container.getParent());
 		if (parent != null) {
 			container.removeView(gujEmsAdView);
 			parent.removeView(container);

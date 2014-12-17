@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 
 /**
- * Simple settings instance for plain http requests without
- * further settings and without json processing
+ * Simple settings instance for plain http requests without further settings and
+ * without json processing
  * 
  * This is basically a simple http request
  * 
@@ -16,20 +16,23 @@ import android.util.AttributeSet;
 public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 
 	private String url;
-	
+
 	/**
 	 * Constructed directly with full URL
-	 * @param url tracking request url
+	 * 
+	 * @param url
+	 *            tracking request url
 	 */
 	public TrackingSettingsAdapter(String url) {
 		super();
-		setup(null, (AttributeSet)null, null);
+		setup(null, (AttributeSet) null, null);
 		setBaseUrlString(url);
 	}
 
 	@Override
-	public String getBaseUrlString() {
-		return url;
+	public boolean doProcess() {
+		// tracking requests should no be manipulated (contrary to ad requests)
+		return false;
 	}
 
 	@Override
@@ -38,18 +41,27 @@ public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 	}
 
 	@Override
+	public String getBaseUrlString() {
+		return url;
+	}
+
+	@Override
+	public String getGooglePublisherId() {
+		return null;
+	}
+
+	@Override
 	public void setBaseUrlString(String baseUrl) {
 		this.url = baseUrl;
-	}
-	
-	@Override
-	public boolean doProcess() {
-		// tracking requests should no be manipulated (contrary to ad requests)
-		return false;
 	}
 
 	@Override
 	public void setup(Context context, Class<?> viewClass, AttributeSet set) {
+	}
+
+	@Override
+	public void setup(Context context, Class<?> viewClass, AttributeSet set,
+			String[] kws, String[] nkws) {
 	}
 
 	@Override
@@ -59,16 +71,6 @@ public class TrackingSettingsAdapter extends AdServerSettingsAdapter {
 	@Override
 	public void setup(Context context, Class<?> viewClass,
 			Bundle savedInstance, String[] kws, String[] nkws) {
-	}
-
-	@Override
-	public void setup(Context context, Class<?> viewClass, AttributeSet set,
-			String[] kws, String[] nkws) {
-	}
-
-	@Override
-	public String getGooglePublisherId() {
-		return null;
 	}
 
 }

@@ -12,16 +12,6 @@ public enum TransitionStringEnum {
 	DEFAULT("default"), DISSOLVE("dissolve"), FADE("fade"), ROLL("roll"), SLIDE(
 			"slide"), ZOOM("zoom"), NONE("none");
 
-	private String text;
-
-	TransitionStringEnum(String text) {
-		this.text = text;
-	}
-
-	public String getText() {
-		return this.text;
-	}
-
 	public static TransitionStringEnum fromString(String text) {
 		if (text != null) {
 			for (TransitionStringEnum b : TransitionStringEnum.values()) {
@@ -31,5 +21,15 @@ public enum TransitionStringEnum {
 			}
 		}
 		return null;
+	}
+
+	private String text;
+
+	TransitionStringEnum(String text) {
+		this.text = text;
+	}
+
+	public String getText() {
+		return this.text;
 	}
 }

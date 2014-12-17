@@ -7,11 +7,11 @@
  */
 package org.ormma.controller.util;
 
+import org.ormma.controller.OrmmaDisplayController;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import org.ormma.controller.OrmmaDisplayController;
 
 /**
  * The Class OrmmaConfigurationBroadcastReceiver.

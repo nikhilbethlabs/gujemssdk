@@ -9,8 +9,7 @@ public class SdkGlobals {
 	/**
 	 * Format for geo position formatting
 	 */
-	final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat(
-			"#,##");
+	final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat("#,##");
 
 	/**
 	 * xml layout attributes prefix
@@ -48,7 +47,6 @@ public class SdkGlobals {
 	public final static String EMS_KEYWORDS = SdkUtil.getContext().getString(
 			R.string.keyword);
 
-
 	/**
 	 * Global attribute name for the geographical latitude
 	 */
@@ -78,12 +76,12 @@ public class SdkGlobals {
 	@Deprecated
 	public final static String EMS_BACKFILL_SITEID = SdkUtil.getContext()
 			.getString(R.string.backfillSiteId);
-	
+
 	/**
 	 * Global attribute name for identifying a site for backfill
 	 */
 	public final static String EMS_GOOGLE_PUBLISHERID = SdkUtil.getContext()
-			.getString(R.string.googlePublisherId);	
+			.getString(R.string.googlePublisherId);
 
 	/**
 	 * xml layout attribute for success listener
@@ -109,6 +107,5 @@ public class SdkGlobals {
 	@Deprecated
 	public final static String EMS_BACKFILL_ZONEID = SdkUtil.getContext()
 			.getString(R.string.backfillZoneId);
-
 
 }

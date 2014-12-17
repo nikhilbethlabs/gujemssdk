@@ -18,15 +18,48 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 public class EMSInterface {
 
-	private static EMSInterface instance = null;
-
-	private final static String TAG = "EMSInterface";
-
 	public static EMSInterface getInstance() {
 		if (EMSInterface.instance == null) {
 			EMSInterface.instance = new EMSInterface();
 		}
 		return EMSInterface.instance;
+	}
+
+	private static EMSInterface instance = null;
+
+	private final static String TAG = "EMSInterface";
+
+	/**
+	 * Returns the Android battery level received from BatteryManager
+	 * 
+	 * @return battery level or -1 if nothing was received yet
+	 */
+	@JavascriptInterface
+	public int getBatteryPercent() {
+		SdkLog.i(TAG, "ems_battery: status requested.");
+		return SdkUtil.getBatteryLevel();
+	}
+
+	/**
+	 * Returns advertising identifier if user has opted in
+	 * 
+	 * @return identifier if user has opted in, null otherwise
+	 */
+	@JavascriptInterface
+	public String getIdForAdvertiser() {
+		SdkLog.i(TAG, "ems_ifda: identifier requested.");
+		return SdkUtil.getIdForAdvertiser();
+	}
+
+	/**
+	 * Returns boolean indicating whether headset is connected to phone
+	 * 
+	 * @return true if headset is connected, false if not
+	 */
+	@JavascriptInterface
+	public boolean headsetConnected() {
+		SdkLog.i(TAG, "ems_headset: status requested.");
+		return SdkUtil.isHeadsetConnected();
 	}
 
 	/**
@@ -84,38 +117,5 @@ public class EMSInterface {
 			SdkLog.e(TAG, "Vibration not possible in this app.", e);
 		}
 	}
-
-	/**
-	 * Returns the Android battery level received from BatteryManager
-	 * 
-	 * @return battery level or -1 if nothing was received yet
-	 */
-	@JavascriptInterface
-	public int getBatteryPercent() {
-		SdkLog.i(TAG, "ems_battery: status requested.");
-		return SdkUtil.getBatteryLevel();
-	}
-
-	/**
-	 * Returns boolean indicating whether headset is connected to phone
-	 * 
-	 * @return true if headset is connected, false if not
-	 */
-	@JavascriptInterface
-	public boolean headsetConnected() {
-		SdkLog.i(TAG, "ems_headset: status requested.");
-		return SdkUtil.isHeadsetConnected();
-	}
-	
-	/**
-	 * Returns advertising identifier if user has opted in
-	 * 
-	 * @return identifier if user has opted in, null otherwise
-	 */
-	@JavascriptInterface
-	public String getIdForAdvertiser() {
-		SdkLog.i(TAG, "ems_ifda: identifier requested.");
-		return SdkUtil.getIdForAdvertiser();
-	}	
 
 }

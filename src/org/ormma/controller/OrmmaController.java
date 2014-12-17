@@ -28,36 +28,58 @@ import android.webkit.JavascriptInterface;
  */
 public abstract class OrmmaController {
 
-	// view it is attached to
-	protected OrmmaView mOrmmaView;
-	// context it is in
-	protected Context mContext;
+	/**
+	 * The Class Dimensions. Holds dimensions coming from javascript
+	 */
+	public static class Dimensions extends ReflectedParcelable {
 
-	// class types for converting JSON
-	private static final String STRING_TYPE = "class java.lang.String";
-	private static final String INT_TYPE = "int";
-	private static final String BOOLEAN_TYPE = "boolean";
-	private static final String FLOAT_TYPE = "float";
-	private static final String NAVIGATION_TYPE = "class com.ormma.NavigationStringEnum";
-	private static final String TRANSITION_TYPE = "class com.ormma.TransitionStringEnum";
+		/**
+		 * The Constant CREATOR.
+		 */
+		public static final Parcelable.Creator<Dimensions> CREATOR = new Parcelable.Creator<Dimensions>() {
+			@Override
+			public Dimensions createFromParcel(Parcel in) {
+				return new Dimensions(in);
+			}
 
-	private static final String FULL_SCREEN = "fullscreen";
-	public static final String EXIT = "exit";
-	private static final String STYLE_NORMAL = "normal";
+			@Override
+			public Dimensions[] newArray(int size) {
+				return new Dimensions[size];
+			}
+		};;
 
+		/**
+		 * The dimenstion values
+		 */
+		public int x, y, width, height;
+
+		/**
+		 * Instantiates a new dimensions.
+		 */
+		public Dimensions() {
+			x = -1;
+			y = -1;
+			width = -1;
+			height = -1;
+		}
+
+		/**
+		 * Instantiates a new dimensions from a parcel.
+		 * 
+		 * @param in
+		 *            the in
+		 */
+		private Dimensions(Parcel in) {
+			super(in);
+		}
+
+	}
 	/**
 	 * 
 	 * Contains audio and video properties
 	 * 
 	 */
 	public static class PlayerProperties extends ReflectedParcelable {
-
-		public PlayerProperties() {
-			autoPlay = showControl = true;
-			doLoop = audioMuted = false;
-			startStyle = stopStyle = STYLE_NORMAL;
-			inline = false;
-		}
 
 		/**
 		 * The Constant CREATOR.
@@ -74,66 +96,21 @@ public abstract class OrmmaController {
 			}
 		};
 
+		private boolean autoPlay, showControl, doLoop, audioMuted;
+
+		public boolean inline;
+
+		private String stopStyle, startStyle;
+
+		public PlayerProperties() {
+			autoPlay = showControl = true;
+			doLoop = audioMuted = false;
+			startStyle = stopStyle = STYLE_NORMAL;
+			inline = false;
+		}
+
 		private PlayerProperties(Parcel in) {
 			super(in);
-		}
-
-		/**
-		 * Set stop style
-		 * 
-		 * @param style
-		 *            - stop style (normal/full screen)
-		 */
-		public void setStopStyle(String style) {
-			stopStyle = style;
-		}
-
-		/**
-		 * Set Player properties
-		 * 
-		 * @param autoPlay
-		 *            - true if player should start immediately
-		 * @param controls
-		 *            - true if player should show controls
-		 * @param loop
-		 *            - true if player should start again after finishing
-		 */
-		public void setProperties(boolean audioMuted, boolean autoPlay,
-				boolean controls, boolean inline, boolean loop,
-				String startStyle, String stopStyle) {
-			this.autoPlay = autoPlay;
-			this.showControl = controls;
-			this.doLoop = loop;
-			this.audioMuted = audioMuted;
-			this.startStyle = startStyle;
-			this.stopStyle = stopStyle;
-			this.inline = inline;
-
-		}
-
-		/**
-		 * Mute Audio
-		 */
-		@JavascriptInterface
-		public void muteAudio() {
-			audioMuted = true;
-		}
-
-		/**
-		 * Get autoPlay
-		 * 
-		 */
-		@JavascriptInterface
-		public boolean isAutoPlay() {
-			return (autoPlay == true);
-		}
-
-		/**
-		 * Get show control
-		 */
-		@JavascriptInterface
-		public boolean showControl() {
-			return showControl;
 		}
 
 		/**
@@ -162,6 +139,15 @@ public abstract class OrmmaController {
 		}
 
 		/**
+		 * Get autoPlay
+		 * 
+		 */
+		@JavascriptInterface
+		public boolean isAutoPlay() {
+			return (autoPlay == true);
+		}
+
+		/**
 		 * 
 		 * Get start style
 		 */
@@ -170,81 +156,58 @@ public abstract class OrmmaController {
 			return startStyle.equalsIgnoreCase(FULL_SCREEN);
 		}
 
-		private boolean autoPlay, showControl, doLoop, audioMuted;
-		public boolean inline;
-		private String stopStyle, startStyle;
-	}
-
-	/**
-	 * The Class Dimensions. Holds dimensions coming from javascript
-	 */
-	public static class Dimensions extends ReflectedParcelable {
-
 		/**
-		 * Instantiates a new dimensions.
+		 * Mute Audio
 		 */
-		public Dimensions() {
-			x = -1;
-			y = -1;
-			width = -1;
-			height = -1;
-		};
-
-		/**
-		 * The Constant CREATOR.
-		 */
-		public static final Parcelable.Creator<Dimensions> CREATOR = new Parcelable.Creator<Dimensions>() {
-			@Override
-			public Dimensions createFromParcel(Parcel in) {
-				return new Dimensions(in);
-			}
-
-			@Override
-			public Dimensions[] newArray(int size) {
-				return new Dimensions[size];
-			}
-		};
-
-		/**
-		 * Instantiates a new dimensions from a parcel.
-		 * 
-		 * @param in
-		 *            the in
-		 */
-		private Dimensions(Parcel in) {
-			super(in);
+		@JavascriptInterface
+		public void muteAudio() {
+			audioMuted = true;
 		}
 
 		/**
-		 * The dimenstion values
+		 * Set Player properties
+		 * 
+		 * @param autoPlay
+		 *            - true if player should start immediately
+		 * @param controls
+		 *            - true if player should show controls
+		 * @param loop
+		 *            - true if player should start again after finishing
 		 */
-		public int x, y, width, height;
+		public void setProperties(boolean audioMuted, boolean autoPlay,
+				boolean controls, boolean inline, boolean loop,
+				String startStyle, String stopStyle) {
+			this.autoPlay = autoPlay;
+			this.showControl = controls;
+			this.doLoop = loop;
+			this.audioMuted = audioMuted;
+			this.startStyle = startStyle;
+			this.stopStyle = stopStyle;
+			this.inline = inline;
 
+		}
+		/**
+		 * Set stop style
+		 * 
+		 * @param style
+		 *            - stop style (normal/full screen)
+		 */
+		public void setStopStyle(String style) {
+			stopStyle = style;
+		}
+		/**
+		 * Get show control
+		 */
+		@JavascriptInterface
+		public boolean showControl() {
+			return showControl;
+		}
 	}
 
 	/**
 	 * The Class Properties for holding properties coming from javascript
 	 */
 	public static class Properties extends ReflectedParcelable {
-
-		/**
-		 * Instantiates a new properties from a parcel
-		 * 
-		 * @param in
-		 *            the in
-		 */
-		private Properties(Parcel in) {
-			super(in);
-		}
-
-		/**
-		 * Instantiates a new properties.
-		 */
-		public Properties() {
-			useBackground = false;
-			backgroundColor = 0;
-			backgroundOpacity = 0;
-		};
 
 		/**
 		 * The Constant CREATOR.
@@ -262,100 +225,29 @@ public abstract class OrmmaController {
 		};
 
 		// property values
-		public boolean useBackground;
+		public boolean useBackground;;
+
 		public int backgroundColor;
+
 		public float backgroundOpacity;
-	}
-
-	/**
-	 * Instantiates a new ormma controller.
-	 * 
-	 * @param adView
-	 *            the ad view
-	 * @param context
-	 *            the context
-	 */
-	OrmmaController(OrmmaView adView, Context context) {
-		mOrmmaView = adView;
-		mContext = context;
-	}
-
-	/**
-	 * Constructs an object from json via reflection
-	 * 
-	 * @param json
-	 *            the json
-	 * @param c
-	 *            the class to convert into
-	 * @return the instance constructed
-	 * @throws IllegalAccessException
-	 *             the illegal access exception
-	 * @throws InstantiationException
-	 *             the instantiation exception
-	 * @throws NumberFormatException
-	 *             the number format exception
-	 * @throws NullPointerException
-	 *             the null pointer exception
-	 */
-	protected static Object getFromJSON(JSONObject json, Class<?> c)
-			throws IllegalAccessException, InstantiationException,
-			NumberFormatException, NullPointerException {
-		Field[] fields = null;
-		fields = c.getDeclaredFields();
-		Object obj = c.newInstance();
-
-		for (int i = 0; i < fields.length; i++) {
-			Field f = fields[i];
-			String name = f.getName();
-			String JSONName = name.replace('_', '-');
-			Type type = f.getType();
-			String typeStr = type.toString();
-			try {
-				if (typeStr.equals(INT_TYPE)) {
-					String value = json.getString(JSONName).toLowerCase();
-					int iVal = 0;
-					if (value.startsWith("#")) {
-						iVal = Color.WHITE;
-						try {
-							if (value.startsWith("#0x")) {
-								iVal = Integer.decode(value.substring(1))
-										.intValue();
-							} else {
-								iVal = Integer.parseInt(value.substring(1), 16);
-							}
-						} catch (NumberFormatException e) {
-							// TODO: handle exception
-						}
-					} else {
-						iVal = Integer.parseInt(value);
-					}
-					f.set(obj, iVal);
-				} else if (typeStr.equals(STRING_TYPE)) {
-					String value = json.getString(JSONName);
-					f.set(obj, value);
-				} else if (typeStr.equals(BOOLEAN_TYPE)) {
-					boolean value = json.getBoolean(JSONName);
-					f.set(obj, value);
-				} else if (typeStr.equals(FLOAT_TYPE)) {
-					float value = Float.parseFloat(json.getString(JSONName));
-					f.set(obj, value);
-				} else if (typeStr.equals(NAVIGATION_TYPE)) {
-					NavigationStringEnum value = NavigationStringEnum
-							.fromString(json.getString(JSONName));
-					f.set(obj, value);
-				} else if (typeStr.equals(TRANSITION_TYPE)) {
-					TransitionStringEnum value = TransitionStringEnum
-							.fromString(json.getString(JSONName));
-					f.set(obj, value);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
+		/**
+		 * Instantiates a new properties.
+		 */
+		public Properties() {
+			useBackground = false;
+			backgroundColor = 0;
+			backgroundOpacity = 0;
 		}
-		return obj;
+		/**
+		 * Instantiates a new properties from a parcel
+		 * 
+		 * @param in
+		 *            the in
+		 */
+		private Properties(Parcel in) {
+			super(in);
+		}
 	}
-
 	/**
 	 * The Class ReflectedParcelable.
 	 */
@@ -366,16 +258,6 @@ public abstract class OrmmaController {
 		 */
 		public ReflectedParcelable() {
 
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Parcelable#describeContents()
-		 */
-		@Override
-		public int describeContents() {
-			return 0;
 		}
 
 		/**
@@ -424,6 +306,16 @@ public abstract class OrmmaController {
 		/*
 		 * (non-Javadoc)
 		 * 
+		 * @see android.os.Parcelable#describeContents()
+		 */
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
 		 */
 		@Override
@@ -460,6 +352,113 @@ public abstract class OrmmaController {
 			}
 
 		}
+	}
+	/**
+	 * Constructs an object from json via reflection
+	 * 
+	 * @param json
+	 *            the json
+	 * @param c
+	 *            the class to convert into
+	 * @return the instance constructed
+	 * @throws IllegalAccessException
+	 *             the illegal access exception
+	 * @throws InstantiationException
+	 *             the instantiation exception
+	 * @throws NumberFormatException
+	 *             the number format exception
+	 * @throws NullPointerException
+	 *             the null pointer exception
+	 */
+	protected static Object getFromJSON(JSONObject json, Class<?> c)
+			throws IllegalAccessException, InstantiationException,
+			NumberFormatException, NullPointerException {
+		Field[] fields = null;
+		fields = c.getDeclaredFields();
+		Object obj = c.newInstance();
+
+		for (int i = 0; i < fields.length; i++) {
+			Field f = fields[i];
+			String name = f.getName();
+			String JSONName = name.replace('_', '-');
+			Type type = f.getType();
+			String typeStr = type.toString();
+			try {
+				if (typeStr.equals(INT_TYPE)) {
+					String value = json.getString(JSONName).toLowerCase();
+					int iVal = 0;
+					if (value.startsWith("#")) {
+						iVal = Color.WHITE;
+						try {
+							if (value.startsWith("#0x")) {
+								iVal = Integer.decode(value.substring(1))
+										.intValue();
+							} else {
+								iVal = Integer.parseInt(value.substring(1), 16);
+							}
+						} catch (NumberFormatException e) {
+						}
+					} else {
+						iVal = Integer.parseInt(value);
+					}
+					f.set(obj, iVal);
+				} else if (typeStr.equals(STRING_TYPE)) {
+					String value = json.getString(JSONName);
+					f.set(obj, value);
+				} else if (typeStr.equals(BOOLEAN_TYPE)) {
+					boolean value = json.getBoolean(JSONName);
+					f.set(obj, value);
+				} else if (typeStr.equals(FLOAT_TYPE)) {
+					float value = Float.parseFloat(json.getString(JSONName));
+					f.set(obj, value);
+				} else if (typeStr.equals(NAVIGATION_TYPE)) {
+					NavigationStringEnum value = NavigationStringEnum
+							.fromString(json.getString(JSONName));
+					f.set(obj, value);
+				} else if (typeStr.equals(TRANSITION_TYPE)) {
+					TransitionStringEnum value = TransitionStringEnum
+							.fromString(json.getString(JSONName));
+					f.set(obj, value);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return obj;
+	}
+	// view it is attached to
+	protected OrmmaView mOrmmaView;
+	// context it is in
+	protected Context mContext;
+	// class types for converting JSON
+	private static final String STRING_TYPE = "class java.lang.String";
+
+	private static final String INT_TYPE = "int";
+	private static final String BOOLEAN_TYPE = "boolean";
+	private static final String FLOAT_TYPE = "float";
+
+	private static final String NAVIGATION_TYPE = "class com.ormma.NavigationStringEnum";
+
+	private static final String TRANSITION_TYPE = "class com.ormma.TransitionStringEnum";
+
+	private static final String FULL_SCREEN = "fullscreen";
+
+	public static final String EXIT = "exit";
+
+	private static final String STYLE_NORMAL = "normal";
+
+	/**
+	 * Instantiates a new ormma controller.
+	 * 
+	 * @param adView
+	 *            the ad view
+	 * @param context
+	 *            the context
+	 */
+	OrmmaController(OrmmaView adView, Context context) {
+		mOrmmaView = adView;
+		mContext = context;
 	}
 
 	/**

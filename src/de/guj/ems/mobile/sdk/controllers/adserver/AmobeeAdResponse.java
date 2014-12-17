@@ -1,4 +1,4 @@
- package de.guj.ems.mobile.sdk.controllers.adserver;
+package de.guj.ems.mobile.sdk.controllers.adserver;
 
 public class AmobeeAdResponse extends AdResponse {
 
@@ -11,7 +11,7 @@ public class AmobeeAdResponse extends AdResponse {
 		if (!isEmpty() && !richMedia) {
 			setParser(new AmobeeHtmlParser(response));
 		}
-		//TODO check for retargeting ID
+		// TODO check for retargeting ID
 	}
 
 }

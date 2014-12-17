@@ -88,9 +88,20 @@ public class OrmmaNetworkController extends OrmmaController {
 	}
 
 	/**
+	 * On connection changed.
+	 */
+	public void onConnectionChanged() {
+		String script = "window.ormmaview.fireChangeEvent({ network: \'"
+				+ getNetwork() + "\'});";
+		SdkLog.d(SdkLog_TAG, script);
+		mOrmmaView.injectJavaScript(script);
+	}
+
+	/**
 	 * Start network listener.
 	 */
-	@JavascriptInterface void startNetworkListener() {
+	@JavascriptInterface
+	void startNetworkListener() {
 		if (mNetworkListenerCount == 0) {
 			mBroadCastReceiver = new OrmmaNetworkBroadcastReceiver(this);
 			mFilter = new IntentFilter();
@@ -99,29 +110,6 @@ public class OrmmaNetworkController extends OrmmaController {
 		}
 		mNetworkListenerCount++;
 		mContext.registerReceiver(mBroadCastReceiver, mFilter);
-	}
-
-	/**
-	 * Stop network listener.
-	 */
-	@JavascriptInterface void stopNetworkListener() {
-		mNetworkListenerCount--;
-		if (mNetworkListenerCount == 0) {
-			mContext.unregisterReceiver(mBroadCastReceiver);
-			mBroadCastReceiver = null;
-			mFilter = null;
-
-		}
-	}
-
-	/**
-	 * On connection changed.
-	 */
-	public void onConnectionChanged() {
-		String script = "window.ormmaview.fireChangeEvent({ network: \'"
-				+ getNetwork() + "\'});";
-		SdkLog.d(SdkLog_TAG, script);
-		mOrmmaView.injectJavaScript(script);
 	}
 
 	/*
@@ -135,6 +123,20 @@ public class OrmmaNetworkController extends OrmmaController {
 		try {
 			mContext.unregisterReceiver(mBroadCastReceiver);
 		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * Stop network listener.
+	 */
+	@JavascriptInterface
+	void stopNetworkListener() {
+		mNetworkListenerCount--;
+		if (mNetworkListenerCount == 0) {
+			mContext.unregisterReceiver(mBroadCastReceiver);
+			mBroadCastReceiver = null;
+			mFilter = null;
+
 		}
 	}
 

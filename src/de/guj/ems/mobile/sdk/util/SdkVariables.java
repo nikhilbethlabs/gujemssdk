@@ -18,17 +18,13 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
  */
 enum SdkVariables {
 	SINGLETON;
-	
-	private long lastFetched;
-	
-	private JSONFetcher fetcher;
-	
+
 	public class JSONVariables extends JSONContent {
-		
+
 		@Override
 		void init() {
-			fetcher = new JSONFetcher(this, SdkUtil.getContext()
-					.getResources().getString(R.string.ems_jws_root)
+			fetcher = new JSONFetcher(this, SdkUtil.getContext().getResources()
+					.getString(R.string.ems_jws_root)
 					+ SdkUtil.getContext().getResources()
 							.getString(R.string.jsonVariablesScript), SdkUtil
 					.getContext()
@@ -41,7 +37,7 @@ enum SdkVariables {
 			fetcher.addQueryString(getQueryString());
 			// check for newer remote json
 			fetcher.execute();
-			
+
 			lastFetched = System.currentTimeMillis();
 		}
 
@@ -50,13 +46,14 @@ enum SdkVariables {
 				IAdServerSettingsAdapter settings) {
 			if (getJSON() != null) {
 				try {
-					//TODO "additionalParams" applied twice for request?
+					// TODO "additionalParams" applied twice for request?
 					synchronized (settings) {
 						// check additional keywords
-						SdkLog.d(TAG, "Adding keywords and params to " + settings);
+						SdkLog.d(TAG, "Adding keywords and params to "
+								+ settings);
 						String kw = getJSON().getString(
-								SdkUtil.getContext()
-										.getString(R.string.jsonKeyword));
+								SdkUtil.getContext().getString(
+										R.string.jsonKeyword));
 						if (kw != null) {
 							Map<String, String> params = settings.getParams();
 							if (params.get(SdkGlobals.EMS_KEYWORDS) != null) {
@@ -68,7 +65,7 @@ enum SdkVariables {
 								settings.addCustomRequestParameter(
 										SdkGlobals.EMS_KEYWORDS, kw);
 							}
-	
+
 						}
 						// query extensions
 						String append = getJSON().getString(
@@ -87,16 +84,20 @@ enum SdkVariables {
 				SdkLog.w(TAG, "JSON config not yet loaded upon processing "
 						+ settings.getRequestUrl());
 			}
-			
+
 			if (lastFetched > 0) {
 				timeCheck();
 			}
-			
+
 			settings.dontProcess();
 			return settings;
 		}
 
 	}
+
+	private long lastFetched;
+
+	private JSONFetcher fetcher;
 
 	private final static String TAG = "SdkVariables";
 
@@ -119,7 +120,7 @@ enum SdkVariables {
 		double[] loc = SdkUtil.getLocation();
 		if (loc != null) {
 			char[] encTable = { 'z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r',
-					'q'};
+					'q' };
 			String str = loc[0] < 0.0 ? "1" : "0";
 			int off = loc[0] < 0.0 ? 1 : 0;
 			String l0d = String.valueOf((int) loc[0]);
@@ -159,21 +160,22 @@ enum SdkVariables {
 
 			String idfa = SdkUtil.getIdForAdvertiser();
 			if (idfa != null) {
-				str+="&" + R.string.pIdForAdvertiser + "=" + idfa;
-				str+="&" + R.string.pGuJIdForAdvertiser + "=" + idfa;
+				str += "&" + R.string.pIdForAdvertiser + "=" + idfa;
+				str += "&" + R.string.pGuJIdForAdvertiser + "=" + idfa;
 			}
-			
+
 			return str;
-			
+
 		}
 
 		return null;
 	}
-	
+
 	private void timeCheck() {
 		long t = System.currentTimeMillis() - lastFetched;
 		if (t > SdkConfig.SINGLETON.getVarsRefreshCap() * 60000l) {
-			SdkLog.d(TAG,  "Reinitializing variables after " + (t / 60000l) + " minutes. [t = " + t + "]");
+			SdkLog.d(TAG, "Reinitializing variables after " + (t / 60000l)
+					+ " minutes. [t = " + t + "]");
 			jsonVariables.init();
 		}
 	}

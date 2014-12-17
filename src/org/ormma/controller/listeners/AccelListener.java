@@ -9,14 +9,13 @@ package org.ormma.controller.listeners;
 
 import java.util.List;
 
+import org.ormma.controller.OrmmaSensorController;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-
-import org.ormma.controller.OrmmaSensorController;
-
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
 /**
@@ -79,114 +78,12 @@ public class AccelListener implements SensorEventListener {
 	}
 
 	/**
-	 * Sets the sensor delay.
+	 * Gets the heading.
 	 * 
-	 * @param delay
-	 *            the new sensor delay
+	 * @return the heading
 	 */
-	public void setSensorDelay(int delay) {
-		mSensorDelay = delay;
-		if ((registeredTiltListeners > 0) || (registeredShakeListeners > 0)) {
-			stop();
-			start();
-		}
-	}
-
-	/**
-	 * Start tracking tilt.
-	 */
-	public void startTrackingTilt() {
-		if (registeredTiltListeners == 0)
-			start();
-		registeredTiltListeners++;
-	}
-
-	/**
-	 * Stop tracking tilt.
-	 */
-	public void stopTrackingTilt() {
-		if (registeredTiltListeners > 0 && --registeredTiltListeners == 0) {
-			stop();
-		}
-	}
-
-	/**
-	 * Start tracking shake.
-	 */
-	public void startTrackingShake() {
-		if (registeredShakeListeners == 0) {
-			setSensorDelay(SensorManager.SENSOR_DELAY_GAME);
-			start();
-		}
-		registeredShakeListeners++;
-	}
-
-	/**
-	 * Stop tracking shake.
-	 */
-	public void stopTrackingShake() {
-		if (registeredShakeListeners > 0 && --registeredShakeListeners == 0) {
-			setSensorDelay(SensorManager.SENSOR_DELAY_NORMAL);
-			stop();
-		}
-	}
-
-	/**
-	 * Start tracking heading.
-	 */
-	public void startTrackingHeading() {
-		if (registeredHeadingListeners == 0)
-			startMag();
-		registeredHeadingListeners++;
-	}
-
-	/**
-	 * Start mag.
-	 */
-	private void startMag() {
-		List<Sensor> list = this.sensorManager
-				.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
-		if (list.size() > 0) {
-			this.sensorManager
-					.registerListener(this, list.get(0), mSensorDelay);
-			start();
-		} else {
-			// Call fail
-		}
-	}
-
-	/**
-	 * Stop tracking heading.
-	 */
-	public void stopTrackingHeading() {
-		if (registeredHeadingListeners > 0 && --registeredHeadingListeners == 0) {
-			stop();
-		}
-	}
-
-	/**
-	 * Start.
-	 */
-	private void start() {
-		List<Sensor> list = this.sensorManager
-				.getSensorList(Sensor.TYPE_ACCELEROMETER);
-		if (list.size() > 0) {
-			this.sensorManager
-					.registerListener(this, list.get(0), mSensorDelay);
-		} else {
-			// Call fail
-		}
-	}
-
-	/**
-	 * Stop.
-	 */
-	private void stop() {
-		if ((registeredHeadingListeners == 0)
-				&& (registeredShakeListeners == 0)
-				&& (registeredTiltListeners == 0)) {
-			sensorManager.unregisterListener(this);
-		}
+	public float getHeading() {
+		return mActualOrientation[0];
 	}
 
 	/*
@@ -265,12 +162,86 @@ public class AccelListener implements SensorEventListener {
 	}
 
 	/**
-	 * Gets the heading.
+	 * Sets the sensor delay.
 	 * 
-	 * @return the heading
+	 * @param delay
+	 *            the new sensor delay
 	 */
-	public float getHeading() {
-		return mActualOrientation[0];
+	public void setSensorDelay(int delay) {
+		mSensorDelay = delay;
+		if ((registeredTiltListeners > 0) || (registeredShakeListeners > 0)) {
+			stop();
+			start();
+		}
+	}
+
+	/**
+	 * Start.
+	 */
+	private void start() {
+		List<Sensor> list = this.sensorManager
+				.getSensorList(Sensor.TYPE_ACCELEROMETER);
+		if (list.size() > 0) {
+			this.sensorManager
+					.registerListener(this, list.get(0), mSensorDelay);
+		} else {
+			// Call fail
+		}
+	}
+
+	/**
+	 * Start mag.
+	 */
+	private void startMag() {
+		List<Sensor> list = this.sensorManager
+				.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
+		if (list.size() > 0) {
+			this.sensorManager
+					.registerListener(this, list.get(0), mSensorDelay);
+			start();
+		} else {
+			// Call fail
+		}
+	}
+
+	/**
+	 * Start tracking heading.
+	 */
+	public void startTrackingHeading() {
+		if (registeredHeadingListeners == 0)
+			startMag();
+		registeredHeadingListeners++;
+	}
+
+	/**
+	 * Start tracking shake.
+	 */
+	public void startTrackingShake() {
+		if (registeredShakeListeners == 0) {
+			setSensorDelay(SensorManager.SENSOR_DELAY_GAME);
+			start();
+		}
+		registeredShakeListeners++;
+	}
+
+	/**
+	 * Start tracking tilt.
+	 */
+	public void startTrackingTilt() {
+		if (registeredTiltListeners == 0)
+			start();
+		registeredTiltListeners++;
+	}
+
+	/**
+	 * Stop.
+	 */
+	private void stop() {
+		if ((registeredHeadingListeners == 0)
+				&& (registeredShakeListeners == 0)
+				&& (registeredTiltListeners == 0)) {
+			sensorManager.unregisterListener(this);
+		}
 	}
 
 	/**
@@ -284,6 +255,34 @@ public class AccelListener implements SensorEventListener {
 			stop();
 		} catch (Exception e) {
 			SdkLog.e(TAG, "Error stopping acceleration listeners.", e);
+		}
+	}
+
+	/**
+	 * Stop tracking heading.
+	 */
+	public void stopTrackingHeading() {
+		if (registeredHeadingListeners > 0 && --registeredHeadingListeners == 0) {
+			stop();
+		}
+	}
+
+	/**
+	 * Stop tracking shake.
+	 */
+	public void stopTrackingShake() {
+		if (registeredShakeListeners > 0 && --registeredShakeListeners == 0) {
+			setSensorDelay(SensorManager.SENSOR_DELAY_NORMAL);
+			stop();
+		}
+	}
+
+	/**
+	 * Stop tracking tilt.
+	 */
+	public void stopTrackingTilt() {
+		if (registeredTiltListeners > 0 && --registeredTiltListeners == 0) {
+			stop();
 		}
 	}
 

@@ -31,8 +31,7 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * @author stein16
  * 
  */
-abstract class AdServerSettingsAdapter implements
-		IAdServerSettingsAdapter {
+abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 
 	private transient String requestQueryString;
 
@@ -55,7 +54,7 @@ abstract class AdServerSettingsAdapter implements
 	private JSONArray regExps;
 
 	private transient Class<?> viewClass;
-	
+
 	private boolean processed;
 
 	public AdServerSettingsAdapter() {
@@ -257,6 +256,16 @@ abstract class AdServerSettingsAdapter implements
 		}
 	};
 
+	@Override
+	public void dontProcess() {
+		this.processed = true;
+	}
+
+	@Override
+	public boolean doProcess() {
+		return !this.processed;
+	}
+
 	protected Map<String, String> getAttrsToParams() {
 		return this.attrsToParams;
 	}
@@ -312,7 +321,7 @@ abstract class AdServerSettingsAdapter implements
 					this.requestQueryString += "&" + param + "=" + val;
 				}
 			}
-			
+
 			if (regExps != null) {
 				String backup = this.requestQueryString;
 				try {
@@ -320,11 +329,12 @@ abstract class AdServerSettingsAdapter implements
 						JSONArray regexpn = regExps.getJSONArray(i);
 						if (regexpn.length() > 1) {
 							this.requestQueryString = this.requestQueryString
-								.replaceAll(regexpn.getString(0),
-										regexpn.getString(1));
-						}
-						else {
-							SdkLog.w(TAG, "No valid regular expression found in " + regExps);
+									.replaceAll(regexpn.getString(0),
+											regexpn.getString(1));
+						} else {
+							SdkLog.w(TAG,
+									"No valid regular expression found in "
+											+ regExps);
 						}
 					}
 				} catch (Exception e) {
@@ -364,7 +374,7 @@ abstract class AdServerSettingsAdapter implements
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_SUCCESS_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createSuccessListener((String) l);
+								createSuccessListener(l);
 							} else {
 								createSuccessListener(l);
 							}
@@ -373,7 +383,7 @@ abstract class AdServerSettingsAdapter implements
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_EMPTY_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createEmptyListener((String) l);
+								createEmptyListener(l);
 							} else {
 								createEmptyListener(l);
 							}
@@ -382,7 +392,7 @@ abstract class AdServerSettingsAdapter implements
 									.get(SdkGlobals.EMS_ATTRIBUTE_PREFIX
 											+ SdkGlobals.EMS_ERROR_LISTENER);
 							if (String.class.equals(l.getClass())) {
-								createErrorListener((String) l);
+								createErrorListener(l);
 							} else {
 								createErrorListener(l);
 							}
@@ -523,16 +533,5 @@ abstract class AdServerSettingsAdapter implements
 	@Override
 	public String toString() {
 		return getQueryString();
-	}
-
-
-	@Override
-	public void dontProcess() {
-		this.processed = true;
-	}
-	
-	@Override
-	public boolean doProcess() {
-		return !this.processed;
 	}
 }

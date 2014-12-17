@@ -16,9 +16,9 @@ import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
  */
 public interface IAdResponseHandler extends Serializable {
 
-	public abstract void processResponse(IAdResponse response);
-
 	public abstract void processError(String msg);
 
 	public abstract void processError(String msg, Throwable t);
+
+	public abstract void processResponse(IAdResponse response);
 }

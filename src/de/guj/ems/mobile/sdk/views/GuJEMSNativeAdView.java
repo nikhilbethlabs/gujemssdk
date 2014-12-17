@@ -65,24 +65,9 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdResponseHandler {
+public class GuJEMSNativeAdView extends ImageView implements Receiver,
+		IAdResponseHandler {
 
-	private static final long serialVersionUID = 419984287637564123L;
-
-	private boolean testMode = false;
-
-	private Bitmap stillImage;
-
-	private Movie animatedGif;
-
-	private long movieStart = 0;
-
-	private boolean play = false;
-
-	private Paint testPaint;
-	
-	private AdResponseReceiver responseHandler = new AdResponseReceiver(new Handler());
-	
 	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
 		private final WeakReference<ImageView> viewRef;
 
@@ -119,20 +104,6 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 				}
 			}
 			return stillImage != null ? stillImage : animatedGif;
-		}
-
-		private byte[] streamToBytes(InputStream is) {
-			ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
-			byte[] buffer = new byte[1024];
-			int len;
-			try {
-				while ((len = is.read(buffer)) >= 0) {
-					os.write(buffer, 0, len);
-				}
-			} catch (java.io.IOException e) {
-				SdkLog.e(TAG, "Error streaming image to bytes.", e);
-			}
-			return os.toByteArray();
 		}
 
 		@Override
@@ -177,10 +148,12 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 						view.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								if (parser != null && parser.getClickUrl() != null) {
+								if (parser != null
+										&& parser.getClickUrl() != null) {
 									Intent i = new Intent(getContext(),
 											Browser.class);
-									SdkLog.d(TAG, "open:" + parser.getClickUrl());
+									SdkLog.d(TAG,
+											"open:" + parser.getClickUrl());
 									i.putExtra(Browser.URL_EXTRA,
 											parser.getClickUrl());
 									i.putExtra(Browser.SHOW_BACK_EXTRA, true);
@@ -190,21 +163,22 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 								}
 							}
 						});
+					} else {
+						SdkLog.d(TAG,
+								"Not setting click listener, no click url provided.");
 					}
-					else {
-						SdkLog.d(TAG, "Not setting click listener, no click url provided.");
-					}
-					
+
 					LayoutParams lp = view.getLayoutParams();
 					int w = movie != null ? movie.width() : bitmap.getWidth();
 					int h = movie != null ? movie.height() : bitmap.getHeight();
 					// Retina or XXL
 					if (w > (getMeasuredWidth() / SdkUtil.getDensity())) {
-						lp.height = (int)(((getMeasuredWidth() / SdkUtil.getDensity()) / w) * h * SdkUtil.getDensity());
+						lp.height = (int) (((getMeasuredWidth() / SdkUtil
+								.getDensity()) / w) * h * SdkUtil.getDensity());
 					}
 					// 300 or 320
 					else {
-						lp.height = (int)(h * SdkUtil.getDensity());
+						lp.height = (int) (h * SdkUtil.getDensity());
 					}
 
 					view.setLayoutParams(lp);
@@ -214,7 +188,38 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 			}
 
 		}
+
+		private byte[] streamToBytes(InputStream is) {
+			ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
+			byte[] buffer = new byte[1024];
+			int len;
+			try {
+				while ((len = is.read(buffer)) >= 0) {
+					os.write(buffer, 0, len);
+				}
+			} catch (java.io.IOException e) {
+				SdkLog.e(TAG, "Error streaming image to bytes.", e);
+			}
+			return os.toByteArray();
+		}
 	}
+
+	private static final long serialVersionUID = 419984287637564123L;
+
+	private boolean testMode = false;
+
+	private Bitmap stillImage;
+
+	private Movie animatedGif;
+
+	private long movieStart = 0;
+
+	private boolean play = false;
+
+	private Paint testPaint;
+
+	private AdResponseReceiver responseHandler = new AdResponseReceiver(
+			new Handler());
 
 	private AdResponseParser parser;
 
@@ -428,8 +433,23 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void disableHWAcceleration() {
+		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		SdkLog.d(TAG,
+				"HW Acceleration disabled for AdView (younger than Gingerbread).");
+	}
+
+	private void downloadImage() {
+		new DownloadImageTask(this).execute(parser.getImageUrl());
+	}
+
 	protected ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		return new ViewGroup.LayoutParams(w, h);
+	}
+
+	public AdResponseReceiver getResponseHandler() {
+		return responseHandler;
 	}
 
 	private void handleInflatedLayout(AttributeSet attrs) {
@@ -448,14 +468,12 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 			} else {
 				setLayoutParams(getNewLayoutParams(w, h));
 			}
-		}
-		else {
+		} else {
 			if (getLayoutParams() == null) {
 				setLayoutParams(getNewLayoutParams(
 						(int) (320.0f * SdkUtil.getDensity()),
 						(int) (50.0f * SdkUtil.getDensity())));
-			}
-			else {
+			} else {
 				LayoutParams lp = getLayoutParams();
 				lp.height = (int) (50.0f * SdkUtil.getDensity());
 				lp.width = (int) (320.0f * SdkUtil.getDensity());
@@ -491,7 +509,9 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 					as = Xml.asAttributeSet(parser);
 					break;
 				} else {
-					SdkLog.w(TAG, "Mismatch in layout for native adView - you are using "+ parser.getName());
+					SdkLog.w(TAG,
+							"Mismatch in layout for native adView - you are using "
+									+ parser.getName());
 				}
 			}
 		} while (state != XmlPullParser.END_DOCUMENT);
@@ -512,7 +532,8 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				getContext().startService(SdkUtil.adRequest(responseHandler, settings));
+				getContext().startService(
+						SdkUtil.adRequest(responseHandler, settings));
 			}
 			// Do nothing if offline
 			else {
@@ -525,11 +546,9 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent(getContext(),
-							Browser.class);
+					Intent i = new Intent(getContext(), Browser.class);
 					SdkLog.d(TAG, "open: http://m.ems.guj.de");
-					i.putExtra(Browser.URL_EXTRA,
-							"http://m.ems.guj.de");
+					i.putExtra(Browser.URL_EXTRA, "http://m.ems.guj.de");
 					i.putExtra(Browser.SHOW_BACK_EXTRA, true);
 					i.putExtra(Browser.SHOW_FORWARD_EXTRA, true);
 					i.putExtra(Browser.SHOW_REFRESH_EXTRA, true);
@@ -537,7 +556,7 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 					getContext().startActivity(i);
 				}
 			});
-		
+
 			if (this.settings != null
 					&& this.settings.getOnAdSuccessListener() != null) {
 				this.settings.getOnAdSuccessListener().onAdSuccess();
@@ -545,6 +564,101 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 		} else {
 			SdkLog.w(TAG, "AdView has no settings.");
 		}
+	}
+
+	@Override
+	protected void onAttachedToWindow() {
+		if (testMode) {
+			if (getLayoutParams() == null) {
+				setLayoutParams(getNewLayoutParams(
+						(int) (320.0f * SdkUtil.getDensity()),
+						(int) (50.0f * SdkUtil.getDensity())));
+			} else {
+				LayoutParams lp = getLayoutParams();
+				lp.height = (int) (50.0f * SdkUtil.getDensity());
+				lp.width = (int) (320.0f * SdkUtil.getDensity());
+				setLayoutParams(lp);
+			}
+			setVisibility(VISIBLE);
+		}
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		setImageBitmap(null);
+		play = false;
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		if (testMode) {
+
+			if (testPaint == null) {
+				testPaint = new Paint();
+				testPaint.setColor(Color.WHITE);
+				testPaint.setStyle(Style.FILL);
+			}
+			try {
+				float dens = SdkUtil.getDensity();
+				canvas.scale(dens, dens);
+			} catch (Exception e) {
+				; // editor mode
+			}
+			if (settings != null) {
+				String txt = settings.toString();
+				if (txt.indexOf("uid") >= 0) {
+					canvas.drawText(
+							txt.substring(0, txt.substring(1).indexOf("&")),
+							6.0f, 12.0f, testPaint);
+					canvas.drawText(
+							txt.substring(txt.substring(1).indexOf("&") + 1),
+							6.0f, 24.0f, testPaint);
+				} else {
+					canvas.drawText(settings.toString(), 6.0f, 12.0f, testPaint);
+				}
+			} else {
+				canvas.drawText("Native AdView Editor Mode", 6.0f, 12.0f,
+						testPaint);
+			}
+			this.invalidate();
+		} else if (animatedGif != null && play) {
+			long now = android.os.SystemClock.uptimeMillis();
+			canvas.drawColor(Color.TRANSPARENT);
+			// canvas scaling and offset
+			float s = (animatedGif.width() > getMeasuredWidth()
+					/ SdkUtil.getDensity()) ? (float) getMeasuredWidth()
+					/ (float) animatedGif.width() : SdkUtil.getDensity();
+			float o = (animatedGif.width() > getMeasuredWidth()
+					/ SdkUtil.getDensity()) ? 0.0f
+					: 0.5f * ((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif
+							.width());
+			canvas.scale(s, s);
+
+			if (movieStart == 0) {
+				movieStart = now;
+			}
+
+			if (animatedGif.duration() > 0) {
+				int relTime = (int) ((now - movieStart) % animatedGif
+						.duration());
+				animatedGif.setTime(relTime);
+			}
+
+			animatedGif.draw(canvas, o, 0.0f);
+			this.invalidate();
+		}
+	}
+
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set) {
@@ -566,8 +680,7 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 		testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		if (set != null && !isInEditMode()) {
 			this.settings = new AmobeeSettingsAdapter();
-			this.settings.setup(context, getClass(), set,
-					kws, nkws);
+			this.settings.setup(context, getClass(), set, kws, nkws);
 		} else {
 			SdkLog.w(TAG,
 					"No attribute set found from resource id (ok with interstitials).");
@@ -575,9 +688,73 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 
 	}
 
+	@Override
+	public void processError(String msg) {
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg);
+		} else {
+			SdkLog.e(TAG, msg);
+		}
+	}
+
+	@Override
+	public void processError(String msg, Throwable t) {
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg, t);
+		} else {
+			SdkLog.e(TAG, msg, t);
+		}
+	}
+
+	@Override
+	public final void processResponse(IAdResponse response) {
+		try {
+			if (response != null && !response.isEmpty()) {
+				SdkLog.d(TAG, "Native view handling response of type "
+						+ response.getClass());
+				parser = response.getParser();
+				downloadImage();
+				if (parser.getTrackingImageUrl() != null) {
+					SdkUtil.httpRequest(parser.getTrackingImageUrl());
+				}
+				SdkLog.i(TAG, "Ad found and loading... [" + getId() + "]");
+				if (settings.getOnAdSuccessListener() != null) {
+					settings.getOnAdSuccessListener().onAdSuccess();
+				}
+			} /*
+			 * else { if (settings.getGooglePublisherId() != null) { try {
+			 * SdkLog.i(TAG, "Passing to Google SDK. [" +
+			 * settings.getGooglePublisherId() + "]"); new GoogleDelegator(this,
+			 * settings, getLayoutParams(), getBackground(), getId());
+			 * 
+			 * } catch (final Exception e) { if (settings.getOnAdErrorListener()
+			 * != null) { getHandler().post(new Runnable() {
+			 * 
+			 * @Override public void run() { settings.getOnAdErrorListener()
+			 * .onAdError( "Error delegating to Google", e); } }); } else {
+			 * SdkLog.e(TAG, "Error delegating to Google", e); } } }
+			 */else if (response == null || response.isEmpty()) {
+				if (settings.getOnAdEmptyListener() != null) {
+					getHandler().post(new Runnable() {
+
+						@Override
+						public void run() {
+							settings.getOnAdEmptyListener().onAdEmpty();
+						}
+					});
+
+				} else {
+					SdkLog.i(TAG, "No valid ad found. [" + getId() + "]");
+				}
+			}
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + getId() + "]");
+		} catch (Exception e) {
+			processError("Error loading ad [" + getId() + "]", e);
+		}
+	}
 
 	/**
-	 * Repopulate the adview after a new adserver request 
+	 * Repopulate the adview after a new adserver request
 	 */
 	public void reload() {
 		if (settings != null && !this.testMode) {
@@ -622,190 +799,5 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver, IAdRespon
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
 	}
-
-	@Override
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		setImageBitmap(null);
-		play = false;
-	}
-	
-	@Override
-	protected void onAttachedToWindow() {
-		if (testMode) {
-			if (getLayoutParams() == null) {
-				setLayoutParams(getNewLayoutParams(
-						(int) (320.0f * SdkUtil.getDensity()),
-						(int) (50.0f * SdkUtil.getDensity())));
-			}
-			else {
-				LayoutParams lp = getLayoutParams();
-				lp.height = (int) (50.0f * SdkUtil.getDensity());
-				lp.width = (int) (320.0f * SdkUtil.getDensity());
-				setLayoutParams(lp);
-			}
-			setVisibility(VISIBLE);			
-		}
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		if (testMode) {
-
-			if (testPaint == null) {
-				testPaint = new Paint();
-				testPaint.setColor(Color.WHITE);
-				testPaint.setStyle(Style.FILL);
-			}
-			try {
-				float dens = SdkUtil.getDensity();
-				canvas.scale(dens, dens);
-			} catch (Exception e) {
-				; // editor mode
-			}
-			if (settings != null) {
-				String txt = settings.toString();
-				if (txt.indexOf("uid") >= 0) {
-					canvas.drawText(
-							txt.substring(0, txt.substring(1).indexOf("&")),
-							6.0f, 12.0f, testPaint);
-					canvas.drawText(
-							txt.substring(txt.substring(1).indexOf("&") + 1),
-							6.0f, 24.0f, testPaint);
-				} else {
-					canvas.drawText(settings.toString(), 6.0f, 12.0f, testPaint);
-				}
-			} else {
-				canvas.drawText("Native AdView Editor Mode", 6.0f, 12.0f,
-						testPaint);
-			}
-			this.invalidate();
-		} else if (animatedGif != null && play) {
-			long now = android.os.SystemClock.uptimeMillis();
-			canvas.drawColor(Color.TRANSPARENT);
-			// canvas scaling and offset
-			float s = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ?  (float)getMeasuredWidth() / (float)animatedGif.width() : SdkUtil.getDensity();
-			float o = (animatedGif.width() > getMeasuredWidth() / SdkUtil.getDensity()) ? 0.0f : 0.5f * ((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif.width());
-			canvas.scale(s,s);
-			
-			if (movieStart == 0) {
-				movieStart = now;
-			}
-
-			if (animatedGif.duration() > 0) {
-				int relTime = (int) ((now - movieStart) % animatedGif
-						.duration());
-				animatedGif.setTime(relTime);
-			}
-
-			animatedGif.draw(canvas, o, 0.0f);
-			this.invalidate();
-		}
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void disableHWAcceleration() {
-		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		SdkLog.d(TAG,
-				"HW Acceleration disabled for AdView (younger than Gingerbread).");
-	}
-
-	private void downloadImage() {
-		new DownloadImageTask(this).execute(parser.getImageUrl());		
-	}
-	
-	public AdResponseReceiver getResponseHandler() {
-		return responseHandler;
-	}
-	
-	@Override
-	public void onReceiveResult(int resultCode, Bundle resultData) {
-		Throwable lastError = (Throwable) resultData.get("lastError");
-		IAdResponse response = (IAdResponse) resultData.get("response");
-		if (lastError != null) {
-			processError("Received error", lastError);
-		}
-		processResponse(response);
-	}
-	
-	@Override
-	public void processError(String msg) {
-		if (settings.getOnAdErrorListener() != null) {
-			settings.getOnAdErrorListener().onAdError(msg);
-		} else {
-			SdkLog.e(TAG, msg);
-		}
-	}
-
-	@Override
-	public void processError(String msg, Throwable t) {
-		if (settings.getOnAdErrorListener() != null) {
-			settings.getOnAdErrorListener().onAdError(msg, t);
-		} else {
-			SdkLog.e(TAG, msg, t);
-		}
-	}
-
-	@Override
-	public final void processResponse(IAdResponse response) {
-		try {
-			if (response != null && !response.isEmpty()) {
-				SdkLog.d(TAG, "Native view handling response of type "
-						+ response.getClass());
-				parser = response.getParser();
-				downloadImage();
-				if (parser.getTrackingImageUrl() != null) {
-					SdkUtil.httpRequest(parser.getTrackingImageUrl());
-				}
-				SdkLog.i(TAG, "Ad found and loading... [" + getId() + "]");
-				if (settings.getOnAdSuccessListener() != null) {
-					settings.getOnAdSuccessListener().onAdSuccess();
-				}
-			} /* else {
-				if (settings.getGooglePublisherId() != null) {
-					try {
-						SdkLog.i(TAG, "Passing to Google SDK. ["
-								+ settings.getGooglePublisherId() + "]");
-						new GoogleDelegator(this, settings, getLayoutParams(), getBackground(), getId());
-						
-					} catch (final Exception e) {
-						if (settings.getOnAdErrorListener() != null) {
-							getHandler().post(new Runnable() {
-
-								@Override
-								public void run() {
-									settings.getOnAdErrorListener()
-											.onAdError(
-													"Error delegating to Google",
-													e);
-								}
-							});
-						} else {
-							SdkLog.e(TAG, "Error delegating to Google", e);
-						}
-					}
-				} */ else if (response == null || response.isEmpty()) {
-					if (settings.getOnAdEmptyListener() != null) {
-						getHandler().post(new Runnable() {
-
-							@Override
-							public void run() {
-								settings.getOnAdEmptyListener().onAdEmpty();
-							}
-						});
-
-					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + getId()
-								+ "]");
-					}
-			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + getId()
-					+ "]");
-		} catch (Exception e) {
-			processError("Error loading ad [" + getId() + "]", e);
-		}
-	}	
-	
 
 }

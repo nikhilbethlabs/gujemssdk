@@ -54,62 +54,116 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  */
 public class SdkUtil {
 
-	private final static String TAG = "SdkUtil";
+	/**
+	 * Create an ad request object with url and response handler
+	 * 
+	 * @param handler
+	 *            response handler
+	 * @return initialized ad request
+	 */
+	public static Intent adRequest(AdResponseReceiver handler,
+			IAdServerSettingsAdapter settings) {
+		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+		if (settings.doProcess()) {
+			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON
+					.getJsonVariables().process(
+							SdkConfig.SINGLETON.getJsonConfig().process(
+									settings));
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, nSet.getRequestUrl());
+		} else {
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, settings.getRequestUrl());
+		}
 
-	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[] {
-			String.class, ValueCallback.class };
-
-	private volatile static Method KITKAT_JS_METHOD = null;
-
-	private volatile static Intent BATTERY_INTENT = null;
-
-	private volatile static Intent HEADSET_INTENT = null;
-
-	private volatile static TelephonyManager TELEPHONY_MANAGER;
-
-	private static DisplayMetrics METRICS = new DisplayMetrics();
-
-	private static WindowManager WINDOW_MANAGER = null;
-
-	private static String COOKIE_REPL;
-
-	private static String DEVICE_ID;
-
-	private static final String EMSUID = ".emsuid";
-
-	private static Context CONTEXT;
-
-	private static String USER_AGENT = null;
-
-	private static String IDFA = null;
-
-	private static boolean FETCH_IDFA = true;
-
-	private final static boolean DEBUG = false;
-
-	private final static String DEBUG_USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.3; de-de; GT-I9100 Build/GRH78) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
+		i.putExtra("handler", handler);
+		return i;
+	}
 
 	/**
-	 * major sdk version integer
+	 * Create an ad request object with url and response handler
+	 * 
+	 * @param handler
+	 *            response handler
+	 * @return initialized ad request
 	 */
-	private final static int MAJOR_VERSION = 1;
+	public static Intent adRequest(AdResponseReceiver handler, String url) {
+		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+		i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
+		i.putExtra("handler", handler);
+		return i;
+	}
 
 	/**
-	 * minor sdk version integer
+	 * Helper method to determine the correct way to execute javascript in a
+	 * webview. Starting from Android 4.4, the Android webview is a chrome
+	 * webview and the method to execute javascript has changed from loadUrl to
+	 * evaluateJavascript
+	 * 
+	 * @param webView
+	 *            The webview to exeute the script in
+	 * @param javascript
+	 *            the actual script
 	 */
-	private final static int MINOR_VERSION = 4;
+	public static void evaluateJavascript(WebView webView, String javascript) {
+		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
+			KITKAT_JS_METHOD = getKitKatJsMethod();
+			SdkLog.i(TAG,
+					"G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
+
+		}
+
+		if (Build.VERSION.SDK_INT < 19) {
+			webView.loadUrl("javascript:" + javascript);
+		} else
+			try {
+				KITKAT_JS_METHOD.invoke(webView, javascript, null);
+			} catch (Exception e) {
+				SdkLog.e(
+						TAG,
+						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
+						e);
+			}
+	}
+
+	private synchronized static Intent getBatteryIntent() {
+		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		BATTERY_INTENT = getContext().getApplicationContext().registerReceiver(
+				null, ifilter);
+		return BATTERY_INTENT;
+	}
 
 	/**
-	 * revision sdk version integer
+	 * Get the battery charge level in percent
+	 * 
+	 * @return Integer value [0..100], indicating battery charge level in
+	 *         percent
 	 */
-	private final static int REV_VERSION = 0;
+	public static int getBatteryLevel() {
+		if (BATTERY_INTENT == null) {
+			synchronized (BATTERY_INTENT) {
+				try {
+					BATTERY_INTENT = getBatteryIntent();
+				} catch (ReceiverCallNotAllowedException e) {
+					SdkLog.w(TAG,
+							"Skipping start of phone status receivers from start interstitial.");
+					BATTERY_INTENT = null;
+					return 100;
+				}
+			}
+		}
+		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+		return (int) (100.0f * (level / (float) scale));
+	}
 
 	/**
-	 * Version string containing major, minor and revision as string divided by
-	 * underscores for passing it to the adserver
+	 * Get local storage path for files
+	 * 
+	 * @return fodler where local files may be stored
 	 */
-	public final static String VERSION_STR = MAJOR_VERSION + "_"
-			+ MINOR_VERSION + "_" + REV_VERSION;
+	static File getConfigFileDir() {
+		return getContext().getFilesDir();
+	}
 
 	/**
 	 * Get android application context
@@ -185,6 +239,128 @@ public class SdkUtil {
 		return DEVICE_ID;
 	}
 
+	private synchronized static Intent getHeadsetIntent() {
+		HEADSET_INTENT = getContext().registerReceiver(null,
+				new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+		return HEADSET_INTENT;
+	}
+
+	private static void getIdfaThread() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Info adInfo = null;
+				FETCH_IDFA = false;
+				try {
+					adInfo = AdvertisingIdClient
+							.getAdvertisingIdInfo(getContext());
+				} catch (GooglePlayServicesRepairableException e) {
+					SdkLog.e(
+							TAG,
+							"Google Play ID service problem, trying again later",
+							e);
+					FETCH_IDFA = true;
+				} catch (IOException e) {
+					// Unrecoverable error connecting to Google Play services
+					// (e.g.,
+					// the old version of the service doesn't support getting
+					// AdvertisingId).
+					SdkLog.e(TAG, "Google Play services connection problem", e);
+
+				} catch (GooglePlayServicesNotAvailableException e) {
+					// Google Play services is not available entirely.
+					SdkLog.e(TAG, "Google Play services not available", e);
+				}
+
+				IDFA = adInfo != null && !adInfo.isLimitAdTrackingEnabled() ? adInfo
+						.getId() : null;
+			}
+		}).start();
+
+	}
+
+	/**
+	 * Access Google Advertising Identifier
+	 * 
+	 * @return null if user chose to opt-out or id is not available, id
+	 *         otherwise
+	 */
+	public static String getIdForAdvertiser() {
+		if (FETCH_IDFA) {
+			getIdfaThread();
+		}
+		return IDFA;
+	}
+
+	private synchronized static Method getKitKatJsMethod() {
+		try {
+			KITKAT_JS_METHOD = Class.forName("android.webkit.WebView")
+					.getDeclaredMethod("evaluateJavascript",
+							KITKAT_JS_PARAMTYPES);
+			KITKAT_JS_METHOD.setAccessible(true);
+		} catch (Exception e0) {
+			SdkLog.e(
+					TAG,
+					"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
+					e0);
+		}
+		return KITKAT_JS_METHOD;
+	}
+
+	/**
+	 * Gets the location.
+	 * 
+	 * @return the location
+	 */
+	public static double[] getLocation() {
+		LocationManager lm = (LocationManager) getContext().getSystemService(
+				Context.LOCATION_SERVICE);
+		List<String> providers = lm.getProviders(false);
+		Iterator<String> provider = providers.iterator();
+		Location lastKnown = null;
+		double[] loc = new double[4];
+		long age = 0;
+		int maxage = getContext().getResources().getInteger(
+				R.integer.ems_location_maxage_ms);
+		while (provider.hasNext()) {
+			lastKnown = lm.getLastKnownLocation(provider.next());
+			if (lastKnown != null) {
+
+				age = System.currentTimeMillis() - lastKnown.getTime();
+				if (age <= maxage) {
+					break;
+				} else {
+					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
+							+ "] is " + (age / 60000) + " min old. [max = "
+							+ (maxage / 60000) + "]");
+				}
+			}
+		}
+
+		if (lastKnown != null && age <= maxage) {
+			loc[0] = lastKnown.getLatitude();
+			loc[1] = lastKnown.getLongitude();
+			loc[2] = lastKnown.getSpeed() * 3.6;
+			loc[3] = lastKnown.getAltitude();
+			if (getContext().getResources().getBoolean(
+					R.bool.ems_shorten_location)) {
+				SdkLog.d(TAG, "Shortening " + loc[0] + "," + loc[1]);
+				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
+						.format(loc[0]));
+				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
+						.format(loc[1]));
+				SdkLog.d(TAG, "Geo location shortened to two digits.");
+			}
+
+			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is "
+					+ loc[0] + "x" + loc[1] + "," + loc[2] + "," + loc[3]);
+			return loc;
+		}
+
+		return null;
+	}
+
 	private static DisplayMetrics getMetrics() {
 		if (SdkUtil.WINDOW_MANAGER == null) {
 			SdkUtil.WINDOW_MANAGER = getWinMgr();
@@ -192,6 +368,33 @@ public class SdkUtil {
 		SdkUtil.WINDOW_MANAGER.getDefaultDisplay().getMetrics(SdkUtil.METRICS);
 		return METRICS;
 
+	}
+
+	/**
+	 * Check the network subtype, i.e. carrier name
+	 * 
+	 * @return carrier name if available, "unknown" otherwise
+	 */
+	static String getNetworkName() {
+
+		Context c = SdkUtil.getContext();
+		if (c.getPackageManager().checkPermission(
+				permission.ACCESS_NETWORK_STATE, c.getPackageName()) != PackageManager.PERMISSION_GRANTED) {
+			SdkLog.w(TAG,
+					"Access Network State not granted in Manifest - unable to determine provider.");
+			return "Unknown";
+		}
+
+		final ConnectivityManager conMgr = (ConnectivityManager) c
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		try {
+			return conMgr.getActiveNetworkInfo().getExtraInfo();
+		} catch (Exception e) {
+			SdkLog.w(TAG,
+					"Exception in getNetworkInfo - unable to determine provider.");
+			return "Unknown";
+		}
 	}
 
 	/**
@@ -210,6 +413,12 @@ public class SdkUtil {
 	 */
 	public static int getScreenWidth() {
 		return SdkUtil.getMetrics().widthPixels;
+	}
+
+	private synchronized static TelephonyManager getTelephonyManager() {
+		TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		return TELEPHONY_MANAGER;
 	}
 
 	/**
@@ -251,11 +460,30 @@ public class SdkUtil {
 		}
 		return WINDOW_MANAGER;
 	}
-	
-	private synchronized static TelephonyManager getTelephonyManager() {
-		TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		return TELEPHONY_MANAGER;
+
+	/**
+	 * Perform a quick simple http request without processing the response
+	 * 
+	 * @param url
+	 *            The url to request
+	 */
+	public static void httpRequest(final String url) {
+		SdkUtil.httpRequests(new String[] { url });
+	}
+
+	/**
+	 * Perform quick simple http requests without processing the response.
+	 * Errors are written to log output.
+	 * 
+	 * @param url
+	 *            An array of url strings
+	 */
+	public static void httpRequests(final String[] urls) {
+		for (String url : urls) {
+			Intent i = new Intent(getContext(), AmobeeAdRequest.class);
+			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
+			getContext().startService(i);
+		}
 	}
 
 	/**
@@ -302,6 +530,28 @@ public class SdkUtil {
 	}
 
 	/**
+	 * Check whether a charger is connected to the device
+	 * 
+	 * @return true if a charger is connected
+	 */
+	public static boolean isChargerConnected() {
+		if (BATTERY_INTENT == null) {
+			try {
+				BATTERY_INTENT = getBatteryIntent();
+			} catch (ReceiverCallNotAllowedException e) {
+				SdkLog.w(TAG,
+						"Skipping start of phone status receivers from start interstitial.");
+				BATTERY_INTENT = null;
+				return false;
+			}
+		}
+		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+		return cp == BatteryManager.BATTERY_PLUGGED_AC
+		// || cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
+				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
+	}
+
+	/**
 	 * Check wheter GPS is active / allowed
 	 * 
 	 * @return
@@ -319,13 +569,27 @@ public class SdkUtil {
 	}
 
 	/**
-	 * Check whether device is in portait mode
+	 * Check whether a headset is connected to the device
 	 * 
-	 * @return true if portrait mode, false if landscape mode
+	 * @return true if a headset is connected
 	 */
-	public static boolean isPortrait() {
-		int r = getWinMgr().getDefaultDisplay().getRotation();
-		return r == Surface.ROTATION_0 || r == Surface.ROTATION_180;
+	public static boolean isHeadsetConnected() {
+		try {
+			HEADSET_INTENT = getHeadsetIntent();
+		} catch (Exception e) {
+			SdkLog.e(TAG, "Error getting headset status.", e);
+		}
+		return HEADSET_INTENT != null ? HEADSET_INTENT.getIntExtra("state", 0) != 0
+				: false;
+	}
+
+	/**
+	 * Detect phablets and tablets
+	 * 
+	 * @return true if we are on device larger than a phone
+	 */
+	static boolean isLargerThanPhone() {
+		return getContext().getResources().getBoolean(R.bool.largeDisplay);
 	}
 
 	/**
@@ -397,6 +661,16 @@ public class SdkUtil {
 	}
 
 	/**
+	 * Check whether device is in portait mode
+	 * 
+	 * @return true if portrait mode, false if landscape mode
+	 */
+	public static boolean isPortrait() {
+		int r = getWinMgr().getDefaultDisplay().getRotation();
+		return r == Surface.ROTATION_0 || r == Surface.ROTATION_180;
+	}
+
+	/**
 	 * Check whether device is connected via WiFi. if
 	 * android.Manifest.permission.ACCESS_NETWORK_STATE is not granted or the
 	 * state cannot be determined, the device will always be assumed to be
@@ -429,39 +703,40 @@ public class SdkUtil {
 		}
 	}
 
-	/**
-	 * Check the network subtype, i.e. carrier name
-	 * 
-	 * @return carrier name if available, "unknown" otherwise
-	 */
-	static String getNetworkName() {
-
-		Context c = SdkUtil.getContext();
-		if (c.getPackageManager().checkPermission(
-				permission.ACCESS_NETWORK_STATE, c.getPackageName()) != PackageManager.PERMISSION_GRANTED) {
-			SdkLog.w(TAG,
-					"Access Network State not granted in Manifest - unable to determine provider.");
-			return "Unknown";
-		}
-
-		final ConnectivityManager conMgr = (ConnectivityManager) c
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		try {
-			return conMgr.getActiveNetworkInfo().getExtraInfo();
-		} catch (Exception e) {
-			SdkLog.w(TAG,
-					"Exception in getNetworkInfo - unable to determine provider.");
-			return "Unknown";
-		}
-	}
-
 	private static String readUUID(File fuuid) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(fuuid, "r");
 		byte[] bytes = new byte[(int) f.length()];
 		f.readFully(bytes);
 		f.close();
 		return new String(bytes);
+	}
+
+	public static void reloadAds(Activity ac) {
+		if (ac != null) {
+			ViewGroup root = (ViewGroup) ac.findViewById(android.R.id.content);
+			if (root != null) {
+				reloadAdsInGroup(root);
+			} else {
+				SdkLog.w(TAG, "Could not access root view when reloading ads.");
+			}
+		} else {
+			SdkLog.w(TAG, "Called reloadAds for null Activity.");
+		}
+	}
+
+	private static void reloadAdsInGroup(ViewGroup vg) {
+		if (vg != null) {
+			for (int i = 0; i < vg.getChildCount(); i++) {
+				if (GuJEMSAdView.class.equals(vg.getChildAt(i).getClass())) {
+					GuJEMSAdView v = (GuJEMSAdView) vg.getChildAt(i);
+					SdkLog.d(TAG, "Reload adview " + v);
+					v.reload();
+				} else if (vg.getChildAt(i) instanceof ViewGroup) {
+					reloadAdsInGroup((ViewGroup) vg.getChildAt(i));
+				}
+				// TODO more view types
+			}
+		}
 	}
 
 	/**
@@ -480,339 +755,62 @@ public class SdkUtil {
 		out.write(id.getBytes());
 		out.close();
 	}
-	
-	private synchronized static Intent getBatteryIntent() {
-		IntentFilter ifilter = new IntentFilter(
-				Intent.ACTION_BATTERY_CHANGED);
-		BATTERY_INTENT = getContext().getApplicationContext()
-				.registerReceiver(null, ifilter);
-		return BATTERY_INTENT;
-	}
+
+	private final static String TAG = "SdkUtil";
+
+	private final static Class<?>[] KITKAT_JS_PARAMTYPES = new Class[] {
+			String.class, ValueCallback.class };
+
+	private volatile static Method KITKAT_JS_METHOD = null;
+
+	private volatile static Intent BATTERY_INTENT = null;
+
+	private volatile static Intent HEADSET_INTENT = null;
+
+	private volatile static TelephonyManager TELEPHONY_MANAGER;
+
+	private static DisplayMetrics METRICS = new DisplayMetrics();
+
+	private static WindowManager WINDOW_MANAGER = null;
+
+	private static String COOKIE_REPL;
+
+	private static String DEVICE_ID;
+
+	private static final String EMSUID = ".emsuid";
+
+	private static Context CONTEXT;
+
+	private static String USER_AGENT = null;
+
+	private static String IDFA = null;
+
+	private static boolean FETCH_IDFA = true;
+
+	private final static boolean DEBUG = false;
+
+	private final static String DEBUG_USER_AGENT = "Mozilla/5.0 (Linux; U; Android 4.3; de-de; GT-I9100 Build/GRH78) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
 
 	/**
-	 * Check whether a charger is connected to the device
-	 * 
-	 * @return true if a charger is connected
+	 * major sdk version integer
 	 */
-	public static boolean isChargerConnected() {
-		if (BATTERY_INTENT == null) {
-			try {
-				BATTERY_INTENT = getBatteryIntent();
-			} catch (ReceiverCallNotAllowedException e) {
-				SdkLog.w(TAG,
-						"Skipping start of phone status receivers from start interstitial.");
-				BATTERY_INTENT = null;
-				return false;
-			}
-		}
-		int cp = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-		return cp == BatteryManager.BATTERY_PLUGGED_AC
-		// || cp == BatteryManager.BATTERY_PLUGGED_WIRELESS
-				|| cp == BatteryManager.BATTERY_PLUGGED_USB;
-	}
+	private final static int MAJOR_VERSION = 1;
 
 	/**
-	 * Get the battery charge level in percent
-	 * 
-	 * @return Integer value [0..100], indicating battery charge level in
-	 *         percent
+	 * minor sdk version integer
 	 */
-	public static int getBatteryLevel() {
-		if (BATTERY_INTENT == null) {
-			synchronized (BATTERY_INTENT) {
-				try {
-					BATTERY_INTENT = getBatteryIntent();
-				} catch (ReceiverCallNotAllowedException e) {
-					SdkLog.w(TAG,
-							"Skipping start of phone status receivers from start interstitial.");
-					BATTERY_INTENT = null;
-					return 100;
-				}
-			}
-		}
-		int level = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-		int scale = BATTERY_INTENT.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-		return (int) (100.0f * (level / (float) scale));
-	}
-	
-	private synchronized static Intent getHeadsetIntent() {
-		HEADSET_INTENT = getContext().registerReceiver(null,
-				new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-		return HEADSET_INTENT;
-	}
+	private final static int MINOR_VERSION = 4;
 
 	/**
-	 * Check whether a headset is connected to the device
-	 * 
-	 * @return true if a headset is connected
+	 * revision sdk version integer
 	 */
-	public static boolean isHeadsetConnected() {
-		try {
-			HEADSET_INTENT = getHeadsetIntent();
-		} catch (Exception e) {
-			SdkLog.e(TAG, "Error getting headset status.", e);
-		}
-		return HEADSET_INTENT != null ? HEADSET_INTENT.getIntExtra("state", 0) != 0
-				: false;
-	}
+	private final static int REV_VERSION = 0;
 
 	/**
-	 * Create an ad request object with url and response handler
-	 * 
-	 * @param handler
-	 *            response handler
-	 * @return initialized ad request
+	 * Version string containing major, minor and revision as string divided by
+	 * underscores for passing it to the adserver
 	 */
-	public static Intent adRequest(AdResponseReceiver handler, IAdServerSettingsAdapter settings) {
-		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
-		if (settings.doProcess()) {
-			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON.getJsonVariables().process(
-					SdkConfig.SINGLETON.getJsonConfig().process(settings));
-			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, nSet.getRequestUrl());
-		}
-		else {
-			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, settings.getRequestUrl());
-		}
-		
-		i.putExtra("handler", handler);
-		return i;
-	}
-	
-	/**
-	 * Create an ad request object with url and response handler
-	 * 
-	 * @param handler
-	 *            response handler
-	 * @return initialized ad request
-	 */
-	public static Intent adRequest(AdResponseReceiver handler, String url) {
-		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
-		i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
-		i.putExtra("handler", handler);
-		return i;
-	}
-
-	/**
-	 * Perform a quick simple http request without processing the response
-	 * 
-	 * @param url
-	 *            The url to request
-	 */
-	public static void httpRequest(final String url) {
-		SdkUtil.httpRequests(new String[] { url });
-	}
-
-	/**
-	 * Perform quick simple http requests without processing the response.
-	 * Errors are written to log output.
-	 * 
-	 * @param url
-	 *            An array of url strings
-	 */
-	public static void httpRequests(final String[] urls) {
-		for (String url : urls) {
-			Intent i = new Intent(getContext(), AmobeeAdRequest.class);
-			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, url);
-			getContext().startService(i);
-		}
-	}
-
-	private synchronized static Method getKitKatJsMethod() {
-		try {
-			KITKAT_JS_METHOD = Class.forName("android.webkit.WebView")
-					.getDeclaredMethod("evaluateJavascript",
-							KITKAT_JS_PARAMTYPES);
-			KITKAT_JS_METHOD.setAccessible(true);
-		} catch (Exception e0) {
-			SdkLog.e(
-					TAG,
-					"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
-					e0);
-		}
-		return KITKAT_JS_METHOD;
-	}
-
-	/**
-	 * Helper method to determine the correct way to execute javascript in a
-	 * webview. Starting from Android 4.4, the Android webview is a chrome
-	 * webview and the method to execute javascript has changed from loadUrl to
-	 * evaluateJavascript
-	 * 
-	 * @param webView
-	 *            The webview to exeute the script in
-	 * @param javascript
-	 *            the actual script
-	 */
-	public static void evaluateJavascript(WebView webView, String javascript) {
-		if (KITKAT_JS_METHOD == null && Build.VERSION.SDK_INT >= 19) {
-			KITKAT_JS_METHOD = getKitKatJsMethod();
-			SdkLog.i(TAG,
-					"G+J EMS SDK AdView: Running in KITKAT mode with new Chromium webview!");
-
-		}
-
-		if (Build.VERSION.SDK_INT < 19) {
-			webView.loadUrl("javascript:" + javascript);
-		} else
-			try {
-				KITKAT_JS_METHOD.invoke(webView, javascript, null);
-			} catch (Exception e) {
-				SdkLog.e(
-						TAG,
-						"FATAL ERROR: Could not invoke Android 4.4 Chromium WebView method evaluateJavascript",
-						e);
-			}
-	}
-
-	/**
-	 * Get local storage path for files
-	 * 
-	 * @return fodler where local files may be stored
-	 */
-	static File getConfigFileDir() {
-		return getContext().getFilesDir();
-	}
-
-	/**
-	 * Gets the location.
-	 * 
-	 * @return the location
-	 */
-	public static double[] getLocation() {
-		LocationManager lm = (LocationManager) getContext().getSystemService(
-				Context.LOCATION_SERVICE);
-		List<String> providers = lm.getProviders(false);
-		Iterator<String> provider = providers.iterator();
-		Location lastKnown = null;
-		double[] loc = new double[4];
-		long age = 0;
-		int maxage = getContext().getResources().getInteger(
-				R.integer.ems_location_maxage_ms);
-		while (provider.hasNext()) {
-			lastKnown = lm.getLastKnownLocation(provider.next());
-			if (lastKnown != null) {
-
-				age = System.currentTimeMillis() - lastKnown.getTime();
-				if (age <= maxage) {
-					break;
-				} else {
-					SdkLog.d(TAG, "Location [" + lastKnown.getProvider()
-							+ "] is " + (age / 60000) + " min old. [max = "
-							+ (maxage / 60000) + "]");
-				}
-			}
-		}
-
-		if (lastKnown != null && age <= maxage) {
-			loc[0] = lastKnown.getLatitude();
-			loc[1] = lastKnown.getLongitude();
-			loc[2] = lastKnown.getSpeed() * 3.6;
-			loc[3] = lastKnown.getAltitude();
-			if (getContext().getResources().getBoolean(
-					R.bool.ems_shorten_location)) {
-				SdkLog.d(TAG, "Shortening " + loc[0] + "," + loc[1]);
-				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
-						.format(loc[0]));
-				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
-						.format(loc[1]));
-				SdkLog.d(TAG, "Geo location shortened to two digits.");
-			}
-
-			SdkLog.i(TAG, "Location [" + lastKnown.getProvider() + "] is "
-					+ loc[0] + "x" + loc[1] + "," + loc[2] + "," + loc[3]);
-			return loc;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Detect phablets and tablets
-	 * 
-	 * @return true if we are on device larger than a phone
-	 */
-	static boolean isLargerThanPhone() {
-		return getContext().getResources().getBoolean(R.bool.largeDisplay);
-	}
-
-	private static void getIdfaThread() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				Info adInfo = null;
-				FETCH_IDFA = false;
-				try {
-					adInfo = AdvertisingIdClient
-							.getAdvertisingIdInfo(getContext());
-				} catch (GooglePlayServicesRepairableException e) {
-					SdkLog.e(
-							TAG,
-							"Google Play ID service problem, trying again later",
-							e);
-					FETCH_IDFA = true;
-				} catch (IOException e) {
-					// Unrecoverable error connecting to Google Play services
-					// (e.g.,
-					// the old version of the service doesn't support getting
-					// AdvertisingId).
-					SdkLog.e(TAG, "Google Play services connection problem", e);
-
-				} catch (GooglePlayServicesNotAvailableException e) {
-					// Google Play services is not available entirely.
-					SdkLog.e(TAG, "Google Play services not available", e);
-				}
-
-				IDFA = adInfo != null && !adInfo.isLimitAdTrackingEnabled() ? adInfo
-						.getId() : null;
-			}
-		}).start();
-
-	}
-
-	/**
-	 * Access Google Advertising Identifier
-	 * 
-	 * @return null if user chose to opt-out or id is not available, id
-	 *         otherwise
-	 */
-	public static String getIdForAdvertiser() {
-		if (FETCH_IDFA) {
-			getIdfaThread();
-		}
-		return IDFA;
-	}
-	
-	private static void reloadAdsInGroup(ViewGroup vg) {
-		if (vg != null) {
-			for (int i = 0; i < vg.getChildCount(); i++) {
-				if (GuJEMSAdView.class.equals(vg.getChildAt(i).getClass())) {
-					GuJEMSAdView v = (GuJEMSAdView)vg.getChildAt(i); 
-					SdkLog.d(TAG, "Reload adview " + v);
-					v.reload();
-				}
-				else if (vg.getChildAt(i) instanceof ViewGroup){
-					reloadAdsInGroup((ViewGroup)vg.getChildAt(i));
-				}
-				//TODO more view types
-			}
-		}
-	}
-	
-	public static void reloadAds(Activity ac) {
-		if (ac != null) {
-			ViewGroup root = (ViewGroup)ac.findViewById(android.R.id.content);
-			if (root != null) {
-				reloadAdsInGroup((ViewGroup)root);
-			}
-			else {
-				SdkLog.w(TAG, "Could not access root view when reloading ads.");
-			}
-		}
-		else {
-			SdkLog.w(TAG, "Called reloadAds for null Activity.");
-		}
-	}
+	public final static String VERSION_STR = MAJOR_VERSION + "_"
+			+ MINOR_VERSION + "_" + REV_VERSION;
 
 }

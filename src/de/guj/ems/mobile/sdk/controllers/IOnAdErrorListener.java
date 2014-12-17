@@ -11,6 +11,14 @@ import java.io.Serializable;
 public interface IOnAdErrorListener extends Serializable {
 
 	/**
+	 * Listener method called upon request error
+	 * 
+	 * @param msg
+	 *            Error message
+	 */
+	void onAdError(String msg);
+
+	/**
 	 * Listener method called upon request error including exception
 	 * 
 	 * @param msg
@@ -19,13 +27,5 @@ public interface IOnAdErrorListener extends Serializable {
 	 *            Exception thrown
 	 */
 	void onAdError(String msg, Throwable t);
-
-	/**
-	 * Listener method called upon request error
-	 * 
-	 * @param msg
-	 *            Error message
-	 */
-	void onAdError(String msg);
 
 }

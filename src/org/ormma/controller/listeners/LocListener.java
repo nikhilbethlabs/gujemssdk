@@ -22,13 +22,13 @@ package org.ormma.controller.listeners;
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+import org.ormma.controller.OrmmaLocationController;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import org.ormma.controller.OrmmaLocationController;
 
 /**
  * The listener interface for receiving location events. The class that is
@@ -84,11 +84,33 @@ public class LocListener implements LocationListener {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * android.location.LocationListener#onLocationChanged(android.location.
+	 * Location)
+	 */
+	@Override
+	public void onLocationChanged(Location location) {
+		mOrmmaLocationController.success(location);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * android.location.LocationListener#onProviderDisabled(java.lang.String)
 	 */
 	@Override
 	public void onProviderDisabled(String provider) {
 		mOrmmaLocationController.fail();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.location.LocationListener#onProviderEnabled(java.lang.String)
+	 */
+	@Override
+	public void onProviderEnabled(String provider) {
 	}
 
 	/*
@@ -104,16 +126,11 @@ public class LocListener implements LocationListener {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.location.LocationListener#onLocationChanged(android.location.
-	 * Location)
+	/**
+	 * Start.
 	 */
-	@Override
-	public void onLocationChanged(Location location) {
-		mOrmmaLocationController.success(location);
+	public void start() {
+		mLocMan.requestLocationUpdates(mProvider, 0, 0, this);
 	}
 
 	/**
@@ -121,25 +138,6 @@ public class LocListener implements LocationListener {
 	 */
 	public void stop() {
 		mLocMan.removeUpdates(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.location.LocationListener#onProviderEnabled(java.lang.String)
-	 */
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Start.
-	 */
-	public void start() {
-		mLocMan.requestLocationUpdates(mProvider, 0, 0, this);
 	}
 
 }

@@ -110,179 +110,101 @@ public class OrmmaUtilityController extends OrmmaController {
 	}
 
 	/**
-	 * Inits the controller. injects state info
+	 * Activate a listener
 	 * 
-	 * @param density
-	 *            the density
-	 */
-	public void init(float density) {
-		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
-				+ " network: \'"
-				+ mNetworkController.getNetwork()
-				+ "\',"
-				+ " size: "
-				+ mDisplayController.getSize()
-				+ ","
-				+ " maxSize: "
-				+ mDisplayController.getMaxSize()
-				+ ","
-				+ " screenSize: "
-				+ mDisplayController.getScreenSize()
-				+ ","
-				+ " defaultPosition: { x:"
-				+ (int) (mOrmmaView.getLeft() / density)
-				+ ", y: "
-				+ (int) (mOrmmaView.getTop() / density)
-				+ ", width: "
-				+ (int) (mOrmmaView.getWidth() / density)
-				+ ", height: "
-				+ (int) (mOrmmaView.getHeight() / density)
-				+ " },"
-				+ " orientation:"
-				+ mDisplayController.getOrientation()
-				+ ","
-				+ getSupports() + " });";
-		SdkLog.d(SdkLog_TAG, "init: injection: " + injection);
-		mOrmmaView.injectJavaScript(injection);
-
-	}
-
-	/**
-	 * Gets the supports object. Examines application permissions
-	 * 
-	 * @return the supports
-	 */
-	private String getSupports() {
-		String supports = "supports: [ 'level-1', 'level-2', 'level-3', 'screen', 'orientation', 'network', 'heading'";
-
-		boolean p = mLocationController.allowLocationServices()
-				&& ((mContext
-						.checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (mContext
-						.checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED));
-		if (p)
-			supports += ", 'location'";
-
-		p = mContext
-				.checkCallingOrSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
-		if (p)
-			supports += ", 'sms'";
-
-		p = mContext
-				.checkCallingOrSelfPermission(android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED;
-		if (p)
-			supports += ", 'phone'";
-
-		p = ((mContext
-				.checkCallingOrSelfPermission(android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) && (mContext
-				.checkCallingOrSelfPermission(android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED));
-		if (p)
-			supports += ", 'calendar'";
-
-		supports += ", 'video'";
-
-		supports += ", 'audio'";
-
-		supports += ", 'map'";
-
-		supports += ", 'email' ]";
-		SdkLog.d(SdkLog_TAG, "getSupports: " + supports);
-		return supports;
-
-	}
-
-	/**
-	 * Ready.
+	 * @param event
+	 *            the event
 	 */
 	@JavascriptInterface
-	public void ready() {
-		mOrmmaView.injectJavaScript("Ormma.setState(\"" + mOrmmaView.getState()
-				+ "\");");
-		mOrmmaView.injectJavaScript("ORMMAReady();");
+	public void activate(String event) {
+		SdkLog.d(SdkLog_TAG, "activate: " + event);
+		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
+			mNetworkController.startNetworkListener();
+		} else if (mLocationController.allowLocationServices()
+				&& event.equalsIgnoreCase(Defines.Events.LOCATION_CHANGE)) {
+			mLocationController.startLocationListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.SHAKE)) {
+			mSensorController.startShakeListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.TILT_CHANGE)) {
+			mSensorController.startTiltListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.HEADING_CHANGE)) {
+			mSensorController.startHeadingListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.ORIENTATION_CHANGE)) {
+			mDisplayController.startConfigurationListener();
+		}
+	}
+
+	@JavascriptInterface
+	public void addAsset(String url, String alias) {
+		mAssetController.addAsset(url, alias);
 	}
 
 	/**
-	 * Send an sms.
+	 * Add event into Calendar
 	 * 
-	 * @param recipient
-	 *            the recipient
+	 * @param calendarID
+	 *            the callId
+	 * @param date
+	 *            the date
+	 * @param title
+	 *            the title
 	 * @param body
 	 *            the body
 	 */
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@JavascriptInterface
-	public void sendSMS(String recipient, String body) {
-		SdkLog.d(SdkLog_TAG, "sendSMS: recipient: " + recipient + " body: "
-				+ body);
-		Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-		sendIntent.putExtra("address", recipient);
-		sendIntent.putExtra("sms_body", body);
-		sendIntent.setType("vnd.android-dir/mms-sms");
-		sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mContext.startActivity(sendIntent);
+	private void addCalendarEvent(final int callId, final String date,
+			final String title, final String body) {
+		long dtStart = Long.parseLong(date);
+		long dtEnd = dtStart + 60 * 1000 * 60;
+		final ContentResolver cr = mContext.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(Events.CALENDAR_ID, callId);
+		cv.put(Events.TITLE, title);
+		cv.put(Events.DTSTART, dtStart);
+		cv.put(Events.EVENT_TIMEZONE, Events.CALENDAR_TIME_ZONE);
+		cv.put(Events.DESCRIPTION, body);
+		cv.put(Events.DTEND, dtEnd);
+
+		try {
+			Uri newEvent = cr.insert(
+					Build.VERSION.SDK_INT >= 14 ? Events.CONTENT_URI
+							: EVENTS_PROVIDER_URI, cv);
+			if (newEvent != null) {
+				long id = Long.parseLong(newEvent.getLastPathSegment());
+				ContentValues values = new ContentValues();
+				values.put(Reminders.EVENT_ID, id);
+				values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
+				values.put(Reminders.MINUTES, 15); // 15 minutes
+				cr.insert(Build.VERSION.SDK_INT >= 14 ? Reminders.CONTENT_URI
+						: REMINDERS_PROVIDER_URI, values);
+
+				Toast.makeText(
+						mContext,
+						"Danke! Termin mit Erinnerung in Kalender eingetragen.",
+						Toast.LENGTH_SHORT).show();
+
+			} else {
+				Toast.makeText(mContext,
+						"Der Termin konnte leider nicht eingetragen werden.",
+						Toast.LENGTH_SHORT).show();
+			}
+		} catch (Exception e) {
+			SdkLog.e(SdkLog_TAG, "Error inserting event in to calendar.", e);
+		}
 	}
 
 	/**
-	 * Send an email.
+	 * Copy text from jar into asset dir.
 	 * 
-	 * @param recipient
-	 *            the recipient
-	 * @param subject
-	 *            the subject
-	 * @param body
-	 *            the body
-	 */
-	@JavascriptInterface
-	public void sendMail(String recipient, String subject, String body) {
-		SdkLog.d(SdkLog_TAG, "sendMail: recipient: " + recipient + " subject: "
-				+ subject + " body: " + body);
-		Intent i = new Intent(Intent.ACTION_SEND);
-		i.setType("plain/text");
-		i.putExtra(android.content.Intent.EXTRA_EMAIL,
-				new String[] { recipient });
-		i.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-		i.putExtra(android.content.Intent.EXTRA_TEXT, body);
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mContext.startActivity(i);
-	}
-
-	@JavascriptInterface
-	public void storePicture(String url) {
-		mAssetController.storePicture(url);
-	}
-
-	/**
-	 * Creates the tel url.
-	 * 
-	 * @param number
-	 *            the number
+	 * @param alias
+	 *            the alias
+	 * @param source
+	 *            the source
 	 * @return the string
 	 */
-	private String createTelUrl(String number) {
-		if (TextUtils.isEmpty(number)) {
-			return null;
-		}
-
-		StringBuilder buf = new StringBuilder("tel:");
-		buf.append(number);
-		return buf.toString();
-	}
-
-	/**
-	 * Make call.
-	 * 
-	 * @param number
-	 *            the number
-	 */
-	@JavascriptInterface
-	public void makeCall(String number) {
-		SdkLog.d(SdkLog_TAG, "makeCall: number: " + number);
-		String url = createTelUrl(number);
-		if (url == null) {
-			mOrmmaView.raiseError("Bad Phone Number", "makeCall");
-		} else {
-			Intent i = new Intent(Intent.ACTION_CALL, Uri.parse(url.toString()));
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			mContext.startActivity(i);
-		}
+	public String copyTextFromJarIntoAssetDir(String alias, String source) {
+		return mAssetController.copyTextFromJarIntoAssetDir(alias, source);
 	}
 
 	/**
@@ -357,71 +279,218 @@ public class OrmmaUtilityController extends OrmmaController {
 	}
 
 	/**
-	 * Add event into Calendar
+	 * Creates the tel url.
 	 * 
-	 * @param calendarID
-	 *            the callId
-	 * @param date
-	 *            the date
-	 * @param title
-	 *            the title
-	 * @param body
-	 *            the body
+	 * @param number
+	 *            the number
+	 * @return the string
 	 */
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private String createTelUrl(String number) {
+		if (TextUtils.isEmpty(number)) {
+			return null;
+		}
+
+		StringBuilder buf = new StringBuilder("tel:");
+		buf.append(number);
+		return buf.toString();
+	}
+
+	/**
+	 * Deactivate a listener
+	 * 
+	 * @param event
+	 *            the event
+	 */
 	@JavascriptInterface
-	private void addCalendarEvent(final int callId, final String date,
-			final String title, final String body) {
-		long dtStart = Long.parseLong(date);
-		long dtEnd = dtStart + 60 * 1000 * 60;
-		final ContentResolver cr = mContext.getContentResolver();
-		ContentValues cv = new ContentValues();
-		cv.put(Events.CALENDAR_ID, callId);
-		cv.put(Events.TITLE, title);
-		cv.put(Events.DTSTART, dtStart);
-		cv.put(Events.EVENT_TIMEZONE, Events.CALENDAR_TIME_ZONE);
-		cv.put(Events.DESCRIPTION, body);
-		cv.put(Events.DTEND, dtEnd);
+	public void deactivate(String event) {
+		SdkLog.d(SdkLog_TAG, "deactivate: " + event);
+		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
+			mNetworkController.stopNetworkListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.LOCATION_CHANGE)) {
+			mLocationController.stopAllListeners();
+		} else if (event.equalsIgnoreCase(Defines.Events.SHAKE)) {
+			mSensorController.stopShakeListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.TILT_CHANGE)) {
+			mSensorController.stopTiltListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.HEADING_CHANGE)) {
+			mSensorController.stopHeadingListener();
+		} else if (event.equalsIgnoreCase(Defines.Events.ORIENTATION_CHANGE)) {
+			mDisplayController.stopConfigurationListener();
+		}
 
-		try {
-			Uri newEvent = cr.insert(
-					Build.VERSION.SDK_INT >= 14 ? Events.CONTENT_URI
-							: EVENTS_PROVIDER_URI, cv);
-			if (newEvent != null) {
-				long id = Long.parseLong(newEvent.getLastPathSegment());
-				ContentValues values = new ContentValues();
-				values.put(Reminders.EVENT_ID, id);
-				values.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-				values.put(Reminders.MINUTES, 15); // 15 minutes
-				cr.insert(Build.VERSION.SDK_INT >= 14 ? Reminders.CONTENT_URI
-						: REMINDERS_PROVIDER_URI, values);
+	}
 
-				Toast.makeText(
-						mContext,
-						"Danke! Termin mit Erinnerung in Kalender eingetragen.",
-						Toast.LENGTH_SHORT).show();
+	/**
+	 * Delete old ads.
+	 */
+	public void deleteOldAds() {
+		mAssetController.deleteOldAds();
+	}
 
-			} else {
-				Toast.makeText(mContext,
-						"Der Termin konnte leider nicht eingetragen werden.",
-						Toast.LENGTH_SHORT).show();
-			}
-		} catch (Exception e) {
-			SdkLog.e(SdkLog_TAG, "Error inserting event in to calendar.", e);
+	/**
+	 * Delete old ad.
+	 */
+	public void deleteOldAds(String localPath) {
+		mAssetController.deleteOldAds(localPath);
+	}
+
+	/**
+	 * Gets the supports object. Examines application permissions
+	 * 
+	 * @return the supports
+	 */
+	private String getSupports() {
+		String supports = "supports: [ 'level-1', 'level-2', 'level-3', 'screen', 'orientation', 'network', 'heading'";
+
+		boolean p = mLocationController.allowLocationServices()
+				&& ((mContext
+						.checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (mContext
+						.checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED));
+		if (p)
+			supports += ", 'location'";
+
+		p = mContext
+				.checkCallingOrSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
+		if (p)
+			supports += ", 'sms'";
+
+		p = mContext
+				.checkCallingOrSelfPermission(android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED;
+		if (p)
+			supports += ", 'phone'";
+
+		p = ((mContext
+				.checkCallingOrSelfPermission(android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) && (mContext
+				.checkCallingOrSelfPermission(android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED));
+		if (p)
+			supports += ", 'calendar'";
+
+		supports += ", 'video'";
+
+		supports += ", 'audio'";
+
+		supports += ", 'map'";
+
+		supports += ", 'email' ]";
+		SdkLog.d(SdkLog_TAG, "getSupports: " + supports);
+		return supports;
+
+	}
+
+	/**
+	 * Inits the controller. injects state info
+	 * 
+	 * @param density
+	 *            the density
+	 */
+	public void init(float density) {
+		String injection = "window.ormmaview.fireChangeEvent({ state: \'default\',"
+				+ " network: \'"
+				+ mNetworkController.getNetwork()
+				+ "\',"
+				+ " size: "
+				+ mDisplayController.getSize()
+				+ ","
+				+ " maxSize: "
+				+ mDisplayController.getMaxSize()
+				+ ","
+				+ " screenSize: "
+				+ mDisplayController.getScreenSize()
+				+ ","
+				+ " defaultPosition: { x:"
+				+ (int) (mOrmmaView.getLeft() / density)
+				+ ", y: "
+				+ (int) (mOrmmaView.getTop() / density)
+				+ ", width: "
+				+ (int) (mOrmmaView.getWidth() / density)
+				+ ", height: "
+				+ (int) (mOrmmaView.getHeight() / density)
+				+ " },"
+				+ " orientation:"
+				+ mDisplayController.getOrientation()
+				+ ","
+				+ getSupports() + " });";
+		SdkLog.d(SdkLog_TAG, "init: injection: " + injection);
+		mOrmmaView.injectJavaScript(injection);
+
+	}
+
+	/**
+	 * Make call.
+	 * 
+	 * @param number
+	 *            the number
+	 */
+	@JavascriptInterface
+	public void makeCall(String number) {
+		SdkLog.d(SdkLog_TAG, "makeCall: number: " + number);
+		String url = createTelUrl(number);
+		if (url == null) {
+			mOrmmaView.raiseError("Bad Phone Number", "makeCall");
+		} else {
+			Intent i = new Intent(Intent.ACTION_CALL, Uri.parse(url.toString()));
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			mContext.startActivity(i);
 		}
 	}
 
 	/**
-	 * Copy text from jar into asset dir.
-	 * 
-	 * @param alias
-	 *            the alias
-	 * @param source
-	 *            the source
-	 * @return the string
+	 * Ready.
 	 */
-	public String copyTextFromJarIntoAssetDir(String alias, String source) {
-		return mAssetController.copyTextFromJarIntoAssetDir(alias, source);
+	@JavascriptInterface
+	public void ready() {
+		mOrmmaView.injectJavaScript("Ormma.setState(\"" + mOrmmaView.getState()
+				+ "\");");
+		mOrmmaView.injectJavaScript("ORMMAReady();");
+	}
+
+	@JavascriptInterface
+	public void removeAsset(String alias) {
+		mAssetController.removeAsset(alias);
+	}
+
+	/**
+	 * Send an email.
+	 * 
+	 * @param recipient
+	 *            the recipient
+	 * @param subject
+	 *            the subject
+	 * @param body
+	 *            the body
+	 */
+	@JavascriptInterface
+	public void sendMail(String recipient, String subject, String body) {
+		SdkLog.d(SdkLog_TAG, "sendMail: recipient: " + recipient + " subject: "
+				+ subject + " body: " + body);
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("plain/text");
+		i.putExtra(android.content.Intent.EXTRA_EMAIL,
+				new String[] { recipient });
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+		i.putExtra(android.content.Intent.EXTRA_TEXT, body);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		mContext.startActivity(i);
+	}
+
+	/**
+	 * Send an sms.
+	 * 
+	 * @param recipient
+	 *            the recipient
+	 * @param body
+	 *            the body
+	 */
+	@JavascriptInterface
+	public void sendSMS(String recipient, String body) {
+		SdkLog.d(SdkLog_TAG, "sendSMS: recipient: " + recipient + " body: "
+				+ body);
+		Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+		sendIntent.putExtra("address", recipient);
+		sendIntent.putExtra("sms_body", body);
+		sendIntent.setType("vnd.android-dir/mms-sms");
+		sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		mContext.startActivity(sendIntent);
 	}
 
 	/**
@@ -435,6 +504,34 @@ public class OrmmaUtilityController extends OrmmaController {
 	@JavascriptInterface
 	public void setMaxSize(int w, int h) {
 		mDisplayController.setMaxSize(w, h);
+	}
+
+	@JavascriptInterface
+	public void showAlert(final String message) {
+		SdkLog.e(SdkLog_TAG, message);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ormma.controller.OrmmaController#stopAllListeners()
+	 */
+	@Override
+	public void stopAllListeners() {
+		try {
+			mAssetController.stopAllListeners();
+			mDisplayController.stopAllListeners();
+			mLocationController.stopAllListeners();
+			mNetworkController.stopAllListeners();
+			mSensorController.stopAllListeners();
+		} catch (Exception e) {
+			SdkLog.e(SdkLog_TAG, "Error stopping listeners.", e);
+		}
+	}
+
+	@JavascriptInterface
+	public void storePicture(String url) {
+		mAssetController.storePicture(url);
 	}
 
 	/**
@@ -493,103 +590,6 @@ public class OrmmaUtilityController extends OrmmaController {
 			IOException {
 		return mAssetController.writeToDiskWrap(data, currentFile,
 				storeInHashedDirectory, injection, bridgePath, ormmaPath);
-	}
-
-	/**
-	 * Activate a listener
-	 * 
-	 * @param event
-	 *            the event
-	 */
-	@JavascriptInterface
-	public void activate(String event) {
-		SdkLog.d(SdkLog_TAG, "activate: " + event);
-		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
-			mNetworkController.startNetworkListener();
-		} else if (mLocationController.allowLocationServices()
-				&& event.equalsIgnoreCase(Defines.Events.LOCATION_CHANGE)) {
-			mLocationController.startLocationListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.SHAKE)) {
-			mSensorController.startShakeListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.TILT_CHANGE)) {
-			mSensorController.startTiltListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.HEADING_CHANGE)) {
-			mSensorController.startHeadingListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.ORIENTATION_CHANGE)) {
-			mDisplayController.startConfigurationListener();
-		}
-	}
-
-	/**
-	 * Deactivate a listener
-	 * 
-	 * @param event
-	 *            the event
-	 */
-	@JavascriptInterface
-	public void deactivate(String event) {
-		SdkLog.d(SdkLog_TAG, "deactivate: " + event);
-		if (event.equalsIgnoreCase(Defines.Events.NETWORK_CHANGE)) {
-			mNetworkController.stopNetworkListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.LOCATION_CHANGE)) {
-			mLocationController.stopAllListeners();
-		} else if (event.equalsIgnoreCase(Defines.Events.SHAKE)) {
-			mSensorController.stopShakeListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.TILT_CHANGE)) {
-			mSensorController.stopTiltListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.HEADING_CHANGE)) {
-			mSensorController.stopHeadingListener();
-		} else if (event.equalsIgnoreCase(Defines.Events.ORIENTATION_CHANGE)) {
-			mDisplayController.stopConfigurationListener();
-		}
-
-	}
-
-	/**
-	 * Delete old ads.
-	 */
-	public void deleteOldAds() {
-		mAssetController.deleteOldAds();
-	}
-
-	/**
-	 * Delete old ad.
-	 */
-	public void deleteOldAds(String localPath) {
-		mAssetController.deleteOldAds(localPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ormma.controller.OrmmaController#stopAllListeners()
-	 */
-	@Override
-	public void stopAllListeners() {
-		try {
-			mAssetController.stopAllListeners();
-			mDisplayController.stopAllListeners();
-			mLocationController.stopAllListeners();
-			mNetworkController.stopAllListeners();
-			mSensorController.stopAllListeners();
-		} catch (Exception e) {
-			SdkLog.e(SdkLog_TAG, "Error stopping listeners.", e);
-		}
-	}
-
-	@JavascriptInterface
-	public void showAlert(final String message) {
-		SdkLog.e(SdkLog_TAG, message);
-	}
-
-	@JavascriptInterface
-	public void addAsset(String url, String alias) {
-		mAssetController.addAsset(url, alias);
-	}
-
-	@JavascriptInterface
-	public void removeAsset(String alias) {
-		mAssetController.removeAsset(alias);
 	}
 
 }

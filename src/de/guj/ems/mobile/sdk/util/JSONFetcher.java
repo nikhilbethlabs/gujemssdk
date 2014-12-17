@@ -35,11 +35,11 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	private long localAge;
 
 	private JSONObject localJson;
-	
+
 	private String logExt;
 
 	private int lastError;
-	
+
 	private final static String TAG = "JSONFetcher";
 
 	private final static String ACCEPT_HEADER_NAME = "Accept";
@@ -66,12 +66,11 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 	 * @param localDir
 	 *            Local Directory
 	 */
-	JSONFetcher(JSONContent listener, String remote, String local,
-			File localDir) {
+	JSONFetcher(JSONContent listener, String remote, String local, File localDir) {
 		this.lastError = -1;
 		this.jsonContent = listener;
 		this.logExt = jsonContent.getClass().getSimpleName();
-		SdkLog.d(TAG, "Instance for " + logExt);		
+		SdkLog.d(TAG, "Instance for " + logExt);
 		this.remote = remote;
 		this.local = local;
 		this.localDir = localDir;
@@ -98,32 +97,25 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 		this.lastError = -1;
 		this.jsonContent = listener;
 		this.logExt = jsonContent.getClass().getSimpleName();
-		SdkLog.d(TAG, "Instance for " + logExt);		
+		SdkLog.d(TAG, "Instance for " + logExt);
 		this.remote = remote;
 		this.local = local;
 		this.localDir = localDir;
 		this.localAge = checkLocal();
 		this.doFetch = localAge <= 0 || localAge > maxAge;
-		SdkLog.d(TAG, logExt + " refetch ? " + doFetch + ", [" + localAge + ">" + maxAge + "]");
+		SdkLog.d(TAG, logExt + " refetch ? " + doFetch + ", [" + localAge + ">"
+				+ maxAge + "]");
 	}
 
-	private void storeLocal() {
-		// locally store current config
-		File f = new File(this.localDir, this.local);
-		FileOutputStream fo = null;
-		try {
-			fo = new FileOutputStream(f);
-			fo.write(localJson.toString().getBytes());
-			SdkLog.d(TAG, logExt + " stored locally: " + this.localJson);
-		} catch (Exception e) {
-			SdkLog.e(TAG, logExt + " could not be stored locally.", e);
-		} finally {
-			if (fo != null) {
-				try {
-					fo.close();
-				} catch (Exception e1) {
-				}
-			}
+	/**
+	 * Add an optional query string to the json request url
+	 * 
+	 * @param query
+	 *            additional params string, starting with a "?"
+	 */
+	void addQueryString(String query) {
+		if (remote != null && query != null) {
+			remote = remote.concat("?" + query);
 		}
 	}
 
@@ -184,8 +176,7 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 						ACCEPT_CHARSET_HEADER_VALUE);
 				con.setReadTimeout(2500);
 				con.setConnectTimeout(750);
-				SdkLog.d(TAG, logExt + " local age: "
-						+ new Date(this.localAge));
+				SdkLog.d(TAG, logExt + " local age: " + new Date(this.localAge));
 				con.setIfModifiedSince(this.localAge);
 				BufferedInputStream in = new BufferedInputStream(
 						con.getInputStream());
@@ -197,8 +188,8 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 						buffer = EMPTY_BUFFER;
 					}
 				} else if (con.getResponseCode() == 304) {
-					SdkLog.i(TAG,
-							logExt + " (local) is up to date - ignoring remote file.");
+					SdkLog.i(TAG, logExt
+							+ " (local) is up to date - ignoring remote file.");
 				} else if (con.getResponseCode() != 200) {
 					lastError = con.getResponseCode();
 					localAge = System.currentTimeMillis();
@@ -231,6 +222,19 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 		return null;
 	}
 
+	JSONObject getJson() {
+		return localJson;
+	}
+
+	/**
+	 * Returns the last value of http response code
+	 * 
+	 * @return 0 if http response was 200, value of response code otherwise
+	 */
+	public int getLastError() {
+		return lastError;
+	}
+
 	@Override
 	protected void onPostExecute(JSONObject response) {
 		if (response != null) {
@@ -243,34 +247,34 @@ class JSONFetcher extends AsyncTask<Void, Void, JSONObject> {
 				storeLocal();
 			}
 		} else if (localJson == null) {
-			SdkLog.e(TAG,
-					logExt + " json file missing! Please contact mobile.tech@ems.guj.de");
+			SdkLog.e(
+					TAG,
+					logExt
+							+ " json file missing! Please contact mobile.tech@ems.guj.de");
 		} else {
 			SdkLog.d(TAG, logExt + " remote json is not younger than local");
 		}
 		jsonContent.feed(this.localJson);
 	}
 
-	/**
-	 * Add an optional query string to the json request url
-	 * @param query additional params string, starting with a "?" 
-	 */
-	void addQueryString(String query) {
-		if (remote != null && query != null) {
-			remote = remote.concat("?" + query);
+	private void storeLocal() {
+		// locally store current config
+		File f = new File(this.localDir, this.local);
+		FileOutputStream fo = null;
+		try {
+			fo = new FileOutputStream(f);
+			fo.write(localJson.toString().getBytes());
+			SdkLog.d(TAG, logExt + " stored locally: " + this.localJson);
+		} catch (Exception e) {
+			SdkLog.e(TAG, logExt + " could not be stored locally.", e);
+		} finally {
+			if (fo != null) {
+				try {
+					fo.close();
+				} catch (Exception e1) {
+				}
+			}
 		}
-	}
-	
-	JSONObject getJson() {
-		return localJson;
-	}
-	
-	/**
-	 * Returns the last value of http response code
-	 * @return 0 if http response was 200, value of response code otherwise
-	 */
-	public int getLastError() {
-		return lastError;
 	}
 
 }

@@ -18,6 +18,12 @@ public abstract class AdRequest extends IntentService {
 		super(name);
 	}
 
+	protected Throwable getLastError() {
+		return lastError;
+	}
+
+	protected abstract IAdResponse httpGet(String url);
+
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		IAdResponse response = null;
@@ -40,12 +46,6 @@ public abstract class AdRequest extends IntentService {
 		} else {
 			SdkLog.d(TAG, "No response handler");
 		}
-	}
-
-	protected abstract IAdResponse httpGet(String url);
-
-	protected Throwable getLastError() {
-		return lastError;
 	}
 
 	protected void setLastError(Throwable t) {

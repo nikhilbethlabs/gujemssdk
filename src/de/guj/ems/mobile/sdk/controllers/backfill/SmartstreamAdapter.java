@@ -35,25 +35,23 @@ class SmartstreamAdapter implements BackfillAdapter {
 			VideoAdSDK.registerWithPublisherID(context, bfData.getData(),
 					new VideoAdSDKListener() {
 						@Override
-						public void onAdvertisingIsReadyToPlay() {
-							// autoplay when the video is prepared and
-							// buffered
-							SdkLog.d(TAG, "Smartstream Ad is ready to play.");
-							VideoAdSDK.startAdvertising();
-						}
-
-						@Override
 						public void onAdvertisingClicked() {
 							// 3rd party tracking for the click event on the
 							// video layer
-							// TODO Handle Smartstream click event tracking
+						}
+
+						@Override
+						public void onAdvertisingDidHide() {
+							// the advertising activity is released
+							SdkLog.d(TAG,
+									"Smartstream Ad finished. Starting original intent.");
+							callback.finishedCallback();
 						}
 
 						@Override
 						public void onAdvertisingEventTracked(String arg0) {
 							// 3rd party tracking for VAST events incl.
 							// ViewTime
-							// TODO Handle Smartstream viewtime event
 							SdkLog.d(TAG, "Smartstream Advertising Event: "
 									+ arg0);
 							if (arg0.toLowerCase(Locale.ENGLISH).equals(
@@ -124,6 +122,14 @@ class SmartstreamAdapter implements BackfillAdapter {
 						}
 
 						@Override
+						public void onAdvertisingIsReadyToPlay() {
+							// autoplay when the video is prepared and
+							// buffered
+							SdkLog.d(TAG, "Smartstream Ad is ready to play.");
+							VideoAdSDK.startAdvertising();
+						}
+
+						@Override
 						public void onAdvertisingNotAvailable() {
 							// poor connectivity or no video advertising
 							SdkLog.e(TAG,
@@ -138,12 +144,6 @@ class SmartstreamAdapter implements BackfillAdapter {
 						}
 
 						@Override
-						public void onPrefetcherProgress(double arg0) {
-							// current status of prefetching (debugging
-							// only)
-						}
-
-						@Override
 						public void onAdvertisingWillShow() {
 							// the advertising appears in fullscreen mode
 							SdkLog.d(TAG, "Smartstream advertising will show");
@@ -151,11 +151,9 @@ class SmartstreamAdapter implements BackfillAdapter {
 						}
 
 						@Override
-						public void onAdvertisingDidHide() {
-							// the advertising activity is released
-							SdkLog.d(TAG,
-									"Smartstream Ad finished. Starting original intent.");
-							callback.finishedCallback();
+						public void onPrefetcherProgress(double arg0) {
+							// current status of prefetching (debugging
+							// only)
 						}
 					});
 			SmartstreamAdapter.lastData = bfData.getData();
