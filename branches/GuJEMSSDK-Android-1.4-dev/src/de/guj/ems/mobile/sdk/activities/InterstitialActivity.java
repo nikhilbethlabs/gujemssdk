@@ -36,7 +36,8 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * @author stein16
  * 
  */
-public final class InterstitialActivity extends Activity implements OnClickListener {
+public final class InterstitialActivity extends Activity implements
+		OnClickListener {
 
 	private static class InterstitialThread extends Thread {
 
@@ -154,6 +155,29 @@ public final class InterstitialActivity extends Activity implements OnClickListe
 	}
 
 	@Override
+	public void onBackPressed() {
+		if (updateThread != null && updateThread.isAlive()) {
+			try {
+				updateThread.beforeStop();
+				updateThread.join(100);
+				status = CLOSED;
+			} catch (InterruptedException e) {
+				;
+			}
+		}
+		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		if (arg0 == adView) {
+			SdkLog.d(TAG, "Interstitial Click.");
+		} else {
+			SdkLog.d(TAG, "Click into void intercepted.");
+		}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (status < 0) {
@@ -250,7 +274,7 @@ public final class InterstitialActivity extends Activity implements OnClickListe
 								SdkLog.w(TAG,
 										"Interstitial root view or its handler is null!");
 								Thread.yield();
-								//status = FINISHED;
+								// status = FINISHED;
 							} else {
 								loaded = true;
 								root.getHandler().post(new Runnable() {
@@ -319,30 +343,6 @@ public final class InterstitialActivity extends Activity implements OnClickListe
 		}
 		if (status == FINISHED || status == CLOSED) {
 			SdkLog.i(TAG, "Finishing interstitial activity.");
-		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (updateThread != null && updateThread.isAlive()) {
-			try {
-				updateThread.beforeStop();
-				updateThread.join(100);
-				status = CLOSED;
-			} catch (InterruptedException e) {
-				;
-			}
-		}
-		super.onBackPressed();
-	}
-
-	@Override
-	public void onClick(View arg0) {
-		if (arg0 == adView) {
-			SdkLog.d(TAG, "Interstitial Click.");
-		}
-		else {
-			SdkLog.d(TAG, "Click into void intercepted.");
 		}
 	}
 

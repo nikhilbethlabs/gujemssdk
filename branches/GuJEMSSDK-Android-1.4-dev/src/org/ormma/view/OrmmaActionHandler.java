@@ -35,21 +35,6 @@ public class OrmmaActionHandler extends Activity {
 	private HashMap<ACTION, Object> actionData = new HashMap<ACTION, Object>();
 	private RelativeLayout layout;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		Bundle data = getIntent().getExtras();
-
-		layout = new RelativeLayout(OrmmaActionHandler.this);
-		layout.setLayoutParams(new ViewGroup.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		setContentView(layout);
-
-		doAction(data);
-
-	}
-
 	/**
 	 * Perform action - Play audio/video
 	 * 
@@ -124,30 +109,19 @@ public class OrmmaActionHandler extends Activity {
 		return player;
 	}
 
-	/**
-	 * Set listener
-	 * 
-	 * @param player
-	 *            - player instance
-	 */
-	private void setPlayerListener(OrmmaPlayer player) {
-		player.setListener(new OrmmaPlayerListener() {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-			@Override
-			public void onPrepared() {
+		Bundle data = getIntent().getExtras();
 
-			}
+		layout = new RelativeLayout(OrmmaActionHandler.this);
+		layout.setLayoutParams(new ViewGroup.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		setContentView(layout);
 
-			@Override
-			public void onError() {
-				finish();
-			}
+		doAction(data);
 
-			@Override
-			public void onComplete() {
-				finish();
-			}
-		});
 	}
 
 	@Override
@@ -166,6 +140,32 @@ public class OrmmaActionHandler extends Activity {
 			}
 		}
 		super.onStop();
+	}
+
+	/**
+	 * Set listener
+	 * 
+	 * @param player
+	 *            - player instance
+	 */
+	private void setPlayerListener(OrmmaPlayer player) {
+		player.setListener(new OrmmaPlayerListener() {
+
+			@Override
+			public void onComplete() {
+				finish();
+			}
+
+			@Override
+			public void onError() {
+				finish();
+			}
+
+			@Override
+			public void onPrepared() {
+
+			}
+		});
 	}
 
 }

@@ -23,7 +23,7 @@ public abstract class AdResponseParser {
 	private String trackingImageUrl;
 
 	private boolean valid;
-	
+
 	private boolean processed;
 
 	/**
@@ -50,16 +50,16 @@ public abstract class AdResponseParser {
 		this.valid = true;
 	}
 
-	protected void process() {
-		processed = true;
-	}
-
-	protected String getResponse() {
-		return response;
-	}
-
-	public boolean isXml() {
-		return xml;
+	/**
+	 * Get the click URL associated with the ad
+	 * 
+	 * @return click URL string
+	 */
+	public String getClickUrl() {
+		if (!processed) {
+			process();
+		}
+		return clickUrl;
 	}
 
 	/**
@@ -74,16 +74,8 @@ public abstract class AdResponseParser {
 		return imageUrl;
 	}
 
-	/**
-	 * Get the click URL associated with the ad
-	 * 
-	 * @return click URL string
-	 */
-	public String getClickUrl() {
-		if (!processed) {
-			process();
-		}
-		return clickUrl;
+	protected String getResponse() {
+		return response;
 	}
 
 	/**
@@ -98,16 +90,27 @@ public abstract class AdResponseParser {
 		return trackingImageUrl;
 	}
 
-	protected void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public boolean isValid() {
+		if (!processed) {
+			process();
+		}
+		return valid;
+	}
+
+	public boolean isXml() {
+		return xml;
+	}
+
+	protected void process() {
+		processed = true;
 	}
 
 	protected void setClickUrl(String clickUrl) {
 		this.clickUrl = clickUrl;
 	}
 
-	protected void setTrackingImageUrl(String trackingImageUrl) {
-		this.trackingImageUrl = trackingImageUrl;
+	protected void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	protected void setInvalid() {
@@ -115,11 +118,8 @@ public abstract class AdResponseParser {
 		processed = false;
 	}
 
-	public boolean isValid() {
-		if (!processed) {
-			process();
-		}
-		return valid;
+	protected void setTrackingImageUrl(String trackingImageUrl) {
+		this.trackingImageUrl = trackingImageUrl;
 	}
 
 }

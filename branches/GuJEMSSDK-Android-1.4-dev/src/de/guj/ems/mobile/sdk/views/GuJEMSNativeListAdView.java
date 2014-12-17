@@ -37,8 +37,17 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView {
 		super(context, attrs);
 	}
 
+	public GuJEMSNativeListAdView(Context context, AttributeSet attrs,
+			boolean load) {
+		super(context, attrs, load);
+	}
+
 	public GuJEMSNativeListAdView(Context context, int resId) {
 		super(context, resId);
+	}
+
+	public GuJEMSNativeListAdView(Context context, int resId, boolean load) {
+		super(context, resId, load);
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
@@ -47,32 +56,23 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView {
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
-			String[] kws, String[] nkws, int resId) {
-		super(context, customParams, kws, nkws, resId);
-	}
-
-	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
-			int resId) {
-		super(context, kws, nkws, resId);
-	}
-	
-	public GuJEMSNativeListAdView(Context context, AttributeSet attrs,
-			boolean load) {
-		super(context, attrs, load);
-	}
-
-	public GuJEMSNativeListAdView(Context context, int resId, boolean load) {
-		super(context, resId, load);
-	}
-
-	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context, customParams, resId, load);
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String[] nkws, int resId) {
+		super(context, customParams, kws, nkws, resId);
+	}
+
+	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String[] nkws, int resId, boolean load) {
 		super(context, customParams, kws, nkws, resId, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
+			int resId) {
+		super(context, kws, nkws, resId);
 	}
 
 	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,

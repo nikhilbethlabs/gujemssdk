@@ -59,21 +59,6 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
  */
 class OrmmaAssetController extends OrmmaController {
 
-	private final static String SdkLog_TAG = "OrmmaAssetController";
-
-	// public final static float WEBVIEW_VIEWPORT_SCALE =
-	// Screen.getScreenWidth() / 320.0f;
-
-	// private final static byte [] WEBVIEW_VIEWPORT_META =
-	// ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale="
-	// + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
-
-	private final static byte[] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no' />")
-			.getBytes();
-
-	private final static byte[] WEBVIEW_BODY_STYLE = "<body style=\"margin:0; padding:0; overflow:hidden; background-color:transparent;margin: 0px; padding: 0px; display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-pack:center;-webkit-box-align:center;\">"
-			.getBytes();
-
 	class FileComparatorByDate implements Comparator<File> {
 		@Override
 		public int compare(File object1, File object2) {
@@ -83,11 +68,12 @@ class OrmmaAssetController extends OrmmaController {
 		}
 	}
 
-	/**
-	 * The Constant HEX_CHARS.
-	 */
-	private static final char[] HEX_CHARS = { '0', '1', '2', '3', '4', '5',
-			'6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', };
+	// public final static float WEBVIEW_VIEWPORT_SCALE =
+	// Screen.getScreenWidth() / 320.0f;
+
+	// private final static byte [] WEBVIEW_VIEWPORT_META =
+	// ("<meta name='viewport' content='target-densitydpi=device-dpi, width=320, user-scalable=no, initial-scale="
+	// + WEBVIEW_VIEWPORT_SCALE + "' />").getBytes();
 
 	/**
 	 * Delete directory.
@@ -123,6 +109,20 @@ class OrmmaAssetController extends OrmmaController {
 		return false;
 	}
 
+	private final static String SdkLog_TAG = "OrmmaAssetController";
+
+	private final static byte[] WEBVIEW_VIEWPORT_META = ("<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no' />")
+			.getBytes();
+
+	private final static byte[] WEBVIEW_BODY_STYLE = "<body style=\"margin:0; padding:0; overflow:hidden; background-color:transparent;margin: 0px; padding: 0px; display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-pack:center;-webkit-box-align:center;\">"
+			.getBytes();
+
+	/**
+	 * The Constant HEX_CHARS.
+	 */
+	private static final char[] HEX_CHARS = { '0', '1', '2', '3', '4', '5',
+			'6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', };
+
 	/**
 	 * Instantiates a new ormma asset controller.
 	 * 
@@ -145,7 +145,8 @@ class OrmmaAssetController extends OrmmaController {
 	 * @param url
 	 *            the url
 	 */
-	@JavascriptInterface void addAsset(String url, String alias) {
+	@JavascriptInterface
+	void addAsset(String url, String alias) {
 		try {
 			if (url.startsWith("ormma://screenshot")) {
 				Activity parent = (Activity) mContext;
@@ -212,22 +213,31 @@ class OrmmaAssetController extends OrmmaController {
 		}
 	}
 
-	private InputStream getScreenshot(View view) {
-		try {
-			view.setDrawingCacheEnabled(true);
-			Bitmap screenshot = Bitmap.createBitmap(view.getDrawingCache());
-			view.setDrawingCacheEnabled(false);
+	private Uri addToGallery(File img, String title, String name,
+			String description, String dateTaken, String mimeType) {
+		ContentValues image = new ContentValues();
 
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			screenshot.compress(Bitmap.CompressFormat.PNG, 90, out);
+		image.put(MediaColumns.TITLE, title);
+		image.put(MediaColumns.DISPLAY_NAME, name);
+		image.put(ImageColumns.DESCRIPTION, description);
+		image.put(MediaColumns.DATE_ADDED, dateTaken);
+		image.put(ImageColumns.DATE_TAKEN, dateTaken);
+		image.put(MediaColumns.DATE_MODIFIED, dateTaken);
+		image.put(MediaColumns.MIME_TYPE, mimeType);
+		image.put(ImageColumns.ORIENTATION, 0);
 
-			byte[] bs = out.toByteArray();
-			return new ByteArrayInputStream(bs);
-		} catch (Exception e) {
-			mOrmmaView
-					.injectJavaScript("window.ormmaview.fireErrorEvent(\"addAsset\",\"Ein Screenshot konnte nicht erzeugt werden.\")");
-		}
-		return null;
+		File parent = img.getParentFile();
+		String path = parent.toString().toLowerCase(Locale.GERMAN);
+		String fname = parent.getName().toLowerCase(Locale.GERMAN);
+
+		image.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
+		image.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, fname);
+		image.put(MediaColumns.SIZE, img.length());
+
+		image.put(MediaColumns.DATA, img.getAbsolutePath());
+
+		return mContext.getContentResolver().insert(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
 	}
 
 	/**
@@ -294,7 +304,6 @@ class OrmmaAssetController extends OrmmaController {
 				try {
 					in.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				in = null;
 			}
@@ -302,7 +311,6 @@ class OrmmaAssetController extends OrmmaController {
 				try {
 					jf.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				jf = null;
 			}
@@ -481,6 +489,24 @@ class OrmmaAssetController extends OrmmaController {
 		return entity;
 	}
 
+	private InputStream getScreenshot(View view) {
+		try {
+			view.setDrawingCacheEnabled(true);
+			Bitmap screenshot = Bitmap.createBitmap(view.getDrawingCache());
+			view.setDrawingCacheEnabled(false);
+
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			screenshot.compress(Bitmap.CompressFormat.PNG, 90, out);
+
+			byte[] bs = out.toByteArray();
+			return new ByteArrayInputStream(bs);
+		} catch (Exception e) {
+			mOrmmaView
+					.injectJavaScript("window.ormmaview.fireErrorEvent(\"addAsset\",\"Ein Screenshot konnte nicht erzeugt werden.\")");
+		}
+		return null;
+	}
+
 	/**
 	 * Move a file to ad directory.
 	 * 
@@ -510,7 +536,8 @@ class OrmmaAssetController extends OrmmaController {
 	 * @param asset
 	 *            the asset
 	 */
-	@JavascriptInterface void removeAsset(String asset) {
+	@JavascriptInterface
+	void removeAsset(String asset) {
 		File dir = getAssetDir(getAssetPath(asset));
 		dir.mkdirs();
 		File file = new File(dir, getAssetName(asset));
@@ -575,35 +602,9 @@ class OrmmaAssetController extends OrmmaController {
 	public void stopAllListeners() {
 	}
 
-	private Uri addToGallery(File img, String title, String name,
-			String description, String dateTaken, String mimeType) {
-		ContentValues image = new ContentValues();
-
-		image.put(MediaColumns.TITLE, title);
-		image.put(MediaColumns.DISPLAY_NAME, name);
-		image.put(ImageColumns.DESCRIPTION, description);
-		image.put(MediaColumns.DATE_ADDED, dateTaken);
-		image.put(ImageColumns.DATE_TAKEN, dateTaken);
-		image.put(MediaColumns.DATE_MODIFIED, dateTaken);
-		image.put(MediaColumns.MIME_TYPE, mimeType);
-		image.put(ImageColumns.ORIENTATION, 0);
-
-		File parent = img.getParentFile();
-		String path = parent.toString().toLowerCase(Locale.GERMAN);
-		String fname = parent.getName().toLowerCase(Locale.GERMAN);
-
-		image.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
-		image.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, fname);
-		image.put(MediaColumns.SIZE, img.length());
-
-		image.put(MediaColumns.DATA, img.getAbsolutePath());
-
-		return mContext.getContentResolver().insert(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
-	}
-
 	@SuppressLint("NewApi")
-	@JavascriptInterface void storePicture(String url) {
+	@JavascriptInterface
+	void storePicture(String url) {
 		try {
 			HttpEntity entity = getHttpEntity(url);
 			InputStream in = entity.getContent();
@@ -735,7 +736,6 @@ class OrmmaAssetController extends OrmmaController {
 				try {
 					out.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				out = null;
 			}
@@ -805,10 +805,7 @@ class OrmmaAssetController extends OrmmaController {
 			} while (true);
 
 			String wholeHTML = fromFile.toString();
-			// SdkLog.d("html",wholeHTML);
 			boolean hasHTMLWrap = wholeHTML.indexOf("</html>") >= 0;
-
-			// TODO cannot have injection when full html
 
 			StringBuffer wholeHTMLBuffer = null;
 
@@ -817,19 +814,11 @@ class OrmmaAssetController extends OrmmaController {
 
 				int start = wholeHTMLBuffer.indexOf("/ormma_bridge.js");
 
-				if (start <= 0) {
-					// TODO error
-				}
-
 				wholeHTMLBuffer.replace(start,
 						start + "/ormma_bridge.js".length(), "file:/"
 								+ bridgePath);
 
 				start = wholeHTMLBuffer.indexOf("/ormma.js");
-
-				if (start <= 0) {
-					// TODO error
-				}
 
 				wholeHTMLBuffer.replace(start, start + "/ormma.js".length(),
 						"file:/" + ormmaPath);
@@ -878,7 +867,6 @@ class OrmmaAssetController extends OrmmaController {
 				try {
 					fromFile.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				fromFile = null;
 			}
@@ -886,7 +874,6 @@ class OrmmaAssetController extends OrmmaController {
 				try {
 					out.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 				out = null;
 			}

@@ -24,8 +24,12 @@ import de.guj.ems.mobile.sdk.util.SdkLog;
  */
 public class OrmmaLocationController extends OrmmaController {
 
-	private static final String SdkLog_TAG = "OrmmaLocationController";
+	private static String formatLocation(Location loc) {
+		return "{ lat: " + loc.getLatitude() + ", lon: " + loc.getLongitude()
+				+ ", acc: " + loc.getAccuracy() + "}";
+	}
 
+	private static final String SdkLog_TAG = "OrmmaLocationController";
 	private LocationManager mLocationManager;
 	private boolean hasPermission = false;
 	private final int INTERVAL = 1000;
@@ -33,6 +37,7 @@ public class OrmmaLocationController extends OrmmaController {
 	private LocListener mNetwork;
 	private int mLocListenerCount;
 	private boolean allowLocationServices = true;
+
 	private boolean hasLocation = false;
 
 	/**
@@ -61,6 +66,14 @@ public class OrmmaLocationController extends OrmmaController {
 	}
 
 	/**
+	 * @return - allowLocationServices
+	 */
+	@JavascriptInterface
+	boolean allowLocationServices() {
+		return allowLocationServices;
+	}
+
+	/**
 	 * @param flag
 	 *            - Should the location services be enabled / not.
 	 */
@@ -70,15 +83,13 @@ public class OrmmaLocationController extends OrmmaController {
 	}
 
 	/**
-	 * @return - allowLocationServices
+	 * Fail.
 	 */
-	@JavascriptInterface boolean allowLocationServices() {
-		return allowLocationServices;
-	}
-
-	private static String formatLocation(Location loc) {
-		return "{ lat: " + loc.getLatitude() + ", lon: " + loc.getLongitude()
-				+ ", acc: " + loc.getAccuracy() + "}";
+	@JavascriptInterface
+	public void fail() {
+		SdkLog.e(SdkLog_TAG, "Location can't be determined");
+		mOrmmaView
+				.injectJavaScript("window.ormmaview.fireErrorEvent(\"Location cannot be identified\", \"OrmmaLocationController\")");
 	}
 
 	/**
@@ -111,10 +122,16 @@ public class OrmmaLocationController extends OrmmaController {
 		}
 	}
 
+	@JavascriptInterface
+	public boolean hasLocation() {
+		return hasLocation;
+	}
+
 	/**
 	 * Start location listener.
 	 */
-	@JavascriptInterface void startLocationListener() {
+	@JavascriptInterface
+	void startLocationListener() {
 		if (mLocListenerCount == 0) {
 
 			if (mNetwork != null)
@@ -123,6 +140,24 @@ public class OrmmaLocationController extends OrmmaController {
 				mGps.start();
 		}
 		mLocListenerCount++;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ormma.controller.OrmmaController#stopAllListeners()
+	 */
+	@Override
+	public void stopAllListeners() {
+		mLocListenerCount = 0;
+		try {
+			mGps.stop();
+		} catch (Exception e) {
+		}
+		try {
+			mNetwork.stop();
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -152,39 +187,6 @@ public class OrmmaLocationController extends OrmmaController {
 				+ formatLocation(loc) + "})";
 		SdkLog.d(SdkLog_TAG, script);
 		mOrmmaView.injectJavaScript(script);
-	}
-
-	/**
-	 * Fail.
-	 */
-	@JavascriptInterface
-	public void fail() {
-		SdkLog.e(SdkLog_TAG, "Location can't be determined");
-		mOrmmaView
-				.injectJavaScript("window.ormmaview.fireErrorEvent(\"Location cannot be identified\", \"OrmmaLocationController\")");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ormma.controller.OrmmaController#stopAllListeners()
-	 */
-	@Override
-	public void stopAllListeners() {
-		mLocListenerCount = 0;
-		try {
-			mGps.stop();
-		} catch (Exception e) {
-		}
-		try {
-			mNetwork.stop();
-		} catch (Exception e) {
-		}
-	}
-
-	@JavascriptInterface
-	public boolean hasLocation() {
-		return hasLocation;
 	}
 
 }

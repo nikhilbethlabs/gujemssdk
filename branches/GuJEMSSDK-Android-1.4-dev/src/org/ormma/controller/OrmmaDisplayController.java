@@ -58,23 +58,189 @@ public class OrmmaDisplayController extends OrmmaController {
 	}
 
 	/**
-	 * Resize the view.
-	 * 
-	 * @param width
-	 *            the width
-	 * @param height
-	 *            the height
+	 * Close the view
 	 */
 	@JavascriptInterface
-	public void resize(int width, int height) {
-		SdkLog.d(SdkLog_TAG, "resize: width: " + width + " height: " + height);
-		if (((mMaxHeight > 0) && (height > mMaxHeight))
-				|| ((mMaxWidth > 0) && (width > mMaxWidth))) {
-			mOrmmaView.raiseError("Maximum size exceeded", "resize");
-		} else
-			mOrmmaView.resize((int) (mDensity * width),
-					(int) (mDensity * height));
+	public void close() {
+		SdkLog.d(SdkLog_TAG, "close");
+		mOrmmaView.close();
+	}
 
+	/**
+	 * Dimensions.
+	 * 
+	 * @return the string
+	 */
+	@JavascriptInterface
+	public String dimensions() {
+		return "{ \"top\" :" + (int) (mOrmmaView.getTop() / mDensity) + ","
+				+ "\"left\" :" + (int) (mOrmmaView.getLeft() / mDensity) + ","
+				+ "\"bottom\" :" + (int) (mOrmmaView.getBottom() / mDensity)
+				+ "," + "\"right\" :"
+				+ (int) (mOrmmaView.getRight() / mDensity) + "}";
+	}
+
+	/**
+	 * Expand the view
+	 * 
+	 * @param dimensions
+	 *            the dimensions to expand to
+	 * @param URL
+	 *            the uRL
+	 * @param properties
+	 *            the properties for the expansion
+	 */
+	@JavascriptInterface
+	public void expand(String dimensions, String URL, String properties) {
+		SdkLog.d(SdkLog_TAG, "expand: dimensions: " + dimensions + " url: "
+				+ URL + " properties: " + properties);
+		try {
+			Dimensions d = (Dimensions) getFromJSON(new JSONObject(dimensions),
+					Dimensions.class);
+			mOrmmaView.expand(
+					getDeviceDimensions(d),
+					URL,
+					(Properties) getFromJSON(new JSONObject(properties),
+							Properties.class));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Get Device dimensions
+	 * 
+	 * @param d
+	 *            - dimensions received from java script
+	 * @return
+	 */
+	private Dimensions getDeviceDimensions(Dimensions d) {
+		d.width *= mDensity;
+		d.height *= mDensity;
+		d.x *= mDensity;
+		d.y *= mDensity;
+		if (d.height < 0)
+			d.height = mOrmmaView.getHeight();
+		if (d.width < 0)
+			d.width = mOrmmaView.getWidth();
+		int loc[] = new int[2];
+		mOrmmaView.getLocationInWindow(loc);
+		if (d.x < 0)
+			d.x = loc[0];
+		if (d.y < 0) {
+			int topStuff = 0;// ((Activity)mContext).findViewById(Window.ID_ANDROID_CONTENT).getTop();
+			d.y = loc[1] - topStuff;
+		}
+		return d;
+	}
+
+	/**
+	 * Gets the max size.
+	 * 
+	 * @return the max size
+	 */
+	@JavascriptInterface
+	public String getMaxSize() {
+		if (bMaxSizeSet)
+			return "{ width: " + mMaxWidth + ", " + "height: " + mMaxHeight
+					+ "}";
+		else
+			return getScreenSize();
+	}
+
+	/**
+	 * Gets the orientation.
+	 * 
+	 * @return the orientation
+	 */
+	@JavascriptInterface
+	public int getOrientation() {
+		int orientation = mWindowManager.getDefaultDisplay().getRotation();
+		int ret = -1;
+		switch (orientation) {
+		case Surface.ROTATION_0:
+			ret = 0;
+			break;
+
+		case Surface.ROTATION_90:
+			ret = 90;
+			break;
+
+		case Surface.ROTATION_180:
+			ret = 180;
+			break;
+
+		case Surface.ROTATION_270:
+			ret = 270;
+			break;
+		}
+		SdkLog.d(SdkLog_TAG, "getOrientation: " + ret);
+		return ret;
+	}
+
+	/**
+	 * Gets the screen size.
+	 * 
+	 * @return the screen size
+	 */
+	@JavascriptInterface
+	public String getScreenSize() {
+		DisplayMetrics metrics = new DisplayMetrics();
+		mWindowManager.getDefaultDisplay().getMetrics(metrics);
+
+		return "{ width: " + (int) (metrics.widthPixels / metrics.density)
+				+ ", " + "height: "
+				+ (int) (metrics.heightPixels / metrics.density) + "}";
+	}
+
+	/**
+	 * Gets the size.
+	 * 
+	 * @return the size
+	 */
+	@JavascriptInterface
+	public String getSize() {
+		return mOrmmaView.getSize();
+	}
+
+	/**
+	 * Hide the view
+	 */
+	@JavascriptInterface
+	public void hide() {
+		SdkLog.d(SdkLog_TAG, "hide");
+		mOrmmaView.hide();
+	}
+
+	/**
+	 * Checks if is visible.
+	 * 
+	 * @return true, if is visible
+	 */
+	@JavascriptInterface
+	public boolean isVisible() {
+		return (mOrmmaView.getVisibility() == View.VISIBLE);
+	}
+
+	/**
+	 * On orientation changed.
+	 * 
+	 * @param orientation
+	 *            the orientation
+	 */
+	public void onOrientationChanged(int orientation) {
+		String script = "window.ormmaview.fireChangeEvent({ orientation: "
+				+ orientation + "});";
+		SdkLog.d(SdkLog_TAG, script);
+		mOrmmaView.injectJavaScript(script);
 	}
 
 	/**
@@ -190,9 +356,9 @@ public class OrmmaDisplayController extends OrmmaController {
 			d.width = position[2];
 			d.height = position[3];
 			d = getDeviceDimensions(d);
-		}
-		else {
-			SdkLog.d(SdkLog_TAG, "playVideo: position is " + position[0] + "x" + position[1]);
+		} else {
+			SdkLog.d(SdkLog_TAG, "playVideo: position is " + position[0] + "x"
+					+ position[1]);
 		}
 		if (!URLUtil.isValidUrl(url)) {
 			mOrmmaView.raiseError("Invalid url", "playVideo");
@@ -203,83 +369,48 @@ public class OrmmaDisplayController extends OrmmaController {
 	}
 
 	/**
-	 * Get Device dimensions
+	 * Resize the view.
 	 * 
-	 * @param d
-	 *            - dimensions received from java script
-	 * @return
+	 * @param width
+	 *            the width
+	 * @param height
+	 *            the height
 	 */
-	private Dimensions getDeviceDimensions(Dimensions d) {
-		d.width *= mDensity;
-		d.height *= mDensity;
-		d.x *= mDensity;
-		d.y *= mDensity;
-		if (d.height < 0)
-			d.height = mOrmmaView.getHeight();
-		if (d.width < 0)
-			d.width = mOrmmaView.getWidth();
-		int loc[] = new int[2];
-		mOrmmaView.getLocationInWindow(loc);
-		if (d.x < 0)
-			d.x = loc[0];
-		if (d.y < 0) {
-			int topStuff = 0;// ((Activity)mContext).findViewById(Window.ID_ANDROID_CONTENT).getTop();
-			d.y = loc[1] - topStuff;
-		}
-		return d;
+	@JavascriptInterface
+	public void resize(int width, int height) {
+		SdkLog.d(SdkLog_TAG, "resize: width: " + width + " height: " + height);
+		if (((mMaxHeight > 0) && (height > mMaxHeight))
+				|| ((mMaxWidth > 0) && (width > mMaxWidth))) {
+			mOrmmaView.raiseError("Maximum size exceeded", "resize");
+		} else
+			mOrmmaView.resize((int) (mDensity * width),
+					(int) (mDensity * height));
+
 	}
 
 	/**
-	 * Expand the view
+	 * SdkLog html.
 	 * 
-	 * @param dimensions
-	 *            the dimensions to expand to
-	 * @param URL
-	 *            the uRL
-	 * @param properties
-	 *            the properties for the expansion
+	 * @param html
+	 *            the html
 	 */
-	@JavascriptInterface
-	public void expand(String dimensions, String URL, String properties) {
-		SdkLog.d(SdkLog_TAG, "expand: dimensions: " + dimensions + " url: "
-				+ URL + " properties: " + properties);
-		try {
-			Dimensions d = (Dimensions) getFromJSON(new JSONObject(dimensions),
-					Dimensions.class);
-			mOrmmaView.expand(
-					getDeviceDimensions(d),
-					URL,
-					(Properties) getFromJSON(new JSONObject(properties),
-							Properties.class));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+	public void SdkLogHTML(String html) {
+		SdkLog.d(SdkLog_TAG, html);
 	}
 
 	/**
-	 * Close the view
+	 * Sets the max size.
+	 * 
+	 * @param w
+	 *            the w
+	 * @param h
+	 *            the h
 	 */
 	@JavascriptInterface
-	public void close() {
-		SdkLog.d(SdkLog_TAG, "close");
-		mOrmmaView.close();
-	}
-
-	/**
-	 * Hide the view
-	 */
-	@JavascriptInterface
-	public void hide() {
-		SdkLog.d(SdkLog_TAG, "hide");
-		mOrmmaView.hide();
+	void setMaxSize(int w, int h) {
+		bMaxSizeSet = true;
+		mMaxWidth = w;
+		mMaxHeight = h;
 	}
 
 	/**
@@ -291,134 +422,16 @@ public class OrmmaDisplayController extends OrmmaController {
 		mOrmmaView.show();
 	}
 
-	/**
-	 * Checks if is visible.
-	 * 
-	 * @return true, if is visible
-	 */
 	@JavascriptInterface
-	public boolean isVisible() {
-		return (mOrmmaView.getVisibility() == View.VISIBLE);
-	}
-
-	/**
-	 * Dimensions.
-	 * 
-	 * @return the string
-	 */
-	@JavascriptInterface
-	public String dimensions() {
-		return "{ \"top\" :" + (int) (mOrmmaView.getTop() / mDensity) + ","
-				+ "\"left\" :" + (int) (mOrmmaView.getLeft() / mDensity) + ","
-				+ "\"bottom\" :" + (int) (mOrmmaView.getBottom() / mDensity)
-				+ "," + "\"right\" :"
-				+ (int) (mOrmmaView.getRight() / mDensity) + "}";
-	}
-
-	/**
-	 * Gets the orientation.
-	 * 
-	 * @return the orientation
-	 */
-	@JavascriptInterface
-	public int getOrientation() {
-		int orientation = mWindowManager.getDefaultDisplay().getRotation();
-		int ret = -1;
-		switch (orientation) {
-		case Surface.ROTATION_0:
-			ret = 0;
-			break;
-
-		case Surface.ROTATION_90:
-			ret = 90;
-			break;
-
-		case Surface.ROTATION_180:
-			ret = 180;
-			break;
-
-		case Surface.ROTATION_270:
-			ret = 270;
-			break;
+	void startConfigurationListener() {
+		try {
+			if (mBroadCastReceiver == null)
+				mBroadCastReceiver = new OrmmaConfigurationBroadcastReceiver(
+						this);
+			mContext.registerReceiver(mBroadCastReceiver, new IntentFilter(
+					Intent.ACTION_CONFIGURATION_CHANGED));
+		} catch (Exception e) {
 		}
-		SdkLog.d(SdkLog_TAG, "getOrientation: " + ret);
-		return ret;
-	}
-
-	/**
-	 * Gets the screen size.
-	 * 
-	 * @return the screen size
-	 */
-	@JavascriptInterface
-	public String getScreenSize() {
-		DisplayMetrics metrics = new DisplayMetrics();
-		mWindowManager.getDefaultDisplay().getMetrics(metrics);
-
-		return "{ width: " + (int) (metrics.widthPixels / metrics.density)
-				+ ", " + "height: "
-				+ (int) (metrics.heightPixels / metrics.density) + "}";
-	}
-
-	/**
-	 * Gets the size.
-	 * 
-	 * @return the size
-	 */
-	@JavascriptInterface
-	public String getSize() {
-		return mOrmmaView.getSize();
-	}
-
-	/**
-	 * Gets the max size.
-	 * 
-	 * @return the max size
-	 */
-	@JavascriptInterface
-	public String getMaxSize() {
-		if (bMaxSizeSet)
-			return "{ width: " + mMaxWidth + ", " + "height: " + mMaxHeight
-					+ "}";
-		else
-			return getScreenSize();
-	}
-
-	/**
-	 * Sets the max size.
-	 * 
-	 * @param w
-	 *            the w
-	 * @param h
-	 *            the h
-	 */
-	@JavascriptInterface void setMaxSize(int w, int h) {
-		bMaxSizeSet = true;
-		mMaxWidth = w;
-		mMaxHeight = h;
-	}
-
-	/**
-	 * On orientation changed.
-	 * 
-	 * @param orientation
-	 *            the orientation
-	 */
-	public void onOrientationChanged(int orientation) {
-		String script = "window.ormmaview.fireChangeEvent({ orientation: "
-				+ orientation + "});";
-		SdkLog.d(SdkLog_TAG, script);
-		mOrmmaView.injectJavaScript(script);
-	}
-
-	/**
-	 * SdkLog html.
-	 * 
-	 * @param html
-	 *            the html
-	 */
-	public void SdkLogHTML(String html) {
-		SdkLog.d(SdkLog_TAG, html);
 	}
 
 	/*
@@ -432,20 +445,10 @@ public class OrmmaDisplayController extends OrmmaController {
 		mBroadCastReceiver = null;
 	}
 
-	@JavascriptInterface void stopConfigurationListener() {
+	@JavascriptInterface
+	void stopConfigurationListener() {
 		try {
 			mContext.unregisterReceiver(mBroadCastReceiver);
-		} catch (Exception e) {
-		}
-	}
-
-	@JavascriptInterface void startConfigurationListener() {
-		try {
-			if (mBroadCastReceiver == null)
-				mBroadCastReceiver = new OrmmaConfigurationBroadcastReceiver(
-						this);
-			mContext.registerReceiver(mBroadCastReceiver, new IntentFilter(
-					Intent.ACTION_CONFIGURATION_CHANGED));
 		} catch (Exception e) {
 		}
 	}

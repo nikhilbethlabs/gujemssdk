@@ -37,7 +37,8 @@ enum SdkConfig {
 
 		@Override
 		void init() {
-			SdkLog.i(TAG, (SdkUtil.isLargerThanPhone() ? "" : "Not ") + "assuming tablet or larger device.");
+			SdkLog.i(TAG, (SdkUtil.isLargerThanPhone() ? "" : "Not ")
+					+ "assuming tablet or larger device.");
 			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
 					.getResources().getString(R.string.ems_jws_root)
 					+ getRemotePath()
@@ -72,7 +73,7 @@ enum SdkConfig {
 					} catch (Exception e) {
 						SdkLog.e(TAG, "Could not set baseUrl!", e);
 					}
-					//TODO process JSON reading only once?
+					// TODO process JSON reading only once?
 					// add regular expressions for query string replacements
 					JSONArray reg = getJSON().getJSONArray(
 							SdkUtil.getContext().getString(
@@ -127,13 +128,12 @@ enum SdkConfig {
 				SdkLog.i(TAG, "Found Vodafone APN.");
 				try {
 					String vfUrl = getJSON().getString(
-							SdkUtil.getContext()
-									.getString(R.string.jsonBaseUrlVodafone));
+							SdkUtil.getContext().getString(
+									R.string.jsonBaseUrlVodafone));
 					if (vfUrl != null) {
 						settings.setBaseUrlString(vfUrl);
-					}						
-				}
-				catch (Exception e) {
+					}
+				} catch (Exception e) {
 					SdkLog.w(TAG, "Could not set base URL for Vodafone.");
 				}
 				break;
@@ -145,22 +145,19 @@ enum SdkConfig {
 									R.string.jsonBaseUrlTelefonica));
 					if (o2Url != null) {
 						settings.setBaseUrlString(o2Url);
-					}					
-				}
-				catch (Exception e) {
+					}
+				} catch (Exception e) {
 					SdkLog.w(TAG, "Could not set base URL for Telefonica.");
 				}
 				break;
 			default:
 				SdkLog.i(TAG, "Found unknown APN.");
 				try {
-					String defUrl = getJSON()
-							.getString(
-									SdkUtil.getContext().getString(
-											R.string.jsonBaseUrlDefault));
+					String defUrl = getJSON().getString(
+							SdkUtil.getContext().getString(
+									R.string.jsonBaseUrlDefault));
 					settings.setBaseUrlString(defUrl);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					SdkLog.w(TAG, "Could not set base URL.");
 				}
 			}

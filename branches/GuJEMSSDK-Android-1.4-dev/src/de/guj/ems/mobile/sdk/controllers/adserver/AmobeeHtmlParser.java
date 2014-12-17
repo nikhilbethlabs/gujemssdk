@@ -20,11 +20,10 @@ class AmobeeHtmlParser extends AdResponseParser {
 		if (tC.startsWith("http")) {
 			setClickUrl(tC.replaceAll("&amp;", "&"));
 			SdkLog.d(TAG, "Ad Click URL = " + getClickUrl());
-		}
-		else {
+		} else {
 			SdkLog.d(TAG, "No click URL found.");
 		}
-		
+
 	}
 
 	private void parseImageUrl() {

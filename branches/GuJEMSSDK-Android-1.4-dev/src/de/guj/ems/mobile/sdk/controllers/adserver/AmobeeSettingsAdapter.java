@@ -50,10 +50,97 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	private String baseUrl;
 
 	private String baseParams;
-	
+
 	private String googlePublisherId;
-	
+
 	private final static String TAG = "AmobeeSettingsAdapter";
+
+	@Override
+	public String getBaseQueryString() {
+		return baseParams;
+	}
+
+	@Override
+	public String getBaseUrlString() {
+		return this.baseUrl;
+	}
+
+	private String getBatteryStatus() {
+		return "&"
+				+ SdkUtil.getContext().getResources()
+						.getString(R.string.pBatteryLevel) + "="
+				+ SdkUtil.getBatteryLevel();
+	}
+
+	@Override
+	public String getGooglePublisherId() {
+		return this.googlePublisherId;
+	}
+
+	private String getIdfa() {
+		String idfa = SdkUtil.getIdForAdvertiser();
+		if (idfa != null) {
+			return "&"
+					+ SdkUtil.getContext().getResources()
+							.getString(R.string.pIdForAdvertiser)
+					+ "="
+					+ idfa
+					+ "&"
+					+ SdkUtil.getContext().getResources()
+							.getString(R.string.pGuJIdForAdvertiser) + "="
+					+ idfa;
+		}
+		return "";
+	}
+
+	private String getPhoneStatus() {
+		String pStr = "&"
+				+ SdkUtil.getContext().getResources()
+						.getString(R.string.pStatusParam) + "=";
+		if (SdkUtil.is3G()) {
+			pStr += STATUS_3G_ON + ",";
+		}
+		if (SdkUtil.is4G()) {
+			pStr += STATUS_4G_ON + ",";
+		}
+		if (SdkUtil.isGPSActive()) {
+			pStr += STATUS_GPS_ON + ",";
+		}
+		if (SdkUtil.isPortrait()) {
+			pStr += STATUS_PORTRAIT_MODE + ",";
+		} else {
+			pStr += STATUS_LANDSCAPE_MODE + ",";
+		}
+		if (SdkUtil.isHeadsetConnected()) {
+			pStr += STATUS_HEADSET_CONNECTED + ",";
+		}
+		if (SdkUtil.isChargerConnected()) {
+			pStr += STATUS_CHARGER_CONNECTED + ",";
+		}
+		if (SdkUtil.isWifi()) {
+			pStr += STATUS_WIFI_ON;
+		}
+		return pStr.endsWith(",") ? pStr.substring(0, pStr.length() - 1) : pStr;
+	}
+
+	@Override
+	public String getQueryString() {
+		String qStr = super.getQueryString();
+		qStr = qStr.concat(getPhoneStatus());
+		qStr = qStr.concat(getBatteryStatus());
+		qStr = qStr.concat(getIdfa());
+		return qStr;
+	}
+
+	@Override
+	public String getRequestUrl() {
+		return super.getRequestUrl() + "&t=" + System.currentTimeMillis();
+	}
+
+	@Override
+	public void setBaseUrlString(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
 
 	/**
 	 * Constructor with all attributes stored in an AttributeSet
@@ -63,6 +150,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param set
 	 *            attribute set with configuration
 	 */
+	@Override
 	public void setup(Context context, Class<?> viewClass, AttributeSet set) {
 		super.setup(context, set, viewClass);
 		this.baseParams = "?"
@@ -134,32 +222,12 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 					+ site + ", zone=" + zone + "]");
 		}
 		if (getAttrsToParams().get(SdkGlobals.EMS_GOOGLE_PUBLISHERID) != null) {
-			this.googlePublisherId = tVals.getString(AdViewConfiguration.getConfig(
-					viewClass).getGooglePublisherIdId());
+			this.googlePublisherId = tVals.getString(AdViewConfiguration
+					.getConfig(viewClass).getGooglePublisherIdId());
 			SdkLog.d(TAG, "Google backfill configuration detected. [pubid="
 					+ this.googlePublisherId + "]");
 		}
 		tVals.recycle();
-	}
-
-	private String strArrToString(String[] strs) {
-		try {
-			if (strs != null && strs.length > 0) {
-				String res = new String();
-				for (int i = 0; i < strs.length; i++) {
-					if (i > 0) {
-						res += "|" + URLEncoder.encode(strs[i], "utf-8");
-					} else {
-						res = strs[i];
-					}
-				}
-
-				return res;
-			}
-		} catch (UnsupportedEncodingException e) {
-			SdkLog.e(TAG, "Error encoding query string.", e);
-		}
-		return null;
 	}
 
 	/**
@@ -176,6 +244,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param nkws
 	 *            non-matching keywords
 	 */
+	@Override
 	public void setup(Context context, Class<?> viewClass, AttributeSet set,
 			String[] kws, String[] nkws) {
 		setup(context, viewClass, set);
@@ -208,47 +277,6 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	}
 
 	/**
-	 * Constructor with additional array of keywords and non-keywords which will
-	 * be added to the ad server requests. Use this constructor to add
-	 * parameters to the request during runtime
-	 * 
-	 * @param context
-	 *            android application context
-	 * @param savedInstance
-	 *            bundle with configuration
-	 * @param kws
-	 *            matching keywords
-	 * @param nkws
-	 *            non-matching keywords
-	 */
-	public void setup(Context context, Class<?> viewClass,
-			Bundle savedInstance, String[] kws, String[] nkws) {
-		setup(context, viewClass, savedInstance);
-		if (kws != null && kws.length > 0
-				&& getAttrsToParams().get(SdkGlobals.EMS_KEYWORDS) != null) {
-			if (savedInstance.getBoolean(SdkGlobals.EMS_ATTRIBUTE_PREFIX
-					+ SdkGlobals.EMS_KEYWORDS, false)) {
-				String kwstr = strArrToString(kws);
-				putAttrValue(SdkGlobals.EMS_KEYWORDS, kwstr);
-			} else {
-				SdkLog.d(TAG,
-						"Skipped keywords because view is not configured with ems_kw=true.");
-			}
-		}
-		if (nkws != null && nkws.length > 0
-				&& getAttrsToParams().get(SdkGlobals.EMS_NKEYWORDS) != null) {
-			if (savedInstance.getBoolean(SdkGlobals.EMS_ATTRIBUTE_PREFIX
-					+ SdkGlobals.EMS_NKEYWORDS, false)) {
-				String nkwstr = strArrToString(nkws);
-				putAttrValue(SdkGlobals.EMS_NKEYWORDS, nkwstr);
-			} else {
-				SdkLog.d(TAG,
-						"Skipped non-keywords because view is not configured with ems_nkw=true.");
-			}
-		}
-	}
-
-	/**
 	 * Constructor with configuration in bundle
 	 * 
 	 * @param context
@@ -256,6 +284,7 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 	 * @param savedInstance
 	 *            bundle with configuration
 	 */
+	@Override
 	public void setup(Context context, Class<?> viewClass, Bundle savedInstance) {
 		super.setup(context, savedInstance, viewClass);
 		this.baseParams = "?"
@@ -329,98 +358,74 @@ public final class AmobeeSettingsAdapter extends AdServerSettingsAdapter {
 					+ site + ", zone=" + zone + "]");
 		}
 		if (getAttrsToParams().get(SdkGlobals.EMS_GOOGLE_PUBLISHERID) != null) {
-			this.googlePublisherId = savedInstance.getString(SdkGlobals.EMS_GOOGLE_PUBLISHERID);
+			this.googlePublisherId = savedInstance
+					.getString(SdkGlobals.EMS_GOOGLE_PUBLISHERID);
 			SdkLog.d(TAG, "Google backfill configuration detected. [pubid="
 					+ this.googlePublisherId + "]");
-		}		
+		}
 
 	}
 
+	/**
+	 * Constructor with additional array of keywords and non-keywords which will
+	 * be added to the ad server requests. Use this constructor to add
+	 * parameters to the request during runtime
+	 * 
+	 * @param context
+	 *            android application context
+	 * @param savedInstance
+	 *            bundle with configuration
+	 * @param kws
+	 *            matching keywords
+	 * @param nkws
+	 *            non-matching keywords
+	 */
 	@Override
-	public String getBaseUrlString() {
-		return this.baseUrl;
+	public void setup(Context context, Class<?> viewClass,
+			Bundle savedInstance, String[] kws, String[] nkws) {
+		setup(context, viewClass, savedInstance);
+		if (kws != null && kws.length > 0
+				&& getAttrsToParams().get(SdkGlobals.EMS_KEYWORDS) != null) {
+			if (savedInstance.getBoolean(SdkGlobals.EMS_ATTRIBUTE_PREFIX
+					+ SdkGlobals.EMS_KEYWORDS, false)) {
+				String kwstr = strArrToString(kws);
+				putAttrValue(SdkGlobals.EMS_KEYWORDS, kwstr);
+			} else {
+				SdkLog.d(TAG,
+						"Skipped keywords because view is not configured with ems_kw=true.");
+			}
+		}
+		if (nkws != null && nkws.length > 0
+				&& getAttrsToParams().get(SdkGlobals.EMS_NKEYWORDS) != null) {
+			if (savedInstance.getBoolean(SdkGlobals.EMS_ATTRIBUTE_PREFIX
+					+ SdkGlobals.EMS_NKEYWORDS, false)) {
+				String nkwstr = strArrToString(nkws);
+				putAttrValue(SdkGlobals.EMS_NKEYWORDS, nkwstr);
+			} else {
+				SdkLog.d(TAG,
+						"Skipped non-keywords because view is not configured with ems_nkw=true.");
+			}
+		}
 	}
 
-	@Override
-	public void setBaseUrlString(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
+	private String strArrToString(String[] strs) {
+		try {
+			if (strs != null && strs.length > 0) {
+				String res = new String();
+				for (int i = 0; i < strs.length; i++) {
+					if (i > 0) {
+						res += "|" + URLEncoder.encode(strs[i], "utf-8");
+					} else {
+						res = strs[i];
+					}
+				}
 
-	@Override
-	public String getBaseQueryString() {
-		return baseParams;
-	}
-
-	@Override
-	public String getRequestUrl() {
-		return super.getRequestUrl() + "&t=" + System.currentTimeMillis();
-	}
-
-	private String getBatteryStatus() {
-		return "&"
-				+ SdkUtil.getContext().getResources()
-						.getString(R.string.pBatteryLevel) + "="
-				+ SdkUtil.getBatteryLevel();
-	}
-
-	private String getIdfa() {
-		String idfa = SdkUtil.getIdForAdvertiser();
-		if (idfa != null) {
-			return "&"
-					+ SdkUtil.getContext().getResources()
-							.getString(R.string.pIdForAdvertiser)
-					+ "="
-					+ idfa
-					+ "&"
-					+ SdkUtil.getContext().getResources()
-							.getString(R.string.pGuJIdForAdvertiser) + "="
-					+ idfa;
+				return res;
+			}
+		} catch (UnsupportedEncodingException e) {
+			SdkLog.e(TAG, "Error encoding query string.", e);
 		}
-		return "";
-	}
-
-	private String getPhoneStatus() {
-		String pStr = "&"
-				+ SdkUtil.getContext().getResources()
-						.getString(R.string.pStatusParam) + "=";
-		if (SdkUtil.is3G()) {
-			pStr += STATUS_3G_ON + ",";
-		}
-		if (SdkUtil.is4G()) {
-			pStr += STATUS_4G_ON + ",";
-		}
-		if (SdkUtil.isGPSActive()) {
-			pStr += STATUS_GPS_ON + ",";
-		}
-		if (SdkUtil.isPortrait()) {
-			pStr += STATUS_PORTRAIT_MODE + ",";
-		} else {
-			pStr += STATUS_LANDSCAPE_MODE + ",";
-		}
-		if (SdkUtil.isHeadsetConnected()) {
-			pStr += STATUS_HEADSET_CONNECTED + ",";
-		}
-		if (SdkUtil.isChargerConnected()) {
-			pStr += STATUS_CHARGER_CONNECTED + ",";
-		}
-		if (SdkUtil.isWifi()) {
-			pStr += STATUS_WIFI_ON;
-		}
-		return pStr.endsWith(",") ? pStr.substring(0, pStr.length() - 1) : pStr;
-	}
-
-	@Override
-	public String getQueryString() {
-		String qStr = super.getQueryString();
-		qStr = qStr.concat(getPhoneStatus());
-		qStr = qStr.concat(getBatteryStatus());
-		qStr = qStr.concat(getIdfa());
-		return qStr;
-	}
-
-	@Override
-	public String getGooglePublisherId() {
-		return this.googlePublisherId;		
+		return null;
 	}
 
 }

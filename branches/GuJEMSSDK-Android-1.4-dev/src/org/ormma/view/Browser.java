@@ -191,6 +191,28 @@ public class Browser extends Activity {
 
 		webview.setWebViewClient(new WebViewClient() {
 			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				ImageButton forwardButton = (ImageButton) findViewById(ForwardId);
+
+				// grey out buttons when appropriate
+				if (view.canGoForward()) {
+					forwardButton.setImageResource(R.drawable.rightarrow);
+				} else {
+					forwardButton.setImageResource(0);
+				}
+
+			}
+
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				super.onPageStarted(view, url, favicon);
+				// ImageButton forwardButton = (ImageButton)
+				// findViewById(ForwardId);
+				// forwardButton.setImageResource(R.drawable.unrightarrow);
+			};
+
+			@Override
 			public void onReceivedError(WebView view, int errorCode,
 					String description, String failingUrl) {
 				Activity a = (Activity) view.getContext();
@@ -202,11 +224,9 @@ public class Browser extends Activity {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				Uri uri = Uri.parse(url);
 				try {
-		            /*
-					if (url.startsWith("market")) {
-						return false;
-		            }
-					*/
+					/*
+					 * if (url.startsWith("market")) { return false; }
+					 */
 					if (url.startsWith("tel:")) {
 						Intent intent = new Intent(Intent.ACTION_DIAL, uri);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -246,28 +266,6 @@ public class Browser extends Activity {
 					}
 				}
 
-			};
-
-			@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				super.onPageStarted(view, url, favicon);
-				// ImageButton forwardButton = (ImageButton)
-				// findViewById(ForwardId);
-				// forwardButton.setImageResource(R.drawable.unrightarrow);
-			}
-
-			@Override
-			public void onPageFinished(WebView view, String url) {
-				super.onPageFinished(view, url);
-				ImageButton forwardButton = (ImageButton) findViewById(ForwardId);
-
-				// grey out buttons when appropriate
-				if (view.canGoForward()) {
-					forwardButton.setImageResource(R.drawable.rightarrow);
-				} else {
-					forwardButton.setImageResource(0);
-				}
-
 			}
 		});
 		setContentView(rl);
@@ -286,7 +284,6 @@ public class Browser extends Activity {
 				a.setTitle(R.string.loading);
 				a.setProgress(progress * 100);
 				if (progress == 100) {
-					// TODO Browser: custom layout / title / image?
 					a.setTitle(orgTitle);
 				}
 			}

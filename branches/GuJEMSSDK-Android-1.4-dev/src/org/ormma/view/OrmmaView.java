@@ -67,7 +67,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 import android.widget.VideoView;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
@@ -338,6 +337,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		DEFAULT, RESIZED, EXPANDED, HIDDEN, LEFT_BEHIND, OPENED;
 	}
 
+	private final static String TAG = "OrmmaView";
+
 	private static final String SdkLog_TAG = "OrmmaView";
 
 	// static for accessing xml attributes
@@ -374,7 +375,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	// layout constants
 	private static final int BACKGROUND_ID = 101;
 	private static final int PLACEHOLDER_ID = 100;
-
 
 	public static final int ORMMA_ID = 102;
 	// private constants
@@ -465,8 +465,9 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			super.onPageFinished(view, url);
 			bPageFinished = true;
 			/*
-			SdkLog.d("OrmmaView", "PAGE FINISHED - SETTING INVISIBLE....?");
-			view.setVisibility(View.INVISIBLE);*/
+			 * SdkLog.d("OrmmaView", "PAGE FINISHED - SETTING INVISIBLE....?");
+			 * view.setVisibility(View.INVISIBLE);
+			 */
 		}
 
 		@Override
@@ -739,7 +740,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	@Override
 	public void clearView() {
 		bPageFinished = false;
-		//loadUrl("about:blank");
+		// loadUrl("about:blank");
 		reset();
 	}
 
@@ -896,7 +897,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	private synchronized OrmmaPlayer getPlayer() {
 
-		if (player != null) 
+		if (player != null)
 			player.releasePlayer();
 		player = new OrmmaPlayer(getContext());
 		return player;
@@ -923,6 +924,10 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	protected TimeOutRunnable getTimeOutRunnable() {
 		return mTimeOutRunnable;
+	}
+
+	protected WebViewClient getWebViewClient() {
+		return mWebViewClient;
 	}
 
 	/**
@@ -1061,7 +1066,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			e.printStackTrace();
 		} catch (Exception e2) {
 			super.loadData(data, type, enc);
-		} 
+		}
 	}
 
 	/**
@@ -1120,7 +1125,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 					is.close();
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 			}
 			is = null;
@@ -1206,6 +1210,8 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		}
 	}
 
+	// trap keyboard state and view height/width
+
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
@@ -1216,8 +1222,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 		mUtilityController.stopAllListeners();
 		stopLoading();
 	}
-
-	// trap keyboard state and view height/width
 
 	@Override
 	public void onGlobalLayout() {
@@ -1251,11 +1255,13 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 			mViewWidth = getWidth();
 
 			// adjust image scaling
-			SdkUtil.evaluateJavascript(this, "var ix = document.images, pw = document.body.clientWidth; for (var n = 0; n < ix.length; n++) {if (ix[n].width > pw) {var s = (ix[n].width / pw);	var r = ix[n].width / ix[n].height;	ix[n].width = (ix[n].width / s); ix[n].height = ix[n].width / r;}}");
-			
+			SdkUtil.evaluateJavascript(
+					this,
+					"var ix = document.images, pw = document.body.clientWidth; for (var n = 0; n < ix.length; n++) {if (ix[n].width > pw) {var s = (ix[n].width / pw);	var r = ix[n].width / ix[n].height;	ix[n].width = (ix[n].width / s); ix[n].height = ix[n].width / r;}}");
+
 			mUtilityController.init(mDensity);
-			
-			setVisibility(View.VISIBLE);			
+
+			setVisibility(View.VISIBLE);
 		}
 
 		bKeyboardOut = state;
@@ -1327,30 +1333,11 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 				getContext().startActivity(mapIntent);
 
 			} catch (ActivityNotFoundException e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 		} else {
-			// if not fullscreen, display map in current OrmmaView space
-			if (mapAPIKey != null) {
-
-				try {
-					// TODO fix the following line gets:
-					// TODO add com.google.maps
-					// java.lang.RuntimeException: stub
-					/*
-					 * MapView mapView = new MapView(getContext(), mapAPIKey);
-					 * mapView.setBuiltInZoomControls(true);
-					 */
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				Toast.makeText(
-						getContext(),
-						"Error: no Google Maps API Key provided for embedded map",
-						Toast.LENGTH_LONG).show();
-			}
+			SdkLog.w(TAG,
+					"Non fullscreen Google Maps view not supported by SDK v1.4.");
 		}
 	}
 
@@ -1695,7 +1682,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 
 	public void setMapAPIKey(String key) {
 		this.mapAPIKey = key;
-	}
+	};
 
 	/**
 	 * Sets the max size.
@@ -1707,7 +1694,7 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public void setMaxSize(int w, int h) {
 		mUtilityController.setMaxSize(w, h);
-	};
+	}
 
 	/**
 	 * Sets the script path.
@@ -1735,10 +1722,6 @@ public class OrmmaView extends WebView implements OnGlobalLayoutListener {
 	 */
 	public void show() {
 		mHandler.sendEmptyMessage(MESSAGE_SHOW);
-	}
-
-	protected WebViewClient getWebViewClient() {
-		return mWebViewClient;
 	}
 
 }

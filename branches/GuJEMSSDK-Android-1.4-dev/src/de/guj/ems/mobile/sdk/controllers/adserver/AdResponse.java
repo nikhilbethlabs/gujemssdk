@@ -31,45 +31,13 @@ abstract class AdResponse implements IAdResponse {
 	}
 
 	@Override
-	public String getResponse() {
-		return response;
-	}
-
-	@Override
-	public boolean isImageAd() {
-		return !isRich && !isEmpty;
-	}
-
-	@Override
-	public boolean isRichAd() {
-		return isRich && !isEmpty;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return isEmpty;
-	}
-
-	@Override
-	public boolean isTest() {
-		return isTest;
-	}
-
-	@Override
 	public AdResponseParser getParser() {
 		return parser;
 	}
 
-	protected void setIsRich(boolean rich) {
-		this.isRich = rich;
-	}
-
-	protected void setParser(AdResponseParser parser) {
-		this.parser = parser;
-	}
-
-	protected void setEmpty(boolean empty) {
-		isEmpty = empty;
+	@Override
+	public String getResponse() {
+		return response;
 	}
 
 	@Override
@@ -89,5 +57,37 @@ abstract class AdResponse implements IAdResponse {
 							: "") + "</div>";
 		}
 		return htmlResponse;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return isEmpty;
+	}
+
+	@Override
+	public boolean isImageAd() {
+		return !isRich && !isEmpty;
+	}
+
+	@Override
+	public boolean isRichAd() {
+		return isRich && !isEmpty;
+	}
+
+	@Override
+	public boolean isTest() {
+		return isTest;
+	}
+
+	protected void setEmpty(boolean empty) {
+		isEmpty = empty;
+	}
+
+	protected void setIsRich(boolean rich) {
+		this.isRich = rich;
+	}
+
+	protected void setParser(AdResponseParser parser) {
+		this.parser = parser;
 	}
 }

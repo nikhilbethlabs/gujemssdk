@@ -285,6 +285,19 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		}
 	}
 
+	@Override
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+		return new ViewGroup.LayoutParams(w, h);
+	}
+
+	public AdResponseReceiver getResponseHandler() {
+		return responseReceiver;
+	}
+
 	private void handleInflatedLayout(AttributeSet attrs) {
 		int w = attrs.getAttributeIntValue(
 				"http://schemas.android.com/apk/res/android", "layout_width",
@@ -304,15 +317,6 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
-	}
-
-	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		return new ViewGroup.LayoutParams(w, h);
-	}
-
-	@Override
-	public Handler getHandler() {
-		return handler;
 	}
 
 	private AttributeSet inflate(int resId) {
@@ -379,6 +383,27 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		}
 	}
 
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		processResponse(response);
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+	}
+
+	/*
+	 * @Override protected void onDetachedFromWindow() {
+	 * super.onDetachedFromWindow(); if (this.googleDelegator != null) {
+	 * SdkLog.d(TAG, "Detach, removing Google view.");
+	 * this.googleDelegator.reset(); this.googleDelegator = null; } }
+	 */
+	@Override
+	public void onScreenStateChanged(int state) {
+		SdkLog.d(TAG, "screen state change [" + state + "]");
+	}
+
 	private void preLoadInitialize(Context context, AttributeSet set) {
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
@@ -409,70 +434,6 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 							+ settings + "</div></a>", "text/html", "utf-8");
 		}
 
-	}
-
-	@Override
-	public void reload() {
-		if (settings != null && !this.testMode) {
-			if (this.googleDelegator != null) {
-				SdkLog.d(TAG, "AdReload, removing Google view.");
-				this.googleDelegator.reset();
-				this.googleDelegator = null;
-			}
-			clearView();
-			load();
-
-		} else {
-			SdkLog.w(
-					TAG,
-					"AdView has no settings or is in test mode. ["
-							+ this.getId() + "]");
-			setVisibility(View.VISIBLE);
-		}
-	}
-
-	/**
-	 * Add a listener to the view which responds to empty ad responses
-	 * 
-	 * @param l
-	 *            Implemented listener
-	 */
-	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
-		this.settings.setOnAdEmptyListener(l);
-	}
-
-	/**
-	 * Add a listener to the view which responds to errors while requesting ads
-	 * 
-	 * @param l
-	 *            Implemented listener
-	 */
-	public void setOnAdErrorListener(IOnAdErrorListener l) {
-		this.settings.setOnAdErrorListener(l);
-	}
-
-	/**
-	 * Add a listener to the view which responds to successful ad requests
-	 * 
-	 * @param l
-	 *            Implemented listener
-	 */
-	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
-		this.settings.setOnAdSuccessListener(l);
-	}
-
-	public AdResponseReceiver getResponseHandler() {
-		return responseReceiver;
-	}
-
-	@Override
-	public void onReceiveResult(int resultCode, Bundle resultData) {
-		Throwable lastError = (Throwable) resultData.get("lastError");
-		IAdResponse response = (IAdResponse) resultData.get("response");
-		processResponse(response);
-		if (lastError != null) {
-			processError("Received error", lastError);
-		}
 	}
 
 	@Override
@@ -556,20 +517,55 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		}
 
 	}
-	/*
+
 	@Override
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		if (this.googleDelegator != null) {
-			SdkLog.d(TAG, "Detach, removing Google view.");
-			this.googleDelegator.reset();
-			this.googleDelegator = null;
+	public void reload() {
+		if (settings != null && !this.testMode) {
+			if (this.googleDelegator != null) {
+				SdkLog.d(TAG, "AdReload, removing Google view.");
+				this.googleDelegator.reset();
+				this.googleDelegator = null;
+			}
+			clearView();
+			load();
+
+		} else {
+			SdkLog.w(
+					TAG,
+					"AdView has no settings or is in test mode. ["
+							+ this.getId() + "]");
+			setVisibility(View.VISIBLE);
 		}
 	}
-	*/
-	@Override
-	public void onScreenStateChanged(int state) {
-		SdkLog.d(TAG, "screen state change [" + state + "]");
+
+	/**
+	 * Add a listener to the view which responds to empty ad responses
+	 * 
+	 * @param l
+	 *            Implemented listener
+	 */
+	public void setOnAdEmptyListener(IOnAdEmptyListener l) {
+		this.settings.setOnAdEmptyListener(l);
 	}
-	 
+
+	/**
+	 * Add a listener to the view which responds to errors while requesting ads
+	 * 
+	 * @param l
+	 *            Implemented listener
+	 */
+	public void setOnAdErrorListener(IOnAdErrorListener l) {
+		this.settings.setOnAdErrorListener(l);
+	}
+
+	/**
+	 * Add a listener to the view which responds to successful ad requests
+	 * 
+	 * @param l
+	 *            Implemented listener
+	 */
+	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
+		this.settings.setOnAdSuccessListener(l);
+	}
+
 }

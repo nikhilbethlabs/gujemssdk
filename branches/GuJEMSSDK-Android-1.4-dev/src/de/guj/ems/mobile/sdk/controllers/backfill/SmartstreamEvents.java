@@ -13,29 +13,6 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  */
 final class SmartstreamEvents {
 
-	//TODO dangerous
-	private final static String SMARTSTREAM_EVENT_URL = SdkUtil.getContext()
-			.getString(R.string.baseUrl)
-			+ "?"
-			+ SdkUtil.getContext().getString(R.string.baseParams)
-					.replaceAll("#version#", SdkUtil.VERSION_STR);
-
-	final static int SMARTSTREAM_EVENT_IMPRESSION = 15549;
-
-	final static int SMARTSTREAM_EVENT_FAIL = 15539;
-
-	final static int SMARTSTREAM_EVENT_PLAY = 15537;
-
-	final static int SMARTSTREAM_EVENT_QUARTILE_1 = 15541;
-
-	final static int SMARTSTREAM_EVENT_MID = 15543;
-
-	final static int SMARTSTREAM_EVENT_QUARTILE_3 = 15545;
-
-	final static int SMARTSTREAM_EVENT_FINISH = 15547;
-
-	private final static String TAG = "SmartstreamEvents";
-
 	/**
 	 * Perform a tracking request
 	 * 
@@ -52,7 +29,10 @@ final class SmartstreamEvents {
 	 */
 	static void processEvent(String userAgent, String adSpace,
 			String placement, int event, boolean click) {
-		String url = SMARTSTREAM_EVENT_URL;
+		String url = SdkUtil.getContext().getString(R.string.baseUrl)
+				+ "?"
+				+ SdkUtil.getContext().getString(R.string.baseParams)
+						.replaceAll("#version#", SdkUtil.VERSION_STR);
 		boolean ok = false;
 		switch (event) {
 		case SMARTSTREAM_EVENT_FAIL:
@@ -74,17 +54,32 @@ final class SmartstreamEvents {
 			url += "&t=" + System.currentTimeMillis() + "&as=" + event
 					+ "&plmid=" + placement;
 			try {
-				//TODO this should be changed?
-				SdkUtil.getContext().startService(SdkUtil.adRequest(null,new TrackingSettingsAdapter(url)));
-				//SdkUtil.adRequest(null).execute(new TrackingSettingsAdapter(url));
+				SdkUtil.getContext().startService(
+						SdkUtil.adRequest(null,
+								new TrackingSettingsAdapter(url)));
 			} catch (Exception e) {
 				SdkLog.e(TAG, "Error sending tracking event to AdServer", e);
 			}
 		} else {
-			// TODO handle video interstitial click events
 			SdkLog.w(TAG,
 					"Video Interstitial clicks are not being reported, yet.");
 		}
 	}
+
+	final static int SMARTSTREAM_EVENT_IMPRESSION = 15549;
+
+	final static int SMARTSTREAM_EVENT_FAIL = 15539;
+
+	final static int SMARTSTREAM_EVENT_PLAY = 15537;
+
+	final static int SMARTSTREAM_EVENT_QUARTILE_1 = 15541;
+
+	final static int SMARTSTREAM_EVENT_MID = 15543;
+
+	final static int SMARTSTREAM_EVENT_QUARTILE_3 = 15545;
+
+	final static int SMARTSTREAM_EVENT_FINISH = 15547;
+
+	private final static String TAG = "SmartstreamEvents";
 
 }

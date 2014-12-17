@@ -14,6 +14,24 @@ public enum NavigationStringEnum {
 	NONE("none"), CLOSE("close"), BACK("back"), FORWARD("forward"), REFRESH(
 			"refresh");
 
+	/**
+	 * From string.
+	 * 
+	 * @param text
+	 *            the text
+	 * @return the navigation string enum
+	 */
+	public static NavigationStringEnum fromString(String text) {
+		if (text != null) {
+			for (NavigationStringEnum b : NavigationStringEnum.values()) {
+				if (text.equalsIgnoreCase(b.text)) {
+					return b;
+				}
+			}
+		}
+		return null;
+	}
+
 	private String text;
 
 	/**
@@ -33,23 +51,5 @@ public enum NavigationStringEnum {
 	 */
 	public String getText() {
 		return this.text;
-	}
-
-	/**
-	 * From string.
-	 * 
-	 * @param text
-	 *            the text
-	 * @return the navigation string enum
-	 */
-	public static NavigationStringEnum fromString(String text) {
-		if (text != null) {
-			for (NavigationStringEnum b : NavigationStringEnum.values()) {
-				if (text.equalsIgnoreCase(b.text)) {
-					return b;
-				}
-			}
-		}
-		return null;
 	}
 }
