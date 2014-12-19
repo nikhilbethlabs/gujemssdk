@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ems="http://schemas.android.com/apk/res/de.guj.ems.mobile.sdk.test"
+    android:id="@+id/root0"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="10dip"
-    android:id="@+id/root0" >
+    android:orientation="vertical" >
+
+    <de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView
+        android:id="@+id/ad21772"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ems:ems_geo="false"
+        ems:ems_kw="true"
+        ems:ems_nkw="false"
+        ems:ems_uid="true"
+        ems:ems_zoneId="21772" />
+
+    <de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView
+        android:id="@+id/ad24757"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ad21772"
+        ems:ems_geo="true"
+        ems:ems_kw="true"
+        ems:ems_nkw="false"
+        ems:ems_uid="true"
+        ems:ems_zoneId="21772" /> <!--  24757 -->
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ad24757"
         android:src="@drawable/icon" />
 
     <EditText
@@ -24,38 +45,28 @@
         android:inputType="none"
         android:text="Dies ist ein Textfeld, ein Textfeld, ein Textfeld" >
     </EditText>
-<!-- 
-    <RelativeLayout
+
+    <de.guj.ems.mobile.sdk.views.GuJEMSAdView
+        android:id="@+id/ad15312"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sampleText" >
- -->
-        <de.guj.ems.mobile.sdk.views.GuJEMSAdView
-            android:id="@+id/ad15312"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#0086d5"
-            android:layout_below="@id/sampleText"
-            ems:ems_geo="false"
-            ems:ems_kw="false"
-            ems:ems_nkw="false"
-            ems:ems_uid="true"
-            ems:ems_zoneId="15312"
-            ems:ems_bfSiteId="44496"
-            ems:ems_bfZoneId="174882"
-            ems:ems_onAdError="onAdError"
-            ems:ems_onAdEmpty="onAdEmpty"
-            ems:ems_onAdSuccess="onAdSuccess" />
-   
-<!--  ems:ems_zoneId="15312" -->
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            
-            android:layout_below="@id/ad15312"
-            android:src="@drawable/de5a9f0900" />
-<!-- 
-        </RelativeLayout>
--->
+        android:layout_below="@id/sampleText"
+        android:background="#0086d5"
+        ems:ems_gPubId="ca-mb-app-pub-1155886559083108/9113911469"
+        ems:ems_geo="false"
+        ems:ems_kw="false"
+        ems:ems_nkw="false"
+        ems:ems_onAdEmpty="onAdEmpty"
+        ems:ems_onAdError="onAdError"
+        ems:ems_onAdSuccess="onAdSuccess"
+        ems:ems_uid="true"
+        ems:ems_zoneId="empty" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ad15312"
+        android:src="@drawable/de5a9f0900" />
+
 </RelativeLayout>

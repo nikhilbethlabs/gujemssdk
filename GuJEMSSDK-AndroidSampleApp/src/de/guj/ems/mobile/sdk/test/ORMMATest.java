@@ -7,7 +7,6 @@
  */
 package de.guj.ems.mobile.sdk.test;
 
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * SImple activity with a webview displaying a webpage and one adview defined in
@@ -49,7 +49,7 @@ public class ORMMATest extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (paused) {
-			((GuJEMSAdView)getActivity().findViewById(R.id.ad15308)).reload();
+			SdkUtil.reloadAds(getActivity());
 		}
 		paused = false;
 	}

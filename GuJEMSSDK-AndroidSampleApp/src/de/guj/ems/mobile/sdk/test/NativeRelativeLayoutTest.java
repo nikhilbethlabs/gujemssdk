@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * This is the same activity as RelativeLayoutTest but it uses native instead of
@@ -38,15 +38,15 @@ public class NativeRelativeLayoutTest extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (paused) {
-			((GuJEMSAdView)getActivity().findViewById(R.id.ad15312)).reload();
+			SdkUtil.reloadAds(getActivity());
 		}
 		paused = false;
 	}
-
+	
 	@Override
 	public void onPause() {
 		super.onPause();
 		paused = true;
-	}
+	}	
 
 }

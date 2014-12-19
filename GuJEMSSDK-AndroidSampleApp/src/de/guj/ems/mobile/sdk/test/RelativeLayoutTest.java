@@ -7,13 +7,12 @@
  */
 package de.guj.ems.mobile.sdk.test;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * This is an activity displaying a relative layout with one embedded adview
@@ -38,29 +37,19 @@ public class RelativeLayoutTest extends Fragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		if (paused) {
-			GuJEMSAdView adView = (GuJEMSAdView) getView().findViewById(R.id.ad15312);
-			adView.reload();
+			SdkUtil.reloadAds(getActivity());
 		}
 		paused = false;
 	}
-
+	
 	@Override
 	public void onPause() {
 		super.onPause();
 		paused = true;
-	}
+	}	
 	
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
 
 }

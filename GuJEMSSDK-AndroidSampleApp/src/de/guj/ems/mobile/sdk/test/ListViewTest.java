@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.util.SdkLog;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSListAdView;
 
 /**
@@ -139,8 +140,7 @@ public class ListViewTest extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (paused) {
-			av1.reload();
-			av2.reload();
+			SdkUtil.reloadAds(getActivity());
 		}
 		paused = false;
 	}
