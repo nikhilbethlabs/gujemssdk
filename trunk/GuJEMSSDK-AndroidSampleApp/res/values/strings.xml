@@ -3,17 +3,16 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string-array name="samples_array">
-        <item>Web ListView</item>
-        <item>Native ListView</item>
         <item>Web RelativeLayout</item>
         <item>Native RelativeLayout</item>
         <item>TableLayout</item>
+        <item>Web ListView</item>
+        <item>Native ListView</item>
         <item>Interstitial</item>
         <item>VideoInterstitial</item>
         <item>Targeting</item>
         <item>Retina</item>
         <item>ORMMA</item>
         <item>PreRoll</item>
-        <item>AdReload</item>
     </string-array>
 </resources>

@@ -1,6 +1,8 @@
 package de.guj.ems.mobile.sdk.test;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.MediaController;
@@ -29,6 +31,22 @@ public class VideoPlayer extends Activity {
 		Uri uri = Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 		videoView.setMediaController(mediaController);
 		videoView.setVideoURI(uri);
+		videoView.setOnCompletionListener(new OnCompletionListener() {
+
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				try {
+					mp.release();
+				}
+				catch (Exception e) {
+					;
+				}
+				finally {
+					finish();
+				}
+			}
+			
+		});
 		videoView.requestFocus();
 		videoView.start();
 	}

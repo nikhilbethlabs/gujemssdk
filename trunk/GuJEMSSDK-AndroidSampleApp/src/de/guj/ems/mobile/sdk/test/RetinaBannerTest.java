@@ -7,12 +7,12 @@
  */
 package de.guj.ems.mobile.sdk.test;
 
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 public class RetinaBannerTest extends Fragment {
 
@@ -28,20 +28,18 @@ public class RetinaBannerTest extends Fragment {
          return rootView;
      }
 	 
-	 @Override
-	 public void onPause() {
-		 super.onPause();
-		 paused = true;
-	 }
-	 
-	  @Override
-	  public void onResume() {
-		  super.onResume();
-		  if (paused) {
-				((GuJEMSAdView) getView().findViewById(R.id.ad15298)).reload();
-				((GuJEMSAdView) getView().findViewById(R.id.ad15298_2)).reload();
-		  }
-		  paused = false;
-	  }
-
+		@Override
+		public void onResume() {
+			super.onResume();
+			if (paused) {
+				SdkUtil.reloadAds(getActivity());
+			}
+			paused = false;
+		}
+		
+		@Override
+		public void onPause() {
+			super.onPause();
+			paused = true;
+		}	
 }

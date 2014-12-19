@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * Simple sample activity with table layout The adview is defined in
@@ -22,30 +22,31 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * 
  */
 public class TableLayoutTest extends Fragment {
-	
+
 	boolean paused;
-	
-	 @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.table_layout, container, false);
-        getActivity().setTitle("Table Layout");
-        return rootView;
-    }
-	 
-	 @Override
-	 public void onPause() {
-		 super.onPause();
-		 paused = true;
-	 }
-	 
-	  @Override
-	  public void onResume() {
-		  super.onResume();
-		  if (paused) {
-				((GuJEMSAdView) getView().findViewById(R.id.ad15302)).reload();
-		  }
-		  paused = false;
-	  }
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.table_layout, container,
+				false);
+		getActivity().setTitle("Table Layout");
+		return rootView;
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		paused = true;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (paused) {
+			SdkUtil.reloadAds(getActivity());
+		}
+		paused = false;
+	}
 
 }

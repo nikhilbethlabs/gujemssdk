@@ -7,11 +7,24 @@
     android:layout_margin="10dip"
     android:id="@+id/root0" >
 
+
+     <de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView
+	    android:id="@+id/ad21772"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="#0086d5"
+	    ems:ems_geo="false"
+	    ems:ems_kw="true"
+	    ems:ems_nkw="false"
+	    ems:ems_uid="true"
+	    ems:ems_zoneId="21772"/>    
+    
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon" />
+        android:src="@drawable/icon"
+        android:layout_below="@+id/ad21772" />
 
     <EditText
         android:id="@+id/sampleText"
@@ -45,7 +58,8 @@
             ems:ems_bfZoneId="174882"
             ems:ems_onAdError="onAdError"
             ems:ems_onAdEmpty="onAdEmpty"
-            ems:ems_onAdSuccess="onAdSuccess" />
+            ems:ems_onAdSuccess="onAdSuccess"
+            ems:ems_gPubId="ca-mb-app-pub-1155886559083108/9113911469" />
    
 <!--  ems:ems_zoneId="15312" -->
         <ImageView

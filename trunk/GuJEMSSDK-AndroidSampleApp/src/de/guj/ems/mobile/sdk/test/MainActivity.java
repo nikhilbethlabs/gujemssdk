@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
 		// Handle action buttons
 		int menuId = item.getItemId();
 		if (menuId == R.id.reload) {
-			SdkLog.d(TAG, "Should reload all ads");
+			SdkUtil.reloadAds(this);
 			return true;
 		} else if (menuId == R.id.web) {
 			Intent i = new Intent(MainActivity.this, Browser.class);
@@ -165,7 +165,7 @@ public class MainActivity extends Activity {
 		} else if (menuId == R.id.mail) {
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/html");
-			intent.putExtra(Intent.EXTRA_EMAIL, "mobile.tech@ems.guj.de");
+			intent.putExtra(Intent.EXTRA_EMAIL, new String [] {"adtechnology@ems.guj.de"});
 			intent.putExtra(Intent.EXTRA_SUBJECT,
 					"G+J EMS Sample App (Android)");
 			intent.putExtra(Intent.EXTRA_TEXT, "");

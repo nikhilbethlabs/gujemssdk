@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
+import de.guj.ems.mobile.sdk.util.SdkUtil;
 import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -55,9 +56,6 @@ public class TargetingTest extends Fragment {
 		// Adding custom parameters to the request
 		Map<String, Object> customParams = new HashMap<String, Object>();
 		// customParams.put("tm", Integer.valueOf(-11));
-
-		// Adding a keyword to the request
-		String[] kws = { "ems", "is", "super" };
 
 		// create one adview with deferred loading
 		String[] matchingKeywords = { "ems" };
@@ -136,16 +134,15 @@ public class TargetingTest extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (paused) {
-			adView.reload();
-			adView2.reload();
+			SdkUtil.reloadAds(getActivity());
 		}
 		paused = false;
 	}
-
+	
 	@Override
 	public void onPause() {
 		super.onPause();
 		paused = true;
-	}
+	}	
 
 }
