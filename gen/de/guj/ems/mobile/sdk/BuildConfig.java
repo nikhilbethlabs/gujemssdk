@@ -2,5 +2,5 @@
 package de.guj.ems.mobile.sdk;
 
 public final class BuildConfig {
-	public final static boolean DEBUG = true;
+    public final static boolean DEBUG = true;
 }

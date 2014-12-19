@@ -21,18 +21,16 @@ ad with content.
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     
-    
-    <ImageView
+    <view class="de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView$AdThumbnailView"
         android:id="@+id/adthumb"
         style="@style/GuJEMSIntegrativeAd.Thumb"
         android:layout_below="@+id/adhint"
         android:contentDescription="@string/advert"
         android:adjustViewBounds="true"
-        android:maxWidth="120dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:src="@drawable/thumb" />
+        android:src="@drawable/thumb"
+        android:paddingRight="10dp" />
 
     <EditText
         android:id="@+id/adheader"
