@@ -721,19 +721,8 @@ public class GuJEMSNativeAdView extends ImageView implements Receiver,
 				if (settings.getOnAdSuccessListener() != null) {
 					settings.getOnAdSuccessListener().onAdSuccess();
 				}
-			} /*
-			 * else { if (settings.getGooglePublisherId() != null) { try {
-			 * SdkLog.i(TAG, "Passing to Google SDK. [" +
-			 * settings.getGooglePublisherId() + "]"); new GoogleDelegator(this,
-			 * settings, getLayoutParams(), getBackground(), getId());
-			 * 
-			 * } catch (final Exception e) { if (settings.getOnAdErrorListener()
-			 * != null) { getHandler().post(new Runnable() {
-			 * 
-			 * @Override public void run() { settings.getOnAdErrorListener()
-			 * .onAdError( "Error delegating to Google", e); } }); } else {
-			 * SdkLog.e(TAG, "Error delegating to Google", e); } } }
-			 */else if (response == null || response.isEmpty()) {
+			} 
+			else if (response == null || response.isEmpty()) {
 				if (settings.getOnAdEmptyListener() != null) {
 					getHandler().post(new Runnable() {
 

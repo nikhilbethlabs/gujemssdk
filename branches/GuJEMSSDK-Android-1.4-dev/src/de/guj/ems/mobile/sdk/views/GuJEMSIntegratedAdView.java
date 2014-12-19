@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Movie;
 import android.graphics.drawable.BitmapDrawable;
@@ -60,11 +61,78 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		IAdResponseHandler, OnTouchListener {
 
-	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
-		private final WeakReference<ImageView> viewRef;
+	public static class AdThumbnailView extends ImageView {
 
-		public DownloadImageTask(ImageView view) {
-			this.viewRef = new WeakReference<ImageView>(view);
+		private final static String TAG = "AdThumbnailView";
+		
+		private Movie animatedGif;
+		
+		private long movieStart;
+		
+		private boolean play;
+		
+		public AdThumbnailView(Context context) {
+			super(context);
+		}
+
+		public AdThumbnailView(Context context, AttributeSet attrs,
+				int defStyleAttr) {
+			super(context, attrs, defStyleAttr);
+			SdkLog.d(TAG, "AdThumbnailView with style attr " + defStyleAttr);
+		}
+
+		public AdThumbnailView(Context context, AttributeSet attrs) {
+			super(context, attrs);
+		
+		}
+		
+		public void setAnimation(Movie m) {
+			this.animatedGif = m;
+			this.play = true;
+			this.movieStart = 0;
+			/*getLayoutParams().width = m.width();
+			getLayoutParams().height = m.height();*/
+		}
+
+		@Override
+		protected void onDraw(Canvas canvas) {
+			if (animatedGif != null && play) {
+				long now = android.os.SystemClock.uptimeMillis();
+				canvas.drawColor(Color.TRANSPARENT);
+				float s = (animatedGif.width() > getMeasuredWidth()
+						/ SdkUtil.getDensity()) ? (float) getMeasuredWidth()
+						/ (float) animatedGif.width()  : SdkUtil.getDensity();
+				float o = (animatedGif.width() > getMeasuredWidth()
+						/ SdkUtil.getDensity()) ? 0.0f
+						: 0.5f * ((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif
+								.width());
+				canvas.scale(s, s);
+
+				if (movieStart == 0) {
+					movieStart = now;
+				}
+
+				if (animatedGif.duration() > 0) {
+					int relTime = (int) ((now - movieStart) % animatedGif
+							.duration());
+					animatedGif.setTime(relTime);
+				}
+
+				animatedGif.draw(canvas, o, 0.0f);
+				this.invalidate();
+			}
+			else {
+				super.onDraw(canvas);
+			}
+		}		
+	}
+	
+	private class DownloadImageTask extends AsyncTask<String, Void, Object> {
+		
+		private final WeakReference<AdThumbnailView> viewRef;
+
+		public DownloadImageTask(AdThumbnailView view) {
+			this.viewRef = new WeakReference<AdThumbnailView>(view);
 		}
 
 		@Override
@@ -107,7 +175,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 
 				if (Movie.class.equals(result.getClass())) {
 					movie = (Movie) result;
-					// play = true;
 					SdkLog.d(TAG, "Animation downloaded. [" + movie.width()
 							+ "x" + movie.height() + ", " + movie.duration()
 							+ "s]");
@@ -117,12 +184,13 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 							+ "x" + bitmap.getHeight() + "]");
 				}
 
-				ImageView view = viewRef.get();
+				AdThumbnailView view = viewRef.get();
 
 				if (view != null) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 							&& movie != null) {
 						disableHWAcceleration();
+						view.setAnimation(animatedGif);
 					} else if (bitmap != null) {
 						Drawable d = view.getDrawable();
 						if (d instanceof BitmapDrawable) {
@@ -259,7 +327,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
-		this.handleInflatedLayout(attrs);
 		setOnTouchListener(this);
 
 		if (load) {
@@ -303,7 +370,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
-		this.handleInflatedLayout(attrs);
+
 		setOnTouchListener(this);
 		if (load) {
 			this.load();
@@ -356,7 +423,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
-		this.handleInflatedLayout(attrs);
+
 
 		setOnTouchListener(this);
 		if (load) {
@@ -403,7 +470,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
-		this.handleInflatedLayout(attrs);
 
 		setOnTouchListener(this);
 		if (load) {
@@ -425,27 +491,6 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 
 	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		return new ViewGroup.LayoutParams(w, h);
-	}
-
-	private void handleInflatedLayout(AttributeSet attrs) {
-		int w = attrs.getAttributeIntValue(
-				"http://schemas.android.com/apk/res/android", "layout_width",
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		int h = attrs.getAttributeIntValue(
-				"http://schemas.android.com/apk/res/android", "layout_height",
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-		String bk = attrs.getAttributeValue(
-				"http://schemas.android.com/apk/res/android", "background");
-		if (getLayoutParams() != null) {
-			getLayoutParams().width = w;
-			getLayoutParams().height = h;
-		} else {
-			setLayoutParams(getNewLayoutParams(w, h));
-		}
-
-		if (bk != null) {
-			setBackgroundColor(Color.parseColor(bk));
-		}
 	}
 
 	private AttributeSet inflate(int resId) {
@@ -644,7 +689,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 					adContent = new JSONObject(response.getResponse());
 					if (adContent.get("image") != null) {
 						new DownloadImageTask(
-								(ImageView) findViewById(R.id.adthumb))
+								(AdThumbnailView) findViewById(R.id.adthumb))
 								.execute((String) adContent.get("image"));
 					}
 					((TextView) findViewById(R.id.adheader))

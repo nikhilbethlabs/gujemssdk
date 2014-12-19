@@ -25,6 +25,7 @@ ad with content.
     <!-- style for ad image/thumb -->
     <style name="GuJEMSIntegrativeAd.Thumb" parent="GuJEMSIntegrativeAd">
         <item name="android:gravity">center</item>
+        <item name="android:maxWidth">120dp</item>
     </style>    
     <!-- style for headline -->
     <style name="GuJEMSIntegrativeAd.Header" parent="GuJEMSIntegrativeAd">
