@@ -17,7 +17,7 @@ iOS SDK change history and downloads.
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
-||v 2.1          || Backfill and IDFA targeting ||
+||v 2.1          || This version supports Google backfill and IDFA targeting ||
 || || Google Ad Exchange backfill ||
 || || IDFA targeting ||
 || || Note: This version does not support Mocean anymore ||
