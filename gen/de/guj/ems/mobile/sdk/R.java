@@ -495,6 +495,9 @@ containing a value of this type.
         public static int zOrderOnTop=0x7f010014;
     }
     public static final class bool {
+        /**  Make SDK remote cofigurable (experimental) 
+         */
+        public static int ems_remote_cfg=0x7f0a0003;
         /**  Set this to true if you want the geolocation truncated to two digits 
          */
         public static int ems_shorten_location=0x7f0a0001;

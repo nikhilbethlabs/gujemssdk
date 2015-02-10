@@ -12,4 +12,7 @@
 	<!-- The root path of the remote json config file for the SDK -->
 	<string name="ems_jws_root">http://box.emsmobile.de/jws/</string>
 	
+	<!-- Make SDK remote cofigurable (experimental) -->
+	<bool name="ems_remote_cfg">false</bool>
+	
 </resources>
