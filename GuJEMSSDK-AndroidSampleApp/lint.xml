@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <issue id="ExtraTranslation" severity="warning" />
-    <issue id="MissingTranslation" severity="warning" />
-    <issue id="NewApi">
-        <ignore path="src/de/guj/ems/mobile/sdk/test/NavigationFragment.java" />
-    </issue>
-</lint>
