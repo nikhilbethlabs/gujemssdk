@@ -65,10 +65,12 @@ public class SdkUtil {
 			IAdServerSettingsAdapter settings) {
 		Intent i = new Intent(getContext(), AmobeeAdRequest.class);
 		if (settings.doProcess()) {
+			boolean remote = SdkUtil.getContext()
+					.getResources().getBoolean(R.bool.ems_remote_cfg);
 			IAdServerSettingsAdapter nSet = SdkVariables.SINGLETON
 					.getJsonVariables().process(
-							SdkConfig.SINGLETON.getJsonConfig().process(
-									settings));
+							 remote ? SdkConfig.SINGLETON.getJsonConfig().process(
+									settings) : settings);
 			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, nSet.getRequestUrl());
 		} else {
 			i.putExtra(AdRequest.ADREQUEST_URL_EXTRA, settings.getRequestUrl());
