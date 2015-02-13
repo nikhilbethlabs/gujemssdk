@@ -707,9 +707,11 @@ public final class VideoInterstitialActivity extends Activity implements
 							sndButton.setVisibility(View.VISIBLE);
 							if (vastXml.getSkipOffset() <= 0) {
 								SdkLog.w(TAG, "skipOffset not set in VAST xml!");
+								/*
 								((ImageButton) root
 										.findViewById(R.id.emsVidIntButton))
 										.setVisibility(View.VISIBLE);
+								*/
 							}
 							SdkLog.d(TAG,
 									"Video Interstitial loaded, starting video ["
