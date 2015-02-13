@@ -568,4 +568,18 @@ public class GuJEMSAdView extends OrmmaView implements Receiver,
 		this.settings.setOnAdSuccessListener(l);
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		responseReceiver.setReceiver(null);
+		SdkLog.d(TAG, "AdView ONPAUSE");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		responseReceiver.setReceiver(this);
+		SdkLog.d(TAG, "AdView ONRESUME");
+	}
+
 }

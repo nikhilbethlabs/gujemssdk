@@ -39,17 +39,20 @@ enum SdkConfig {
 		void init() {
 			SdkLog.i(TAG, (SdkUtil.isLargerThanPhone() ? "" : "Not ")
 					+ "assuming tablet or larger device.");
-			JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
-					.getResources().getString(R.string.ems_jws_root)
-					+ getRemotePath()
-					+ SdkUtil.getContext().getString(
-							R.string.jsonRemoteConfigFileName), SdkUtil
-					.getContext().getString(R.string.jsonLocalConfigFileName),
-					SdkUtil.getConfigFileDir());
-			// feed initially available json
-			feed(fetcher.getJson());
-			// try fetching newer json
-			fetcher.execute();
+			if (SdkUtil.getContext()
+					.getResources().getBoolean(R.bool.ems_remote_cfg)) {
+				JSONFetcher fetcher = new JSONFetcher(this, SdkUtil.getContext()
+						.getResources().getString(R.string.ems_jws_root)
+						+ getRemotePath()
+						+ SdkUtil.getContext().getString(
+								R.string.jsonRemoteConfigFileName), SdkUtil
+						.getContext().getString(R.string.jsonLocalConfigFileName),
+						SdkUtil.getConfigFileDir());
+				// feed initially available json
+				feed(fetcher.getJson());
+				// try fetching newer json
+				fetcher.execute();
+			}
 		}
 
 		@Override

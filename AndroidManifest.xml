@@ -80,7 +80,7 @@
 
         <!-- IntentService which handles asynchronous ad requests -->
         <service
-            android:name="de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdRequest"
+            android:name=".controllers.adserver.AmobeeAdRequest"
             android:enabled="true"
             android:exported="false" />
 
