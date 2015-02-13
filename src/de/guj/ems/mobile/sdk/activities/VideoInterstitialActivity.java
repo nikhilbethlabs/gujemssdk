@@ -560,9 +560,7 @@ public final class VideoInterstitialActivity extends Activity implements
 											R.string.videoSkip).replaceAll("#",
 											String.valueOf(t));
 								}
-							} else {
-								close = true;
-							}
+							} 
 
 							updateView(close, text);
 							trackEvent();
