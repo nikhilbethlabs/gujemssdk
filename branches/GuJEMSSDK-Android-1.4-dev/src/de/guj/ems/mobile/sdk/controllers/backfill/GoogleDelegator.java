@@ -2,6 +2,7 @@ package de.guj.ems.mobile.sdk.controllers.backfill;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -69,10 +70,8 @@ public final class GoogleDelegator {
 			gujEmsAdView = adView;
 			viewIndex = ((ViewGroup) adView.getParent()).indexOfChild(adView);
 			this.mkGoogleRequest(settings);
-			// adView.setVisibility(View.GONE);
 			googleAdView = new AdView(adView.getContext());
-			// googleAdView.setId(adView.getId());
-			googleAdView.setAdSize(AdSize.SMART_BANNER);
+			googleAdView.setAdSize(AdSize.BANNER);
 			googleAdView.setAdUnitId(pubId);
 			// setBackground requires API level 16
 			googleAdView.setBackgroundDrawable(bk);
@@ -88,7 +87,10 @@ public final class GoogleDelegator {
 							&& settings.getOnAdErrorListener() != null) {
 						settings.getOnAdErrorListener().onAdError(
 								"Error loading Google ad [" + errorCode + "]");
-					} else {
+					} else if (errorCode != AdRequest.ERROR_CODE_NO_FILL) {
+						SdkLog.w(TAG,  "Error loading Google ad [" + errorCode + "]");
+					}
+					else {
 						SdkLog.w(TAG, "No Google ad available. [" + errorCode
 								+ "]");
 					}
@@ -113,6 +115,9 @@ public final class GoogleDelegator {
 			container.setLayoutParams(lp);
 			container.addView(adView);
 			container.addView(googleAdView);
+			container.setGravity(Gravity.CENTER);
+			
+			
 			parent.addView(container, viewIndex);
 		}
 	}

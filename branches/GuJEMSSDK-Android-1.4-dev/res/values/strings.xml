@@ -15,7 +15,7 @@
     <string name="deviceId">uid</string>
     <string name="attributePrefix">ems_</string>
     <string name="baseUrl">http://vfdeprod.amobee.com/upsteed/wap/adrequest</string>
-    <string name="baseParams">tp=4&amp;prt=G+J&amp;andsdk=#version#</string>
+    <string name="baseParams">tp=4&amp;prt=G%2BJ&amp;andsdk=#version#</string>
     <string name="amobeeAdSpace">as</string>
     <string name="amobeeUserId">uid</string>
     <string name="amobeeLatitude">lat</string>

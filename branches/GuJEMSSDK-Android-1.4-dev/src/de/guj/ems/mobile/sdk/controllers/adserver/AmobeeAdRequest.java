@@ -69,7 +69,8 @@ public class AmobeeAdRequest extends AdRequest {
 					byte[] buffer = new byte[1024];
 					int l = 0;
 					while ((l = in.read(buffer)) > 0) {
-						rBuilder.append(new String(buffer, ENCODING_STR), 0, l);
+						String s = new String(buffer, 0, l, ENCODING_STR);
+						rBuilder.append(s);
 						buffer = EMPTY_BUFFER;
 					}
 				} else if (con.getResponseCode() != 200) {
