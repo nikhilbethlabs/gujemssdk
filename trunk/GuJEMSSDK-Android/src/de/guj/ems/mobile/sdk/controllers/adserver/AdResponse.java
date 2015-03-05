@@ -1,7 +1,10 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+import de.guj.ems.mobile.sdk.util.SdkLog;
 
-public abstract class AdResponse implements IAdResponse {
+abstract class AdResponse implements IAdResponse {
+
+	private static final long serialVersionUID = -2217817771087072480L;
 
 	private String response;
 
@@ -15,13 +18,50 @@ public abstract class AdResponse implements IAdResponse {
 
 	private AdResponseParser parser;
 
-	public AdResponse(String response) {
-		this.response = response;
+	private final static String TAG = "AdResponse";
+
+	AdResponse(String resp) {
+		if (resp != null && resp.startsWith("<?xml")) {
+			SdkLog.d(TAG, "Removing xml doc declaration from response");
+			this.response = resp.replaceFirst("\\<\\?xml(.+?)\\?\\>", "")
+					.trim();
+		} else {
+			this.response = resp;
+		}
+	}
+
+	@Override
+	public AdResponseParser getParser() {
+		return parser;
 	}
 
 	@Override
 	public String getResponse() {
 		return response;
+	}
+
+	@Override
+	public String getResponseAsHTML() {
+		if (htmlResponse == null) {
+			String cUrl = getParser().getClickUrl();
+			htmlResponse = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\">"
+					+ (cUrl != null ? "<a href=\"" + getParser().getClickUrl()
+							+ "\">" : "")
+					+ "<img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\""
+					+ getParser().getImageUrl()
+					+ "\">"
+					+ (cUrl != null ? "</a>" : "")
+					+ (getParser().getTrackingImageUrl() != null ? "<img src=\""
+							+ getParser().getTrackingImageUrl()
+							+ "\" style=\"width: 0px; height: 0px; display: none;\">"
+							: "") + "</div>";
+		}
+		return htmlResponse;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return isEmpty;
 	}
 
 	@Override
@@ -35,18 +75,12 @@ public abstract class AdResponse implements IAdResponse {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return isEmpty;
-	}
-
-	@Override
 	public boolean isTest() {
 		return isTest;
 	}
 
-	@Override
-	public AdResponseParser getParser() {
-		return parser;
+	protected void setEmpty(boolean empty) {
+		isEmpty = empty;
 	}
 
 	protected void setIsRich(boolean rich) {
@@ -55,27 +89,5 @@ public abstract class AdResponse implements IAdResponse {
 
 	protected void setParser(AdResponseParser parser) {
 		this.parser = parser;
-	}
-
-	protected void setEmpty(boolean empty) {
-		isEmpty = empty;
-	}
-
-	@Override
-	public String getResponseAsHTML() {
-		if (htmlResponse == null) {
-			htmlResponse = "<div style=\"width: 100%; margin: 0; padding: 0;\" id=\"ems_ad_container\">"
-					+ "<a href=\""
-					+ getParser().getClickUrl()
-					+ "\">"
-					+ "<img onload=\"document.getElementById('ems_ad_container').style.height=this.height+'px'\" src=\""
-					+ getParser().getImageUrl()
-					+ "\"></a>"
-					+ (getParser().getTrackingImageUrl() != null ? "<img src=\""
-							+ getParser().getTrackingImageUrl()
-							+ "\" style=\"width: 0px; height: 0px; display: none;\">"
-							: "") + "</div>";
-		}
-		return htmlResponse;
 	}
 }

@@ -1,8 +1,12 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
-import java.io.Serializable;
 import java.util.Map;
 
+import org.json.JSONArray;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.AttributeSet;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdErrorListener;
 import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
@@ -15,20 +19,78 @@ import de.guj.ems.mobile.sdk.controllers.backfill.BackfillDelegator;
  * @author stein16
  * 
  */
-public interface IAdServerSettingsAdapter extends Serializable {
+public interface IAdServerSettingsAdapter {
 
 	/**
+	 * Add a map of custom params to the request. Only String, Integer, Double
+	 * allowed.
 	 * 
-	 * @return the adserver's base url
+	 * @param params
+	 *            Map of parameter names and values
 	 */
-	public String getBaseUrlString();
+	public void addCustomParams(Map<String, ?> params);
 
 	/**
-	 * Returns the final request URL
+	 * Add any custom parameter to the ad request
 	 * 
-	 * @return the string of the final request URL
+	 * @warn this may override existing parameters so use with caution
+	 * @param param
+	 *            name of http parameter
+	 * @param value
+	 *            value of http parameter
 	 */
-	public String getRequestUrl();
+	public void addCustomRequestParameter(String param, double value);
+
+	/**
+	 * Add any custom parameter to the ad request
+	 * 
+	 * @warn this may override existing parameters so use with caution
+	 * @param param
+	 *            name of http parameter
+	 * @param value
+	 *            value of http parameter
+	 */
+	public void addCustomRequestParameter(String param, int value);
+
+	/**
+	 * Add any custom parameter to the ad request
+	 * 
+	 * @warn this may override existing parameters so use with caution
+	 * @param param
+	 *            name of http parameter
+	 * @param value
+	 *            value of http parameter
+	 */
+	public void addCustomRequestParameter(String param, String value);
+
+	/**
+	 * Add a predefined string which is appended to the servlet url
+	 * 
+	 * @param str
+	 *            query string extension
+	 */
+	public void addQueryAppendix(String str);
+
+	/**
+	 * Add an array of regular expressions which should be applied to the
+	 * resulting ad request
+	 * 
+	 * @param regexp
+	 *            json array with regular expressions
+	 */
+	public void addRegexp(JSONArray regexp);
+
+	/**
+	 * Mark settings as processed
+	 */
+	public void dontProcess();
+
+	/**
+	 * Determine whether the settings may be overridden by local json config
+	 * 
+	 * @return
+	 */
+	public boolean doProcess();
 
 	/**
 	 * Returns the base query string, i.e. with constant values already mapped
@@ -38,11 +100,81 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	public String getBaseQueryString();
 
 	/**
+	 * 
+	 * @return the adserver's base url
+	 */
+	public String getBaseUrlString();
+
+	/**
+	 * Returns a hashed deviceId if available
+	 * 
+	 * @return hashed deviceId
+	 */
+	public String getCookieRepl();
+
+	/**
+	 * Returns data for a direct, sdk controlled backfill
+	 * 
+	 * @return backfill data
+	 */
+	public BackfillDelegator.BackfillData getDirectBackfill();
+
+	/**
+	 * From v1.4 on each ad view can have a Google publisher id for backfill
+	 * with admob/ad exchange and the like
+	 * 
+	 * @return Google publisher ID as string
+	 */
+	public String getGooglePublisherId();
+
+	/**
+	 * Returns a listener object if defined
+	 * 
+	 * @return listener which reacts to non existant ad
+	 */
+	public IOnAdEmptyListener getOnAdEmptyListener();
+
+	/**
+	 * Returns a listener object if defined
+	 * 
+	 * @return listener which reacts to ad server errors
+	 */
+	public IOnAdErrorListener getOnAdErrorListener();
+
+	/**
+	 * Returns a listener object if defined
+	 * 
+	 * @return listener which reacts to successfully loaded ad
+	 */
+	public IOnAdSuccessListener getOnAdSuccessListener();
+
+	/**
+	 * Retrieve a map of all actual request params defined in the settings
+	 * 
+	 * @return map with all configured param values
+	 */
+	public Map<String, String> getParams();
+
+	/**
+	 * Returns an appending string to the query string
+	 * 
+	 * @return query string extension
+	 */
+	public String getQueryAppendix();
+
+	/**
 	 * The final query string
 	 * 
 	 * @return querystring constructed from settings and available data
 	 */
 	public String getQueryString();
+
+	/**
+	 * Returns the final request URL
+	 * 
+	 * @return the string of the final request URL
+	 */
+	public String getRequestUrl();
 
 	/**
 	 * Maps a settings attribute to an adserver parameter. For example the
@@ -67,74 +199,20 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	public void putAttrValue(String attr, String value);
 
 	/**
-	 * Returns a hashed deviceId if available
+	 * Override the initial base url for the request
 	 * 
-	 * @return hashed deviceId
+	 * @param baseUrl
+	 *            new base url for ad request servlet
 	 */
-	public String getCookieRepl();
+	public void setBaseUrlString(String baseUrl);
 
 	/**
-	 * Add any custom parameter to the ad request
+	 * Set data for a direct, sdk controlled backfill
 	 * 
-	 * @warn this may override existing parameters so use with caution
-	 * @param param
-	 *            name of http parameter
-	 * @param value
-	 *            value of http parameter
+	 * @param directBackfill
+	 *            backfill data
 	 */
-	public void addCustomRequestParameter(String param, String value);
-
-	/**
-	 * Add any custom parameter to the ad request
-	 * 
-	 * @warn this may override existing parameters so use with caution
-	 * @param param
-	 *            name of http parameter
-	 * @param value
-	 *            value of http parameter
-	 */
-	public void addCustomRequestParameter(String param, int value);
-
-	/**
-	 * Add any custom parameter to the ad request
-	 * 
-	 * @warn this may override existing parameters so use with caution
-	 * @param param
-	 *            name of http parameter
-	 * @param value
-	 *            value of http parameter
-	 */
-	public void addCustomRequestParameter(String param, double value);
-
-	/**
-	 * Returns a listener object if defined
-	 * 
-	 * @return listener which reacts to successfully loaded ad
-	 */
-	public IOnAdSuccessListener getOnAdSuccessListener();
-
-	/**
-	 * Returns a listener object if defined
-	 * 
-	 * @return listener which reacts to non existant ad
-	 */
-	public IOnAdEmptyListener getOnAdEmptyListener();
-
-	/**
-	 * Returns a listener object if defined
-	 * 
-	 * @return listener which reacts to ad server errors
-	 */
-	public IOnAdErrorListener getOnAdErrorListener();
-
-	/**
-	 * Override the listener class
-	 * 
-	 * @param l
-	 *            implementation of listener which reacts to successful ad
-	 *            loading
-	 */
-	public void setOnAdSuccessListener(IOnAdSuccessListener l);
+	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill);
 
 	/**
 	 * Override the listener class
@@ -153,40 +231,70 @@ public interface IAdServerSettingsAdapter extends Serializable {
 	public void setOnAdErrorListener(IOnAdErrorListener l);
 
 	/**
-	 * Returns data for a direct, sdk controlled backfill
+	 * Override the listener class
 	 * 
-	 * @return backfill data
+	 * @param l
+	 *            implementation of listener which reacts to successful ad
+	 *            loading
 	 */
-	public BackfillDelegator.BackfillData getDirectBackfill();
+	public void setOnAdSuccessListener(IOnAdSuccessListener l);
 
 	/**
-	 * Set data for a direct, sdk controlled backfill
+	 * Initialize view type and declaration specific settings
 	 * 
-	 * @param directBackfill
-	 *            backfill data
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param set
+	 *            attributes from xml
 	 */
-	public void setDirectBackfill(BackfillDelegator.BackfillData directBackfill);
+	public void setup(Context context, Class<?> viewClass, AttributeSet set);
 
 	/**
-	 * Name of a header the HTTP response must contain. This is to prevent
-	 * manipulated host files which present a security hole.
+	 * Initialize view type and declaration specific settings with additional
+	 * keywords for view
 	 * 
-	 * @return Name of the security header name
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param set
+	 *            attributes from xml
+	 * @param kws
+	 *            positive keywords
+	 * @param nkws
+	 *            negative keywords
 	 */
-	public String getSecurityHeaderName();
+	public void setup(Context context, Class<?> viewClass, AttributeSet set,
+			String[] kws, String[] nkws);
 
 	/**
-	 * Hash of value the security header name must contain. This is to prevent
-	 * manipulated host files which present a security hole.
+	 * Initialize view type and declaration specific settings
 	 * 
-	 * @return Hashed value of the security header
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param savedInstance
+	 *            saved attributes
 	 */
-	public int getSecurityHeaderValueHash();
-	
-	/**
-	 * Add a map of custom params to the request. Only String, Integer, Double allowed.
-	 * @param params Map of parameter names and values
-	 */
-	public void addCustomParams(Map<String, ?> params);
+	public void setup(Context context, Class<?> viewClass, Bundle savedInstance);
 
+	/**
+	 * Initialize view type and declaration specific settings
+	 * 
+	 * @param context
+	 *            app context
+	 * @param viewClass
+	 *            type of ad view
+	 * @param savedInstance
+	 *            saved attributes
+	 * @param kws
+	 *            positive keywords
+	 * @param nkws
+	 *            negative keywords
+	 */
+	public void setup(Context context, Class<?> viewClass,
+			Bundle savedInstance, String[] kws, String[] nkws);
 }

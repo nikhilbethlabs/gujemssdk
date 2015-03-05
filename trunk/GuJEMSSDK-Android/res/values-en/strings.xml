@@ -5,4 +5,5 @@
     <string name="videoSkip">-Ad- Skippable in #s</string> 
     <string name="videoPreload">-Ad- Please be patient&#8230;</string>
     <string name="videoRunning">-Ad- Click video for more</string>
+    <string name="advert">Sponsored</string>
 </resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- All styles for this layout are defined in R.values.integrated_ad_style. Edit
+the styles file and this layout at free will. Please note that the four elements in
+this layout, hint, thumb, headline and kicker are mandatory for the SDK to fill the
+ad with content.
+
+** DO NOT REMOVE/RENAME ANY OF THE NODES. FEEL FREE TO REPOSITION THEM **
+
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/integratedad"
+    style="@style/GuJEMSIntegrativeAd"
+    android:theme="@style/GuJEMSIntegrativeAd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <EditText
+        android:id="@+id/adhint"
+        android:text="@string/advert"
+        style="@style/GuJEMSIntegrativeAd.Hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <view class="de.guj.ems.mobile.sdk.views.GuJEMSIntegratedAdView$AdThumbnailView"
+        android:id="@+id/adthumb"
+        style="@style/GuJEMSIntegrativeAd.Thumb"
+        android:layout_below="@+id/adhint"
+        android:contentDescription="@string/advert"
+        android:adjustViewBounds="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/thumb"
+        android:paddingRight="10dp" />
+
+    <EditText
+        android:id="@+id/adheader"
+        style="@style/GuJEMSIntegrativeAd.Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/adthumb"
+        android:layout_toRightOf="@+id/adthumb"
+        android:selectAllOnFocus="false"
+        android:text="@string/sampleHeader">
+
+	</EditText>
+    
+    <EditText
+        android:id="@+id/adkicker"
+        style="@style/GuJEMSIntegrativeAd.Kicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adheader"
+        android:layout_toRightOf="@+id/adthumb"
+        android:selectAllOnFocus="false"
+        android:text="@string/sampleKicker" >
+
+    </EditText>
+
+</RelativeLayout>

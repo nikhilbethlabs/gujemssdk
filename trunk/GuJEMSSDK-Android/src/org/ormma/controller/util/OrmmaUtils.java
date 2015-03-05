@@ -12,9 +12,7 @@ import android.os.Bundle;
 
 public class OrmmaUtils {
 
-	private static final String CHAR_SET = "ISO-8859-1";
-
-	static public String byteToHex(byte b) {
+	static private String byteToHex(byte b) {
 		char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 				'a', 'b', 'c', 'd', 'e', 'f' };
 		char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
@@ -59,5 +57,7 @@ public class OrmmaUtils {
 	public static String getData(String key, Bundle data) {
 		return data.getString(key);
 	}
+
+	private static final String CHAR_SET = "ISO-8859-1";
 
 }

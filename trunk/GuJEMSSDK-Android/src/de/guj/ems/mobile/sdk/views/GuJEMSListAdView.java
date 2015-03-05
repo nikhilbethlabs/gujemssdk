@@ -18,6 +18,8 @@ import android.widget.AbsListView;
  */
 public class GuJEMSListAdView extends GuJEMSAdView {
 
+	private static final long serialVersionUID = -4516597400574035993L;
+
 	public GuJEMSListAdView(Context context) {
 		super(context);
 	}
@@ -26,8 +28,16 @@ public class GuJEMSListAdView extends GuJEMSAdView {
 		super(context, set);
 	}
 
+	public GuJEMSListAdView(Context context, AttributeSet set, boolean load) {
+		super(context, set, load);
+	}
+
 	public GuJEMSListAdView(Context context, int resId) {
 		super(context, resId);
+	}
+
+	public GuJEMSListAdView(Context context, int resId, boolean load) {
+		super(context, resId, load);
 	}
 
 	public GuJEMSListAdView(Context context, Map<String, ?> customParams,
@@ -36,31 +46,23 @@ public class GuJEMSListAdView extends GuJEMSAdView {
 	}
 
 	public GuJEMSListAdView(Context context, Map<String, ?> customParams,
-			String[] kws, String[] nkws, int resId) {
-		super(context, customParams, kws, nkws, resId);
-	}
-
-	public GuJEMSListAdView(Context context, String[] kws, String[] nkws,
-			int resId) {
-		super(context, kws, nkws, resId);
-	}
-
-	public GuJEMSListAdView(Context context, AttributeSet set, boolean load) {
-		super(context, set, load);
-	}
-
-	public GuJEMSListAdView(Context context, int resId, boolean load) {
-		super(context, resId, load);
-	}
-
-	public GuJEMSListAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context, customParams, resId, load);
 	}
 
 	public GuJEMSListAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String[] nkws, int resId) {
+		super(context, customParams, kws, nkws, resId);
+	}
+
+	public GuJEMSListAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String[] nkws, int resId, boolean load) {
 		super(context, customParams, kws, nkws, resId, load);
+	}
+
+	public GuJEMSListAdView(Context context, String[] kws, String[] nkws,
+			int resId) {
+		super(context, kws, nkws, resId);
 	}
 
 	public GuJEMSListAdView(Context context, String[] kws, String[] nkws,
@@ -71,7 +73,7 @@ public class GuJEMSListAdView extends GuJEMSAdView {
 	@Override
 	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
 		// SdkLog.i(TAG, getParent().getClass() + " is the parent view class");
-		return new AbsListView.LayoutParams(w, 1);
+		return new AbsListView.LayoutParams(w, h);
 	}
 
 }

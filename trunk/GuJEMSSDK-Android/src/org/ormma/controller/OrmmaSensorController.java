@@ -33,64 +33,46 @@ public class OrmmaSensorController extends OrmmaController {
 	 * @param context
 	 *            the context
 	 */
-	public OrmmaSensorController(OrmmaView adView, Context context) {
+	OrmmaSensorController(OrmmaView adView, Context context) {
 		super(adView, context);
 		mAccel = new AccelListener(context, this);
 	}
 
 	/**
-	 * Start tilt listener.
+	 * Gets the heading.
+	 * 
+	 * @return the heading
 	 */
 	@JavascriptInterface
-	public void startTiltListener() {
-		mAccel.startTrackingTilt();
+	public float getHeading() {
+		SdkLog.d(SdkLog_TAG, "getHeading: " + mAccel.getHeading());
+		return mAccel.getHeading();
 	}
 
 	/**
-	 * Start shake listener.
+	 * Gets the tilt.
+	 * 
+	 * @return the tilt
 	 */
 	@JavascriptInterface
-	public void startShakeListener() {
-		mAccel.startTrackingShake();
+	public String getTilt() {
+		String tilt = "{ x : \"" + mLastX + "\", y : \"" + mLastY
+				+ "\", z : \"" + mLastZ + "\"}";
+		SdkLog.d(SdkLog_TAG, "getTilt: " + tilt);
+		return tilt;
 	}
 
 	/**
-	 * Stop tilt listener.
+	 * On heading change.
+	 * 
+	 * @param f
+	 *            the f
 	 */
-	@JavascriptInterface
-	public void stopTiltListener() {
-		mAccel.stopTrackingTilt();
-	}
-
-	/**
-	 * Stop shake listener.
-	 */
-	@JavascriptInterface
-	public void stopShakeListener() {
-		mAccel.stopTrackingShake();
-	}
-
-	/**
-	 * Start heading listener.
-	 */
-	@JavascriptInterface
-	public void startHeadingListener() {
-		mAccel.startTrackingHeading();
-	}
-
-	/**
-	 * Stop heading listener.
-	 */
-	@JavascriptInterface
-	public void stopHeadingListener() {
-		mAccel.stopTrackingHeading();
-	}
-
-	/**
-	 * Stop.
-	 */
-	@JavascriptInterface
-	void stop() {
+	public void onHeadingChange(float f) {
+		String script = "window.ormmaview.fireChangeEvent({ heading: "
+				+ (int) (f * (180 / Math.PI)) + "});";
+		SdkLog.d(SdkLog_TAG, script);
+		mOrmmaView.injectJavaScript(script);
 	}
 
 	/**
@@ -123,40 +105,34 @@ public class OrmmaSensorController extends OrmmaController {
 	}
 
 	/**
-	 * Gets the tilt.
-	 * 
-	 * @return the tilt
+	 * Start heading listener.
 	 */
 	@JavascriptInterface
-	public String getTilt() {
-		String tilt = "{ x : \"" + mLastX + "\", y : \"" + mLastY
-				+ "\", z : \"" + mLastZ + "\"}";
-		SdkLog.d(SdkLog_TAG, "getTilt: " + tilt);
-		return tilt;
+	void startHeadingListener() {
+		mAccel.startTrackingHeading();
 	}
 
 	/**
-	 * On heading change.
-	 * 
-	 * @param f
-	 *            the f
+	 * Start shake listener.
 	 */
-	public void onHeadingChange(float f) {
-		String script = "window.ormmaview.fireChangeEvent({ heading: "
-				+ (int) (f * (180 / Math.PI)) + "});";
-		SdkLog.d(SdkLog_TAG, script);
-		mOrmmaView.injectJavaScript(script);
+	@JavascriptInterface
+	void startShakeListener() {
+		mAccel.startTrackingShake();
 	}
 
 	/**
-	 * Gets the heading.
-	 * 
-	 * @return the heading
+	 * Start tilt listener.
 	 */
 	@JavascriptInterface
-	public float getHeading() {
-		SdkLog.d(SdkLog_TAG, "getHeading: " + mAccel.getHeading());
-		return mAccel.getHeading();
+	void startTiltListener() {
+		mAccel.startTrackingTilt();
+	}
+
+	/**
+	 * Stop.
+	 */
+	@JavascriptInterface
+	void stop() {
 	}
 
 	/*
@@ -167,5 +143,29 @@ public class OrmmaSensorController extends OrmmaController {
 	@Override
 	public void stopAllListeners() {
 		mAccel.stopAllListeners();
+	}
+
+	/**
+	 * Stop heading listener.
+	 */
+	@JavascriptInterface
+	void stopHeadingListener() {
+		mAccel.stopTrackingHeading();
+	}
+
+	/**
+	 * Stop shake listener.
+	 */
+	@JavascriptInterface
+	void stopShakeListener() {
+		mAccel.stopTrackingShake();
+	}
+
+	/**
+	 * Stop tilt listener.
+	 */
+	@JavascriptInterface
+	void stopTiltListener() {
+		mAccel.stopTrackingTilt();
 	}
 }

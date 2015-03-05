@@ -11,15 +11,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.gms.ads.AdView;
-
 import de.guj.ems.mobile.sdk.R;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.EMSInterface;
 import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
 import de.guj.ems.mobile.sdk.controllers.IOnAdEmptyListener;
@@ -28,16 +28,15 @@ import de.guj.ems.mobile.sdk.controllers.IOnAdSuccessListener;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdServerSettingsAdapter;
-import de.guj.ems.mobile.sdk.controllers.adserver.OptimobileAdResponse;
-import de.guj.ems.mobile.sdk.controllers.backfill.OptimobileDelegator;
+import de.guj.ems.mobile.sdk.controllers.backfill.GoogleDelegator;
 import de.guj.ems.mobile.sdk.util.SdkLog;
 import de.guj.ems.mobile.sdk.util.SdkUtil;
 
 /**
  * The webview uses as container to display an ad. Derived from the ORMMA
- * reference implementaton of an ad view container.
+ * reference implementation of an ad view container.
  * 
- * This class adds folowing capabilites to the reference implementation: -
+ * This class adds following capabilities to the reference implementation: -
  * loading data with an asynchronous HTTP request - initializing the view from
  * XML by passing a resource ID - adding custom view-specific parameters to a
  * placement's ad request (runtime) - adding matching or non-matching keywords
@@ -50,15 +49,22 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
  * @author stein16
  * 
  */
-public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
+public class GuJEMSAdView extends OrmmaView implements Receiver,
+		IAdResponseHandler {
 
-	private Handler handler = new Handler();
+	private static final long serialVersionUID = 5204690997145950249L;
+
+	private transient Handler handler = new Handler();
 
 	private boolean testMode = false;
 
-	private IAdServerSettingsAdapter settings;
+	private transient IAdServerSettingsAdapter settings;
 
 	private final String TAG = "GuJEMSAdView";
+
+	private GoogleDelegator googleDelegator;
+
+	private AdResponseReceiver responseReceiver;
 
 	/**
 	 * Initialize view without configuration
@@ -68,7 +74,10 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 */
 	public GuJEMSAdView(Context context) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, null);
+
 	}
 
 	/**
@@ -96,6 +105,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 */
 	public GuJEMSAdView(Context context, AttributeSet set, boolean load) {
 		super(context, set);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		this.preLoadInitialize(context, set);
 		if (load) {
 			this.load();
@@ -127,6 +138,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 */
 	public GuJEMSAdView(Context context, int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.handleInflatedLayout(attrs);
@@ -165,6 +178,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public GuJEMSAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs);
 		this.settings.addCustomParams(customParams);
@@ -215,6 +230,8 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public GuJEMSAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String nkws[], int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.settings.addCustomParams(customParams);
@@ -258,12 +275,27 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public GuJEMSAdView(Context context, String[] kws, String nkws[],
 			int resId, boolean load) {
 		super(context);
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 		AttributeSet attrs = inflate(resId);
 		this.preLoadInitialize(context, attrs, kws, nkws);
 		this.handleInflatedLayout(attrs);
 		if (load) {
 			this.load();
 		}
+	}
+
+	@Override
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
+		return new ViewGroup.LayoutParams(w, h);
+	}
+
+	public AdResponseReceiver getResponseHandler() {
+		return responseReceiver;
 	}
 
 	private void handleInflatedLayout(AttributeSet attrs) {
@@ -285,15 +317,6 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		if (bk != null) {
 			setBackgroundColor(Color.parseColor(bk));
 		}
-	}
-
-	public ViewGroup.LayoutParams getNewLayoutParams(int w, int h) {
-		return new ViewGroup.LayoutParams(w, h);
-	}
-
-	@Override
-	public Handler getHandler() {
-		return handler;
 	}
 
 	private AttributeSet inflate(int resId) {
@@ -333,20 +356,19 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	public final void load() {
 		if (settings != null && !this.testMode) {
 
-			// Construct request URL
-			final String url = this.settings.getRequestUrl();
+			// Start request if online
 			if (SdkUtil.isOnline()) {
 
 				SdkLog.i(TAG, "START async. AdServer request [" + this.getId()
 						+ "]");
-				SdkUtil.adRequest(this).execute(
-						new String[] { url });
+				getContext().startService(
+						SdkUtil.adRequest(responseReceiver, settings));
+
 			}
 			// Do nothing if offline
 			else {
 				SdkLog.i(TAG, "No network connection - not requesting ads.");
 				setVisibility(GONE);
-				processError("No network connection.");
 			}
 		} else {
 			SdkLog.w(TAG, "AdView has no settings or is in test mode.");
@@ -361,53 +383,75 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		}
 	}
 
-	private void preLoadInitialize(Context context, AttributeSet set) {
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		processResponse(response);
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+	}
 
+	/*
+	 * @Override protected void onDetachedFromWindow() {
+	 * super.onDetachedFromWindow(); if (this.googleDelegator != null) {
+	 * SdkLog.d(TAG, "Detach, removing Google view.");
+	 * this.googleDelegator.reset(); this.googleDelegator = null; } }
+	 */
+	@Override
+	public void onScreenStateChanged(int state) {
+		SdkLog.d(TAG, "screen state change [" + state + "]");
+	}
+
+	private void preLoadInitialize(Context context, AttributeSet set) {
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
-
 		if (set != null && !isInEditMode()) {
-			this.settings = new AmobeeSettingsAdapter(context, getClass(), set);
+			this.settings = new AmobeeSettingsAdapter();
+			this.settings.setup(context, getClass(), set);
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>", "text/html", "utf-8");
+					"<a href=\"http://m.ems.guj.de\"><div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div></a>", "text/html", "utf-8");
 		}
 
 	}
 
 	private void preLoadInitialize(Context context, AttributeSet set,
 			String[] kws, String[] nkws) {
-
 		this.testMode = getResources().getBoolean(R.bool.ems_test_mode);
 		this.addJavascriptInterface(EMSInterface.getInstance(), "emsmobile");
 
 		if (set != null) {
-			this.settings = new AmobeeSettingsAdapter(context, getClass(), set,
-					kws, nkws);
+			this.settings = new AmobeeSettingsAdapter();
+			settings.setup(context, getClass(), set, kws, nkws);
 		}
 		if (isInEditMode() || this.testMode) {
 			loadData(
-					"<div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
-							+ settings + "</div>", "text/html", "utf-8");
+					"<a href=\"http://m.ems.guj.de\"><div style=\"font-size: 0.75em; width: 300px; height: 50px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div></a>", "text/html", "utf-8");
 		}
 
 	}
 
 	@Override
 	public void processError(String msg) {
+
 		SdkLog.w(
 				TAG,
 				"The following error occured and is being handled by the appropriate listener if available.");
 		SdkLog.e(TAG, msg);
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg);
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg);
 		}
+
 	}
 
 	@Override
 	public void processError(String msg, Throwable t) {
+
 		SdkLog.w(
 				TAG,
 				"The following error occured and is being handled by the appropriate listener if available.");
@@ -416,13 +460,15 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 		} else {
 			SdkLog.e(TAG, "Exception: ", t);
 		}
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg, t);
+		if (settings.getOnAdErrorListener() != null) {
+			settings.getOnAdErrorListener().onAdError(msg, t);
 		}
+
 	}
 
 	@Override
 	public final void processResponse(IAdResponse response) {
+
 		try {
 			if (response != null && !response.isEmpty()) {
 				setTimeoutRunnable(new TimeOutRunnable());
@@ -430,58 +476,57 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 						response.getParser() != null
 								&& response.getParser().isXml() ? response.getResponseAsHTML()
 								: response.getResponse(), "text/html", "utf-8");
-				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
-				if (this.settings.getOnAdSuccessListener() != null) {
-					this.settings.getOnAdSuccessListener().onAdSuccess();
+				SdkLog.i(TAG, "Ad found and loading... [" + getId() + "]");
+				if (settings.getOnAdSuccessListener() != null) {
+					settings.getOnAdSuccessListener().onAdSuccess();
+				}
+				if (getVisibility() == View.GONE) {
+					setVisibility(View.VISIBLE);
 				}
 			} else {
-				setVisibility(GONE);
-				if (this.settings.getDirectBackfill() != null
-						&& response != null
-						&& !OptimobileAdResponse.class.equals(response
-								.getClass())) {
+
+				if (settings.getGooglePublisherId() != null) {
 					try {
-						SdkLog.i(TAG, "Passing to optimobile delegator. ["
-								+ this.getId() + "]");
-						new OptimobileDelegator(getContext(), this, settings);
+						SdkLog.i(
+								TAG,
+								"Passing to Google SDK. ["
+										+ settings.getGooglePublisherId() + "]");
+						this.googleDelegator = new GoogleDelegator(this,
+								settings, getLayoutParams(), getBackground());
+						this.googleDelegator.load();
 					} catch (Exception e) {
-						if (this.settings.getOnAdErrorListener() != null) {
-							this.settings.getOnAdErrorListener().onAdError(
-									"Error delegating to optimobile", e);
+						if (settings.getOnAdErrorListener() != null) {
+							settings.getOnAdErrorListener().onAdError(
+									"Error delegating to Google", e);
 						} else {
-							SdkLog.e(TAG, "Error delegating to optimobile", e);
+							SdkLog.e(TAG, "Error delegating to Google", e);
 						}
 					}
 				} else if (response == null || response.isEmpty()) {
-					if (this.settings.getOnAdEmptyListener() != null) {
-						this.settings.getOnAdEmptyListener().onAdEmpty();
+					setVisibility(GONE);
+					if (settings.getOnAdEmptyListener() != null) {
+						settings.getOnAdEmptyListener().onAdEmpty();
 					} else {
-						SdkLog.i(TAG, "No valid ad found. [" + this.getId()
-								+ "]");
+						SdkLog.i(TAG, "No valid ad found. [" + getId() + "]");
 					}
 				}
 			}
-			SdkLog.i(TAG, "FINISH async. AdServer request [" + this.getId()
-					+ "]");
+			SdkLog.i(TAG, "FINISH async. AdServer request [" + getId() + "]");
 		} catch (Exception e) {
-			processError("Error loading ad [" + this.getId() + "]", e);
+			processError("Error loading ad [" + getId() + "]", e);
 		}
+
 	}
 
 	@Override
 	public void reload() {
 		if (settings != null && !this.testMode) {
-			if (getParent() != null) {
-				ViewGroup p = (ViewGroup)getParent();
-				int index = p.indexOfChild(this);
-				View o = p.getChildAt(index + 1);
-				if (o != null && (com.moceanmobile.mast.MASTAdView.class.equals(o.getClass()) || AdView.class.equals(o.getClass()))) {
-					SdkLog.d(TAG, "Removing implicity created additional adview [" + o.getClass() + "]");
-					p.removeViewAt(index + 1);
-				}
+			if (this.googleDelegator != null) {
+				SdkLog.d(TAG, "AdReload, removing Google view.");
+				this.googleDelegator.reset();
+				this.googleDelegator = null;
 			}
-			setVisibility(View.GONE);
-			loadUrl("about:blank");
+			clearView();
 			load();
 
 		} else {
@@ -489,6 +534,7 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 					TAG,
 					"AdView has no settings or is in test mode. ["
 							+ this.getId() + "]");
+			setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -520,6 +566,20 @@ public class GuJEMSAdView extends OrmmaView implements IAdResponseHandler {
 	 */
 	public void setOnAdSuccessListener(IOnAdSuccessListener l) {
 		this.settings.setOnAdSuccessListener(l);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		responseReceiver.setReceiver(null);
+		SdkLog.d(TAG, "AdView ONPAUSE");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		responseReceiver.setReceiver(this);
+		SdkLog.d(TAG, "AdView ONRESUME");
 	}
 
 }

@@ -21,12 +21,12 @@ public interface OrmmaPlayerListener {
 	public void onComplete();
 
 	/**
-	 * On loading complete
-	 */
-	public void onPrepared();
-
-	/**
 	 * On Error
 	 */
 	public void onError();
+
+	/**
+	 * On loading complete
+	 */
+	public void onPrepared();
 }

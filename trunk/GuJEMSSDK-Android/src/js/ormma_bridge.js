@@ -439,26 +439,29 @@
          }
          
          if ( ( typeof properties.position != "undefined" ) && ( properties.position != null ) ) {
-        	 inline = new Array(4);
+        	 //inline = new Array(4);
         	 
-        	 inline[0] = properties.position.top;
-        	 inline[1] = properties.position.left;
+        	 console.log("using " + properties.position);
+        	 position[0] = properties.position.top;
+        	 position[1] = properties.position.left;
         	 
              if ( ( typeof properties.width != "undefined" ) && ( properties.width != null ) ) {
-            	 inline[2] =  properties.width;
+            	 position[2] =  properties.width;
              }
              else{
                  //TODO ERROR
              }
              
              if ( ( typeof properties.height != "undefined" ) && ( properties.height != null ) ) {
-            	 inline[3] =  properties.height;
+            	 position[3] =  properties.height;
              }
              else{
                  //TODO ERROR
              }
          }
-       
+         else {
+        	console.log("no position defined in playVideo");
+         }
 
          if ( ( typeof properties.startStyle != "undefined" ) && ( properties.startStyle != null ) ) {
              startStyle = properties.startStyle;

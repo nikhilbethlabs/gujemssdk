@@ -6,7 +6,7 @@
     <string name="zoneId">zoneId</string>
     <string name="backfillSiteId">bfSiteId</string>
     <string name="backfillZoneId">bfZoneId</string>
-    <string name="formats">formats</string>
+    <string name="googlePublisherId">gPubId</string>
     <string name="keyword">kw</string>
     <string name="nkeyword">nkw</string>
     <string name="geo">geo</string>
@@ -15,7 +15,7 @@
     <string name="deviceId">uid</string>
     <string name="attributePrefix">ems_</string>
     <string name="baseUrl">http://vfdeprod.amobee.com/upsteed/wap/adrequest</string>
-    <string name="baseParams">tp=4&amp;prt=G+J&amp;andsdk=#version#</string>
+    <string name="baseParams">tp=4&amp;prt=G%2BJ&amp;andsdk=#version#</string>
     <string name="amobeeAdSpace">as</string>
     <string name="amobeeUserId">uid</string>
     <string name="amobeeLatitude">lat</string>
@@ -27,7 +27,25 @@
     <string name="videoPreload">-w- Bitte einen Moment Geduld&#8230;</string>
     <string name="videoRunning">-w- Klick auf Video öffnet Website</string>
     <string name="connectAd"><![CDATA[<!-- <connectad>yes</connectad> -->]]></string>
-    <string name="bLevelParam">pbl</string>
+    <string name="emsAdMatch"><![CDATA[<!-- EMSRetargeting -->]]></string>
+    <string name="pBatteryLevel">pbl</string>
     <string name="pStatusParam">psx</string>
-    <string name="securityHeaderName">Amobee-Account-ID</string>
+    <string name="pGpsVelocity">pgv</string>
+    <string name="pGpsAltitude">pga</string>
+    <string name="pIdForAdvertiser">idfa</string>
+    <string name="pGuJIdForAdvertiser">gjidfa</string>
+    <string name="jsonRemoteConfigFileName">config_tar.json</string>
+    <string name="jsonLocalConfigFileName">gujemscfg.json</string>
+    <string name="jsonLocalVariablesFileName">gujemsvar.json</string>
+    <string name="jsonUrlReplace">urlReplace</string>
+    <string name="jsonUrlAppend">urlAppend</string>
+    <string name="jsonKeyword">additionalKeyword</string>
+    <string name="jsonBaseUrlDefault">baseUrlAdStd</string>
+    <string name="jsonBaseUrlVodafone">baseUrlAdVF</string>
+    <string name="jsonBaseUrlTelefonica">baseUrlAdTEF</string>
+    <string name="jsonRefreshCapVariables">refreshCap</string>
+    <string name="jsonVariablesScript">json_web.php</string>
+    <string name="advert">-Anzeige-</string>
+    <string name="sampleHeader">Franz Jäger klagt</string>
+    <string name="sampleKicker">Zwölf Boxkämpfer jagen Viktor Engel über Ölfeld in Afghanistan</string>
 </resources>

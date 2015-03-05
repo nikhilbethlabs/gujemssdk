@@ -7,12 +7,12 @@
  */
 package org.ormma.controller.util;
 
+import org.ormma.controller.OrmmaNetworkController;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-
-import org.ormma.controller.OrmmaNetworkController;
 
 /**
  * The Class OrmmaNetworkBroadcastReceiver.
