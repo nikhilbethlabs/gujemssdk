@@ -1,5 +1,7 @@
 package de.guj.ems.mobile.sdk.controllers.adserver;
 
+import java.io.Serializable;
+
 /**
  * Interface for objects holding ad server responses
  * 
@@ -13,21 +15,7 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
  * @author stein16
  * 
  */
-public interface IAdResponse {
-
-	/**
-	 * Get the actual adserver response
-	 * 
-	 * @return ad server response as Strgin (html, xml, text, ...)
-	 */
-	public String getResponse();
-	
-	/**
-	 * Get the response as preformatted HTML
-	 * 
-	 * @return ad server response as HTML
-	 */
-	public String getResponseAsHTML();	
+public interface IAdResponse extends Serializable {
 
 	/**
 	 * For image only types of responses, a parser may be referenced
@@ -35,6 +23,27 @@ public interface IAdResponse {
 	 * @return The parser if one could be created
 	 */
 	public AdResponseParser getParser();
+
+	/**
+	 * Get the actual adserver response
+	 * 
+	 * @return ad server response as Strgin (html, xml, text, ...)
+	 */
+	public String getResponse();
+
+	/**
+	 * Get the response as preformatted HTML
+	 * 
+	 * @return ad server response as HTML
+	 */
+	public String getResponseAsHTML();
+
+	/**
+	 * Check whether the response contained any ad
+	 * 
+	 * @return true if the response was empty
+	 */
+	public boolean isEmpty();
 
 	/**
 	 * Check whether the ad is image only
@@ -49,13 +58,6 @@ public interface IAdResponse {
 	 * @return true if the ad is a rich ad and not empty
 	 */
 	public boolean isRichAd();
-
-	/**
-	 * Check whether the response contained any ad
-	 * 
-	 * @return true if the response was empty
-	 */
-	public boolean isEmpty();
 
 	/**
 	 * Check whether the ad is a test ad

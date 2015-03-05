@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -35,32 +36,33 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * @author stein16
  * 
  */
-public final class InterstitialActivity extends Activity {
+public final class InterstitialActivity extends Activity implements
+		OnClickListener {
 
-	static class InterstitialThread extends Thread {
+	private static class InterstitialThread extends Thread {
 
-		static volatile boolean PAUSED = false;
+		private static volatile boolean PAUSED = false;
 
-		static volatile boolean SHOW = true;
+		private static volatile boolean SHOW = true;
 
-		public InterstitialThread(Runnable r, String name) {
+		private InterstitialThread(Runnable r, String name) {
 			super(r, name);
 		}
 
-		public void beforeStart() {
+		private void beforeStart() {
 			unpause();
 			SHOW = true;
 		}
 
-		public void beforeStop() {
+		private void beforeStop() {
 			SHOW = false;
 		}
 
-		public void pause() {
+		private void pause() {
 			PAUSED = true;
 		}
 
-		public void unpause() {
+		private void unpause() {
 			PAUSED = false;
 		}
 	}
@@ -116,6 +118,7 @@ public final class InterstitialActivity extends Activity {
 				this.withProgress ? R.id.emsIntCloseButton
 						: R.id.emsIntCloseButton2);
 		adView.setLayoutParams(lp);
+		adView.setVisibility(View.VISIBLE);
 
 		// (4) configure close button
 		ImageButton b = (ImageButton) findViewById(this.withProgress ? R.id.emsIntCloseButton
@@ -149,6 +152,29 @@ public final class InterstitialActivity extends Activity {
 			progressBar.setMax(time);
 		}
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (updateThread != null && updateThread.isAlive()) {
+			try {
+				updateThread.beforeStop();
+				updateThread.join(100);
+				status = CLOSED;
+			} catch (InterruptedException e) {
+				;
+			}
+		}
+		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		if (arg0 == adView) {
+			SdkLog.d(TAG, "Interstitial Click.");
+		} else {
+			SdkLog.d(TAG, "Click into void intercepted.");
+		}
 	}
 
 	@Override
@@ -248,7 +274,7 @@ public final class InterstitialActivity extends Activity {
 								SdkLog.w(TAG,
 										"Interstitial root view or its handler is null!");
 								Thread.yield();
-								//status = FINISHED;
+								// status = FINISHED;
 							} else {
 								loaded = true;
 								root.getHandler().post(new Runnable() {
@@ -318,20 +344,6 @@ public final class InterstitialActivity extends Activity {
 		if (status == FINISHED || status == CLOSED) {
 			SdkLog.i(TAG, "Finishing interstitial activity.");
 		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (updateThread != null && updateThread.isAlive()) {
-			try {
-				updateThread.beforeStop();
-				updateThread.join(100);
-				status = CLOSED;
-			} catch (InterruptedException e) {
-				;
-			}
-		}
-		super.onBackPressed();
 	}
 
 }

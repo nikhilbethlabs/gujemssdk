@@ -23,7 +23,7 @@ public abstract class AdResponseParser {
 	private String trackingImageUrl;
 
 	private boolean valid;
-	
+
 	private boolean processed;
 
 	/**
@@ -32,7 +32,7 @@ public abstract class AdResponseParser {
 	 * @param response
 	 *            plain response from adserver
 	 */
-	public AdResponseParser(String response) {
+	AdResponseParser(String response) {
 		this(response, false);
 	}
 
@@ -44,34 +44,10 @@ public abstract class AdResponseParser {
 	 * @param xml
 	 *            parser expects XML if true, (X)HTML if false
 	 */
-	public AdResponseParser(String response, boolean xml) {
+	AdResponseParser(String response, boolean xml) {
 		this.response = response;
 		this.xml = xml;
 		this.valid = true;
-	}
-
-	protected void process() {
-		processed = true;
-	}
-
-	protected String getResponse() {
-		return response;
-	}
-
-	public boolean isXml() {
-		return xml;
-	}
-
-	/**
-	 * Get the URL to the ad's image
-	 * 
-	 * @return image URL string
-	 */
-	public String getImageUrl() {
-		if (!processed) {
-			process();
-		}
-		return imageUrl;
 	}
 
 	/**
@@ -87,6 +63,22 @@ public abstract class AdResponseParser {
 	}
 
 	/**
+	 * Get the URL to the ad's image
+	 * 
+	 * @return image URL string
+	 */
+	public String getImageUrl() {
+		if (!processed) {
+			process();
+		}
+		return imageUrl;
+	}
+
+	protected String getResponse() {
+		return response;
+	}
+
+	/**
 	 * Get a tracking pixel URL if present
 	 * 
 	 * @return Pixel tracking URL String
@@ -98,16 +90,27 @@ public abstract class AdResponseParser {
 		return trackingImageUrl;
 	}
 
-	protected void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public boolean isValid() {
+		if (!processed) {
+			process();
+		}
+		return valid;
+	}
+
+	public boolean isXml() {
+		return xml;
+	}
+
+	protected void process() {
+		processed = true;
 	}
 
 	protected void setClickUrl(String clickUrl) {
 		this.clickUrl = clickUrl;
 	}
 
-	protected void setTrackingImageUrl(String trackingImageUrl) {
-		this.trackingImageUrl = trackingImageUrl;
+	protected void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	protected void setInvalid() {
@@ -115,11 +118,8 @@ public abstract class AdResponseParser {
 		processed = false;
 	}
 
-	public boolean isValid() {
-		if (!processed) {
-			process();
-		}
-		return valid;
+	protected void setTrackingImageUrl(String trackingImageUrl) {
+		this.trackingImageUrl = trackingImageUrl;
 	}
 
 }

@@ -24,31 +24,44 @@ import de.guj.ems.mobile.sdk.util.SdkUtil;
 public class BackfillDelegator {
 
 	/**
-	 * ID of backfill partner Smartstream for Video Starters and Interstitials
-	 */
-	public final static int SMARTSTREAM_ID = 0;
-
-	private final static String TAG = "BackfillDelegator";
-
-	private final static String[] BACK_FILL_OPEN = { "<smartstream>" };
-
-	private final static String[] BACK_FILL_CLOSE = { "</smartstream>" };
-
-	private final static BackfillAdapter[] adapters = { new SmartstreamAdapter() };
-
-	/**
-	 * This exception is thrown in case something went wrong with the backfill
+	 * The callback is used upon processing a backfill request
 	 * 
+	 * Callbacks must be implemented by classing using the BackfillDelegator to
+	 * handle events in the views or activities of an Android App
+	 * 
+	 * @see de.guj.ems.mobile.sdk.activities.InterstitialSwitchActivity
 	 * @author stein16
 	 * 
 	 */
-	public static class BackfillException extends Exception {
+	public static interface BackfillCallback {
 
-		private static final long serialVersionUID = -8483291797322099567L;
+		/**
+		 * Called when an exception occured during backfill processing
+		 * 
+		 * @param e
+		 *            the exception
+		 */
+		public void adFailedCallback(Exception e);
 
-		public BackfillException(String msg) {
-			super(msg);
-		}
+		/**
+		 * Called when the ad from the backfill partner has finished (e.g. a
+		 * movie)
+		 */
+		public void finishedCallback();
+
+		/**
+		 * Called when no ad was returned by the backfill partner
+		 */
+		public void noAdCallback();
+
+		public void receivedAdCallback();
+
+		/**
+		 * Called when any event with content @arg0 has been triggered
+		 * 
+		 * @param arg0
+		 */
+		public void trackEventCallback(String arg0);
 
 	}
 
@@ -62,15 +75,15 @@ public class BackfillDelegator {
 
 		private static final long serialVersionUID = 9154813314077555112L;
 
-		String data;
+		private String data;
 
-		String siteId;
+		private String siteId;
 
-		String zoneId;
+		private String zoneId;
 
-		String userAgent;
+		private String userAgent;
 
-		int id;
+		private int id;
 
 		/**
 		 * Default constructor
@@ -82,29 +95,9 @@ public class BackfillDelegator {
 		 * @param id
 		 *            id of the backfill partner (0 = Smartstream)
 		 */
-		public BackfillData(String zone, String data, int id) {
+		private BackfillData(String zone, String data, int id) {
 			this.data = data;
 			this.userAgent = SdkUtil.getUserAgent();
-			this.zoneId = zone;
-			this.id = id;
-		}
-
-		/**
-		 * Custom constructor
-		 * 
-		 * @param site
-		 *            id of the app/site
-		 * @param zone
-		 *            id of the ad placement
-		 * @param data
-		 *            data retrieved from the main adserver
-		 * @param id
-		 *            id of the backfill partner (0 = Smartstream)
-		 */
-		public BackfillData(String site, String zone, String data, int id) {
-			this.data = data;
-			this.userAgent = SdkUtil.getUserAgent();
-			this.siteId = site;
 			this.zoneId = zone;
 			this.id = id;
 		}
@@ -129,6 +122,15 @@ public class BackfillDelegator {
 		}
 
 		/**
+		 * Get the request's original site ID
+		 * 
+		 * @return the request's original site ID
+		 */
+		public String getSiteId() {
+			return this.siteId;
+		}
+
+		/**
 		 * Get the request's user-agent
 		 * 
 		 * @return the request's user-agent
@@ -146,56 +148,21 @@ public class BackfillDelegator {
 			return this.zoneId;
 		}
 
-		/**
-		 * Get the request's original site ID
-		 * 
-		 * @return the request's original site ID
-		 */
-		public String getSiteId() {
-			return this.siteId;
-		}
-
 	}
 
 	/**
-	 * The callback is used upon processing a backfill request
+	 * This exception is thrown in case something went wrong with the backfill
 	 * 
-	 * Callbacks must be implemented by classing using the BackfillDelegator to
-	 * handle events in the views or activities of an Android App
-	 * 
-	 * @see de.guj.ems.mobile.sdk.activities.InterstitialSwitchActivity
 	 * @author stein16
 	 * 
 	 */
-	public static interface BackfillCallback {
+	public static class BackfillException extends Exception {
 
-		public void receivedAdCallback();
+		private static final long serialVersionUID = -8483291797322099567L;
 
-		/**
-		 * Called when any event with content @arg0 has been triggered
-		 * 
-		 * @param arg0
-		 */
-		public void trackEventCallback(String arg0);
-
-		/**
-		 * Called when an exception occured during backfill processing
-		 * 
-		 * @param e
-		 *            the exception
-		 */
-		public void adFailedCallback(Exception e);
-
-		/**
-		 * Called when no ad was returned by the backfill partner
-		 */
-		public void noAdCallback();
-
-		/**
-		 * Called when the ad from the backfill partner has finished (e.g. a
-		 * movie)
-		 */
-		public void finishedCallback();
+		private BackfillException(String msg) {
+			super(msg);
+		}
 
 	}
 
@@ -271,5 +238,18 @@ public class BackfillDelegator {
 			}
 		}
 	}
+
+	/**
+	 * ID of backfill partner Smartstream for Video Starters and Interstitials
+	 */
+	public final static int SMARTSTREAM_ID = 0;
+
+	private final static String TAG = "BackfillDelegator";
+
+	private final static String[] BACK_FILL_OPEN = { "<smartstream>" };
+
+	private final static String[] BACK_FILL_CLOSE = { "</smartstream>" };
+
+	private final static BackfillAdapter[] adapters = { new SmartstreamAdapter() };
 
 }

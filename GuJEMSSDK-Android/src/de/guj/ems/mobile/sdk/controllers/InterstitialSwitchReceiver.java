@@ -3,9 +3,12 @@ package de.guj.ems.mobile.sdk.controllers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import de.guj.ems.mobile.sdk.R;
 import de.guj.ems.mobile.sdk.activities.InterstitialActivity;
 import de.guj.ems.mobile.sdk.activities.VideoInterstitialActivity;
+import de.guj.ems.mobile.sdk.controllers.AdResponseReceiver.Receiver;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeAdResponse;
 import de.guj.ems.mobile.sdk.controllers.adserver.AmobeeSettingsAdapter;
 import de.guj.ems.mobile.sdk.controllers.adserver.IAdResponse;
@@ -23,7 +26,9 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * 
  */
 public class InterstitialSwitchReceiver extends BroadcastReceiver implements
-		IAdResponseHandler {
+		IAdResponseHandler, Receiver {
+
+	private static final long serialVersionUID = 8383707581661736714L;
 
 	private IAdServerSettingsAdapter settings;
 
@@ -34,13 +39,18 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 	private Intent intent;
 
 	private Context context;
-	
+
 	private boolean testMode = false;
+
+	private AdResponseReceiver responseReceiver = new AdResponseReceiver(
+			new Handler());
 
 	private final static String TAG = "InterstitialSwitchReceiver";
 
 	public InterstitialSwitchReceiver() {
 		super();
+		responseReceiver = new AdResponseReceiver(new Handler());
+		responseReceiver.setReceiver(this);
 	}
 
 	@Override
@@ -50,7 +60,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			SdkUtil.setContext(arg0);
 		}
 		testMode = arg0.getResources().getBoolean(R.bool.ems_test_mode);
-		
+
 		// original target when interstitial not available
 		this.target = (Intent) arg1.getExtras().get("target");
 		if (this.target != null) {
@@ -60,22 +70,59 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		this.context = arg0;
 
 		// ad space settings
-		this.settings = new AmobeeSettingsAdapter(SdkUtil.getContext(),
-				GuJEMSAdView.class, arg1.getExtras());
+		this.settings = new AmobeeSettingsAdapter();
+		this.settings.setup(SdkUtil.getContext(), GuJEMSAdView.class,
+				arg1.getExtras());
 
 		// adserver request
 		if (SdkUtil.isOnline() && !testMode) {
-			final String url = this.settings.getRequestUrl();
 			SdkLog.i(TAG, "START AdServer request");
-			SdkUtil.adRequest(this).execute(
-					new String[] { url });
+			context.startService(SdkUtil.adRequest(responseReceiver, settings));
 		} else if (!testMode) {
 			SdkLog.i(TAG, "No network connection - not requesting ads.");
 			processError("No network connection.");
+		} else {
+			processResponse(new AmobeeAdResponse(
+					"<div style=\"font-size: 0.75em; width: 300px; height: 320px; color: #fff; background: #0086d5;\">"
+							+ settings + "</div>", false));
 		}
-		else {
-			processResponse(new AmobeeAdResponse("<div style=\"font-size: 0.75em; width: 300px; height: 320px; color: #fff; background: #0086d5;\">"
-					+ settings + "</div>", false));
+	}
+
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Throwable lastError = (Throwable) resultData.get("lastError");
+		IAdResponse response = (IAdResponse) resultData.get("response");
+		if (lastError != null) {
+			processError("Received error", lastError);
+		}
+		processResponse(response);
+	}
+
+	@Override
+	public void processError(String msg) {
+		if (this.settings.getOnAdErrorListener() != null) {
+			this.settings.getOnAdErrorListener().onAdError(msg);
+		} else {
+			SdkLog.e(TAG, msg);
+		}
+		if (target != null) {
+			this.context.startActivity(target);
+		} else {
+			SdkLog.i(TAG, "No target. Back to previous view.");
+		}
+	}
+
+	@Override
+	public void processError(String msg, Throwable t) {
+		if (this.settings.getOnAdErrorListener() != null) {
+			this.settings.getOnAdErrorListener().onAdError(msg, t);
+		} else {
+			SdkLog.e(TAG, msg, t);
+		}
+		if (target != null) {
+			this.context.startActivity(target);
+		} else {
+			SdkLog.i(TAG, "No target. Back to previous view.");
 		}
 	}
 
@@ -84,6 +131,7 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 		SdkLog.i(TAG, "FINISH AdServer request");
 		BackfillDelegator.BackfillData bfD;
 		this.data = response;
+
 		if (data != null
 				&& !data.isEmpty()
 				&& (bfD = BackfillDelegator.isBackfill(
@@ -96,36 +144,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 
 				BackfillDelegator.process(context, bfD,
 						new BackfillDelegator.BackfillCallback() {
-							@Override
-							public void trackEventCallback(String arg0) {
-								SdkLog.d(TAG, "Backfill: An event occured ["
-										+ arg0 + "]");
-							}
-
-							@Override
-							public void noAdCallback() {
-								SdkLog.d(TAG, "Backfill: empty.");
-								if (settings.getOnAdEmptyListener() != null) {
-									settings.getOnAdEmptyListener().onAdEmpty();
-								}
-								if (target != null) {
-									context.startActivity(target);
-								} else {
-									SdkLog.i(TAG,
-											"No target. Back to previous view.");
-								}
-							}
-
-							@Override
-							public void finishedCallback() {
-								if (target != null) {
-									context.startActivity(target);
-								} else {
-									SdkLog.i(TAG,
-											"No target. Back to previous view.");
-								}
-							}
-
 							@Override
 							public void adFailedCallback(Exception e) {
 
@@ -146,11 +164,41 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 							}
 
 							@Override
+							public void finishedCallback() {
+								if (target != null) {
+									context.startActivity(target);
+								} else {
+									SdkLog.i(TAG,
+											"No target. Back to previous view.");
+								}
+							}
+
+							@Override
+							public void noAdCallback() {
+								SdkLog.d(TAG, "Backfill: empty.");
+								if (settings.getOnAdEmptyListener() != null) {
+									settings.getOnAdEmptyListener().onAdEmpty();
+								}
+								if (target != null) {
+									context.startActivity(target);
+								} else {
+									SdkLog.i(TAG,
+											"No target. Back to previous view.");
+								}
+							}
+
+							@Override
 							public void receivedAdCallback() {
 								if (settings.getOnAdSuccessListener() != null) {
 									settings.getOnAdSuccessListener()
 											.onAdSuccess();
 								}
+							}
+
+							@Override
+							public void trackEventCallback(String arg0) {
+								SdkLog.d(TAG, "Backfill: An event occured ["
+										+ arg0 + "]");
 							}
 
 						});
@@ -201,34 +249,6 @@ public class InterstitialSwitchReceiver extends BroadcastReceiver implements
 			}
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(i);
-		}
-	}
-
-	@Override
-	public void processError(String msg) {
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg);
-		} else {
-			SdkLog.e(TAG, msg);
-		}
-		if (target != null) {
-			this.context.startActivity(target);
-		} else {
-			SdkLog.i(TAG, "No target. Back to previous view.");
-		}
-	}
-
-	@Override
-	public void processError(String msg, Throwable t) {
-		if (this.settings.getOnAdErrorListener() != null) {
-			this.settings.getOnAdErrorListener().onAdError(msg, t);
-		} else {
-			SdkLog.e(TAG, msg, t);
-		}
-		if (target != null) {
-			this.context.startActivity(target);
-		} else {
-			SdkLog.i(TAG, "No target. Back to previous view.");
 		}
 	}
 

@@ -53,7 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#000000"
         android:clickable="false"
         android:ems="10"
         android:focusable="false"

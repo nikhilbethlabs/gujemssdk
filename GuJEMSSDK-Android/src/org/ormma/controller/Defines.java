@@ -8,18 +8,18 @@
 
 package org.ormma.controller;
 
-public class Defines {
+class Defines {
 
 	public class Events {
-		public static final String ORIENTATION_CHANGE = "orientationChange";
+		static final String ORIENTATION_CHANGE = "orientationChange";
 		public static final String SIZE_CHANGE = "sizeChange";
-		public static final String NETWORK_CHANGE = "networkChange";
-		public static final String HEADING_CHANGE = "headingChange";
+		static final String NETWORK_CHANGE = "networkChange";
+		static final String HEADING_CHANGE = "headingChange";
 		public static final String KEYBOARD_CHANGE = "keyboardChange";
-		public static final String LOCATION_CHANGE = "locationChange";
+		static final String LOCATION_CHANGE = "locationChange";
 		public static final String SCREEN_CHANGE = "screenChange";
 		public static final String STATE_CHANGE = "stateChange";
-		public static final String TILT_CHANGE = "tiltChange";
+		static final String TILT_CHANGE = "tiltChange";
 		public static final String SHAKE = "shake";
 	};
 

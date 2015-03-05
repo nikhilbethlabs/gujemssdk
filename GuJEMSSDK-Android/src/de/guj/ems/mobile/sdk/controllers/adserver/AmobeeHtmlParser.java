@@ -2,11 +2,11 @@ package de.guj.ems.mobile.sdk.controllers.adserver;
 
 import de.guj.ems.mobile.sdk.util.SdkLog;
 
-public class AmobeeHtmlParser extends AdResponseParser {
+class AmobeeHtmlParser extends AdResponseParser {
 
 	private final static String TAG = "AmobeeHtmlParser";
 
-	public AmobeeHtmlParser(String response) {
+	AmobeeHtmlParser(String response) {
 		super(response);
 	}
 
@@ -17,8 +17,13 @@ public class AmobeeHtmlParser extends AdResponseParser {
 	private void parseClickUrl() {
 		String c = getResponse().substring(getResponse().indexOf("href=") + 6);
 		String tC = c.substring(0, c.indexOf("\""));
-		setClickUrl(tC.replaceAll("&amp;", "&"));
-		SdkLog.d(TAG, "Ad Click URL = " + getClickUrl());
+		if (tC.startsWith("http")) {
+			setClickUrl(tC.replaceAll("&amp;", "&"));
+			SdkLog.d(TAG, "Ad Click URL = " + getClickUrl());
+		} else {
+			SdkLog.d(TAG, "No click URL found.");
+		}
+
 	}
 
 	private void parseImageUrl() {

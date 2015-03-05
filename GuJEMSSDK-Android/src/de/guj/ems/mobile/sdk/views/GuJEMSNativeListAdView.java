@@ -2,8 +2,6 @@ package de.guj.ems.mobile.sdk.views;
 
 import java.util.Map;
 
-import de.guj.ems.mobile.sdk.controllers.IAdResponseHandler;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -27,8 +25,9 @@ import android.widget.AbsListView;
  * @author stein16
  * 
  */
-public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
-		IAdResponseHandler {
+public class GuJEMSNativeListAdView extends GuJEMSNativeAdView {
+
+	private static final long serialVersionUID = -1836303296891630522L;
 
 	public GuJEMSNativeListAdView(Context context) {
 		super(context);
@@ -38,8 +37,17 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 		super(context, attrs);
 	}
 
+	public GuJEMSNativeListAdView(Context context, AttributeSet attrs,
+			boolean load) {
+		super(context, attrs, load);
+	}
+
 	public GuJEMSNativeListAdView(Context context, int resId) {
 		super(context, resId);
+	}
+
+	public GuJEMSNativeListAdView(Context context, int resId, boolean load) {
+		super(context, resId, load);
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
@@ -48,32 +56,23 @@ public class GuJEMSNativeListAdView extends GuJEMSNativeAdView implements
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
-			String[] kws, String[] nkws, int resId) {
-		super(context, customParams, kws, nkws, resId);
-	}
-
-	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
-			int resId) {
-		super(context, kws, nkws, resId);
-	}
-	
-	public GuJEMSNativeListAdView(Context context, AttributeSet attrs,
-			boolean load) {
-		super(context, attrs, load);
-	}
-
-	public GuJEMSNativeListAdView(Context context, int resId, boolean load) {
-		super(context, resId, load);
-	}
-
-	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			int resId, boolean load) {
 		super(context, customParams, resId, load);
 	}
 
 	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
+			String[] kws, String[] nkws, int resId) {
+		super(context, customParams, kws, nkws, resId);
+	}
+
+	public GuJEMSNativeListAdView(Context context, Map<String, ?> customParams,
 			String[] kws, String[] nkws, int resId, boolean load) {
 		super(context, customParams, kws, nkws, resId, load);
+	}
+
+	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
+			int resId) {
+		super(context, kws, nkws, resId);
 	}
 
 	public GuJEMSNativeListAdView(Context context, String[] kws, String[] nkws,
