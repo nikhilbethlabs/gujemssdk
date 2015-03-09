@@ -23,7 +23,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
-import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Surface;
@@ -53,6 +52,11 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  * 
  */
 public class SdkUtil {
+	
+	protected SdkUtil() { 
+		SdkLog.d(TAG, "SdkUtil CXT");
+		SdkLog.d(TAG, "IDFA: " + SdkUtil.getIdForAdvertiser());
+	}
 
 	/**
 	 * Create an ad request object with url and response handler
@@ -220,22 +224,7 @@ public class SdkUtil {
 	 */
 	public static synchronized String getDeviceId() {
 		if (DEVICE_ID == null) {
-			if (TELEPHONY_MANAGER == null) {
-				try {
-					TELEPHONY_MANAGER = (TelephonyManager) SdkUtil.getContext()
-							.getSystemService(Context.TELEPHONY_SERVICE);
-				} catch (Exception e) {
-					DEVICE_ID = Secure.ANDROID_ID;
-					return DEVICE_ID;
-				}
-			}
-			try {
-				DEVICE_ID = TELEPHONY_MANAGER.getDeviceId();
-			} catch (SecurityException se) {
-				SdkLog.w(TAG,
-						"TelephonyManager not available, using replacement UID.");
 				DEVICE_ID = getCookieReplStr();
-			}
 		}
 
 		return DEVICE_ID;
@@ -257,12 +246,6 @@ public class SdkUtil {
 				try {
 					adInfo = AdvertisingIdClient
 							.getAdvertisingIdInfo(getContext());
-				} catch (GooglePlayServicesRepairableException e) {
-					SdkLog.e(
-							TAG,
-							"Google Play ID service problem, trying again later",
-							e);
-					FETCH_IDFA = true;
 				} catch (IOException e) {
 					// Unrecoverable error connecting to Google Play services
 					// (e.g.,
@@ -270,9 +253,19 @@ public class SdkUtil {
 					// AdvertisingId).
 					SdkLog.e(TAG, "Google Play services connection problem", e);
 
-				} catch (GooglePlayServicesNotAvailableException e) {
+				} 
+				catch (GooglePlayServicesRepairableException e) {
+					SdkLog.e(
+							TAG,
+							"Google Play ID service problem, trying again later",
+							e);
+					FETCH_IDFA = true;
+				}  catch (GooglePlayServicesNotAvailableException e) {
 					// Google Play services is not available entirely.
 					SdkLog.e(TAG, "Google Play services not available", e);
+				} catch (Exception e) {
+					SdkLog.w(TAG, "Problem with Google Play ID service, trying again later. Splash screens use broadcast receivers - if this is your splash screen, ignore the warning.");
+					FETCH_IDFA = true;
 				}
 
 				IDFA = adInfo != null && !adInfo.isLimitAdTrackingEnabled() ? adInfo

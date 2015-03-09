@@ -33,8 +33,6 @@ import de.guj.ems.mobile.sdk.views.GuJEMSAdView;
  */
 abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 
-	private transient String requestQueryString;
-
 	private final static String TAG = "AdServerSettingsAdapter";
 
 	private String queryAppendix;
@@ -59,7 +57,6 @@ abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 
 	public AdServerSettingsAdapter() {
 		this.viewClass = null;
-		this.requestQueryString = null;
 		this.paramValues = null;
 		this.attrsToParams = null;
 		this.processed = false;
@@ -307,48 +304,41 @@ abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 
 	@Override
 	public String getQueryString() {
-		if (this.requestQueryString == null
-				|| this.requestQueryString.length() <= 1) {
-			this.requestQueryString = "";
-			Iterator<String> keys = getAttrsToParams().keySet().iterator();
-			while (keys.hasNext()) {
-				String key = keys.next();
-				String val = paramValues.get(key);
-				String param = attrsToParams.get(key);
-				if (val != null) {
-					SdkLog.d(TAG, "Adding: \"" + val + "\" as \"" + param
-							+ "\" for " + key);
-					this.requestQueryString += "&" + param + "=" + val;
-				}
+		String qStr = "";
+		Iterator<String> keys = getAttrsToParams().keySet().iterator();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			String val = paramValues.get(key);
+			String param = attrsToParams.get(key);
+			if (val != null) {
+				SdkLog.d(TAG, "Adding: \"" + val + "\" as \"" + param
+						+ "\" for " + key);
+				qStr += "&" + param + "=" + val;
 			}
-
-			if (regExps != null) {
-				String backup = this.requestQueryString;
-				try {
-					for (int i = 0; i < regExps.length(); i++) {
-						JSONArray regexpn = regExps.getJSONArray(i);
-						if (regexpn.length() > 1) {
-							this.requestQueryString = this.requestQueryString
-									.replaceAll(regexpn.getString(0),
-											regexpn.getString(1));
-						} else {
-							SdkLog.w(TAG,
-									"No valid regular expression found in "
-											+ regExps);
-						}
-					}
-				} catch (Exception e) {
-					SdkLog.e(
-							TAG,
-							"Error applying regular expressions to query string.",
-							e);
-					return backup;
-				}
-			}
-
 		}
 
-		return this.requestQueryString;
+		if (regExps != null) {
+			String backup = qStr;
+			try {
+				for (int i = 0; i < regExps.length(); i++) {
+					JSONArray regexpn = regExps.getJSONArray(i);
+					if (regexpn.length() > 1) {
+						qStr = qStr.replaceAll(regexpn.getString(0),
+								regexpn.getString(1));
+					} else {
+						SdkLog.w(TAG, "No valid regular expression found in "
+								+ regExps);
+					}
+				}
+			} catch (Exception e) {
+				SdkLog.e(TAG,
+						"Error applying regular expressions to query string.",
+						e);
+				return backup;
+			}
+		}
+
+		return qStr;
 	}
 
 	@Override
@@ -507,7 +497,6 @@ abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 		}
 
 		this.viewClass = viewClass;
-		this.requestQueryString = null;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(context, set);
 	}
@@ -525,7 +514,6 @@ abstract class AdServerSettingsAdapter implements IAdServerSettingsAdapter {
 			SdkUtil.setContext(context);
 		}
 		this.viewClass = viewClass;
-		this.requestQueryString = null;
 		this.paramValues = new HashMap<String, String>();
 		this.attrsToParams = this.init(savedInstance);
 	}
