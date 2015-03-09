@@ -497,54 +497,54 @@ containing a value of this type.
     public static final class bool {
         /**  Make SDK remote cofigurable (experimental) 
          */
-        public static int ems_remote_cfg=0x7f0a0003;
+        public static int ems_remote_cfg=0x7f090003;
         /**  Set this to true if you want the geolocation truncated to two digits 
          */
-        public static int ems_shorten_location=0x7f0a0001;
+        public static int ems_shorten_location=0x7f090001;
         /**   Set this to true if you want test ads in all adviews 
          */
-        public static int ems_test_mode=0x7f0a0002;
+        public static int ems_test_mode=0x7f090002;
         /**   Standard layout is for phones 
   Standard layout is for phones 
   Standard layout is for phones 
          */
-        public static int largeDisplay=0x7f0a0000;
+        public static int largeDisplay=0x7f090000;
     }
     public static final class color {
-        public static int common_action_bar_splitter=0x7f080009;
+        public static int common_action_bar_splitter=0x7f070009;
         /**  Sign-in Button Colors 
          */
-        public static int common_signin_btn_dark_text_default=0x7f080000;
-        public static int common_signin_btn_dark_text_disabled=0x7f080002;
-        public static int common_signin_btn_dark_text_focused=0x7f080003;
-        public static int common_signin_btn_dark_text_pressed=0x7f080001;
-        public static int common_signin_btn_default_background=0x7f080008;
-        public static int common_signin_btn_light_text_default=0x7f080004;
-        public static int common_signin_btn_light_text_disabled=0x7f080006;
-        public static int common_signin_btn_light_text_focused=0x7f080007;
-        public static int common_signin_btn_light_text_pressed=0x7f080005;
-        public static int common_signin_btn_text_dark=0x7f080017;
-        public static int common_signin_btn_text_light=0x7f080018;
-        public static int wallet_bright_foreground_disabled_holo_light=0x7f08000f;
+        public static int common_signin_btn_dark_text_default=0x7f070000;
+        public static int common_signin_btn_dark_text_disabled=0x7f070002;
+        public static int common_signin_btn_dark_text_focused=0x7f070003;
+        public static int common_signin_btn_dark_text_pressed=0x7f070001;
+        public static int common_signin_btn_default_background=0x7f070008;
+        public static int common_signin_btn_light_text_default=0x7f070004;
+        public static int common_signin_btn_light_text_disabled=0x7f070006;
+        public static int common_signin_btn_light_text_focused=0x7f070007;
+        public static int common_signin_btn_light_text_pressed=0x7f070005;
+        public static int common_signin_btn_text_dark=0x7f070017;
+        public static int common_signin_btn_text_light=0x7f070018;
+        public static int wallet_bright_foreground_disabled_holo_light=0x7f07000f;
         /** 
          Wallet colors to support consistent Wallet fragment holo dark UI in client application
          regardless of the theme and device type
     
          */
-        public static int wallet_bright_foreground_holo_dark=0x7f08000a;
-        public static int wallet_bright_foreground_holo_light=0x7f080010;
-        public static int wallet_dim_foreground_disabled_holo_dark=0x7f08000c;
-        public static int wallet_dim_foreground_holo_dark=0x7f08000b;
-        public static int wallet_dim_foreground_inverse_disabled_holo_dark=0x7f08000e;
-        public static int wallet_dim_foreground_inverse_holo_dark=0x7f08000d;
-        public static int wallet_highlighted_text_holo_dark=0x7f080014;
-        public static int wallet_highlighted_text_holo_light=0x7f080013;
-        public static int wallet_hint_foreground_holo_dark=0x7f080012;
-        public static int wallet_hint_foreground_holo_light=0x7f080011;
-        public static int wallet_holo_blue_light=0x7f080015;
-        public static int wallet_link_text_light=0x7f080016;
-        public static int wallet_primary_text_holo_light=0x7f080019;
-        public static int wallet_secondary_text_holo_dark=0x7f08001a;
+        public static int wallet_bright_foreground_holo_dark=0x7f07000a;
+        public static int wallet_bright_foreground_holo_light=0x7f070010;
+        public static int wallet_dim_foreground_disabled_holo_dark=0x7f07000c;
+        public static int wallet_dim_foreground_holo_dark=0x7f07000b;
+        public static int wallet_dim_foreground_inverse_disabled_holo_dark=0x7f07000e;
+        public static int wallet_dim_foreground_inverse_holo_dark=0x7f07000d;
+        public static int wallet_highlighted_text_holo_dark=0x7f070014;
+        public static int wallet_highlighted_text_holo_light=0x7f070013;
+        public static int wallet_hint_foreground_holo_dark=0x7f070012;
+        public static int wallet_hint_foreground_holo_light=0x7f070011;
+        public static int wallet_holo_blue_light=0x7f070015;
+        public static int wallet_link_text_light=0x7f070016;
+        public static int wallet_primary_text_holo_light=0x7f070019;
+        public static int wallet_secondary_text_holo_dark=0x7f07001a;
     }
     public static final class drawable {
         public static int close=0x7f020000;
@@ -593,53 +593,53 @@ containing a value of this type.
         public static int thumb=0x7f02002b;
     }
     public static final class id {
-        public static int adheader=0x7f07001a;
-        public static int adhint=0x7f070018;
-        public static int adjust_height=0x7f070002;
-        public static int adjust_width=0x7f070001;
-        public static int adkicker=0x7f07001b;
-        public static int adthumb=0x7f070019;
-        public static int book_now=0x7f070012;
-        public static int buyButton=0x7f07000c;
-        public static int buy_now=0x7f070011;
-        public static int buy_with_google=0x7f070010;
-        public static int classic=0x7f070014;
-        public static int donate_with_google=0x7f070013;
-        public static int emsIntCloseButton=0x7f070020;
-        public static int emsIntCloseButton2=0x7f07001d;
-        public static int emsIntLayout=0x7f07001c;
-        public static int emsIntProgBar=0x7f070021;
-        public static int emsIntProgLayout=0x7f07001f;
-        public static int emsIntSpinner=0x7f070022;
-        public static int emsIntSpinner2=0x7f07001e;
-        public static int emsVidIntButton=0x7f070024;
-        public static int emsVidIntLayout=0x7f070023;
-        public static int emsVidIntSndButton=0x7f070028;
-        public static int emsVidIntSpinner=0x7f070026;
-        public static int emsVideoText=0x7f070027;
-        public static int emsVideoView=0x7f070025;
-        public static int grayscale=0x7f070015;
-        public static int holo_dark=0x7f070007;
-        public static int holo_light=0x7f070008;
-        public static int hybrid=0x7f070006;
-        public static int integratedad=0x7f070017;
-        public static int match_parent=0x7f07000e;
-        public static int monochrome=0x7f070016;
-        public static int none=0x7f070000;
-        public static int normal=0x7f070003;
-        public static int production=0x7f070009;
-        public static int sandbox=0x7f07000a;
-        public static int satellite=0x7f070004;
-        public static int selectionDetails=0x7f07000d;
-        public static int strict_sandbox=0x7f07000b;
-        public static int terrain=0x7f070005;
-        public static int wrap_content=0x7f07000f;
+        public static int adheader=0x7f0a001a;
+        public static int adhint=0x7f0a0018;
+        public static int adjust_height=0x7f0a0000;
+        public static int adjust_width=0x7f0a0001;
+        public static int adkicker=0x7f0a001b;
+        public static int adthumb=0x7f0a0019;
+        public static int book_now=0x7f0a0010;
+        public static int buyButton=0x7f0a000c;
+        public static int buy_now=0x7f0a0011;
+        public static int buy_with_google=0x7f0a0012;
+        public static int classic=0x7f0a0014;
+        public static int donate_with_google=0x7f0a0013;
+        public static int emsIntCloseButton=0x7f0a0020;
+        public static int emsIntCloseButton2=0x7f0a001d;
+        public static int emsIntLayout=0x7f0a001c;
+        public static int emsIntProgBar=0x7f0a0021;
+        public static int emsIntProgLayout=0x7f0a001f;
+        public static int emsIntSpinner=0x7f0a0022;
+        public static int emsIntSpinner2=0x7f0a001e;
+        public static int emsVidIntButton=0x7f0a0024;
+        public static int emsVidIntLayout=0x7f0a0023;
+        public static int emsVidIntSndButton=0x7f0a0028;
+        public static int emsVidIntSpinner=0x7f0a0026;
+        public static int emsVideoText=0x7f0a0027;
+        public static int emsVideoView=0x7f0a0025;
+        public static int grayscale=0x7f0a0015;
+        public static int holo_dark=0x7f0a0007;
+        public static int holo_light=0x7f0a0008;
+        public static int hybrid=0x7f0a0003;
+        public static int integratedad=0x7f0a0017;
+        public static int match_parent=0x7f0a000e;
+        public static int monochrome=0x7f0a0016;
+        public static int none=0x7f0a0002;
+        public static int normal=0x7f0a0004;
+        public static int production=0x7f0a0009;
+        public static int sandbox=0x7f0a000a;
+        public static int satellite=0x7f0a0005;
+        public static int selectionDetails=0x7f0a000d;
+        public static int strict_sandbox=0x7f0a000b;
+        public static int terrain=0x7f0a0006;
+        public static int wrap_content=0x7f0a000f;
     }
     public static final class integer {
         /**  the maximum age of a location available to the app for advertising (only applies if ems_geo is true)
          */
-        public static int ems_location_maxage_ms=0x7f090001;
-        public static int google_play_services_version=0x7f090000;
+        public static int ems_location_maxage_ms=0x7f080001;
+        public static int google_play_services_version=0x7f080000;
     }
     public static final class layout {
         public static int integrated_ad=0x7f030000;
@@ -909,7 +909,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:adSize
         */
-        public static final int AdsAttrs_adSize = 0;
+        public static int AdsAttrs_adSize = 0;
         /**
           <p>
           @attr description
@@ -929,7 +929,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:adSizes
         */
-        public static final int AdsAttrs_adSizes = 1;
+        public static int AdsAttrs_adSizes = 1;
         /**
           <p>
           @attr description
@@ -945,7 +945,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:adUnitId
         */
-        public static final int AdsAttrs_adUnitId = 2;
+        public static int AdsAttrs_adUnitId = 2;
         /**  attribute usage for default web view 
            <p>Includes the following attributes:</p>
            <table>
@@ -1001,7 +1001,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfSiteId
         */
-        public static final int GuJEMSAdView_ems_bfSiteId = 5;
+        public static int GuJEMSAdView_ems_bfSiteId = 5;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_bfZoneId}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1015,7 +1015,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfZoneId
         */
-        public static final int GuJEMSAdView_ems_bfZoneId = 6;
+        public static int GuJEMSAdView_ems_bfZoneId = 6;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_gPubId}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1029,7 +1029,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_gPubId
         */
-        public static final int GuJEMSAdView_ems_gPubId = 7;
+        public static int GuJEMSAdView_ems_gPubId = 7;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_geo}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1043,7 +1043,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_geo
         */
-        public static final int GuJEMSAdView_ems_geo = 11;
+        public static int GuJEMSAdView_ems_geo = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_kw}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1057,7 +1057,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_kw
         */
-        public static final int GuJEMSAdView_ems_kw = 9;
+        public static int GuJEMSAdView_ems_kw = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lat}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1071,7 +1071,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lat
         */
-        public static final int GuJEMSAdView_ems_lat = 12;
+        public static int GuJEMSAdView_ems_lat = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lon}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1085,7 +1085,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lon
         */
-        public static final int GuJEMSAdView_ems_lon = 13;
+        public static int GuJEMSAdView_ems_lon = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_nkw}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1099,7 +1099,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_nkw
         */
-        public static final int GuJEMSAdView_ems_nkw = 10;
+        public static int GuJEMSAdView_ems_nkw = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdEmpty}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1113,7 +1113,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdEmpty
         */
-        public static final int GuJEMSAdView_ems_onAdEmpty = 1;
+        public static int GuJEMSAdView_ems_onAdEmpty = 1;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdError}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1127,7 +1127,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdError
         */
-        public static final int GuJEMSAdView_ems_onAdError = 2;
+        public static int GuJEMSAdView_ems_onAdError = 2;
         /**
           <p>
           @attr description
@@ -1143,7 +1143,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:ems_onAdSuccess
         */
-        public static final int GuJEMSAdView_ems_onAdSuccess = 0;
+        public static int GuJEMSAdView_ems_onAdSuccess = 0;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_siteId}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1157,7 +1157,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_siteId
         */
-        public static final int GuJEMSAdView_ems_siteId = 3;
+        public static int GuJEMSAdView_ems_siteId = 3;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_uid}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1171,7 +1171,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_uid
         */
-        public static final int GuJEMSAdView_ems_uid = 8;
+        public static int GuJEMSAdView_ems_uid = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_zoneId}
           attribute's value can be found in the {@link #GuJEMSAdView} array.
@@ -1185,7 +1185,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_zoneId
         */
-        public static final int GuJEMSAdView_ems_zoneId = 4;
+        public static int GuJEMSAdView_ems_zoneId = 4;
         /**  attribute usage for native view 
            <p>Includes the following attributes:</p>
            <table>
@@ -1241,7 +1241,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfSiteId
         */
-        public static final int GuJEMSIntegratedAdView_ems_bfSiteId = 5;
+        public static int GuJEMSIntegratedAdView_ems_bfSiteId = 5;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_bfZoneId}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1255,7 +1255,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfZoneId
         */
-        public static final int GuJEMSIntegratedAdView_ems_bfZoneId = 6;
+        public static int GuJEMSIntegratedAdView_ems_bfZoneId = 6;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_gPubId}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1269,7 +1269,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_gPubId
         */
-        public static final int GuJEMSIntegratedAdView_ems_gPubId = 7;
+        public static int GuJEMSIntegratedAdView_ems_gPubId = 7;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_geo}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1283,7 +1283,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_geo
         */
-        public static final int GuJEMSIntegratedAdView_ems_geo = 11;
+        public static int GuJEMSIntegratedAdView_ems_geo = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_kw}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1297,7 +1297,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_kw
         */
-        public static final int GuJEMSIntegratedAdView_ems_kw = 9;
+        public static int GuJEMSIntegratedAdView_ems_kw = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lat}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1311,7 +1311,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lat
         */
-        public static final int GuJEMSIntegratedAdView_ems_lat = 12;
+        public static int GuJEMSIntegratedAdView_ems_lat = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lon}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1325,7 +1325,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lon
         */
-        public static final int GuJEMSIntegratedAdView_ems_lon = 13;
+        public static int GuJEMSIntegratedAdView_ems_lon = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_nkw}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1339,7 +1339,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_nkw
         */
-        public static final int GuJEMSIntegratedAdView_ems_nkw = 10;
+        public static int GuJEMSIntegratedAdView_ems_nkw = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdEmpty}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1353,7 +1353,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdEmpty
         */
-        public static final int GuJEMSIntegratedAdView_ems_onAdEmpty = 1;
+        public static int GuJEMSIntegratedAdView_ems_onAdEmpty = 1;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdError}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1367,7 +1367,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdError
         */
-        public static final int GuJEMSIntegratedAdView_ems_onAdError = 2;
+        public static int GuJEMSIntegratedAdView_ems_onAdError = 2;
         /**
           <p>
           @attr description
@@ -1383,7 +1383,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:ems_onAdSuccess
         */
-        public static final int GuJEMSIntegratedAdView_ems_onAdSuccess = 0;
+        public static int GuJEMSIntegratedAdView_ems_onAdSuccess = 0;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_siteId}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1397,7 +1397,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_siteId
         */
-        public static final int GuJEMSIntegratedAdView_ems_siteId = 3;
+        public static int GuJEMSIntegratedAdView_ems_siteId = 3;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_uid}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1411,7 +1411,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_uid
         */
-        public static final int GuJEMSIntegratedAdView_ems_uid = 8;
+        public static int GuJEMSIntegratedAdView_ems_uid = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_zoneId}
           attribute's value can be found in the {@link #GuJEMSIntegratedAdView} array.
@@ -1425,7 +1425,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_zoneId
         */
-        public static final int GuJEMSIntegratedAdView_ems_zoneId = 4;
+        public static int GuJEMSIntegratedAdView_ems_zoneId = 4;
         /**  attribute usage for native view 
            <p>Includes the following attributes:</p>
            <table>
@@ -1481,7 +1481,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfSiteId
         */
-        public static final int GuJEMSNativeAdView_ems_bfSiteId = 5;
+        public static int GuJEMSNativeAdView_ems_bfSiteId = 5;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_bfZoneId}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1495,7 +1495,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_bfZoneId
         */
-        public static final int GuJEMSNativeAdView_ems_bfZoneId = 6;
+        public static int GuJEMSNativeAdView_ems_bfZoneId = 6;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_gPubId}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1509,7 +1509,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_gPubId
         */
-        public static final int GuJEMSNativeAdView_ems_gPubId = 7;
+        public static int GuJEMSNativeAdView_ems_gPubId = 7;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_geo}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1523,7 +1523,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_geo
         */
-        public static final int GuJEMSNativeAdView_ems_geo = 11;
+        public static int GuJEMSNativeAdView_ems_geo = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_kw}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1537,7 +1537,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_kw
         */
-        public static final int GuJEMSNativeAdView_ems_kw = 9;
+        public static int GuJEMSNativeAdView_ems_kw = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lat}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1551,7 +1551,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lat
         */
-        public static final int GuJEMSNativeAdView_ems_lat = 12;
+        public static int GuJEMSNativeAdView_ems_lat = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_lon}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1565,7 +1565,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_lon
         */
-        public static final int GuJEMSNativeAdView_ems_lon = 13;
+        public static int GuJEMSNativeAdView_ems_lon = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_nkw}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1579,7 +1579,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_nkw
         */
-        public static final int GuJEMSNativeAdView_ems_nkw = 10;
+        public static int GuJEMSNativeAdView_ems_nkw = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdEmpty}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1593,7 +1593,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdEmpty
         */
-        public static final int GuJEMSNativeAdView_ems_onAdEmpty = 1;
+        public static int GuJEMSNativeAdView_ems_onAdEmpty = 1;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_onAdError}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1607,7 +1607,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_onAdError
         */
-        public static final int GuJEMSNativeAdView_ems_onAdError = 2;
+        public static int GuJEMSNativeAdView_ems_onAdError = 2;
         /**
           <p>
           @attr description
@@ -1623,7 +1623,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:ems_onAdSuccess
         */
-        public static final int GuJEMSNativeAdView_ems_onAdSuccess = 0;
+        public static int GuJEMSNativeAdView_ems_onAdSuccess = 0;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_siteId}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1637,7 +1637,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_siteId
         */
-        public static final int GuJEMSNativeAdView_ems_siteId = 3;
+        public static int GuJEMSNativeAdView_ems_siteId = 3;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_uid}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1651,7 +1651,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_uid
         */
-        public static final int GuJEMSNativeAdView_ems_uid = 8;
+        public static int GuJEMSNativeAdView_ems_uid = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#ems_zoneId}
           attribute's value can be found in the {@link #GuJEMSNativeAdView} array.
@@ -1665,7 +1665,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:ems_zoneId
         */
-        public static final int GuJEMSNativeAdView_ems_zoneId = 4;
+        public static int GuJEMSNativeAdView_ems_zoneId = 4;
         /**  Attributes for LoadingImageView 
            <p>Includes the following attributes:</p>
            <table>
@@ -1704,7 +1704,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:circleCrop
         */
-        public static final int LoadingImageView_circleCrop = 2;
+        public static int LoadingImageView_circleCrop = 2;
         /**
           <p>
           @attr description
@@ -1722,7 +1722,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:imageAspectRatio
         */
-        public static final int LoadingImageView_imageAspectRatio = 1;
+        public static int LoadingImageView_imageAspectRatio = 1;
         /**
           <p>
           @attr description
@@ -1745,7 +1745,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:imageAspectRatioAdjust
         */
-        public static final int LoadingImageView_imageAspectRatioAdjust = 0;
+        public static int LoadingImageView_imageAspectRatioAdjust = 0;
         /** Attributes that can be used with a MapAttrs.
            <p>Includes the following attributes:</p>
            <table>
@@ -1805,7 +1805,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:cameraBearing
         */
-        public static final int MapAttrs_cameraBearing = 1;
+        public static int MapAttrs_cameraBearing = 1;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#cameraTargetLat}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1819,7 +1819,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:cameraTargetLat
         */
-        public static final int MapAttrs_cameraTargetLat = 2;
+        public static int MapAttrs_cameraTargetLat = 2;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#cameraTargetLng}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1833,7 +1833,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:cameraTargetLng
         */
-        public static final int MapAttrs_cameraTargetLng = 3;
+        public static int MapAttrs_cameraTargetLng = 3;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#cameraTilt}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1847,7 +1847,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:cameraTilt
         */
-        public static final int MapAttrs_cameraTilt = 4;
+        public static int MapAttrs_cameraTilt = 4;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#cameraZoom}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1861,7 +1861,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:cameraZoom
         */
-        public static final int MapAttrs_cameraZoom = 5;
+        public static int MapAttrs_cameraZoom = 5;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#liteMode}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1875,7 +1875,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:liteMode
         */
-        public static final int MapAttrs_liteMode = 6;
+        public static int MapAttrs_liteMode = 6;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#mapType}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1895,7 +1895,7 @@ containing a value of this type.
 </table>
           @attr name de.guj.ems.mobile.sdk:mapType
         */
-        public static final int MapAttrs_mapType = 0;
+        public static int MapAttrs_mapType = 0;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiCompass}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1909,7 +1909,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiCompass
         */
-        public static final int MapAttrs_uiCompass = 7;
+        public static int MapAttrs_uiCompass = 7;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiMapToolbar}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1923,7 +1923,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiMapToolbar
         */
-        public static final int MapAttrs_uiMapToolbar = 15;
+        public static int MapAttrs_uiMapToolbar = 15;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiRotateGestures}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1937,7 +1937,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiRotateGestures
         */
-        public static final int MapAttrs_uiRotateGestures = 8;
+        public static int MapAttrs_uiRotateGestures = 8;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiScrollGestures}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1951,7 +1951,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiScrollGestures
         */
-        public static final int MapAttrs_uiScrollGestures = 9;
+        public static int MapAttrs_uiScrollGestures = 9;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiTiltGestures}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1965,7 +1965,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiTiltGestures
         */
-        public static final int MapAttrs_uiTiltGestures = 10;
+        public static int MapAttrs_uiTiltGestures = 10;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiZoomControls}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1979,7 +1979,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiZoomControls
         */
-        public static final int MapAttrs_uiZoomControls = 11;
+        public static int MapAttrs_uiZoomControls = 11;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#uiZoomGestures}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -1993,7 +1993,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:uiZoomGestures
         */
-        public static final int MapAttrs_uiZoomGestures = 12;
+        public static int MapAttrs_uiZoomGestures = 12;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#useViewLifecycle}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -2007,7 +2007,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:useViewLifecycle
         */
-        public static final int MapAttrs_useViewLifecycle = 13;
+        public static int MapAttrs_useViewLifecycle = 13;
         /**
           <p>This symbol is the offset where the {@link de.guj.ems.mobile.sdk.R.attr#zOrderOnTop}
           attribute's value can be found in the {@link #MapAttrs} array.
@@ -2021,7 +2021,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name de.guj.ems.mobile.sdk:zOrderOnTop
         */
-        public static final int MapAttrs_zOrderOnTop = 14;
+        public static int MapAttrs_zOrderOnTop = 14;
         /**  Attributes for the WalletFragment &lt;fragment&gt; tag 
            <p>Includes the following attributes:</p>
            <table>
@@ -2059,7 +2059,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:appTheme
         */
-        public static final int WalletFragmentOptions_appTheme = 0;
+        public static int WalletFragmentOptions_appTheme = 0;
         /**
           <p>
           @attr description
@@ -2079,7 +2079,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:environment
         */
-        public static final int WalletFragmentOptions_environment = 1;
+        public static int WalletFragmentOptions_environment = 1;
         /**
           <p>
           @attr description
@@ -2098,7 +2098,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:fragmentMode
         */
-        public static final int WalletFragmentOptions_fragmentMode = 3;
+        public static int WalletFragmentOptions_fragmentMode = 3;
         /**
           <p>
           @attr description
@@ -2110,7 +2110,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:fragmentStyle
         */
-        public static final int WalletFragmentOptions_fragmentStyle = 2;
+        public static int WalletFragmentOptions_fragmentStyle = 2;
         /**  Attributes that may be specified in a style resource to customize the look and feel of
          WalletFragment 
            <p>Includes the following attributes:</p>
@@ -2166,7 +2166,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:buyButtonAppearance
         */
-        public static final int WalletFragmentStyle_buyButtonAppearance = 3;
+        public static int WalletFragmentStyle_buyButtonAppearance = 3;
         /**
           <p>
           @attr description
@@ -2195,7 +2195,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:buyButtonHeight
         */
-        public static final int WalletFragmentStyle_buyButtonHeight = 0;
+        public static int WalletFragmentStyle_buyButtonHeight = 0;
         /**
           <p>
           @attr description
@@ -2216,7 +2216,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:buyButtonText
         */
-        public static final int WalletFragmentStyle_buyButtonText = 2;
+        public static int WalletFragmentStyle_buyButtonText = 2;
         /**
           <p>
           @attr description
@@ -2245,7 +2245,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:buyButtonWidth
         */
-        public static final int WalletFragmentStyle_buyButtonWidth = 1;
+        public static int WalletFragmentStyle_buyButtonWidth = 1;
         /**
           <p>
           @attr description
@@ -2259,7 +2259,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsBackground
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsBackground = 6;
+        public static int WalletFragmentStyle_maskedWalletDetailsBackground = 6;
         /**
           <p>
           @attr description
@@ -2273,7 +2273,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsButtonBackground
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsButtonBackground = 8;
+        public static int WalletFragmentStyle_maskedWalletDetailsButtonBackground = 8;
         /**
           <p>
           @attr description
@@ -2285,7 +2285,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsButtonTextAppearance
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance = 7;
+        public static int WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance = 7;
         /**
           <p>
           @attr description
@@ -2297,7 +2297,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsHeaderTextAppearance
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance = 5;
+        public static int WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance = 5;
         /**
           <p>
           @attr description
@@ -2316,7 +2316,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsLogoImageType
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsLogoImageType = 10;
+        public static int WalletFragmentStyle_maskedWalletDetailsLogoImageType = 10;
         /**
           <p>
           @attr description
@@ -2333,7 +2333,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsLogoTextColor
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsLogoTextColor = 9;
+        public static int WalletFragmentStyle_maskedWalletDetailsLogoTextColor = 9;
         /**
           <p>
           @attr description
@@ -2345,6 +2345,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name de.guj.ems.mobile.sdk:maskedWalletDetailsTextAppearance
         */
-        public static final int WalletFragmentStyle_maskedWalletDetailsTextAppearance = 4;
+        public static int WalletFragmentStyle_maskedWalletDetailsTextAppearance = 4;
     };
 }

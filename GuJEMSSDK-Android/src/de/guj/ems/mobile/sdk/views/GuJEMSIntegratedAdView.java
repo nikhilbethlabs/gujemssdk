@@ -572,7 +572,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 	public void onReceiveResult(int resultCode, Bundle resultData) {
 		Throwable lastError = (Throwable) resultData.get("lastError");
 		IAdResponse response = (IAdResponse) resultData.get("response");
-		SdkLog.d(TAG, "onReceive " + response);
+
 		if (lastError != null) {
 			processError("Received error", lastError);
 		}
@@ -680,7 +680,7 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 
 	@Override
 	public final void processResponse(IAdResponse response) {
-		SdkLog.d(TAG, "" + response);
+
 		try {
 			if (response != null && !response.isEmpty()) {
 				SdkLog.i(TAG, "Ad found and loading... [" + this.getId() + "]");
