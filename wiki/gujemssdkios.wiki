@@ -8,7 +8,7 @@ iOS SDK change history and downloads.
 = Details =
 
 == Downloads ==
-[https://drive.google.com/file/d/0B5R-ThsBtb-3WjFmVTJidXNVME0/view?usp=sharing iOS SDK Starter Kit (v2.1)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3WTViUWdiSEpWeDA/view?usp=sharing iOS SDK Starter Kit (v2.1)]
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3c2dJbEZSVkZfQlE/view?usp=sharing iOS SDK Developer Guide GuJEMSSDK-iOS-v2.1-DE]
 ----
@@ -17,6 +17,7 @@ iOS SDK change history and downloads.
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
+||v 2.1.1        || Bug fixes  ||
 ||v 2.1          || This version supports Google backfill and IDFA targeting ||
 || || Google Ad Exchange backfill ||
 || || IDFA targeting ||
