@@ -241,6 +241,7 @@ public class SdkUtil {
 
 			@Override
 			public void run() {
+				SdkLog.i(TAG,  "Start getting Google advertising identifier...");
 				Info adInfo = null;
 				FETCH_IDFA = false;
 				try {
@@ -270,6 +271,9 @@ public class SdkUtil {
 
 				IDFA = adInfo != null && !adInfo.isLimitAdTrackingEnabled() ? adInfo
 						.getId() : null;
+				if (IDFA != null) {
+					SdkLog.i(TAG,  "Finished getting Google advertising identifier... [" + IDFA + "]");
+				}
 			}
 		}).start();
 
@@ -341,10 +345,8 @@ public class SdkUtil {
 			if (getContext().getResources().getBoolean(
 					R.bool.ems_shorten_location)) {
 				SdkLog.d(TAG, "Shortening " + loc[0] + "," + loc[1]);
-				loc[0] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
-						.format(loc[0]));
-				loc[1] = Double.valueOf(SdkGlobals.TWO_DIGITS_DECIMAL
-						.format(loc[1]));
+				loc[0] = Math.round( loc[0] * 100.0 ) / 100.0;
+				loc[1] = Math.round( loc[1] * 100.0 ) / 100.0;
 				SdkLog.d(TAG, "Geo location shortened to two digits.");
 			}
 

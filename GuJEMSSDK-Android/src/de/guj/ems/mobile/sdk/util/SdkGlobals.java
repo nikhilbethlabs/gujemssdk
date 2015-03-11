@@ -1,15 +1,8 @@
 package de.guj.ems.mobile.sdk.util;
 
-import java.text.DecimalFormat;
-
 import de.guj.ems.mobile.sdk.R;
 
 public class SdkGlobals {
-
-	/**
-	 * Format for geo position formatting
-	 */
-	final static DecimalFormat TWO_DIGITS_DECIMAL = new DecimalFormat("#,##");
 
 	/**
 	 * xml layout attributes prefix
