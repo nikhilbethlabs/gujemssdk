@@ -27,8 +27,8 @@ ad with content.
         android:layout_below="@+id/adhint"
         android:contentDescription="@string/advert"
         android:adjustViewBounds="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
         android:src="@drawable/thumb"
         android:paddingRight="10dp" />
 
