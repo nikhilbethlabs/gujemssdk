@@ -22,7 +22,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Movie;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -65,6 +67,8 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 
 		private final static String TAG = "AdThumbnailView";
 		
+		private Matrix matrix = new Matrix();
+		
 		private Movie animatedGif;
 		
 		private long movieStart;
@@ -73,40 +77,45 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 		
 		public AdThumbnailView(Context context) {
 			super(context);
+			setScaleType(ScaleType.FIT_CENTER);
 		}
 
 		public AdThumbnailView(Context context, AttributeSet attrs,
 				int defStyleAttr) {
 			super(context, attrs, defStyleAttr);
+			setScaleType(ScaleType.FIT_CENTER);
 			SdkLog.d(TAG, "AdThumbnailView with style attr " + defStyleAttr);
 		}
 
 		public AdThumbnailView(Context context, AttributeSet attrs) {
 			super(context, attrs);
-		
+			setScaleType(ScaleType.FIT_CENTER);
 		}
 		
 		public void setAnimation(Movie m) {
 			this.animatedGif = m;
 			this.play = true;
 			this.movieStart = 0;
+			init();
 			/*getLayoutParams().width = m.width();
 			getLayoutParams().height = m.height();*/
+		}
+		
+		private void init() {
+	        RectF src = new RectF(0.0f, 0.0f,  (float)animatedGif.width(), (float)animatedGif.height());
+	        RectF dst = new RectF(0.0f, 0.0f, (float)getMeasuredWidth(), (float)getMeasuredHeight());
+	                        
+	        matrix.setRectToRect(src, dst, Matrix.ScaleToFit.CENTER);			
 		}
 
 		@Override
 		protected void onDraw(Canvas canvas) {
+			canvas.drawColor(Color.TRANSPARENT);
+
 			if (animatedGif != null && play) {
 				long now = android.os.SystemClock.uptimeMillis();
+				int saveCount = canvas.save();
 				canvas.drawColor(Color.TRANSPARENT);
-				float s = (animatedGif.width() > getMeasuredWidth()
-						/ SdkUtil.getDensity()) ? (float) getMeasuredWidth()
-						/ (float) animatedGif.width()  : SdkUtil.getDensity();
-				float o = (animatedGif.width() > getMeasuredWidth()
-						/ SdkUtil.getDensity()) ? 0.0f
-						: 0.5f * ((getMeasuredWidth() / SdkUtil.getDensity()) - animatedGif
-								.width());
-				canvas.scale(s, s);
 
 				if (movieStart == 0) {
 					movieStart = now;
@@ -117,9 +126,11 @@ public class GuJEMSIntegratedAdView extends RelativeLayout implements Receiver,
 							.duration());
 					animatedGif.setTime(relTime);
 				}
-
-				animatedGif.draw(canvas, o, 0.0f);
-				this.invalidate();
+				
+		        canvas.concat(matrix);
+		        animatedGif.draw(canvas, 0.0f, 0.0f);
+		        invalidate();
+		        canvas.restoreToCount(saveCount);
 			}
 			else {
 				super.onDraw(canvas);
