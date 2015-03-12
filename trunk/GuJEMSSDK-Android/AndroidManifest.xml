@@ -6,10 +6,6 @@
     android:versionCode="11"
     android:versionName="1.4" >
 
-    <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
-
     <!-- The G+J EMS Android SDK requires Android 2.2 (FROYO) or later -->
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="21"/>
     
@@ -49,6 +45,12 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
+        
+        <!-- Version of referenced Google Play Services -->
+    	<meta-data
+        	android:name="com.google.android.gms.version"
+        	android:value="@integer/google_play_services_version" />
+        
 
         <!-- *** G+J EMS SDK specific declarations *** -->
 
@@ -61,14 +63,14 @@
         <!-- Displaying video interstitials -->
         <activity
             android:name=".activities.VideoInterstitialActivity"
-            android:theme="@android:style/Theme.Material"
+            android:theme="@android:style/Theme.DeviceDefault"
             android:configChanges="screenSize|orientation" />
 
         <!-- In-App browser -->
         <activity
             android:name="org.ormma.view.Browser"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Material" />
+            android:theme="@android:style/Theme.DeviceDefault" />
         <activity android:name="org.ormma.view.OrmmaActionHandler" />
 
         <!-- Receiver to check whether an interstitial can be displayed -->
@@ -84,10 +86,6 @@
         <!-- *** Smartstream Video Interstitial SDK (3rd party video interstitials) *** -->
         <activity
             android:name="com.video.adsdk.internal.ADActivity"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".activities.VideoAdSDKWrapperActivity"
             android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
 

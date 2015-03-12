@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry excluding="de/guj/ems/mobile/sdk/util/ImageCache.java|de/guj/ems/mobile/sdk/util/AdResponseParserFactory.java|de/guj/ems/mobile/sdk/activities/package-info.java|com/moceanmobile/mast/BrowserDialog.java|de/guj/ems/mobile/sdk/util/DataProvider.java|de/guj/ems/mobile/sdk/controllers/TrackingRequest.java" kind="src" path="src"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
