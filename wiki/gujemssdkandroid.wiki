@@ -11,7 +11,7 @@ Android SDK change history and downloads
 
 [https://drive.google.com/file/d/0B5R-ThsBtb-3dGw1UjBoR2NWb1k/view?usp=sharing Android SDK Sample App Binary (APK)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3dGw1UjBoR2NWb1k/edit?usp=sharing Android SDK Library Project (Eclipse ADT)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3M1dSV1Q2MnFEenM/view?usp=sharing Android SDK Library Project (Eclipse ADT)]
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/view?usp=sharing Android SDK Dokumentation (DE)]
 ----
@@ -19,6 +19,29 @@ Android SDK change history and downloads
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
+||v 1.4||Compatibility with Android SDK Tools 23.0.5||
+|| ||Compatibility with Android SDK Platform-tools 21.0.0||
+|| ||Compatibility with Android 5.0 ("Lollipop", API21) and lower (>=API8)||
+|| ||Compatibility with Google Play Services 21.0.0||
+|| ||Removed all references to mOcean SDK||
+|| ||Removed Android Device ID||
+|| ||Added default backfill via Google||
+|| ||Added adsquare service (Remote Targeting Service ist drin)||
+|| ||Added weather targeting (Remote Targeting Service ist drin)||
+|| ||Added support for retina ads||
+|| ||Added ability to distinguish between large devices (i.e. tablets) and normal||
+|| ||Added velocity to GPS data||
+|| ||Added altitude to GPS data||
+|| ||Added Google Advertising Identifier||
+|| ||Changed Ad Requests from using AsyncTask to using IntentService||
+|| ||Fixed a bug where native tests ads would not be displayed||
+|| ||Fixed a bug where an ORMMA error would display when returning to an activity/a fragment||
+|| ||Fixed a bug where isHeadsetConnected would always return false||
+|| ||Fixed a bug where VAST XML starting with XML doc declaration was incorrectly parsed||
+|| ||Fixed a bug where ads would not scale to the ad view size (if ad was larger)||
+|| ||Fixed some static references that were prone to not being thread safe||
+|| ||Fixed clicking on test ads to open our web site||
+|| ||Updated the sample application (fragments, drawer, ...)||
 ||v 1.3.1.2||Fixed problems with Google Ads||
 ||v 1.3.1.1||Removed AdMob SDK||
 || ||	Added Google Play Library||
