@@ -1,34 +1,34 @@
 #labels Featured
-= G+J EMS Android SDK v1.3.1.2 [http://ems.avault.net/img/android_logo_ico.png] =
+= G+J EMS Android SDK v1.4 =
 == Library Source Code ==
 * Eclipse Library Project *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3dGw1UjBoR2NWb1k/edit?usp=sharing GuJEMSSDK-Android-v1.3.1.2]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3M1dSV1Q2MnFEenM/view?usp=sharing GuJEMSSDK-Android-v1.4]
 ----
 == Documentation ==
 * German *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3aXhKYmhjTFZZT3c/view?usp=sharing GuJEMSSDK-Android-v1.4-DE]
 ----
 * English *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3VjZrangxRnFEOTg/edit?usp=sharing GuJEMSSDK-Android-v1.3.1-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3TnFIYjFoeDA0dGc/view?usp=sharing GuJEMSSDK-Android-v1.4-EN]
 ----
 === Sample Application ===
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3WW8tTHRaX0dwRzQ/edit?usp=sharing GuJEMSSDK-Android-Sample-v1.3.1]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3X3A1RE80ZFRnQjQ/view?usp=sharing GuJEMSSDK-Android-Sample-v1.4]
 ----
-= G+J EMS iOS SDK v2.0.6 [http://ems.avault.net/img/apple_logo_ico.jpg] =
+= G+J EMS iOS SDK v2.1.1 =
 === Library Source Code ===
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3bHJvd21MV1pBWDA/edit?usp=sharing GuJEMSSDK-iOS-v2.0.6]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3WTViUWdiSEpWeDA/view?usp=sharing GuJEMSSDK-iOS-v2.1.1]
 ----
 === Documentation ===
 * German *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3eXRZRU52QjhuNXM/edit?usp=sharing GuJEMSSDK-iOS-v2.0.6-DE]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3c2dJbEZSVkZfQlE/view?usp=sharing GuJEMSSDK-iOS-v2.1-DE]
 ----
 * English *
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3WjVieVA2bDd2ZlU/edit?usp=sharing GuJEMSSDK-iOS-v2.0.6-EN]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3MHNXZ19CMFozS1E/view?usp=sharing GuJEMSSDK-iOS-v2.1-EN]
 ----
