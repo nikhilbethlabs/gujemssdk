@@ -9,13 +9,13 @@ Android SDK change history and downloads
 
 == Downloads (Google Drive)==
 
-[https://drive.google.com/file/d/0B5R-ThsBtb-3dGw1UjBoR2NWb1k/view?usp=sharing Android SDK Sample App Binary (APK)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3X3A1RE80ZFRnQjQ/view?usp=sharing Android SDK Sample App Binary (APK)]
 ----
 [https://drive.google.com/file/d/0B5R-ThsBtb-3M1dSV1Q2MnFEenM/view?usp=sharing Android SDK Library Project (Eclipse ADT)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3YnB2OTZoNWxNcjQ/view?usp=sharing Android SDK Dokumentation (DE)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3aXhKYmhjTFZZT3c/view?usp=sharing Android SDK Dokumentation (DE)]
 ----
-[https://drive.google.com/file/d/0B5R-ThsBtb-3QlpySEZaSjk3RW8/view?usp=sharing Android SDK documentation (EN)]
+[https://drive.google.com/file/d/0B5R-ThsBtb-3TnFIYjFoeDA0dGc/view?usp=sharing Android SDK documentation (EN)]
 == Changelog ==
 
 ||*Version*      ||*Loginformation*||
